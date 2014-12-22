@@ -17,8 +17,8 @@ name = "slack"
 version = "0.1.0"
 authors = ["Benjamin Elder <ben.the.elder@gmail.com>"]
 repository = "https://github.com/BenTheElder/slack-rs.git"
+description = "slack realtime messaging client"
 license = "Apache"
-license-file = "LICENSE"
 
 [lib]
 name = "slack"
@@ -26,15 +26,8 @@ path = "src/lib.rs"
 
 
 [dependencies.hyper]
-features = ["aes_xts"]
-git = "https://github.com/BenTheElder/hyper.git"
+git = "https://github.com/hyperium/hyper.git"
 
 
 [dependencies.websocket]
 git = "https://github.com/BenTheElder/rust-websocket.git"
-#websocket = "~0.8.0"
-
-
-[[bin]]
-name = "demo"
-path = "examples/main.rs"

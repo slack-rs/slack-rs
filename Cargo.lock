@@ -2,37 +2,38 @@
 name = "slack"
 version = "0.1.0"
 dependencies = [
- "hyper 0.0.1 (git+https://github.com/BenTheElder/hyper.git)",
+ "hyper 0.0.15 (git+https://github.com/hyperium/hyper.git)",
  "websocket 0.8.1 (git+https://github.com/BenTheElder/rust-websocket.git)",
 ]
 
 [[package]]
 name = "cookie"
-version = "0.1.0"
-source = "git+https://github.com/alexcrichton/cookie-rs#f8e9b5961986069c555d4647f1101d8c51ac69e7"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "openssl 0.2.5 (git+https://github.com/sfackler/rust-openssl)",
- "time 0.1.3 (git+https://github.com/rust-lang/time)",
- "url 0.2.5 (git+https://github.com/servo/rust-url)",
+ "openssl 0.2.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "time 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "url 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "gcc"
-version = "0.1.1"
-source = "git+https://github.com/alexcrichton/gcc-rs#dfe97a119af4b2db53178eb8c3ca6be6589a152b"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "hyper"
-version = "0.0.1"
-source = "git+https://github.com/BenTheElder/hyper.git#fa18bcdf57ad8df88d40d606d318b11b287a1000"
+version = "0.0.15"
+source = "git+https://github.com/hyperium/hyper.git#b7aa384ce4799e48b6f85ef162df409ae9207b2e"
 dependencies = [
- "cookie 0.1.0 (git+https://github.com/alexcrichton/cookie-rs)",
- "mime 0.0.1 (git+https://github.com/hyperium/mime.rs)",
- "mucell 0.1.2 (git+https://github.com/chris-morgan/mucell)",
- "openssl 0.2.5 (git+https://github.com/sfackler/rust-openssl)",
- "time 0.1.3 (git+https://github.com/rust-lang/time)",
- "unsafe-any 0.1.1 (git+https://github.com/reem/rust-unsafe-any)",
- "url 0.2.5 (git+https://github.com/servo/rust-url)",
+ "cookie 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "mime 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "mucell 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "openssl 0.2.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "time 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "typeable 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "unsafe-any 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "url 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -45,26 +46,26 @@ dependencies = [
 
 [[package]]
 name = "mime"
-version = "0.0.1"
-source = "git+https://github.com/hyperium/mime.rs#7898f1c29c7f5d35d0c3c7aed37ebcfc95a40873"
+version = "0.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "mucell"
-version = "0.1.2"
-source = "git+https://github.com/chris-morgan/mucell#d198c6605b3e688719db168db0939051c803b1ea"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "openssl"
-version = "0.2.5"
-source = "git+https://github.com/sfackler/rust-openssl#88b753d3feeab5de71c5fdc834c0cc2dc37ae42e"
+version = "0.2.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "openssl-sys 0.2.5 (git+https://github.com/sfackler/rust-openssl)",
+ "openssl-sys 0.2.7 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "openssl-sys"
-version = "0.2.5"
-source = "git+https://github.com/sfackler/rust-openssl#88b753d3feeab5de71c5fdc834c0cc2dc37ae42e"
+version = "0.2.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "libressl-pnacl-sys 2.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "pkg-config 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -88,32 +89,32 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "time"
 version = "0.1.3"
-source = "git+https://github.com/rust-lang/time#914a48401168169ccd1a822c2d32d87965306141"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "gcc 0.1.1 (git+https://github.com/alexcrichton/gcc-rs)",
+ "gcc 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "typeable"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "unsafe-any"
 version = "0.1.1"
-source = "git+https://github.com/reem/rust-unsafe-any#eb3fe87bea85f375b8fcefa0cdecfd131fae9624"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "url"
-version = "0.2.5"
-source = "git+https://github.com/servo/rust-url#c177fb35e9158065c1b4d0760583549bc0c3334c"
-
-[[package]]
-name = "url"
-version = "0.2.5"
+version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "websocket"
 version = "0.8.1"
-source = "git+https://github.com/BenTheElder/rust-websocket.git#40723aac2923ade61c4df4442b99f81dc57d1253"
+source = "git+https://github.com/BenTheElder/rust-websocket.git#a1c234c4473064526949f04a91a35060141bca6d"
 dependencies = [
  "sha1 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "url 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "url 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

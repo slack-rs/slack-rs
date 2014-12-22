@@ -14,13 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 extern crate hyper;
-extern crate openssl;
 extern crate websocket;
 extern crate serialize;
+extern crate openssl;
 
 use serialize::json;
 use std::io::TcpStream;
 use std::comm::channel;
+use std::thread::Thread;
+use std::boxed::BoxAny;
 use std::sync::atomic::{AtomicInt, SeqCst};
 use websocket::{WebSocketClient,WebSocketClientMode};
 use websocket::message::WebSocketMessage;
@@ -308,7 +310,7 @@ impl RtmClient {
 		let captured_client = client.clone(); 
 
 		//websocket send loop
-		std::task::try_future(move || -> () {
+		let guard = Thread::spawn(move || -> () {
 			let mut sender = captured_client.sender(); 
 			loop {
 				let m = match rx.recv_opt() {
@@ -357,6 +359,11 @@ impl RtmClient {
 			}
 		}
 
-		Ok(())
+		match guard.join() {
+			Err(err) => {
+				Err(*err.downcast::<String>().unwrap())
+			},
+			Ok(_) => Ok(())
+		}
 	}
 }
