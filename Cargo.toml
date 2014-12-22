@@ -30,4 +30,4 @@ git = "https://github.com/hyperium/hyper.git"
 
 
 [dependencies.websocket]
-git = "https://github.com/BenTheElder/rust-websocket.git"
+git = "https://github.com/cyderize/rust-websocket.git"
