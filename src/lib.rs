@@ -293,9 +293,9 @@ impl RtmClient {
 					Ok(response) => response,
 					Err(err) => return Err(format!("{}", err))
 				};
-				if !response.is_successful(key) {
+				/*if !response.is_successful(key) {
 					return Err("Failed handshake.".to_string());
-				}
+				}*/
 				client
 			},
 			Err(err) => return Err(format!("{}", err))
