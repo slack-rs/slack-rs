@@ -26,8 +26,8 @@ path = "src/lib.rs"
 
 
 [dependencies.hyper]
-git = "https://github.com/hyperium/hyper.git"
+hyper = "0.0.15"
 
 
 [dependencies.websocket]
-git = "https://github.com/cyderize/rust-websocket.git"
+websocket = "0.8.2"

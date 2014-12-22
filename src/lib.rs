@@ -293,6 +293,7 @@ impl RtmClient {
 					Ok(response) => response,
 					Err(err) => return Err(format!("{}", err))
 				};
+				//FIXME: come back to this, right now this seems to be giving false positives.
 				/*if !response.is_successful(key) {
 					return Err("Failed handshake.".to_string());
 				}*/
