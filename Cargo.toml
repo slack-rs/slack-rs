@@ -25,9 +25,7 @@ name = "slack"
 path = "src/lib.rs"
 
 
-[dependencies.hyper]
-hyper = "0.0.15"
-
-
-[dependencies.websocket]
-websocket = "0.8.2"
+[dependencies]
+hyper = "0.0.17"
+rustc-serialize = "0.1.5"
+websocket = "0.9.1"

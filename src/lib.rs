@@ -15,21 +15,17 @@ limitations under the License.
 */
 extern crate hyper;
 extern crate websocket;
-extern crate serialize;
-extern crate openssl;
+extern crate "rustc-serialize" as rustc_serialize;
+extern crate url;
 
-use serialize::json;
-use std::io::TcpStream;
+use rustc_serialize::json;
 use std::comm::channel;
 use std::thread::Thread;
 use std::boxed::BoxAny;
 use std::sync::atomic::{AtomicInt, SeqCst};
-use websocket::{WebSocketClient,WebSocketClientMode};
 use websocket::message::WebSocketMessage;
 use websocket::handshake::WebSocketRequest;
-use openssl::ssl::{SslContext,SslMethod,SslStream};
-
-type WebsocketSslClient = WebSocketClient<SslStream<TcpStream>>;
+use url::Url;
 
 pub struct Team {
 	name : String,
@@ -164,7 +160,7 @@ impl RtmClient {
 			None => return Err(RTM_INVALID.to_string())
 		}
 
-		let wss_url = match jo.get("url") {
+		let wss_url_string = match jo.get("url") {
 			Some(wss_url) => {
 				if wss_url.is_string() {
 					wss_url.as_string().unwrap()
@@ -175,6 +171,10 @@ impl RtmClient {
 			None => return Err(RTM_INVALID.to_string())
 		};
 
+		let wss_url = match Url::parse(wss_url_string) {
+			Ok(url) => url, 
+			Err(err) => return Err(format!("{}", err))
+		};
 
 		let jself = match jo.get("self") {
 			Some(jself) => {
@@ -248,88 +248,55 @@ impl RtmClient {
 
 
 		//Make websocket request
-		let mut req = match WebSocketRequest::new(wss_url, [""].as_slice()) {
+		let req = match WebSocketRequest::connect(wss_url) {
 			Ok(req) => req,
 			Err(err) => return Err(format!("{}", err))
 		};
 
-		//Slack doesn't support or use these:
-		req.headers.remove("sec-websocket-protocol");
-
 		//Get the key so we can verify it later.
 		let key = match req.key() {
-			Some(key) => key,
+			Some(key) => key.clone(),
 			None => return Err("Request host key match failed.".to_string())
 		};
 
-		//Get the host for the tcp stream.
-		let host = match req.host() {
-			Some(host) => host,
-			None => return Err("Failed to get host.".to_string())
-		};
-
-		//Connect
-		let connection = match TcpStream::connect(host.as_slice()) {
-			Ok(connection) => connection,
-			Err(err) => return Err(format!("{}", err))
-		};
-
-		//Get an openssl tls context
-		let ssl_ctx = match SslContext::new(SslMethod::Tlsv1){
-			Ok(ssl_ctx) => ssl_ctx,
-			Err(err) => return Err(format!("{}", err))
-		};
-		
-
 		//Connect via tls, do websocket handshake.
-		let client = match SslStream::new(&ssl_ctx, connection) {
-			Ok(stream) => {
-				let mut client = WebSocketClient::new(stream, WebSocketClientMode::RemoteServer);
-				match client.send_handshake_request(&req) {
-					Ok(_) => {},
-					Err(err) => return Err(format!("{}", err))
-				}
-				let response = match client.receive_handshake_response() {
-					Ok(response) => response,
-					Err(err) => return Err(format!("{}", err))
-				};
-				//FIXME: come back to this, right now this seems to be giving false positives.
-				/*if !response.is_successful(key) {
-					return Err("Failed handshake.".to_string());
-				}*/
-				client
-			},
+		let res = match req.send() {
+			Ok(res) => res,
 			Err(err) => return Err(format!("{}", err))
 		};
 
-
+		match res.validate(&key) {
+			Ok(()) => { }
+			Err(err) => return Err(format!("{}", err))
+		}
+		
+		let mut client = res.begin();
 
 		//for sending messages
 		let (tx,rx) = channel::<String>();
 		self.outs = Some(tx);
 
-		let captured_client = client.clone(); 
+		let mut captured_client = client.clone(); 
 
 		//websocket send loop
 		let guard = Thread::spawn(move || -> () {
-			let mut sender = captured_client.sender(); 
 			loop {
 				let m = match rx.recv_opt() {
 					Ok(m) => m,
 					Err(err) => panic!(format!("{}", err))
 				};
 			 	let msg = WebSocketMessage::Text(m);
-			 	match sender.send_message(&msg) {
+			 	match captured_client.send_message(msg) {
 			 		Ok(_) => {},
 			 		Err(err) => panic!(format!("{}", err))
 			 	}
 			 }
 		});
 
-
-		let mut sender = client.sender();
+		let mut sending_client = client.clone();
+		
 		//receive loop
-		for message in client.receiver().incoming() {
+		for message in client.incoming_messages() {
 			let message = match message {
 				Ok(message) => message,
 				Err(err) => return Err(format!("{}", err))
@@ -342,7 +309,7 @@ impl RtmClient {
 				WebSocketMessage::Ping(data) => {
 					handler.on_ping(self);
 					let message = WebSocketMessage::Pong(data);
-					match sender.send_message(&message) {
+					match sending_client.send_message(message) {
 						Ok(_) => {},
 						Err(err) => { return Err(format!("{}", err)); }
 					}
@@ -350,7 +317,7 @@ impl RtmClient {
 				WebSocketMessage::Close(data) => {
 					handler.on_close(self);
 					let message = WebSocketMessage::Close(data);
-					match sender.send_message(&message) {
+					match sending_client.send_message(message) {
 						Ok(_) => {},
 						Err(err) => { return Err(format!("{}", err)); }
 					}
