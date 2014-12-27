@@ -112,7 +112,7 @@ impl RtmClient {
 
 	//Returns a unique identifier to be used in the 'id' field of a message
 	//sent to slack.
-	pub fn get_msg_uid(&self) -> AtomicInt {
+	pub fn get_msg_uid(&self) -> int {
 		self.msg_num.fetch_add(1, SeqCst)
 	} 
 
