@@ -1,6 +1,6 @@
-slack-rs
+slack-rs [![Build Status](https://travis-ci.org/BenTheElder/slack-rs.svg?branch=master)](https://travis-ci.org/BenTheElder/slack-rs)
 ========================
-[![Build Status](https://travis-ci.org/BenTheElder/slack-rs.svg?branch=master)](https://travis-ci.org/BenTheElder/slack-rs)
+
 Released under Apache v2.0
 
 Simple Slack realtime messaging client.
