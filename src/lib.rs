@@ -27,32 +27,46 @@ use websocket::message::WebSocketMessage;
 use websocket::handshake::WebSocketRequest;
 use url::Url;
 
+
+//Implement this trait in your code to handle message events
+pub trait MessageHandler {
+	//When a message is received this will be called with self, the slack client,
+	//and the json encoded string payload.
+	fn on_receive(&mut self, cli: &mut RtmClient, json_str: &str);
+
+	//Called when a ping is received; you do NOT need to handle the reply pong,
+	//but you may use this event to track the connection as a keep-alive.
+	fn on_ping(&mut self, cli: &mut RtmClient);
+	
+	//Called when the connection is closed for any reason.
+	fn on_close(&mut self, cli: &mut RtmClient);
+}
+
+
+//Contains information about the team the bot is logged into.
 pub struct Team {
 	name : String,
 	id : String
 }
 
 impl Team {
+	//private, create empty team.
 	fn new() -> Team {
 		Team{name: "".to_string(), id: "".to_string()}
 	}
 
+	//Returns the team's name as a String
 	pub fn get_name(&self) -> String {
 		self.name.clone()
 	}
 
+	//Returns the team's id as a String
 	pub fn get_id(&self) -> String {
 		self.id.clone()
 	}
 }
 
-
-pub trait MessageHandler {
-	fn on_receive(&mut self, cli: &mut RtmClient, json_str: &str);
-	fn on_ping(&mut self, cli: &mut RtmClient);
-	fn on_close(&mut self, cli: &mut RtmClient);
-}
-
+//The actual messaging client.
 pub struct RtmClient {
 	name : String,
 	id : String,
@@ -61,10 +75,13 @@ pub struct RtmClient {
 	outs : Option<Sender<String>>
 }
 
+//Error string. (FIXME: better error return values/ custom error type)
 static RTM_INVALID : &'static str = "Invalid data returned from slack (rtm.start)";
+
 
 impl RtmClient {
 
+	//Creates a new empty client.
 	pub fn new() -> RtmClient {
 		RtmClient{
 			name : "".to_string(),
@@ -75,19 +92,39 @@ impl RtmClient {
 		}
 	}
 
+	//Returns the name of the bot/user connected to the client.
+	//Only valid after login.
 	pub fn get_name(&self) -> String {
 		return self.name.clone();
 	}
 
+	//Returns the id of the bot/user connected to the client.
+	//Only valid after login.
 	pub fn get_id(&self) -> String {
 		return self.id.clone();
 	}
 
+	//Returns the Team struct of the bot/user connected to the client.
+	//Only valid after login.
 	pub fn get_team<'a>(&'a self) -> &'a Team {
 		&self.team
 	}
 
+	//Returns a unique identifier to be used in the 'id' field of a message
+	//sent to slack.
+	pub fn get_msg_uid(&self) -> AtomicInt {
+		self.msg_num.fetch_add(1, SeqCst)
+	} 
 
+
+	//Allows sending a json string message over the websocket connection.
+	//Note that this only passes the message over a channel to the
+	//Messaging task, and therfore a succesful return value does not
+	//mean the message has been actually put on the wire yet.
+	//Note that you will need to form a valid json reply yourself if you
+	//use this method, and you will also need to retrieve a unique id for 
+	//the message via RtmClient.get_msg_uid()
+	//Only valid after login.
 	pub fn send(&mut self, s : &str) -> Result<(),String> {
 		let tx = match self.outs {
 			Some(ref tx) => tx,
@@ -100,8 +137,17 @@ impl RtmClient {
 		Ok(())
 	}
 
+	//Allows sending a textual string message over the websocket connection,
+	//to the requested channel id. Ideal usage would be EG:
+	//extract the channel in on_receive and then send back a message to the channel.
+	//Note that this only passes the message over a channel to the
+	//Messaging task, and therfore a succesful return value does not
+	//mean the message has been actually put on the wire yet.
+	//This method also handles getting a unique id and formatting the actual json
+	//sent.
+	//Only valid after login.
 	pub fn send_message(&self, chan: &str, msg: &str) -> Result<(),String>{
-		let n = self.msg_num.fetch_add(1, SeqCst);
+		let n = self.get_msg_uid();
 		let mstr = "{".to_string()+format!(r#""id": {},"type": "message","channel": "{}","text": "{}""#,n,chan,msg).as_slice()+"}";
 		let tx = match self.outs {
 			Some(ref tx) => tx,
@@ -114,6 +160,17 @@ impl RtmClient {
 		Ok(())
 	}
 
+
+	//Runs the main loop for the client after logging in to slack,
+	//returns an error if the process fails at an point, or an Ok(()) on succesful
+	//close.
+	//Takes a MessageHandler (implemented by the user) to call events handlers on.
+	//once the first on_receive() or on_ping is called on the MessageHandler, you
+	//can soon the 'Only valid after login' methods are safe to use.
+	//Sending is run in a thread in parallel while the receive loop runs on the main thread.
+	//Both loops should end on return.
+	//Sending should be thread safe as the messages are passed in via a channel in
+	//RtmClient.send and RtmClient.send_message
 	pub fn login_and_run<T: MessageHandler>(&mut self, handler: &mut T, token : &str) -> Result<(),String> {
 		//Slack real time api url
 		let url = "https://slack.com/api/rtm.start?token=".to_string()+token;
