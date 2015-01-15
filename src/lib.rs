@@ -18,11 +18,10 @@ extern crate websocket;
 extern crate "rustc-serialize" as rustc_serialize;
 extern crate url;
 
-use rustc_serialize::json;
-use std::comm::channel;
+use rustc_serialize::json::{Json};
+use std::sync::mpsc::{Sender,channel};
 use std::thread::Thread;
-use std::boxed::BoxAny;
-use std::sync::atomic::{AtomicInt, SeqCst};
+use std::sync::atomic::{AtomicIsize, Ordering};
 use websocket::message::WebSocketMessage;
 use websocket::handshake::WebSocketRequest;
 use url::Url;
@@ -37,7 +36,7 @@ pub trait MessageHandler {
 	///Called when a ping is received; you do NOT need to handle the reply pong,
 	///but you may use this event to track the connection as a keep-alive.
 	fn on_ping(&mut self, cli: &mut RtmClient);
-	
+
 	///Called when the connection is closed for any reason.
 	fn on_close(&mut self, cli: &mut RtmClient);
 }
@@ -52,7 +51,7 @@ pub struct Team {
 impl Team {
 	///private, create empty team.
 	fn new() -> Team {
-		Team{name: "".to_string(), id: "".to_string()}
+		Team{name: String::new(), id: String::new()}
 	}
 
 	///Returns the team's name as a String
@@ -71,7 +70,7 @@ pub struct RtmClient {
 	name : String,
 	id : String,
 	team : Team,
-	msg_num: AtomicInt,
+	msg_num: AtomicIsize,
 	outs : Option<Sender<String>>
 }
 
@@ -84,10 +83,10 @@ impl RtmClient {
 	///Creates a new empty client.
 	pub fn new() -> RtmClient {
 		RtmClient{
-			name : "".to_string(),
-			id : "".to_string(),
+			name : String::new(),
+			id : String::new(),
 			team : Team::new(),
-			msg_num: AtomicInt::new(0),
+			msg_num: AtomicIsize::new(0),
 			outs : None
 		}
 	}
@@ -112,9 +111,9 @@ impl RtmClient {
 
 	///Returns a unique identifier to be used in the 'id' field of a message
 	///sent to slack.
-	pub fn get_msg_uid(&self) -> int {
-		self.msg_num.fetch_add(1, SeqCst)
-	} 
+	pub fn get_msg_uid(&self) -> isize {
+		self.msg_num.fetch_add(1, Ordering::SeqCst)
+	}
 
 
 	///Allows sending a json string message over the websocket connection.
@@ -122,7 +121,7 @@ impl RtmClient {
 	///Messaging task, and therfore a succesful return value does not
 	///mean the message has been actually put on the wire yet.
 	///Note that you will need to form a valid json reply yourself if you
-	///use this method, and you will also need to retrieve a unique id for 
+	///use this method, and you will also need to retrieve a unique id for
 	///the message via RtmClient.get_msg_uid()
 	///Only valid after login.
 	pub fn send(&mut self, s : &str) -> Result<(),String> {
@@ -130,9 +129,9 @@ impl RtmClient {
 			Some(ref tx) => tx,
 			None => return Err("Failed to get tx!".to_string())
 		};
-		match tx.send_opt(s.to_string()) {
+		match tx.send(s.to_string()) {
 			Ok(_) => {},
-			Err(err) => return Err(format!("{}", err))
+			Err(err) => return Err(format!("{:?}", err))
 		}
 		Ok(())
 	}
@@ -153,9 +152,9 @@ impl RtmClient {
 			Some(ref tx) => tx,
 			None => return Err("Failed to get tx!".to_string())
 		};
-		match tx.send_opt(mstr) {
+		match tx.send(mstr) {
 			Ok(_) => {},
-			Err(err) => return Err(format!("{}", err))
+			Err(err) => return Err(format!("{:?}", err))
 		}
 		Ok(())
 	}
@@ -174,18 +173,18 @@ impl RtmClient {
 	pub fn login_and_run<T: MessageHandler>(&mut self, handler: &mut T, token : &str) -> Result<(),String> {
 		//Slack real time api url
 		let url = "https://slack.com/api/rtm.start?token=".to_string()+token;
-		
+
 		//Create http client and send request to slack
 		let mut client = hyper::Client::new();
 		let mut res = match client.get(url.as_slice()).send() {
 			Ok(res) => res,
-			Err(err) => return Err(format!("Hyper Error: {}", err))
+			Err(err) => return Err(format!("Hyper Error: {:?}", err))
 		};
 
 		//Read result string
 		let res_str = match res.read_to_string() {
 			Ok(res_str) => res_str,
-			Err(err) => return Err(format!("{}", err))
+			Err(err) => return Err(format!("{:?}", err))
 		};
 
 
@@ -198,9 +197,9 @@ impl RtmClient {
 
 		//Start parsing json. We do not map to a structure,
 		//because slack makes no guarantee that there won't be extra fields.
-		let js = match json::from_str(res_str.as_slice()) {
+		let js = match Json::from_str(res_str.as_slice()) {
 			Ok(js) => js,
-			Err(err) => return Err(format!("{}", err))
+			Err(err) => return Err(format!("{:?}", err))
 		};
 
 		if !js.is_object() {
@@ -209,7 +208,7 @@ impl RtmClient {
 		let jo = js.as_object().unwrap();
 
 		match jo.get("ok") {
-			Some(v) => { 
+			Some(v) => {
 				if !(v.is_boolean() && v.as_boolean().unwrap() == true) {
 					return Err(RTM_INVALID.to_string())
 				}
@@ -229,8 +228,8 @@ impl RtmClient {
 		};
 
 		let wss_url = match Url::parse(wss_url_string) {
-			Ok(url) => url, 
-			Err(err) => return Err(format!("{}", err))
+			Ok(url) => url,
+			Err(err) => return Err(format!("{:?}", err))
 		};
 
 		let jself = match jo.get("self") {
@@ -266,7 +265,7 @@ impl RtmClient {
 
 
 		let jteam = match jo.get("team") {
-			Some(jteam) => { 
+			Some(jteam) => {
 				if jteam.is_object() {
 					jteam.as_object().unwrap()
 				}else{
@@ -307,7 +306,7 @@ impl RtmClient {
 		//Make websocket request
 		let req = match WebSocketRequest::connect(wss_url) {
 			Ok(req) => req,
-			Err(err) => return Err(format!("{}", err))
+			Err(err) => return Err(format!("{:?}", err))
 		};
 
 		//Get the key so we can verify it later.
@@ -319,47 +318,47 @@ impl RtmClient {
 		//Connect via tls, do websocket handshake.
 		let res = match req.send() {
 			Ok(res) => res,
-			Err(err) => return Err(format!("{}", err))
+			Err(err) => return Err(format!("{:?}", err))
 		};
 
 		match res.validate(&key) {
 			Ok(()) => { }
-			Err(err) => return Err(format!("{}", err))
+			Err(err) => return Err(format!("{:?}", err))
 		}
-		
+
 		let mut client = res.begin();
 
 		//for sending messages
 		let (tx,rx) = channel::<String>();
 		self.outs = Some(tx);
 
-		let mut captured_client = client.clone(); 
+		let mut captured_client = client.clone();
 
 		//websocket send loop
 		let guard = Thread::spawn(move || -> () {
 			loop {
-				let m = match rx.recv_opt() {
+				let m = match rx.recv() {
 					Ok(m) => m,
-					Err(err) => panic!(format!("{}", err))
+					Err(err) => panic!(format!("{:?}", err))
 				};
 			 	let msg = WebSocketMessage::Text(m);
 			 	match captured_client.send_message(msg) {
 			 		Ok(_) => {},
-			 		Err(err) => panic!(format!("{}", err))
+			 		Err(err) => panic!(format!("{:?}", err))
 			 	}
 			 }
 		});
 
 		let mut sending_client = client.clone();
-		
+
 		//receive loop
 		for message in client.incoming_messages() {
 			let message = match message {
 				Ok(message) => message,
-				Err(err) => return Err(format!("{}", err))
+				Err(err) => return Err(format!("{:?}", err))
 			};
 
-			match message { 
+			match message {
 				WebSocketMessage::Text(data) => {
 					handler.on_receive(self, data.as_slice());
 				},
@@ -368,7 +367,7 @@ impl RtmClient {
 					let message = WebSocketMessage::Pong(data);
 					match sending_client.send_message(message) {
 						Ok(_) => {},
-						Err(err) => { return Err(format!("{}", err)); }
+						Err(err) => { return Err(format!("{:?}", err)); }
 					}
 				},
 				WebSocketMessage::Close(data) => {
@@ -376,7 +375,7 @@ impl RtmClient {
 					let message = WebSocketMessage::Close(data);
 					match sending_client.send_message(message) {
 						Ok(_) => {},
-						Err(err) => { return Err(format!("{}", err)); }
+						Err(err) => { return Err(format!("{:?}", err)); }
 					}
 					return Ok(());
 				},
@@ -384,11 +383,6 @@ impl RtmClient {
 			}
 		}
 
-		match guard.join() {
-			Err(err) => {
-				Err(*err.downcast::<String>().unwrap())
-			},
-			Ok(_) => Ok(())
-		}
+		Ok(())
 	}
 }
