@@ -306,7 +306,7 @@ impl RtmClient {
 		//Make websocket request
 		let req = match WebSocketRequest::connect(wss_url) {
 			Ok(req) => req,
-			Err(err) => return Err(format!("{:?} : WebSocketRequest::connect(wss_url): wss_url{:?}", err, wss))
+			Err(err) => return Err(format!("{:?} : WebSocketRequest::connect(wss_url): wss_url{:?}", err, wss_url))
 		};
 
 		//Get the key so we can verify it later.
