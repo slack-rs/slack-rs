@@ -323,7 +323,7 @@ impl RtmClient {
 
 		match res.validate(&key) {
 			Ok(()) => { }
-			Err(err) => return Err(format!("Websocket request key validation error: {:?}", err))
+			Err(err) => return Err(format!("Error: res.validate(&key): {:?} : key: {:?}", err, key))
 		}
 
 		let mut client = res.begin();
