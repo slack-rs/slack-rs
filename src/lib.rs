@@ -306,7 +306,7 @@ impl RtmClient {
 		//Make websocket request
 		let req = match WebSocketRequest::connect(wss_url) {
 			Ok(req) => req,
-			Err(err) => return Err(format!("{:?}", err))
+			Err(err) => return Err(format!("{:?} : WebSocketRequest::connect(wss_url): wss_url{:?}", err, wss))
 		};
 
 		//Get the key so we can verify it later.
@@ -318,12 +318,12 @@ impl RtmClient {
 		//Connect via tls, do websocket handshake.
 		let res = match req.send() {
 			Ok(res) => res,
-			Err(err) => return Err(format!("{:?}", err))
+			Err(err) => return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
 		};
 
 		match res.validate(&key) {
 			Ok(()) => { }
-			Err(err) => return Err(format!("{:?}", err))
+			Err(err) => return Err(format!("Websocket request key validation error: {:?}", err))
 		}
 
 		let mut client = res.begin();
