@@ -304,7 +304,7 @@ impl RtmClient {
 
 
 		//Make websocket request
-		let req = match WebSocketRequest::connect(wss_url) {
+		let req = match WebSocketRequest::connect(wss_url.clone()) {
 			Ok(req) => req,
 			Err(err) => return Err(format!("{:?} : WebSocketRequest::connect(wss_url): wss_url{:?}", err, wss_url))
 		};
