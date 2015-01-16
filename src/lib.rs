@@ -203,17 +203,17 @@ impl RtmClient {
 		};
 
 		if !js.is_object() {
-			return Err(RTM_INVALID.to_string())
+			return Err(format!("{} : json is not an object.", RTM_INVALID))
 		}
 		let jo = js.as_object().unwrap();
 
 		match jo.get("ok") {
 			Some(v) => {
 				if !(v.is_boolean() && v.as_boolean().unwrap() == true) {
-					return Err(RTM_INVALID.to_string())
+					return Err(format!("{} : js.get(\"ok\") != true : {:?}", RTM_INVALID, jo))
 				}
 			},
-			None => return Err(RTM_INVALID.to_string())
+			None => return Err(format!("{} : jo.get(\"ok\") returned None. : {:?}", RTM_INVALID, jo))
 		}
 
 		let wss_url_string = match jo.get("url") {
@@ -221,10 +221,10 @@ impl RtmClient {
 				if wss_url.is_string() {
 					wss_url.as_string().unwrap()
 				}else{
-					return Err(RTM_INVALID.to_string())
+					return Err(format!("{} : jo.get(\"url\") failed! : {:?}", RTM_INVALID, jo))
 				}
 			},
-			None => return Err(RTM_INVALID.to_string())
+			None => return Err(format!("{} : jo.get(\"url\") returned None. : {:?}", RTM_INVALID, jo))
 		};
 
 		let wss_url = match Url::parse(wss_url_string) {
