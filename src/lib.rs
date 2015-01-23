@@ -16,15 +16,15 @@ limitations under the License.
 extern crate hyper;
 extern crate websocket;
 extern crate "rustc-serialize" as rustc_serialize;
-extern crate url;
 
 use rustc_serialize::json::{Json};
 use std::sync::mpsc::{Sender,channel};
 use std::thread::Thread;
 use std::sync::atomic::{AtomicIsize, Ordering};
-use websocket::message::WebSocketMessage;
-use websocket::handshake::WebSocketRequest;
-use url::Url;
+use websocket::{Client, Message};
+use websocket::Sender as WsSender;
+use websocket::Receiver as WsReceiver;
+use websocket::client::request::Url;
 
 
 ///Implement this trait in your code to handle message events
@@ -71,7 +71,7 @@ pub struct RtmClient {
 	id : String,
 	team : Team,
 	msg_num: AtomicIsize,
-	outs : Option<Sender<String>>
+	outs : Option<Sender<Message>>
 }
 
 ///Error string. (FIXME: better error return values/ custom error type)
@@ -129,7 +129,7 @@ impl RtmClient {
 			Some(ref tx) => tx,
 			None => return Err("Failed to get tx!".to_string())
 		};
-		match tx.send(s.to_string()) {
+		match tx.send(Message::Text(s.to_string())) {
 			Ok(_) => {},
 			Err(err) => return Err(format!("{:?}", err))
 		}
@@ -152,7 +152,7 @@ impl RtmClient {
 			Some(ref tx) => tx,
 			None => return Err("Failed to get tx!".to_string())
 		};
-		match tx.send(mstr) {
+		match tx.send(Message::Text(mstr)) {
 			Ok(_) => {},
 			Err(err) => return Err(format!("{:?}", err))
 		}
@@ -304,15 +304,9 @@ impl RtmClient {
 
 
 		//Make websocket request
-		let req = match WebSocketRequest::connect(wss_url.clone()) {
+		let req = match Client::connect(wss_url.clone()) {
 			Ok(req) => req,
-			Err(err) => return Err(format!("{:?} : WebSocketRequest::connect(wss_url): wss_url{:?}", err, wss_url))
-		};
-
-		//Get the key so we can verify it later.
-		let key = match req.key() {
-			Some(key) => key.clone(),
-			None => return Err("Request host key match failed.".to_string())
+			Err(err) => return Err(format!("{:?} : Client::connect(wss_url): wss_url{:?}", err, wss_url))
 		};
 
 		//Connect via tls, do websocket handshake.
@@ -322,60 +316,57 @@ impl RtmClient {
 		};
 
 
-		match res.validate(&key) {
+		match res.validate() {
 			Ok(()) => { }
-			Err(err) => return Err(format!("Error: res.validate(&key): {:?} : key: {:?}", err, key))
+			Err(err) => return Err(format!("Error: res.validate(): {:?}", err))
 		}
 		
 
-		let mut client = res.begin();
+		let client = res.begin();
 
 		//for sending messages
-		let (tx,rx) = channel::<String>();
-		self.outs = Some(tx);
+		let (tx,rx) = channel::<Message>();
+		self.outs = Some(tx.clone());
 
-		let mut captured_client = client.clone();
+		let (mut sender, mut receiver) = client.split();
 
 		//websocket send loop
-		let guard = Thread::spawn(move || -> () {
+		Thread::spawn(move || -> () {
 			loop {
-				let m = match rx.recv() {
+				let msg = match rx.recv() {
 					Ok(m) => m,
 					Err(err) => panic!(format!("{:?}", err))
 				};
-			 	let msg = WebSocketMessage::Text(m);
-			 	match captured_client.send_message(msg) {
+			 	match sender.send_message(msg) {
 			 		Ok(_) => {},
 			 		Err(err) => panic!(format!("{:?}", err))
 			 	}
 			 }
 		});
 
-		let mut sending_client = client.clone();
-
 		//receive loop
-		for message in client.incoming_messages() {
+		for message in receiver.incoming_messages() {
 			let message = match message {
 				Ok(message) => message,
 				Err(err) => return Err(format!("{:?}", err))
 			};
 
 			match message {
-				WebSocketMessage::Text(data) => {
+				Message::Text(data) => {
 					handler.on_receive(self, data.as_slice());
 				},
-				WebSocketMessage::Ping(data) => {
+				Message::Ping(data) => {
 					handler.on_ping(self);
-					let message = WebSocketMessage::Pong(data);
-					match sending_client.send_message(message) {
+					let message = Message::Pong(data);
+					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => { return Err(format!("{:?}", err)); }
 					}
 				},
-				WebSocketMessage::Close(data) => {
+				Message::Close(data) => {
 					handler.on_close(self);
-					let message = WebSocketMessage::Close(data);
-					match sending_client.send_message(message) {
+					let message = Message::Close(data);
+					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => { return Err(format!("{:?}", err)); }
 					}
