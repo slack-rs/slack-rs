@@ -19,7 +19,7 @@ extern crate openssl;
 extern crate "rustc-serialize" as rustc_serialize;
 
 use rustc_serialize::json::{Json};
-use std::sync::mpsc::{Sender,channel};
+use std::sync::mpsc::{Sender,channel,TryRecvError};
 use std::thread::Thread;
 use std::sync::atomic::{AtomicIsize, Ordering};
 use websocket::{Client, Message};
@@ -389,11 +389,16 @@ impl RtmClient {
 		let (mut sender, mut receiver) = client.split();
 
 		//websocket send loop
-		/*let guard =*/ Thread::spawn(move || -> () {
+		/*let guard =*/ Thread::scoped(move || -> () {
 			loop {
-				let msg = match rx.recv() {
+				let msg = match rx.try_recv() {
 					Ok(m) => m,
-					Err(err) => { return; }//panic!(format!("{:?}", err))
+					Err(e) => {
+						match e {
+							TryRecvError::Empty => { continue; },
+							TryRecvError::Disconnected => { return; }
+						}
+					}
 				};
 				match sender.send_message(msg) {
 					Ok(_) => {},
