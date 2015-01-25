@@ -102,6 +102,7 @@ impl RtmClient {
 		}
 	}
 
+	///Closes the underlying TcpStream.
 	pub fn close(&mut self) {
 		match self.stream {
 			Some(ref mut s) => {
@@ -110,6 +111,12 @@ impl RtmClient {
 			},
 			None => {}
 		}
+	}
+
+	///Clones the underlying TcpStream. Realitistically you should only use
+	///this to close the stream early.
+	pub fn get_stream(&self) -> Option<TcpStream> {
+		self.stream.clone()
 	}
 
 	///Returns the name of the bot/user connected to the client.
