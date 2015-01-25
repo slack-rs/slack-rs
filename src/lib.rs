@@ -310,10 +310,23 @@ impl RtmClient {
 			None => return Err(RTM_INVALID.to_string())
 		}
 
-		let connection = match TcpStream::connect(wss_url_string.as_slice()) {
+		let host = match websocket::ws::util::url::url_to_host(&wss_url){
+			Some(h) => { h },
+			None => return Err("Failed to parse host!".to_string())
+		};
+
+		let connection = match TcpStream::connect(&(
+				host.hostname + ":" +
+				&host.port.unwrap().to_string()[]
+		)[]){
 			Ok(c) => { c },
 			Err(err) => return Err(format!("{:?}", err))
 		};
+
+		/*let connection = match TcpStream::connect(wss_url_string.as_slice()) {
+			Ok(c) => { c },
+			Err(err) => return Err(format!("{:?}", err))
+		};*/
 		//Get an openssl tls context
 		let ssl_ctx = match SslContext::new(SslMethod::Tlsv1){
 			Ok(ssl_ctx) => ssl_ctx,

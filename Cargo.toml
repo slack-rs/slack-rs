@@ -14,7 +14,7 @@
 
 [package]
 name = "slack"
-version = "0.3.4"
+version = "0.3.5"
 authors = ["Benjamin Elder <ben.the.elder@gmail.com>"]
 repository = "https://github.com/BenTheElder/slack-rs.git"
 documentation = "https://bentheelder.github.io/slack-rs"
