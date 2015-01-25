@@ -389,15 +389,15 @@ impl RtmClient {
 		let (mut sender, mut receiver) = client.split();
 
 		//websocket send loop
-		let guard = Thread::scoped(move || -> () {
+		/*let guard =*/ Thread::scoped(move || -> () {
 			loop {
 				let msg = match rx.recv() {
 					Ok(m) => m,
-					Err(err) => panic!(format!("{:?}", err))
+					Err(err) => { return; }//panic!(format!("{:?}", err))
 				};
 				match sender.send_message(msg) {
 					Ok(_) => {},
-					Err(err) => panic!(format!("{:?}", err))
+					Err(err) => { return; }//panic!(format!("{:?}", err))
 				}
 			}
 		});
@@ -409,7 +409,7 @@ impl RtmClient {
 				Err(err) => {
 					self.close();
 					self.stream = None;
-					let _ = guard.join();
+					//let _ = guard.join();
 					return Err(format!("{:?}", err));
 				}
 			};
@@ -426,7 +426,7 @@ impl RtmClient {
 						Err(err) => {
 							self.close();
 							self.stream = None;
-							let _ = guard.join();
+							//let _ = guard.join();
 							return Err(format!("{:?}", err));
 						}
 					}
@@ -439,13 +439,13 @@ impl RtmClient {
 						Err(err) => {
 							self.close();
 							self.stream = None;
-							let _ = guard.join();
+							//let _ = guard.join();
 							return Err(format!("{:?}", err));
 						}
 					}
 					self.close();
 					self.stream = None;
-					let _ = guard.join();
+					//let _ = guard.join();
 					return Ok(());
 				},
 				_ => {}
@@ -453,7 +453,7 @@ impl RtmClient {
 		}
 		self.close();
 		self.stream = None;
-		let _ = guard.join();
+		//let _ = guard.join();
 		Ok(())
 	}
 
