@@ -102,7 +102,7 @@ impl RtmClient {
 		}
 	}
 
-	fn close(&mut self) {
+	pub fn close(&mut self) {
 		match self.stream {
 			Some(ref mut s) => {
 				s.close_read();
