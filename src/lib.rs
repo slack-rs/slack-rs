@@ -25,10 +25,14 @@ use std::sync::atomic::{AtomicIsize, Ordering};
 use websocket::{Client, Message};
 use websocket::Sender as WsSender;
 use websocket::Receiver as WsReceiver;
+use websocket::dataframe::DataFrame;
+use websocket::stream::WebSocketStream;
 use websocket::client::request::Url;
 
 use std::io::TcpStream;
 use openssl::ssl::{SslContext, SslMethod, SslStream};
+
+pub type WsClient = Client<DataFrame, websocket::client::sender::Sender<SslStream<TcpStream>>, websocket::client::receiver::Receiver<SslStream<TcpStream>>>;
 
 ///Implement this trait in your code to handle message events
 pub trait MessageHandler {
@@ -187,18 +191,9 @@ impl RtmClient {
 		Ok(())
 	}
 
-
-	///Runs the main loop for the client after logging in to slack,
-	///returns an error if the process fails at an point, or an Ok(()) on succesful
-	///close.
-	///Takes a MessageHandler (implemented by the user) to call events handlers on.
-	///once the first on_receive() or on_ping is called on the MessageHandler, you
-	///can soon the 'Only valid after login' methods are safe to use.
-	///Sending is run in a thread in parallel while the receive loop runs on the main thread.
-	///Both loops should end on return.
-	///Sending should be thread safe as the messages are passed in via a channel in
-	///RtmClient.send and RtmClient.send_message
-	pub fn login_and_run<T: MessageHandler>(&mut self, handler: &mut T, token : &str) -> Result<(),String> {
+	///Logs in to slack. Call this before calling run.
+	///Alternatively use login_and_run
+	pub fn login(&mut self, token: &str) -> Result<WsClient,String> {
 		//Slack real time api url
 		let url = "https://slack.com/api/rtm.start?token=".to_string()+token;
 
@@ -214,13 +209,6 @@ impl RtmClient {
 			Ok(res_str) => res_str,
 			Err(err) => return Err(format!("{:?}", err))
 		};
-
-
-
-
-
-
-
 
 
 		//Start parsing json. We do not map to a structure,
@@ -291,7 +279,6 @@ impl RtmClient {
 			None => return Err(RTM_INVALID.to_string())
 		}
 
-
 		let jteam = match jo.get("team") {
 			Some(jteam) => {
 				if jteam.is_object() {
@@ -323,13 +310,6 @@ impl RtmClient {
 			None => return Err(RTM_INVALID.to_string())
 		}
 
-
-
-
-
-
-
-
 		let connection = match TcpStream::connect(wss_url_string.as_slice()) {
 			Ok(c) => { c },
 			Err(err) => return Err(format!("{:?}", err))
@@ -353,7 +333,6 @@ impl RtmClient {
 				return Err(format!("{:?}", err))
 			}
 		};
-
 
 		//Make websocket request
 		let req = match websocket::client::Request::new(wss_url.clone(), stream.clone(), stream){ //match Client::connect(wss_url.clone()) {
@@ -385,9 +364,11 @@ impl RtmClient {
 			}
 		}
 
+		Ok(res.begin())
+	}
 
-		let client = res.begin();
-
+	///Runs the message receive loop
+	pub fn run<T: MessageHandler>(&mut self, handler: &mut T, client: WsClient) -> Result<(),String> {
 		//for sending messages
 		let (tx,rx) = channel::<Message>();
 		self.outs = Some(tx.clone());
@@ -401,11 +382,11 @@ impl RtmClient {
 					Ok(m) => m,
 					Err(err) => panic!(format!("{:?}", err))
 				};
-			 	match sender.send_message(msg) {
-			 		Ok(_) => {},
-			 		Err(err) => panic!(format!("{:?}", err))
-			 	}
-			 }
+				match sender.send_message(msg) {
+					Ok(_) => {},
+					Err(err) => panic!(format!("{:?}", err))
+				}
+			}
 		});
 
 		//receive loop
@@ -456,5 +437,24 @@ impl RtmClient {
 		self.close();
 		self.stream = None;
 		Ok(())
+	}
+
+
+	///Runs the main loop for the client after logging in to slack,
+	///returns an error if the process fails at an point, or an Ok(()) on succesful
+	///close.
+	///Takes a MessageHandler (implemented by the user) to call events handlers on.
+	///once the first on_receive() or on_ping is called on the MessageHandler, you
+	///can soon the 'Only valid after login' methods are safe to use.
+	///Sending is run in a thread in parallel while the receive loop runs on the main thread.
+	///Both loops should end on return.
+	///Sending should be thread safe as the messages are passed in via a channel in
+	///RtmClient.send and RtmClient.send_message
+	pub fn login_and_run<T: MessageHandler>(&mut self, handler: &mut T, token : &str) -> Result<(),String> {
+		let client = match self.login(token) {
+			Ok(c) => { c },
+			Err(err) => { return Err(format!("{:?}",err)); }
+		};
+		self.run(handler, client)
 	}
 }
