@@ -389,7 +389,7 @@ impl RtmClient {
 		let (mut sender, mut receiver) = client.split();
 
 		//websocket send loop
-		/*let guard =*/ Thread::scoped(move || -> () {
+		/*let guard =*/ Thread::spawn(move || -> () {
 			loop {
 				let msg = match rx.recv() {
 					Ok(m) => m,
