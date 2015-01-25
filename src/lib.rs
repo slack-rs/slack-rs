@@ -15,6 +15,7 @@ limitations under the License.
 */
 extern crate hyper;
 extern crate websocket;
+extern crate openssl;
 extern crate "rustc-serialize" as rustc_serialize;
 
 use rustc_serialize::json::{Json};
@@ -26,6 +27,8 @@ use websocket::Sender as WsSender;
 use websocket::Receiver as WsReceiver;
 use websocket::client::request::Url;
 
+use std::io::TcpStream;
+use openssl::ssl::{SslContext, SslMethod, SslStream};
 
 ///Implement this trait in your code to handle message events
 pub trait MessageHandler {
@@ -66,12 +69,19 @@ impl Team {
 }
 
 ///The actual messaging client.
-pub struct RtmClient {
+pub struct RtmClient{
 	name : String,
 	id : String,
 	team : Team,
 	msg_num: AtomicIsize,
-	outs : Option<Sender<Message>>
+	outs : Option<Sender<Message>>,
+	stream: Option<TcpStream>,
+}
+
+impl Drop for RtmClient {
+	fn drop(&mut self){
+		self.close();
+	}
 }
 
 ///Error string. (FIXME: better error return values/ custom error type)
@@ -87,7 +97,18 @@ impl RtmClient {
 			id : String::new(),
 			team : Team::new(),
 			msg_num: AtomicIsize::new(0),
-			outs : None
+			outs : None,
+			stream: None,
+		}
+	}
+
+	fn close(&mut self) {
+		match self.stream {
+			Some(ref mut s) => {
+				s.close_read();
+				s.close_write();
+			},
+			None => {}
 		}
 	}
 
@@ -302,25 +323,61 @@ impl RtmClient {
 
 
 
+		let connection = match TcpStream::connect(wss_url_string.as_slice()) {
+			Ok(c) => { c },
+			Err(err) => return Err(format!("{:?}", err))
+		};
+		//Get an openssl tls context
+		let ssl_ctx = match SslContext::new(SslMethod::Tlsv1){
+			Ok(ssl_ctx) => ssl_ctx,
+			Err(err) => return {
+				self.close();
+				self.stream = None;
+				Err(format!("{:?}", err))
+			}
+		};
+		//Upgrade stream to ssl.
+		self.stream = Some(connection.clone());
+		let stream = match SslStream::new(&ssl_ctx, connection) {
+			Ok(stream) => { stream },
+			Err(err) => {
+				self.close();
+				self.stream = None;
+				return Err(format!("{:?}", err))
+			}
+		};
+
 
 		//Make websocket request
-		let req = match Client::connect(wss_url.clone()) {
+		let req = match websocket::client::Request::new(wss_url.clone(), stream.clone(), stream){ //match Client::connect(wss_url.clone()) {
 			Ok(req) => req,
-			Err(err) => return Err(format!("{:?} : Client::connect(wss_url): wss_url{:?}", err, wss_url))
+			Err(err) => {
+				self.close();
+				self.stream = None;
+				return Err(format!("{:?} : Client::connect(wss_url): wss_url{:?}", err, wss_url))
+			}
 		};
 
 		//Connect via tls, do websocket handshake.
 		let res = match req.send() {
 			Ok(res) => res,
-			Err(err) => return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
+			Err(err) => {
+				self.close();
+				self.stream = None;
+				return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
+			}
 		};
 
 
 		match res.validate() {
 			Ok(()) => { }
-			Err(err) => return Err(format!("Error: res.validate(): {:?}", err))
+			Err(err) => {
+				self.close();
+				self.stream = None;
+				return Err(format!("Error: res.validate(): {:?}", err))
+			}
 		}
-		
+
 
 		let client = res.begin();
 
@@ -348,7 +405,11 @@ impl RtmClient {
 		for message in receiver.incoming_messages() {
 			let message = match message {
 				Ok(message) => message,
-				Err(err) => return Err(format!("{:?}", err))
+				Err(err) => {
+					self.close();
+					self.stream = None;
+					return Err(format!("{:?}", err));
+				}
 			};
 
 			match message {
@@ -360,7 +421,11 @@ impl RtmClient {
 					let message = Message::Pong(data);
 					match tx.send(message) {
 						Ok(_) => {},
-						Err(err) => { return Err(format!("{:?}", err)); }
+						Err(err) => {
+							self.close();
+							self.stream = None;
+							return Err(format!("{:?}", err));
+						}
 					}
 				},
 				Message::Close(data) => {
@@ -368,14 +433,21 @@ impl RtmClient {
 					let message = Message::Close(data);
 					match tx.send(message) {
 						Ok(_) => {},
-						Err(err) => { return Err(format!("{:?}", err)); }
+						Err(err) => {
+							self.close();
+							self.stream = None;
+							return Err(format!("{:?}", err));
+						}
 					}
+					self.close();
+					self.stream = None;
 					return Ok(());
 				},
 				_ => {}
 			}
 		}
-
+		self.close();
+		self.stream = None;
 		Ok(())
 	}
 }
