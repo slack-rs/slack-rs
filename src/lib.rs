@@ -19,7 +19,7 @@ extern crate openssl;
 extern crate "rustc-serialize" as rustc_serialize;
 
 use rustc_serialize::json::{Json};
-use std::sync::mpsc::{Sender,channel,TryRecvError};
+use std::sync::mpsc::{Sender,Receiver,channel,TryRecvError};
 use std::thread::Thread;
 use std::sync::atomic::{AtomicIsize, Ordering};
 use websocket::{Client, Message};
@@ -72,20 +72,27 @@ impl Team {
 	}
 }
 
+impl Clone for Team {
+	fn clone(&self) -> Self {
+		Team{
+			name: self.name.clone(),
+			id: self.id.clone()
+		}
+	}
+
+	fn clone_from(&mut self, source: &Self) {
+		self.name = source.name.clone();
+		self.id = source.id.clone();
+	}
+}
+
 ///The actual messaging client.
 pub struct RtmClient{
 	name : String,
 	id : String,
 	team : Team,
 	msg_num: AtomicIsize,
-	outs : Option<Sender<Message>>,
-	stream: Option<TcpStream>,
-}
-
-impl Drop for RtmClient {
-	fn drop(&mut self){
-		self.close();
-	}
+	outs : Option<Sender<Message>>
 }
 
 ///Error string. (FIXME: better error return values/ custom error type)
@@ -101,26 +108,13 @@ impl RtmClient {
 			id : String::new(),
 			team : Team::new(),
 			msg_num: AtomicIsize::new(0),
-			outs : None,
-			stream: None,
+			outs : None
 		}
 	}
 
-	///Closes the underlying TcpStream.
-	pub fn close(&mut self) {
-		match self.stream {
-			Some(ref mut s) => {
-				s.close_read();
-				s.close_write();
-			},
-			None => {}
-		}
-	}
 
-	///Clones the underlying TcpStream. Realitistically you should only use
-	///this to close the stream early.
-	pub fn get_stream(&self) -> Option<TcpStream> {
-		self.stream.clone()
+	pub fn get_outs(&self) -> Option<Sender<Message>> {
+		self.outs.clone()
 	}
 
 	///Returns the name of the bot/user connected to the client.
@@ -193,7 +187,7 @@ impl RtmClient {
 
 	///Logs in to slack. Call this before calling run.
 	///Alternatively use login_and_run
-	pub fn login(&mut self, token: &str) -> Result<WsClient,String> {
+	pub fn login(&mut self, token: &str) -> Result<(WsClient,Receiver<Message>),String> {
 		//Slack real time api url
 		let url = "https://slack.com/api/rtm.start?token=".to_string()+token;
 
@@ -323,26 +317,19 @@ impl RtmClient {
 			Err(err) => return Err(format!("{:?}", err))
 		};
 
-		/*let connection = match TcpStream::connect(wss_url_string.as_slice()) {
-			Ok(c) => { c },
-			Err(err) => return Err(format!("{:?}", err))
-		};*/
+
 		//Get an openssl tls context
 		let ssl_ctx = match SslContext::new(SslMethod::Tlsv1){
 			Ok(ssl_ctx) => ssl_ctx,
 			Err(err) => return {
-				self.close();
-				self.stream = None;
 				Err(format!("{:?}", err))
 			}
 		};
 		//Upgrade stream to ssl.
-		self.stream = Some(connection.clone());
+		//self.stream = Some(connection.clone());
 		let stream = match SslStream::new(&ssl_ctx, connection) {
 			Ok(stream) => { stream },
 			Err(err) => {
-				self.close();
-				self.stream = None;
 				return Err(format!("{:?}", err))
 			}
 		};
@@ -351,8 +338,6 @@ impl RtmClient {
 		let req = match websocket::client::Request::new(wss_url.clone(), stream.clone(), stream){ //match Client::connect(wss_url.clone()) {
 			Ok(req) => req,
 			Err(err) => {
-				self.close();
-				self.stream = None;
 				return Err(format!("{:?} : Client::connect(wss_url): wss_url{:?}", err, wss_url))
 			}
 		};
@@ -361,8 +346,6 @@ impl RtmClient {
 		let res = match req.send() {
 			Ok(res) => res,
 			Err(err) => {
-				self.close();
-				self.stream = None;
 				return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
 			}
 		};
@@ -371,38 +354,44 @@ impl RtmClient {
 		match res.validate() {
 			Ok(()) => { }
 			Err(err) => {
-				self.close();
-				self.stream = None;
 				return Err(format!("Error: res.validate(): {:?}", err))
 			}
 		}
 
-		Ok(res.begin())
+		let (tx,rx) = channel::<Message>();
+		self.outs = Some(tx.clone());
+		Ok((res.begin(),rx))
 	}
 
 	///Runs the message receive loop
-	pub fn run<T: MessageHandler>(&mut self, handler: &mut T, client: WsClient) -> Result<(),String> {
+	pub fn run<T: MessageHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<Message>) -> Result<(),String> {
 		//for sending messages
-		let (tx,rx) = channel::<Message>();
-		self.outs = Some(tx.clone());
+		let tx = match self.outs {
+			Some(ref mut tx) => { tx.clone() },
+			None => { return Err("No tx!".to_string()); }
+		};
 
 		let (mut sender, mut receiver) = client.split();
 
 		//websocket send loop
-		/*let guard =*/ Thread::scoped(move || -> () {
+		Thread::scoped(move || -> () {
 			loop {
-				let msg = match rx.try_recv() {
-					Ok(m) => m,
-					Err(e) => {
-						match e {
-							TryRecvError::Empty => { continue; },
-							TryRecvError::Disconnected => { return; }
-						}
-					}
+				let msg = match rx.recv() {
+					Ok(m) => { m },
+					Err(e) => { return; }
+				};
+
+				let closing = match msg {
+					Message::Close(_) => { true },
+					_ => { false }
 				};
 				match sender.send_message(msg) {
 					Ok(_) => {},
 					Err(err) => { return; }//panic!(format!("{:?}", err))
+				}
+				if closing {
+					drop(rx);
+					return;
 				}
 			}
 		});
@@ -412,9 +401,6 @@ impl RtmClient {
 			let message = match message {
 				Ok(message) => message,
 				Err(err) => {
-					self.close();
-					self.stream = None;
-					//let _ = guard.join();
 					return Err(format!("{:?}", err));
 				}
 			};
@@ -429,9 +415,6 @@ impl RtmClient {
 					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => {
-							self.close();
-							self.stream = None;
-							//let _ = guard.join();
 							return Err(format!("{:?}", err));
 						}
 					}
@@ -442,23 +425,14 @@ impl RtmClient {
 					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => {
-							self.close();
-							self.stream = None;
-							//let _ = guard.join();
 							return Err(format!("{:?}", err));
 						}
 					}
-					self.close();
-					self.stream = None;
-					//let _ = guard.join();
 					return Ok(());
 				},
 				_ => {}
 			}
 		}
-		self.close();
-		self.stream = None;
-		//let _ = guard.join();
 		Ok(())
 	}
 
@@ -474,10 +448,10 @@ impl RtmClient {
 	///Sending should be thread safe as the messages are passed in via a channel in
 	///RtmClient.send and RtmClient.send_message
 	pub fn login_and_run<T: MessageHandler>(&mut self, handler: &mut T, token : &str) -> Result<(),String> {
-		let client = match self.login(token) {
-			Ok(c) => { c },
+		let (client,rx) = match self.login(token) {
+			Ok((c,r)) => { (c,r) },
 			Err(err) => { return Err(format!("{:?}",err)); }
 		};
-		self.run(handler, client)
+		self.run(handler, client, rx)
 	}
 }
