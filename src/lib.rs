@@ -29,7 +29,7 @@ use websocket::dataframe::DataFrame;
 use websocket::stream::WebSocketStream;
 use websocket::client::request::Url;
 
-use std::io::TcpStream;
+use std::old_io::TcpStream;
 use openssl::ssl::{SslContext, SslMethod, SslStream};
 
 pub type WsClient = Client<DataFrame, websocket::client::sender::Sender<SslStream<TcpStream>>, websocket::client::receiver::Receiver<SslStream<TcpStream>>>;
