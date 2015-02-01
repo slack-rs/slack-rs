@@ -22,7 +22,8 @@ use rustc_serialize::json::{Json};
 use std::sync::mpsc::{Sender,Receiver,channel,TryRecvError};
 use std::thread::Thread;
 use std::sync::atomic::{AtomicIsize, Ordering};
-use websocket::{Client, Message};
+use websocket::Client;
+pub use websocket::message::Message;
 use websocket::Sender as WsSender;
 use websocket::Receiver as WsReceiver;
 use websocket::dataframe::DataFrame;
@@ -33,6 +34,8 @@ use std::old_io::TcpStream;
 use openssl::ssl::{SslContext, SslMethod, SslStream};
 
 pub type WsClient = Client<DataFrame, websocket::client::sender::Sender<SslStream<TcpStream>>, websocket::client::receiver::Receiver<SslStream<TcpStream>>>;
+
+
 
 ///Implement this trait in your code to handle message events
 pub trait MessageHandler {
@@ -46,6 +49,9 @@ pub trait MessageHandler {
 
 	///Called when the connection is closed for any reason.
 	fn on_close(&mut self, cli: &mut RtmClient);
+
+	///Called when the connection is opened.
+	fn on_connect(&mut self, cli: &mut RtmClient);
 }
 
 
@@ -373,8 +379,9 @@ impl RtmClient {
 
 		let (mut sender, mut receiver) = client.split();
 
+		handler.on_connect(self);
 		//websocket send loop
-		Thread::scoped(move || -> () {
+		let guard = Thread::scoped(move || -> () {
 			loop {
 				let msg = match rx.recv() {
 					Ok(m) => { m },
