@@ -13,13 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#![feature(core,io,std_misc)]
 extern crate hyper;
 extern crate websocket;
 extern crate openssl;
 extern crate "rustc-serialize" as rustc_serialize;
 
 use rustc_serialize::json::{Json};
-use std::sync::mpsc::{Sender,Receiver,channel,TryRecvError};
+use std::sync::mpsc::{Sender,Receiver,channel};
 use std::thread::Thread;
 use std::sync::atomic::{AtomicIsize, Ordering};
 use websocket::Client;
@@ -30,10 +31,9 @@ use websocket::dataframe::DataFrame;
 use websocket::stream::WebSocketStream;
 use websocket::client::request::Url;
 
-use std::old_io::TcpStream;
-use openssl::ssl::{SslContext, SslMethod, SslStream};
-
-pub type WsClient = Client<DataFrame, websocket::client::sender::Sender<SslStream<TcpStream>>, websocket::client::receiver::Receiver<SslStream<TcpStream>>>;
+pub type WsClient = Client<websocket::dataframe::DataFrame,
+                           websocket::client::sender::Sender<websocket::stream::WebSocketStream>,
+                           websocket::client::receiver::Receiver<websocket::stream::WebSocketStream>>;
 
 
 
@@ -310,44 +310,13 @@ impl RtmClient {
 			None => return Err(RTM_INVALID.to_string())
 		}
 
-		let host = match websocket::ws::util::url::url_to_host(&wss_url){
-			Some(h) => { h },
-			None => return Err("Failed to parse host!".to_string())
+
+		let req = match websocket::client::Client::connect(wss_url.clone()) {
+			Ok(res) => res,
+			Err(err) => return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
 		};
 
-		let connection = match TcpStream::connect(&(
-				host.hostname + ":" +
-				&host.port.unwrap().to_string()[]
-		)[]){
-			Ok(c) => { c },
-			Err(err) => return Err(format!("{:?}", err))
-		};
-
-
-		//Get an openssl tls context
-		let ssl_ctx = match SslContext::new(SslMethod::Tlsv1){
-			Ok(ssl_ctx) => ssl_ctx,
-			Err(err) => return {
-				Err(format!("{:?}", err))
-			}
-		};
-		//Upgrade stream to ssl.
-		//self.stream = Some(connection.clone());
-		let stream = match SslStream::new(&ssl_ctx, connection) {
-			Ok(stream) => { stream },
-			Err(err) => {
-				return Err(format!("{:?}", err))
-			}
-		};
-
-		//Make websocket request
-		let req = match websocket::client::Request::new(wss_url.clone(), stream.clone(), stream){ //match Client::connect(wss_url.clone()) {
-			Ok(req) => req,
-			Err(err) => {
-				return Err(format!("{:?} : Client::connect(wss_url): wss_url{:?}", err, wss_url))
-			}
-		};
-
+	
 		//Connect via tls, do websocket handshake.
 		let res = match req.send() {
 			Ok(res) => res,
@@ -385,7 +354,7 @@ impl RtmClient {
 			loop {
 				let msg = match rx.recv() {
 					Ok(m) => { m },
-					Err(e) => { return; }
+					Err(_) => { return; }
 				};
 
 				let closing = match msg {
@@ -394,7 +363,7 @@ impl RtmClient {
 				};
 				match sender.send_message(msg) {
 					Ok(_) => {},
-					Err(err) => { return; }//panic!(format!("{:?}", err))
+					Err(_) => { return; }//panic!(format!("{:?}", err))
 				}
 				if closing {
 					drop(rx);
@@ -440,6 +409,7 @@ impl RtmClient {
 				_ => {}
 			}
 		}
+		let _ = guard.join();
 		Ok(())
 	}
 
