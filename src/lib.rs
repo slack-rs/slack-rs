@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#![feature(core,io,std_misc)]
+#![feature(core)]
 extern crate hyper;
 extern crate websocket;
 extern crate openssl;
@@ -21,7 +21,8 @@ extern crate "rustc-serialize" as rustc_serialize;
 
 use rustc_serialize::json::{Json};
 use std::sync::mpsc::{Sender,Receiver,channel};
-use std::thread::Thread;
+use std::thread;
+use std::io::Read;
 use std::sync::atomic::{AtomicIsize, Ordering};
 use websocket::Client;
 pub use websocket::message::Message;
@@ -205,9 +206,11 @@ impl RtmClient {
 		};
 
 		//Read result string
-		let res_str = match res.read_to_string() {
-			Ok(res_str) => res_str,
-			Err(err) => return Err(format!("{:?}", err))
+		let mut res_str = String::new();
+
+		match res.read_to_string(&mut res_str) {
+			Err(err) => return Err(format!("{:?}", err)),
+			_ => {},
 		};
 
 
@@ -316,7 +319,6 @@ impl RtmClient {
 			Err(err) => return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
 		};
 
-	
 		//Connect via tls, do websocket handshake.
 		let res = match req.send() {
 			Ok(res) => res,
@@ -350,7 +352,7 @@ impl RtmClient {
 
 		handler.on_connect(self);
 		//websocket send loop
-		let guard = Thread::scoped(move || -> () {
+		let guard = thread::scoped(move || -> () {
 			loop {
 				let msg = match rx.recv() {
 					Ok(m) => { m },

@@ -14,7 +14,7 @@
 
 [package]
 name = "slack"
-version = "0.5.1"
+version = "0.5.2"
 authors = ["Benjamin Elder <ben.the.elder@gmail.com>"]
 repository = "https://github.com/BenTheElder/slack-rs.git"
 documentation = "https://bentheelder.github.io/slack-rs"
@@ -25,9 +25,12 @@ license = "Apache-2.0"
 name = "slack"
 path = "src/lib.rs"
 
+[[bin]]
+
+name = "slack_example"
 
 [dependencies]
 hyper = "*"
 rustc-serialize = "*"
 openssl = "*"
-websocket = "0.10.4"
+websocket = "0.11.0"
