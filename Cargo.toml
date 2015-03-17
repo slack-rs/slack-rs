@@ -25,6 +25,9 @@ license = "Apache-2.0"
 name = "slack"
 path = "src/lib.rs"
 
+[[bin]]
+
+name = "slack_example"
 
 [dependencies]
 hyper = "*"
