@@ -17,7 +17,7 @@ limitations under the License.
 extern crate hyper;
 extern crate websocket;
 extern crate openssl;
-extern crate "rustc-serialize" as rustc_serialize;
+extern crate rustc_serialize;
 
 use rustc_serialize::json::{Json};
 use std::sync::mpsc::{Sender,Receiver,channel};
