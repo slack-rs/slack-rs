@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#![feature(core)]
 extern crate hyper;
 extern crate websocket;
 extern crate openssl;
@@ -180,7 +179,7 @@ impl RtmClient {
 	///Only valid after login.
 	pub fn send_message(&self, chan: &str, msg: &str) -> Result<(),String>{
 		let n = self.get_msg_uid();
-		let mstr = "{".to_string()+format!(r#""id": {},"type": "message","channel": "{}","text": "{}""#,n,chan,msg).as_slice()+"}";
+		let mstr = format!(r#"{{"id": {},"type": "message","channel": "{}","text": "{}"}}"#,n,chan,msg);
 		let tx = match self.outs {
 			Some(ref tx) => tx,
 			None => return Err("Failed to get tx!".to_string())
@@ -200,7 +199,7 @@ impl RtmClient {
 
 		//Create http client and send request to slack
 		let mut client = hyper::Client::new();
-		let mut res = match client.get(url.as_slice()).send() {
+		let mut res = match client.get(&url).send() {
 			Ok(res) => res,
 			Err(err) => return Err(format!("Hyper Error: {:?}", err))
 		};
@@ -216,7 +215,7 @@ impl RtmClient {
 
 		//Start parsing json. We do not map to a structure,
 		//because slack makes no guarantee that there won't be extra fields.
-		let js = match Json::from_str(res_str.as_slice()) {
+		let js = match Json::from_str(&res_str) {
 			Ok(js) => js,
 			Err(err) => return Err(format!("{:?}", err))
 		};
@@ -352,7 +351,8 @@ impl RtmClient {
 
 		handler.on_connect(self);
 		//websocket send loop
-		let guard = thread::scoped(move || -> () {
+		//We used thread::scoped previously but it is no longer stable...
+		let child = thread::spawn(move || -> () {
 			loop {
 				let msg = match rx.recv() {
 					Ok(m) => { m },
@@ -379,13 +379,14 @@ impl RtmClient {
 			let message = match message {
 				Ok(message) => message,
 				Err(err) => {
+					let _ = child.join();
 					return Err(format!("{:?}", err));
 				}
 			};
 
 			match message {
 				Message::Text(data) => {
-					handler.on_receive(self, data.as_slice());
+					handler.on_receive(self, &data);
 				},
 				Message::Ping(data) => {
 					handler.on_ping(self);
@@ -393,6 +394,7 @@ impl RtmClient {
 					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => {
+							let _ = child.join();
 							return Err(format!("{:?}", err));
 						}
 					}
@@ -403,15 +405,17 @@ impl RtmClient {
 					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => {
+							let _ = child.join();
 							return Err(format!("{:?}", err));
 						}
 					}
+					let _ = child.join();
 					return Ok(());
 				},
 				_ => {}
 			}
 		}
-		let _ = guard.join();
+		let _ = child.join();
 		Ok(())
 	}
 

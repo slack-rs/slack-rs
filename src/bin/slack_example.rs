@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#![feature(core)]
 
 extern crate slack;
 
@@ -39,7 +38,7 @@ impl slack::MessageHandler for MyHandler {
 
   fn on_connect(&mut self, cli: &mut slack::RtmClient){
     println!("<on_connect>");
-    cli.send_message("#general", "bla");
+    let _ = cli.send_message("#general", "bla");
   }
 }
 
@@ -54,7 +53,7 @@ fn main(){
   };
   let mut handler = MyHandler{count: 0};
   let mut cli = slack::RtmClient::new();
-  let r = cli.login_and_run::<MyHandler>(&mut handler, api_key.as_slice());
+  let r = cli.login_and_run::<MyHandler>(&mut handler, &api_key);
   match r {
     Ok(_) => {},
     Err(err) => println!("{}", err)

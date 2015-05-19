@@ -14,7 +14,7 @@
 
 [package]
 name = "slack"
-version = "0.5.2"
+version = "0.6.0"
 authors = ["Benjamin Elder <ben.the.elder@gmail.com>"]
 repository = "https://github.com/BenTheElder/slack-rs.git"
 documentation = "https://bentheelder.github.io/slack-rs"
@@ -33,4 +33,4 @@ name = "slack_example"
 hyper = "*"
 rustc-serialize = "*"
 openssl = "*"
-websocket = "0.11.0"
+websocket = "0.11.11"
