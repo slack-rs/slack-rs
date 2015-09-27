@@ -74,7 +74,7 @@ pub trait EventHandler {
 
 /// See the slack api docs at: https://api.slack.com/
 // Currently missing "latest" field
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct Channel {
     pub id: String,
     pub name: String,
@@ -83,18 +83,18 @@ pub struct Channel {
     pub creator: String,
     pub is_archived: bool,
     pub is_general: bool,
-    pub members: Vec<String>,
-    pub topic: Topic,
-    pub purpose: Purpose,
+    pub members: Option<Vec<String>>,
+    pub topic: Option<Topic>,
+    pub purpose: Option<Purpose>,
     pub is_member: bool,
-    pub last_read: String,
-    pub unread_count: i64,
-    pub unread_count_display: i64,
+    pub last_read: Option<String>,
+    pub unread_count: Option<i64>,
+    pub unread_count_display: Option<i64>,
 }
 
 /// See the slack api docs at: https://api.slack.com/
 // Currently missing "latest" field
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct Group {
 	pub id: String,
 	pub name: String,
@@ -102,17 +102,17 @@ pub struct Group {
 	pub created: i64,
 	pub creator:  String,
 	pub is_archived:  bool,
-	pub members: Vec<String>,
-	pub topic: Topic,
-	pub purpose: Purpose,
-	pub last_read: String,
-	pub unread_count: i64,
-	pub unread_count_display: i64,
+	pub members: Option<Vec<String>>,
+	pub topic: Option<Topic>,
+	pub purpose: Option<Purpose>,
+	pub last_read: Option<String>,
+	pub unread_count: Option<i64>,
+	pub unread_count_display: Option<i64>,
 }
 
 
 /// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct User {
     pub id: String,
     pub name: String,
@@ -126,7 +126,7 @@ pub struct User {
 
 /// See the slack api docs at: https://api.slack.com/
 // We've left out the prefs field for now
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct SelfData {
     pub id: String,
     pub name: String,
@@ -136,7 +136,7 @@ pub struct SelfData {
 
 /// See the slack api docs at: https://api.slack.com/
 // We've left out the prefs field for now
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct Team {
 	pub id: String,
     pub name: String,
@@ -148,7 +148,7 @@ pub struct Team {
 }
 
 /// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct Topic {
     pub value: String,
     pub creator: String,
@@ -156,7 +156,7 @@ pub struct Topic {
 }
 
 /// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct Purpose {
     pub value: String,
     pub creator: String,
@@ -164,7 +164,7 @@ pub struct Purpose {
 }
 
 /// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone)]
+#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
 pub struct Im {
 	pub id: String,
 	pub is_im: bool,
@@ -175,10 +175,10 @@ pub struct Im {
 
 /// See the slack api docs at: https://api.slack.com/
 // Bots field ignored for now
-//#[derive(RustcDecodable, RustcEncodable)]
+//#[derive(RustcDecodable, RustcEncodable, Debug)]
 #[allow(dead_code)]
 pub struct RtmStart {
-    pub ok: bool,
+  pub ok: bool,
 	pub url: String,
 	pub self_data: SelfData,
 	pub team: Team,
@@ -483,7 +483,7 @@ impl RtmClient {
         // Parse json
         let start: RtmStart = match json::decode(&res_str) {
             Ok(s) => s,
-            Err(err) => return Err(format!("{:?}", err)),
+            Err(err) => return Err(format!("JSON Decode Error: {:?}", err)),
         };
 
         // check "ok" field
@@ -622,7 +622,7 @@ impl RtmClient {
 	pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T, token : &str) -> Result<(),String> {
 		let (client,rx) = match self.login(token) {
 			Ok((c,r)) => { (c,r) },
-			Err(err) => { return Err(format!("{:?}",err)); }
+			Err(err) => { return Err(format!("Error at Login: {:?}",err)); }
 		};
 		self.run(handler, client, rx)
 	}
