@@ -3,14 +3,17 @@ language: rust
 script:
     - cargo build
 
+sudo: false
+
 after_success: |
     [ $TRAVIS_BRANCH = master ] &&
     [ $TRAVIS_PULL_REQUEST = false ] &&
     cargo doc &&
     echo '<meta http-equiv=refresh content=0;url=slack/index.html>' > target/doc/index.html &&
-    sudo pip install ghp-import &&
-    ghp-import -n target/doc &&
+    pip install --user ghp-import &&
+    /home/travis/.local/bin/ghp-import -n target/doc &&
     git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
+
 env:
     global:
         - secure: "LXMIKPwTF5tQApO/FqW3fWAuYjFK2bzU+D5k8wGo1eMhRaZq8vGLVby8HzhF19+CNuEBqgK/fiOMVFWdQhfv6YpDJKLt0aUq8AVRkWQl5BXzHDSdI9aNvBF0VgcEnpJpNhRftOjZhUspmDJjCImOhwZ1aHW4SV2129FoRKp2Vsk="
