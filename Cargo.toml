@@ -14,11 +14,11 @@
 
 [package]
 name = "slack"
-version = "0.7.2"
+version = "0.8.1"
 authors = ["Benjamin Elder <ben.the.elder@gmail.com>"]
 repository = "https://github.com/BenTheElder/slack-rs.git"
 documentation = "https://bentheelder.github.io/slack-rs"
-description = "slack realtime messaging client"
+description = "slack realtime messaging client: https://api.slack.com/bot-users"
 license = "Apache-2.0"
 
 [lib]

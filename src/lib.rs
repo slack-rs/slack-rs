@@ -22,6 +22,14 @@ limitations under the License.
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.8.1 -- Add some web api methods, add methods to map names to ids.
+//!
+//!  - TODO: expect the error type overhaul to be pushed back to 0.9.X
+//!
+//!  - NOTE: Compatibility changes from 0.7.X include: RtmClient::new now takes the bot token/api_key and login,
+//! login_and_run do not.
+//!
+//!
 //! Version 0.7.2 -- Bugfix via https://github.com/Farthen: https://github.com/BenTheElder/slack-rs/pull/6
 //!
 //! Version 0.7.1 -- Cleaned up the api and json handling.
@@ -38,11 +46,14 @@ extern crate websocket;
 extern crate openssl;
 extern crate rustc_serialize;
 
-use rustc_serialize::json;
 use std::sync::mpsc::{Sender,Receiver,channel};
 use std::thread;
 use std::io::Read;
 use std::sync::atomic::{AtomicIsize, Ordering};
+use std::collections::HashMap;
+
+use rustc_serialize::json;
+
 use websocket::Client;
 pub use websocket::message::Message;
 use websocket::Sender as WsSender;
@@ -295,25 +306,65 @@ impl ::rustc_serialize::Decodable for RtmStart {
     }
 }
 
+// used only by update_users
+#[allow(dead_code)]
+#[derive(RustcDecodable)]
+struct UserListResponse {
+    ok: bool,
+    err: Option<String>,
+    members: Option<Vec<User>>,
+}
+
+// used only by update_groups
+#[allow(dead_code)]
+#[derive(RustcDecodable)]
+struct GroupListResponse {
+    ok: bool,
+    err: Option<String>,
+    groups: Option<Vec<Group>>,
+}
+
+// used only by update_channels
+#[allow(dead_code)]
+#[derive(RustcDecodable)]
+struct ChannelListResponse {
+    ok: bool,
+    err: Option<String>,
+    channels: Option<Vec<Channel>>,
+}
 
 
-///The actual messaging client.
+/// The actual messaging client.
 pub struct RtmClient {
+    token: String,
     start_info: Option<RtmStart>,
+    channels: Vec<Channel>,
+    groups: Vec<Group>,
+    users: Vec<User>,
+    channel_ids: HashMap<String, String>,
+    group_ids: HashMap<String, String>,
+    user_ids: HashMap<String, String>,
 	msg_num: AtomicIsize,
 	outs : Option<Sender<Message>>
 }
 
-///Error string. (FIXME: better error return values/ custom error type)
+/// Error string. (FIXME: better error return values/ custom error type)
 static RTM_INVALID : &'static str = "Invalid data returned from slack (rtm.start)";
 
 
 impl RtmClient {
 
-	/// Creates a new empty client.
-	pub fn new() -> RtmClient {
+	/// Creates a new client from a token
+	pub fn new(token: &str) -> RtmClient {
 		RtmClient{
+            token: String::from(token),
             start_info : None,
+            channels: Vec::new(),
+            groups: Vec::new(),
+            users: Vec::new(),
+            channel_ids: HashMap::new(),
+            group_ids: HashMap::new(),
+            user_ids: HashMap::new(),
 			msg_num: AtomicIsize::new(0),
 			outs : None
 		}
@@ -354,31 +405,40 @@ impl RtmClient {
         }
 	}
 
+    /// Get a user id from a username
+    /// Only valid after login.
+    pub fn get_user_id(&self, username: &str) -> Option<&String> {
+        self.user_ids.get(username)
+    }
+
+    /// Get a channel id from a channel name, note that channel_name does not begin with a '#'
+    /// Only valid after login.
+    pub fn get_channel_id(&self, channel_name: &str) -> Option<&String> {
+        self.channel_ids.get(channel_name)
+    }
+
+    /// Get a group id from a group name
+    /// Only valid after login.
+    pub fn get_group_id(&self, group_name: &str) -> Option<&String> {
+        self.group_ids.get(group_name)
+    }
+
     /// Returns a vector of Users from the team the bot/client is connected to.
-	/// Only valid after login, otherwise None.
-    pub fn get_users(&self) -> Option<Vec<User>> {
-        match self.start_info {
-            Some(ref s) => Some(s.users.clone()),
-            None => None,
-        }
+	/// Only valid after login.
+    pub fn get_users(&self) -> Vec<User> {
+        self.users.clone()
     }
 
     /// Returns a vector of Channels from the team the bot/client is connected to.
-	/// Only valid after login, otherwise None.
-	pub fn get_channels(&self) -> Option<Vec<Channel>> {
-        match self.start_info {
-            Some(ref s) => Some(s.channels.clone()),
-            None => None,
-        }
+	/// Only valid after login.
+	pub fn get_channels(&self) -> Vec<Channel> {
+        self.channels.clone()
     }
 
     /// Returns a vector of Groups from the team the bot/client is connected to.
-	/// Only valid after login, otherwise None.
-	pub fn get_groups(&self) -> Option<Vec<Group>> {
-        match self.start_info {
-            Some(ref s) => Some(s.groups.clone()),
-            None => None,
-        }
+	/// Only valid after login.
+	pub fn get_groups(&self) -> Vec<Group> {
+        self.groups.clone()
     }
 
     /// Returns a vector of Ims received on login the bot/client is connected to.
@@ -430,23 +490,14 @@ impl RtmClient {
 	pub fn send_message(&self, chan: &str, msg: &str) -> Result<(), String>{
 		let n = self.get_msg_uid();
         // fixup the channel id if chan is: `#<channel>`
-        let chan_id: String = match chan.starts_with("#") {
+        let chan_id = match chan.starts_with("#") {
             true => {
-                match self.start_info {
-                    Some(ref s) => {
-                        let mut id = String::new();
-                        for channel in &s.channels {
-                            if channel.name == chan[1..] {
-                                id = channel.id.clone();
-                                break
-                            }
-                        }
-                        id
-                    },
+                match self.get_channel_id(&chan[1..]) {
+                    Some(s) => &(s[..]),
                     None => return Err(String::from("start_info is invalid, need to login first")),
                 }
             }
-            false => String::from(chan),
+            false => chan,
         };
 		let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,n,chan_id,msg);
         println!("{}", mstr);
@@ -463,9 +514,9 @@ impl RtmClient {
 
 	/// Logs in to slack. Call this before calling run.
 	/// Alternatively use login_and_run
-	pub fn login(&mut self, token: &str) -> Result<(WsClient, Receiver<Message>), String> {
+	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), String> {
 		//Slack real time api url
-		let url = "https://slack.com/api/rtm.start?token=".to_string() + token;
+		let url = "https://slack.com/api/rtm.start?token=".to_string() + &self.token;
 
 		// Create http client and send request to slack
 		let client = hyper::Client::new();
@@ -499,8 +550,27 @@ impl RtmClient {
 			Err(err) => return Err(format!("{:?}", err))
 		};
 
+
+        // update id hashmaps
+        for ref channel in start.channels.iter() {
+            self.channel_ids.insert(channel.name.clone(), channel.id.clone());
+        }
+        for ref group in start.groups.iter() {
+            self.group_ids.insert(group.name.clone(), group.id.clone());
+        }
+        for ref user in start.users.iter() {
+            self.user_ids.insert(user.name.clone(), user.id.clone());
+        }
+        // update groups, users, channels:
+        self.groups = start.groups.clone();
+        self.channels = start.channels.clone();
+        self.users = start.users.clone();
+
         // store rtm.Start data
         self.start_info = Some(start);
+
+
+
 
         // Do websocket connection request
 		let req = match websocket::client::Client::connect(wss_url.clone()) {
@@ -621,11 +691,275 @@ impl RtmClient {
 	/// Both loops should end on return.
 	/// Sending should be thread safe as the messages are passed in via a channel in
 	/// RtmClient.send and RtmClient.send_message
-	pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T, token : &str) -> Result<(),String> {
-		let (client,rx) = match self.login(token) {
+	pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T) -> Result<(),String> {
+		let (client,rx) = match self.login() {
 			Ok((c,r)) => { (c,r) },
 			Err(err) => { return Err(format!("Error at Login: {:?}",err)); }
 		};
 		self.run(handler, client, rx)
 	}
+
+    /// Uses https://api.slack.com/methods/users.list to update users
+    pub fn update_users(&mut self) -> Result<Vec<User>, String> {
+        let url = format!("https://slack.com/api/users.list?token={}", self.token);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                let mut res = match hyper::Client::new().get(u).send() {
+                    Ok(response) => response,
+                    Err(err) => return Err(format!("{}", err)),
+                };
+                // Read result string
+        		let mut res_str = String::new();
+        		match res.read_to_string(&mut res_str) {
+        			Err(err) => return Err(format!("{:?}", err)),
+        			_ => {},
+        		};
+                // now that we know it isn't an error, decode
+                let data : UserListResponse = match json::decode(&res_str) {
+                    Ok(d) => d,
+                    Err(e) => return Err(format!("Failed to decode json: {}", e)),
+                };
+                match data.err {
+                    Some(err) => return Err(format!("Got a slack error: {}", err)),
+                    _ => {},
+                }
+                let members = match data.members {
+                    Some(m) => m,
+                    None => return Err(String::from("Members field missing in users.List response!")),
+                };
+                // update user id map
+                self.user_ids.clear();
+                for ref user in members.iter() {
+                    self.user_ids.insert(user.name.clone(), user.id.clone());
+                }
+                // update users
+                self.users = members.clone();
+                Ok(members)
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+    /// Uses https://api.slack.com/methods/channels.list to update channels
+    pub fn update_channels(&mut self) -> Result<Vec<Channel>, String> {
+        let url = format!("https://slack.com/api/channels.list?token={}", self.token);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                let mut res = match hyper::Client::new().get(u).send() {
+                    Ok(response) => response,
+                    Err(err) => return Err(format!("{}", err)),
+                };
+                // Read result string
+        		let mut res_str = String::new();
+        		match res.read_to_string(&mut res_str) {
+        			Err(err) => return Err(format!("{:?}", err)),
+        			_ => {},
+        		};
+                // now that we know it isn't an error, decode
+                let data : ChannelListResponse = match json::decode(&res_str) {
+                    Ok(d) => d,
+                    Err(e) => return Err(format!("Failed to decode json: {}", e)),
+                };
+                match data.err {
+                    Some(err) => return Err(format!("Got a slack error: {}", err)),
+                    _ => {},
+                }
+                let channels = match data.channels {
+                    Some(c) => c,
+                    None => return Err(String::from("Channels field missing in users.List response!")),
+                };
+                // update channel id map
+                self.channel_ids.clear();
+                for ref channel in channels.iter() {
+                    self.channel_ids.insert(channel.name.clone(), channel.id.clone());
+                }
+                // update users
+                self.channels = channels.clone();
+                Ok(channels)
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+    /// Uses https://api.slack.com/methods/groups.list to update groups
+    pub fn update_groups(&mut self) -> Result<Vec<Group>, String> {
+        let url = format!("https://slack.com/api/groups.list?token={}", self.token);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                let mut res = match hyper::Client::new().get(u).send() {
+                    Ok(response) => response,
+                    Err(err) => return Err(format!("{}", err)),
+                };
+                // Read result string
+        		let mut res_str = String::new();
+        		match res.read_to_string(&mut res_str) {
+        			Err(err) => return Err(format!("{:?}", err)),
+        			_ => {},
+        		};
+                // now that we know it isn't an error, decode
+                let data : GroupListResponse = match json::decode(&res_str) {
+                    Ok(d) => d,
+                    Err(e) => return Err(format!("Failed to decode json: {}", e)),
+                };
+                match data.err {
+                    Some(err) => return Err(format!("Got a slack error: {}", err)),
+                    _ => {},
+                }
+                let groups = match data.groups {
+                    Some(c) => c,
+                    None => return Err(String::from("Channels field missing in users.List response!")),
+                };
+                // update group id map
+                self.group_ids.clear();
+                for ref group in groups.iter() {
+                    self.group_ids.insert(group.name.clone(), group.id.clone());
+                }
+                // update users
+                self.groups = groups.clone();
+                Ok(groups)
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+
+    /// Wraps https://api.slack.com/methods/chat.postMessage
+    /// json_payload can be a json formatted action or simple text that will be posted as a message.
+    /// See https://api.slack.com/docs/formatting
+    pub fn post_message(&self, channel: &str, json_payload: &str, attatchments: Option<String>) -> Result<hyper::client::response::Response, String> {
+        // fixup the channel id if channel is: `#<channel>`
+        let chan_id = match channel.starts_with("#") {
+            true => {
+                match self.get_channel_id(&channel[1..]) {
+                    Some(s) => &(s[..]),
+                    None => return Err(String::from("start_info is invalid, need to login first")),
+                }
+            }
+            false => channel,
+        };
+        let url = match attatchments {
+            Some(ref a) => format!("https://slack.com/api/chat.postMessage?token={}&channel={}&text={}&as_user=true&attatchments={}", self.token, chan_id, json_payload, a),
+            None => format!("https://slack.com/api/chat.postMessage?token={}&channel={}&text={}&as_user=true", self.token, chan_id, json_payload),
+        };
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                match hyper::Client::new().get(u).send() {
+                    Ok(response) => Ok(response),
+                    Err(err) => Err(format!("{}", err)),
+                }
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+    /// Wraps https://api.slack.com/methods/channels.setTopic
+    /// if channel starts with a # then it will be looked up with get_channel_id
+    /// topic will be json escaped.
+    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<hyper::client::response::Response, String> {
+        // fixup the channel id if channel is: `#<channel>`
+        let chan_id = match channel.starts_with("#") {
+            true => {
+                match self.get_channel_id(&channel[1..]) {
+                    Some(s) => &(s[..]),
+                    None => return Err(String::from("start_info is invalid, need to login first")),
+                }
+            }
+            false => channel,
+        };
+        // this will json format the string, which should escape it,
+        // we'll need to slice out the quotes around it afterwards
+        let escaped_topic = format!("{}",json::as_json(&topic));
+        let url = format!("https://slack.com/api/channels.setTopic?token={}&channel={}&topic={}", self.token, chan_id, &escaped_topic[1..escaped_topic.len()-1]);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                match hyper::Client::new().get(u).send() {
+                    Ok(response) => Ok(response),
+                    Err(err) => Err(format!("{}", err)),
+                }
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+    /// Wraps https://api.slack.com/methods/channels.setPurpose
+    /// if channel starts with a # then it will be looked up with get_channel_id
+    /// purpose will be json escaped.
+    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<hyper::client::response::Response, String> {
+        // fixup the channel id if channel is: `#<channel>`
+        let chan_id = match channel.starts_with("#") {
+            true => {
+                match self.get_channel_id(&channel[1..]) {
+                    Some(s) => &(s[..]),
+                    None => return Err(String::from("start_info is invalid, need to login first")),
+                }
+            }
+            false => channel,
+        };
+        // this will json format the string, which should escape it,
+        // we'll need to slice out the quotes around it afterwards
+        let escaped_purpose = format!("{}",json::as_json(&purpose));
+        let url = format!("https://slack.com/api/channels.setTopic?token={}&channel={}&purpose={}", self.token, chan_id, &escaped_purpose[1..escaped_purpose.len()-1]);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                match hyper::Client::new().get(u).send() {
+                    Ok(response) => Ok(response),
+                    Err(err) => Err(format!("{}", err)),
+                }
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+    /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
+    /// if channel starts with a # then it will be looked up with get_channel_id
+    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<hyper::client::response::Response, String> {
+        // fixup the channel id if channel is: `#<channel>`
+        let chan_id = match channel.starts_with("#") {
+            true => {
+                match self.get_channel_id(&channel[1..]) {
+                    Some(s) => &(s[..]),
+                    None => return Err(String::from("start_info is invalid, need to login first")),
+                }
+            }
+            false => channel,
+        };
+        let url = format!("https://slack.com/api/reactions.add?token={}&name={}&channel={}&timestamp={}", self.token, emoji_name, chan_id, timestamp);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                match hyper::Client::new().get(u).send() {
+                    Ok(response) => Ok(response),
+                    Err(err) => Err(format!("{}", err)),
+                }
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+    /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file
+    pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<hyper::client::response::Response, String> {
+        let url = format!("https://slack.com/api/reactions.add?token={}&name={}&file={}", self.token, emoji_name, file);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                match hyper::Client::new().get(u).send() {
+                    Ok(response) => Ok(response),
+                    Err(err) => Err(format!("{}", err)),
+                }
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
+
+    /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file comment
+    pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<hyper::client::response::Response, String> {
+        let url = format!("https://slack.com/api/reactions.add?token={}&name={}&file_comment={}", self.token, emoji_name, file_comment);
+        match hyper::Url::parse(&url) {
+            Ok(u) => {
+                match hyper::Client::new().get(u).send() {
+                    Ok(response) => Ok(response),
+                    Err(err) => Err(format!("{}", err)),
+                }
+            },
+            Err(err) => Err(format!("{}", err)),
+        }
+    }
 }

@@ -43,7 +43,13 @@ impl slack::EventHandler for MyHandler {
 
 	fn on_connect(&mut self, cli: &mut slack::RtmClient){
 		println!("<on_connect>");
-		let _ = cli.send_message("#general", "Hello world!");
+		// Do a few things using the api:
+		// send a message over the real time api websocket
+		let _ = cli.send_message("#general", "Hello world! (rtm)");
+		// post a message as a user to the web api
+		let _ = cli.post_message("#general", "hello world! (postMessage)", None);
+		// set a channel topic via the web api
+		let _ = cli.set_topic("#general", "bots rule!");
 	}
 }
 
@@ -56,8 +62,8 @@ fn main(){
     	}
   	};
   	let mut handler = MyHandler{count: 0};
-  	let mut cli = slack::RtmClient::new();
-  	let r = cli.login_and_run::<MyHandler>(&mut handler, &api_key);
+  	let mut cli = slack::RtmClient::new(&api_key);
+  	let r = cli.login_and_run::<MyHandler>(&mut handler);
   	match r {
     	Ok(_) => {},
     	Err(err) => panic!("Error: {}", err)
