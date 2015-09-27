@@ -14,50 +14,54 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/*
+    This is a simple example of using slack-rs.
+    You can run it with `cargo run example -- <api_key>`
+*/
+
 extern crate slack;
 
 
 struct MyHandler {
-  count : i64
+	count : i64
 }
 
 #[allow(unused_variables)]
-impl slack::MessageHandler for MyHandler {
-  fn on_receive(&mut self, cli: &mut slack::RtmClient, json_str: &str){
-    println!("Received[{}]: {}", self.count, json_str.to_string());
-    self.count = self.count + 1;
-  }
+impl slack::EventHandler for MyHandler {
+	fn on_receive(&mut self, cli: &mut slack::RtmClient, json_str: &str){
+		println!("Received[{}]: {}", self.count, json_str.to_string());
+		self.count = self.count + 1;
+	}
 
-  fn on_ping(&mut self, cli: &mut slack::RtmClient){
-    println!("<on_ping>");
-  }
+	fn on_ping(&mut self, cli: &mut slack::RtmClient){
+		println!("<on_ping>");
+	}
 
-  fn on_close(&mut self, cli: &mut slack::RtmClient){
-    println!("<on_close>");
-  }
+	fn on_close(&mut self, cli: &mut slack::RtmClient){
+		println!("<on_close>");
+	}
 
-  fn on_connect(&mut self, cli: &mut slack::RtmClient){
-    println!("<on_connect>");
-    let _ = cli.send_message("#general", "bla");
-  }
+	fn on_connect(&mut self, cli: &mut slack::RtmClient){
+		println!("<on_connect>");
+		let _ = cli.send_message("#general", "Hello world!");
+	}
 }
 
 fn main(){
-  let args: Vec<String> = std::env::args().collect();
-  let api_key = match args.len() {
-    0 | 1 => panic!("No api-key in args! Usage: ./slack-demo <api-key>"),
-    x => {
-      let i = x-1;
-      args[i].clone()
-    }
-  };
-  let mut handler = MyHandler{count: 0};
-  let mut cli = slack::RtmClient::new();
-  let r = cli.login_and_run::<MyHandler>(&mut handler, &api_key);
-  match r {
-    Ok(_) => {},
-    Err(err) => println!("{}", err)
-  }
-  println!("{}", cli.get_name());
-  println!("{}", cli.get_team().get_name());
+  	let args: Vec<String> = std::env::args().collect();
+  	let api_key = match args.len() {
+    	0 | 1 => panic!("No api-key in args! Usage: ./slack-demo <api-key>"),
+    	x => {
+      		args[x-1].clone()
+    	}
+  	};
+  	let mut handler = MyHandler{count: 0};
+  	let mut cli = slack::RtmClient::new();
+  	let r = cli.login_and_run::<MyHandler>(&mut handler, &api_key);
+  	match r {
+    	Ok(_) => {},
+    	Err(err) => panic!("Error: {}", err)
+	}
+	println!("{}", cli.get_name().unwrap());
+	println!("{}", cli.get_team().unwrap().name);
 }
