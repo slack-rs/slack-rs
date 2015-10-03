@@ -10,6 +10,7 @@ Slack realtime messaging client for [the bots api](https://api.slack.com/bot-use
 
 ##[Example Project](https://github.com/BenTheElder/slack-rs/blob/master/examples/slack_example.rs)
   - In `./examples/`
+  - `cargo run --example slack_example -- <api_key>`
 
 ##[Get it on Crates.io](https://crates.io/crates/slack)
  - Package: `slack`
