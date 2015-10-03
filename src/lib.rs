@@ -337,7 +337,6 @@ struct ChannelListResponse {
     channels: Option<Vec<Channel>>,
 }
 
-
 /// The actual messaging client.
 pub struct RtmClient {
     token: String,
@@ -520,12 +519,7 @@ impl RtmClient {
 	/// Logs in to slack. Call this before calling run.
 	/// Alternatively use login_and_run
 	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), String> {
-		//Slack real time api url
-		let url = "https://slack.com/api/rtm.start?token=".to_string() + &self.token;
-
-		// Create http client and send request to slack
-		let client = hyper::Client::new();
-		let mut res = match client.get(&url).send() {
+		let mut res = match self.make_authed_api_call("rtm.start", HashMap::new()) {
 			Ok(res) => res,
 			Err(err) => return Err(format!("Hyper Error: {:?}", err))
 		};
@@ -706,132 +700,117 @@ impl RtmClient {
 
     /// Uses https://api.slack.com/methods/users.list to update users
     pub fn update_users(&mut self) -> Result<Vec<User>, String> {
-        let url = format!("https://slack.com/api/users.list?token={}", self.token);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                let mut res = match hyper::Client::new().get(u).send() {
-                    Ok(response) => response,
-                    Err(err) => return Err(format!("{}", err)),
-                };
-                // Read result string
-        		let mut res_str = String::new();
-        		match res.read_to_string(&mut res_str) {
-        			Err(err) => return Err(format!("{:?}", err)),
-        			_ => {},
-        		};
-                // now that we know it isn't an error, decode
-                let data : UserListResponse = match json::decode(&res_str) {
-                    Ok(d) => d,
-                    Err(e) => return Err(format!("Failed to decode json: {}", e)),
-                };
-                match data.err {
-                    Some(err) => return Err(format!("Got a slack error: {}", err)),
-                    _ => {},
-                }
-                let members = match data.members {
-                    Some(m) => m,
-                    None => return Err(String::from("Members field missing in users.List response!")),
-                };
-                // update user id map
-                self.user_ids.clear();
-                for ref user in members.iter() {
-                    self.user_ids.insert(user.name.clone(), user.id.clone());
-                }
-                // update users
-                self.users = members.clone();
-                Ok(members)
-            },
-            Err(err) => Err(format!("{}", err)),
+        let mut res = match self.make_authed_api_call("users.list", HashMap::new()) {
+            Ok(response) => response,
+            Err(err) => return Err(format!("{}", err))
+        };
+
+        // Read result string
+        let mut res_str = String::new();
+        match res.read_to_string(&mut res_str) {
+            Err(err) => return Err(format!("{:?}", err)),
+            _ => {},
+        };
+        // now that we know it isn't an error, decode
+        let data : UserListResponse = match json::decode(&res_str) {
+            Ok(d) => d,
+            Err(e) => return Err(format!("Failed to decode json: {}", e)),
+        };
+        match data.err {
+            Some(err) => return Err(format!("Got a slack error: {}", err)),
+            _ => {},
         }
+        let members = match data.members {
+            Some(m) => m,
+            None => return Err(String::from("Members field missing in users.List response!")),
+        };
+        // update user id map
+        self.user_ids.clear();
+        for ref user in members.iter() {
+            self.user_ids.insert(user.name.clone(), user.id.clone());
+        }
+        // update users
+        self.users = members.clone();
+        Ok(members)
     }
 
     /// Uses https://api.slack.com/methods/channels.list to update channels
     pub fn update_channels(&mut self) -> Result<Vec<Channel>, String> {
-        let url = format!("https://slack.com/api/channels.list?token={}", self.token);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                let mut res = match hyper::Client::new().get(u).send() {
-                    Ok(response) => response,
-                    Err(err) => return Err(format!("{}", err)),
-                };
-                // Read result string
-        		let mut res_str = String::new();
-        		match res.read_to_string(&mut res_str) {
-        			Err(err) => return Err(format!("{:?}", err)),
-        			_ => {},
-        		};
-                // now that we know it isn't an error, decode
-                let data : ChannelListResponse = match json::decode(&res_str) {
-                    Ok(d) => d,
-                    Err(e) => return Err(format!("Failed to decode json: {}", e)),
-                };
-                match data.err {
-                    Some(err) => return Err(format!("Got a slack error: {}", err)),
-                    _ => {},
-                }
-                let channels = match data.channels {
-                    Some(c) => c,
-                    None => return Err(String::from("Channels field missing in users.List response!")),
-                };
-                // update channel id map
-                self.channel_ids.clear();
-                for ref channel in channels.iter() {
-                    self.channel_ids.insert(channel.name.clone(), channel.id.clone());
-                }
-                // update users
-                self.channels = channels.clone();
-                Ok(channels)
-            },
-            Err(err) => Err(format!("{}", err)),
+        let mut res = match self.make_authed_api_call("channels.list", HashMap::new()) {
+            Ok(response) => response,
+            Err(err) => return Err(format!("{}", err))
+        };
+
+        // Read result string
+        let mut res_str = String::new();
+        match res.read_to_string(&mut res_str) {
+            Err(err) => return Err(format!("{:?}", err)),
+            _ => {},
+        };
+        // now that we know it isn't an error, decode
+        let data : ChannelListResponse = match json::decode(&res_str) {
+            Ok(d) => d,
+            Err(e) => return Err(format!("Failed to decode json: {}", e)),
+        };
+        match data.err {
+            Some(err) => return Err(format!("Got a slack error: {}", err)),
+            _ => {},
         }
+        let channels = match data.channels {
+            Some(c) => c,
+            None => return Err(String::from("Channels field missing in users.List response!")),
+        };
+        // update channel id map
+        self.channel_ids.clear();
+        for ref channel in channels.iter() {
+            self.channel_ids.insert(channel.name.clone(), channel.id.clone());
+        }
+        // update users
+        self.channels = channels.clone();
+        Ok(channels)
     }
 
     /// Uses https://api.slack.com/methods/groups.list to update groups
     pub fn update_groups(&mut self) -> Result<Vec<Group>, String> {
-        let url = format!("https://slack.com/api/groups.list?token={}", self.token);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                let mut res = match hyper::Client::new().get(u).send() {
-                    Ok(response) => response,
-                    Err(err) => return Err(format!("{}", err)),
-                };
-                // Read result string
-        		let mut res_str = String::new();
-        		match res.read_to_string(&mut res_str) {
-        			Err(err) => return Err(format!("{:?}", err)),
-        			_ => {},
-        		};
-                // now that we know it isn't an error, decode
-                let data : GroupListResponse = match json::decode(&res_str) {
-                    Ok(d) => d,
-                    Err(e) => return Err(format!("Failed to decode json: {}", e)),
-                };
-                match data.err {
-                    Some(err) => return Err(format!("Got a slack error: {}", err)),
-                    _ => {},
-                }
-                let groups = match data.groups {
-                    Some(c) => c,
-                    None => return Err(String::from("Channels field missing in users.List response!")),
-                };
-                // update group id map
-                self.group_ids.clear();
-                for ref group in groups.iter() {
-                    self.group_ids.insert(group.name.clone(), group.id.clone());
-                }
-                // update users
-                self.groups = groups.clone();
-                Ok(groups)
-            },
-            Err(err) => Err(format!("{}", err)),
+        let mut res = match self.make_authed_api_call("groups.list", HashMap::new()) {
+            Ok(response) => response,
+            Err(err) => return Err(format!("{}", err))
+        };
+
+        // Read result string
+        let mut res_str = String::new();
+        match res.read_to_string(&mut res_str) {
+            Err(err) => return Err(format!("{:?}", err)),
+            _ => {},
+        };
+        // now that we know it isn't an error, decode
+        let data : GroupListResponse = match json::decode(&res_str) {
+            Ok(d) => d,
+            Err(e) => return Err(format!("Failed to decode json: {}", e)),
+        };
+        match data.err {
+            Some(err) => return Err(format!("Got a slack error: {}", err)),
+            _ => {},
         }
+        let groups = match data.groups {
+            Some(c) => c,
+            None => return Err(String::from("Channels field missing in users.List response!")),
+        };
+        // update group id map
+        self.group_ids.clear();
+        for ref group in groups.iter() {
+            self.group_ids.insert(group.name.clone(), group.id.clone());
+        }
+        // update users
+        self.groups = groups.clone();
+        Ok(groups)
     }
 
 
     /// Wraps https://api.slack.com/methods/chat.postMessage
     /// json_payload can be a json formatted action or simple text that will be posted as a message.
     /// See https://api.slack.com/docs/formatting
-    pub fn post_message(&self, channel: &str, json_payload: &str, attatchments: Option<String>) -> Result<hyper::client::response::Response, String> {
+    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::response::Response, String> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -842,19 +821,14 @@ impl RtmClient {
             }
             false => channel,
         };
-        let url = match attatchments {
-            Some(ref a) => format!("https://slack.com/api/chat.postMessage?token={}&channel={}&text={}&as_user=true&attatchments={}", self.token, chan_id, json_payload, a),
-            None => format!("https://slack.com/api/chat.postMessage?token={}&channel={}&text={}&as_user=true", self.token, chan_id, json_payload),
-        };
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                match hyper::Client::new().get(u).send() {
-                    Ok(response) => Ok(response),
-                    Err(err) => Err(format!("{}", err)),
-                }
-            },
-            Err(err) => Err(format!("{}", err)),
+        let mut params = HashMap::new();
+        params.insert("channel", chan_id);
+        params.insert("text", json_payload);
+        params.insert("as_user", "true");
+        if let Some(ref a) = attachments {
+            params.insert("attachments", a);
         }
+        self.make_authed_api_call("chat.postMessage", params)
     }
 
     /// Wraps https://api.slack.com/methods/channels.setTopic
@@ -874,16 +848,10 @@ impl RtmClient {
         // this will json format the string, which should escape it,
         // we'll need to slice out the quotes around it afterwards
         let escaped_topic = format!("{}",json::as_json(&topic));
-        let url = format!("https://slack.com/api/channels.setTopic?token={}&channel={}&topic={}", self.token, chan_id, &escaped_topic[1..escaped_topic.len()-1]);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                match hyper::Client::new().get(u).send() {
-                    Ok(response) => Ok(response),
-                    Err(err) => Err(format!("{}", err)),
-                }
-            },
-            Err(err) => Err(format!("{}", err)),
-        }
+        let mut params = HashMap::new();
+        params.insert("channel", chan_id);
+        params.insert("topic", &escaped_topic[..]);
+        self.make_authed_api_call("channels.setTopic", params)
     }
 
     /// Wraps https://api.slack.com/methods/channels.setPurpose
@@ -903,16 +871,10 @@ impl RtmClient {
         // this will json format the string, which should escape it,
         // we'll need to slice out the quotes around it afterwards
         let escaped_purpose = format!("{}",json::as_json(&purpose));
-        let url = format!("https://slack.com/api/channels.setTopic?token={}&channel={}&purpose={}", self.token, chan_id, &escaped_purpose[1..escaped_purpose.len()-1]);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                match hyper::Client::new().get(u).send() {
-                    Ok(response) => Ok(response),
-                    Err(err) => Err(format!("{}", err)),
-                }
-            },
-            Err(err) => Err(format!("{}", err)),
-        }
+        let mut params = HashMap::new();
+        params.insert("channel", chan_id);
+        params.insert("purpose", &escaped_purpose[..]);
+        self.make_authed_api_call("channels.setTopic", params)
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
@@ -928,43 +890,38 @@ impl RtmClient {
             }
             false => channel,
         };
-        let url = format!("https://slack.com/api/reactions.add?token={}&name={}&channel={}&timestamp={}", self.token, emoji_name, chan_id, timestamp);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                match hyper::Client::new().get(u).send() {
-                    Ok(response) => Ok(response),
-                    Err(err) => Err(format!("{}", err)),
-                }
-            },
-            Err(err) => Err(format!("{}", err)),
-        }
+        let mut params = HashMap::new();
+        params.insert("name", emoji_name);
+        params.insert("channel", chan_id);
+        params.insert("timestamp", timestamp);
+        self.make_authed_api_call("reactions.add", params)
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file
     pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<hyper::client::response::Response, String> {
-        let url = format!("https://slack.com/api/reactions.add?token={}&name={}&file={}", self.token, emoji_name, file);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                match hyper::Client::new().get(u).send() {
-                    Ok(response) => Ok(response),
-                    Err(err) => Err(format!("{}", err)),
-                }
-            },
-            Err(err) => Err(format!("{}", err)),
-        }
+        let mut params = HashMap::new();
+        params.insert("name", emoji_name);
+        params.insert("file", file);
+        self.make_authed_api_call("reactions.add", params)
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file comment
     pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<hyper::client::response::Response, String> {
-        let url = format!("https://slack.com/api/reactions.add?token={}&name={}&file_comment={}", self.token, emoji_name, file_comment);
-        match hyper::Url::parse(&url) {
-            Ok(u) => {
-                match hyper::Client::new().get(u).send() {
-                    Ok(response) => Ok(response),
-                    Err(err) => Err(format!("{}", err)),
-                }
-            },
-            Err(err) => Err(format!("{}", err)),
-        }
+        let mut params = HashMap::new();
+        params.insert("name", emoji_name);
+        params.insert("file_comment", file_comment);
+        self.make_authed_api_call("reactions.add", params)
+    }
+
+    /// Make an API call to Slack that includes the configured token. Takes a map of parameters
+    /// that get appended to the request as query params.
+    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<hyper::client::response::Response, String> {
+        let url_string = format!("https://slack.com/api/{}", method);
+        let mut url = try!(hyper::Url::parse(&url_string).map_err(|err| err.to_string()));
+
+        custom_params.insert("token", &self.token[..]);
+        url.set_query_from_pairs(custom_params.into_iter());
+
+        hyper::Client::new().get(url).send().map_err(|err| err.to_string())
     }
 }
