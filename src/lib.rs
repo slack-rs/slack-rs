@@ -509,34 +509,21 @@ impl RtmClient {
 			Some(ref tx) => tx,
 			None => return Err("Failed to get tx!".to_string())
 		};
-		match tx.send(Message::Text(mstr)) {
-			Ok(_) => {},
-			Err(err) => return Err(format!("{:?}", err))
-		}
+		try!(tx.send(Message::Text(mstr)).map_err(|err| format!("{:?}", err)));
 		Ok(())
 	}
 
 	/// Logs in to slack. Call this before calling run.
 	/// Alternatively use login_and_run
 	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), String> {
-		let mut res = match self.make_authed_api_call("rtm.start", HashMap::new()) {
-			Ok(res) => res,
-			Err(err) => return Err(format!("Hyper Error: {:?}", err))
-		};
+		let mut res = try!(self.make_authed_api_call("rtm.start", HashMap::new()).map_err(|err| format!("Hyper Error: {:?}", err)));
 
 		// Read result string
 		let mut res_str = String::new();
-		match res.read_to_string(&mut res_str) {
-			Err(err) => return Err(format!("{:?}", err)),
-			_ => {},
-		};
-
+		try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
 
         // Parse json
-        let start: RtmStart = match json::decode(&res_str) {
-            Ok(s) => s,
-            Err(err) => return Err(format!("JSON Decode Error: {:?}", err)),
-        };
+        let start: RtmStart = try!(json::decode(&res_str).map_err(|err| format!("JSON Decode Error: {:?}", err)));
 
         // check "ok" field
         if !start.ok {
@@ -544,11 +531,7 @@ impl RtmClient {
         }
 
         // websocket url
-		let wss_url = match Url::parse(&start.url) {
-			Ok(url) => url,
-			Err(err) => return Err(format!("{:?}", err))
-		};
-
+		let wss_url = try!(Url::parse(&start.url).map_err(|err| format!("{:?}", err)));
 
         // update id hashmaps
         for ref channel in start.channels.iter() {
@@ -568,30 +551,14 @@ impl RtmClient {
         // store rtm.Start data
         self.start_info = Some(start);
 
-
-
-
         // Do websocket connection request
-		let req = match websocket::client::Client::connect(wss_url.clone()) {
-			Ok(res) => res,
-			Err(err) => return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
-		};
+		let req = try!(websocket::client::Client::connect(wss_url.clone()).map_err(|err| format!("{:?}, Websocket request to `{:?}` failed", err, wss_url)));
 
 		// Do websocket handshake.
-		let res = match req.send() {
-			Ok(res) => res,
-			Err(err) => {
-				return Err(format!("{:?}, Websocket request to `{:?}` failed", err, wss_url))
-			}
-		};
+		let res = try!(req.send().map_err(|err| format!("{:?}, Websocket request to `{:?}` failed", err, wss_url)));
 
         // Validate handshake
-		match res.validate() {
-			Ok(()) => { }
-			Err(err) => {
-				return Err(format!("Error: res.validate(): {:?}", err))
-			}
-		}
+		try!(res.validate().map_err(|err| format!("Error: res.validate(): {:?}", err)));
 
         // setup channels for passing messages
 		let (tx,rx) = channel::<Message>();
@@ -691,35 +658,25 @@ impl RtmClient {
 	/// Sending should be thread safe as the messages are passed in via a channel in
 	/// RtmClient.send and RtmClient.send_message
 	pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T) -> Result<(),String> {
-		let (client,rx) = match self.login() {
-			Ok((c,r)) => { (c,r) },
-			Err(err) => { return Err(format!("Error at Login: {:?}",err)); }
-		};
+		let (client, rx) = try!(self.login().map_err(|err| format!("Error at Login: {:?}",err)));
 		self.run(handler, client, rx)
 	}
 
     /// Uses https://api.slack.com/methods/users.list to update users
     pub fn update_users(&mut self) -> Result<Vec<User>, String> {
-        let mut res = match self.make_authed_api_call("users.list", HashMap::new()) {
-            Ok(response) => response,
-            Err(err) => return Err(format!("{}", err))
-        };
+        let mut res = try!(self.make_authed_api_call("users.list", HashMap::new()).map_err(|err| format!("{}", err)));
 
         // Read result string
         let mut res_str = String::new();
-        match res.read_to_string(&mut res_str) {
-            Err(err) => return Err(format!("{:?}", err)),
-            _ => {},
-        };
+        try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
+
         // now that we know it isn't an error, decode
-        let data : UserListResponse = match json::decode(&res_str) {
-            Ok(d) => d,
-            Err(e) => return Err(format!("Failed to decode json: {}", e)),
-        };
-        match data.err {
-            Some(err) => return Err(format!("Got a slack error: {}", err)),
-            _ => {},
+        let data: UserListResponse = try!(json::decode(&res_str).map_err(|err| format!("Failed to decode json: {}", err)));
+
+        if let Some(err) = data.err {
+            return Err(format!("Got a slack error: {}", err))
         }
+
         let members = match data.members {
             Some(m) => m,
             None => return Err(String::from("Members field missing in users.List response!")),
@@ -736,26 +693,19 @@ impl RtmClient {
 
     /// Uses https://api.slack.com/methods/channels.list to update channels
     pub fn update_channels(&mut self) -> Result<Vec<Channel>, String> {
-        let mut res = match self.make_authed_api_call("channels.list", HashMap::new()) {
-            Ok(response) => response,
-            Err(err) => return Err(format!("{}", err))
-        };
+        let mut res = try!(self.make_authed_api_call("channels.list", HashMap::new()).map_err(|err| format!("{}", err)));
 
         // Read result string
         let mut res_str = String::new();
-        match res.read_to_string(&mut res_str) {
-            Err(err) => return Err(format!("{:?}", err)),
-            _ => {},
-        };
+        try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
+
         // now that we know it isn't an error, decode
-        let data : ChannelListResponse = match json::decode(&res_str) {
-            Ok(d) => d,
-            Err(e) => return Err(format!("Failed to decode json: {}", e)),
-        };
-        match data.err {
-            Some(err) => return Err(format!("Got a slack error: {}", err)),
-            _ => {},
+        let data: ChannelListResponse = try!(json::decode(&res_str).map_err(|err| format!("Failed to decode json: {}", err)));
+
+        if let Some(err) = data.err {
+            return Err(format!("Got a slack error: {}", err));
         }
+
         let channels = match data.channels {
             Some(c) => c,
             None => return Err(String::from("Channels field missing in users.List response!")),
@@ -772,26 +722,19 @@ impl RtmClient {
 
     /// Uses https://api.slack.com/methods/groups.list to update groups
     pub fn update_groups(&mut self) -> Result<Vec<Group>, String> {
-        let mut res = match self.make_authed_api_call("groups.list", HashMap::new()) {
-            Ok(response) => response,
-            Err(err) => return Err(format!("{}", err))
-        };
+        let mut res = try!(self.make_authed_api_call("groups.list", HashMap::new()).map_err(|err| format!("{}", err)));
 
         // Read result string
         let mut res_str = String::new();
-        match res.read_to_string(&mut res_str) {
-            Err(err) => return Err(format!("{:?}", err)),
-            _ => {},
-        };
+        try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
+
         // now that we know it isn't an error, decode
-        let data : GroupListResponse = match json::decode(&res_str) {
-            Ok(d) => d,
-            Err(e) => return Err(format!("Failed to decode json: {}", e)),
-        };
-        match data.err {
-            Some(err) => return Err(format!("Got a slack error: {}", err)),
-            _ => {},
+        let data: GroupListResponse = try!(json::decode(&res_str).map_err(|err| format!("Failed to decode json: {}", err)));
+
+        if let Some(err) = data.err {
+            return Err(format!("Got a slack error: {}", err));
         }
+
         let groups = match data.groups {
             Some(c) => c,
             None => return Err(String::from("Channels field missing in users.List response!")),
