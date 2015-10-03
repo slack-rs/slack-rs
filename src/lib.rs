@@ -128,6 +128,23 @@ impl From<std::io::Error> for Error {
     }
 }
 
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let s = match *self {
+            Error::Http(ref e) => format!("Http (hyper) Error: {:?}", e),
+            Error::WebSocket(ref e) => format!("Http (hyper) Error: {:?}", e),
+            Error::Url(ref e) => format!("Url Error: {:?}", e),
+            Error::JsonDecode(ref e) => format!("Json Decode Error: {:?}", e),
+            Error::JsonEncode(ref e) => format!("Json Encode Error: {:?}", e),
+            Error::Api(ref st) => format!("Slack Api Error: {:?}", st),
+            Error::Internal(ref st) => format!("Internal Error: {:?}", st)
+        };
+        f.write_str(&s)
+    }
+}
+
+
+
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
 	/// When a message is received this will be called with self, the slack client,
