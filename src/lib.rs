@@ -499,7 +499,8 @@ impl RtmClient {
             }
             false => chan,
         };
-		let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,n,chan_id,msg);
+        let msg_json = format!("{}", json::as_json(&msg));
+		let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,n,chan_id, &msg_json[1..msg_json.len()-1]);
         println!("{}", mstr);
 		let tx = match self.outs {
 			Some(ref tx) => tx,
