@@ -22,6 +22,8 @@ limitations under the License.
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.8.2 -- Fix https://github.com/BenTheElder/slack-rs/issues/8
+//!
 //! Version 0.8.1 -- Add some web api methods, add methods to map names to ids.
 //!
 //!  - TODO: expect the error type overhaul to be pushed back to 0.9.X
