@@ -14,7 +14,7 @@
 
 [package]
 name = "slack"
-version = "0.8.3"
+version = "0.9.1"
 authors = ["Benjamin Elder <ben.the.elder@gmail.com>"]
 repository = "https://github.com/BenTheElder/slack-rs.git"
 documentation = "https://bentheelder.github.io/slack-rs"
@@ -29,6 +29,7 @@ path = "src/lib.rs"
 websocket = "~0.12.2"
 # http library:
 hyper = "~0.6.14"
-# NOTE: coordinate openssl and rustc-serialize with hyper
-openssl = "~0.6.4"
-rustc-serialize = "~0.3"
+# NOTE: coordinate these with hyper
+openssl = "^0.6.4"
+rustc-serialize = "^0.3"
+url = "^0.2"

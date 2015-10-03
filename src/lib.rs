@@ -22,6 +22,9 @@ limitations under the License.
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.9.1 -- With help from https://github.com/mthjones, overhaul error handling and refactor.
+//!  - Introduced slack::Error
+//!
 //! Version 0.8.3 -- Moved example to examples dir thanks to https://github.com/mthjones: https://github.com/BenTheElder/slack-rs/pull/9
 //!
 //! Version 0.8.2 -- Fix https://github.com/BenTheElder/slack-rs/issues/8
@@ -49,6 +52,7 @@ extern crate hyper;
 extern crate websocket;
 extern crate openssl;
 extern crate rustc_serialize;
+extern crate url;
 
 use std::sync::mpsc::{Sender,Receiver,channel};
 use std::thread;
@@ -64,28 +68,80 @@ use websocket::Sender as WsSender;
 use websocket::Receiver as WsReceiver;
 use websocket::dataframe::DataFrame;
 use websocket::stream::WebSocketStream;
-use websocket::client::request::Url;
 
 pub type WsClient = Client<websocket::dataframe::DataFrame,
                            websocket::client::sender::Sender<websocket::stream::WebSocketStream>,
                            websocket::client::receiver::Receiver<websocket::stream::WebSocketStream>>;
 
+/// slack::Error represents errors that can happen while using the RtmClient
+#[derive(Debug)]
+pub enum Error {
+    /// Http client error
+    Http(hyper::Error),
+    /// WebSocket connection error
+    WebSocket(websocket::result::WebSocketError),
+    /// Error parsing url
+    Url(url::ParseError),
+    /// Error decoding Json
+    JsonDecode(rustc_serialize::json::DecoderError),
+    /// Error encoding Json
+    JsonEncode(rustc_serialize::json::EncoderError),
+    /// Slack Api Error
+    Api(String),
+    /// Errors that do not fit under the other types, Internal is for EG channel errors.
+    Internal(String)
+}
 
+impl From<hyper::Error> for Error {
+    fn from(err: hyper::Error) -> Error {
+        Error::Http(err)
+    }
+}
 
-///Implement this trait in your code to handle message events
+impl From<websocket::result::WebSocketError> for Error {
+    fn from(err: websocket::result::WebSocketError) -> Error {
+        Error::WebSocket(err)
+    }
+}
+
+impl From<url::ParseError> for Error {
+    fn from(err: url::ParseError) -> Error {
+        Error::Url(err)
+    }
+}
+
+impl From<rustc_serialize::json::DecoderError> for Error {
+    fn from(err: rustc_serialize::json::DecoderError) -> Error {
+        Error::JsonDecode(err)
+    }
+}
+
+impl From<rustc_serialize::json::EncoderError> for Error {
+    fn from(err: rustc_serialize::json::EncoderError) -> Error {
+        Error::JsonEncode(err)
+    }
+}
+
+impl From<std::io::Error> for Error {
+    fn from(err: std::io::Error) -> Error {
+        Error::Internal(format!("{:?}", err))
+    }
+}
+
+/// Implement this trait in your code to handle message events
 pub trait EventHandler {
-	///When a message is received this will be called with self, the slack client,
-	///and the json encoded string payload.
+	/// When a message is received this will be called with self, the slack client,
+	/// and the json encoded string payload.
 	fn on_receive(&mut self, cli: &mut RtmClient, json_str: &str);
 
-	///Called when a ping is received; you do NOT need to handle the reply pong,
-	///but you may use this event to track the connection as a keep-alive.
+	/// Called when a ping is received; you do NOT need to handle the reply pong,
+	/// but you may use this event to track the connection as a keep-alive.
 	fn on_ping(&mut self, cli: &mut RtmClient);
 
-	///Called when the connection is closed for any reason.
+	/// Called when the connection is closed for any reason.
 	fn on_close(&mut self, cli: &mut RtmClient);
 
-	///Called when the connection is opened.
+	/// Called when the connection is opened.
 	fn on_connect(&mut self, cli: &mut RtmClient);
 }
 
@@ -351,9 +407,6 @@ pub struct RtmClient {
 	outs : Option<Sender<Message>>
 }
 
-/// Error string. (FIXME: better error return values/ custom error type)
-static RTM_INVALID : &'static str = "Invalid data returned from slack (rtm.start)";
-
 
 impl RtmClient {
 
@@ -469,16 +522,13 @@ impl RtmClient {
 	/// use this method, and you will also need to retrieve a unique id for
 	/// the message via RtmClient.get_msg_uid()
 	/// Only valid after login.
-	pub fn send(&mut self, s : &str) -> Result<(),String> {
+	pub fn send(&mut self, s : &str) -> Result<(), Error> {
 		let tx = match self.outs {
 			Some(ref tx) => tx,
-			None => return Err("Failed to get tx!".to_string())
+			None => return Err(Error::Internal(String::from("Failed to get tx!")))
 		};
-		match tx.send(Message::Text(s.to_string())) {
-			Ok(_) => {},
-			Err(err) => return Err(format!("{:?}", err))
-		}
-		Ok(())
+	    try!(tx.send(Message::Text(s.to_string())).map_err(|err| Error::Internal(format!("{}", err))));
+        Ok(())
 	}
 
 	/// Allows sending a textual string message over the websocket connection,
@@ -490,14 +540,14 @@ impl RtmClient {
 	/// This method also handles getting a unique id and formatting the actual json
 	/// sent.
 	/// Only valid after login.
-	pub fn send_message(&self, chan: &str, msg: &str) -> Result<(), String>{
+	pub fn send_message(&self, chan: &str, msg: &str) -> Result<(), Error>{
 		let n = self.get_msg_uid();
         // fixup the channel id if chan is: `#<channel>`
         let chan_id = match chan.starts_with("#") {
             true => {
                 match self.get_channel_id(&chan[1..]) {
                     Some(s) => &(s[..]),
-                    None => return Err(String::from("start_info is invalid, need to login first")),
+                    None => return Err(Error::Internal(String::from("start_info is invalid, need to login first"))),
                 }
             }
             false => chan,
@@ -507,31 +557,31 @@ impl RtmClient {
         println!("{}", mstr);
 		let tx = match self.outs {
 			Some(ref tx) => tx,
-			None => return Err("Failed to get tx!".to_string())
+			None => return Err(Error::Internal(String::from("Failed to get tx!")))
 		};
-		try!(tx.send(Message::Text(mstr)).map_err(|err| format!("{:?}", err)));
+		try!(tx.send(Message::Text(mstr)).map_err(|err| Error::Internal(format!("{:?}", err))));
 		Ok(())
 	}
 
 	/// Logs in to slack. Call this before calling run.
 	/// Alternatively use login_and_run
-	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), String> {
-		let mut res = try!(self.make_authed_api_call("rtm.start", HashMap::new()).map_err(|err| format!("Hyper Error: {:?}", err)));
+	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), Error> {
+		let mut res = try!(self.make_authed_api_call("rtm.start", HashMap::new()));
 
 		// Read result string
 		let mut res_str = String::new();
-		try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
+		try!(res.read_to_string(&mut res_str));
 
         // Parse json
-        let start: RtmStart = try!(json::decode(&res_str).map_err(|err| format!("JSON Decode Error: {:?}", err)));
+        let start: RtmStart = try!(json::decode(&res_str));
 
         // check "ok" field
         if !start.ok {
-            return Err(format!("{} (ok not true)", RTM_INVALID));
+            return Err(Error::Api(format!("slack api error: (ok not true)")));
         }
 
         // websocket url
-		let wss_url = try!(Url::parse(&start.url).map_err(|err| format!("{:?}", err)));
+		let wss_url = try!(hyper::Url::parse(&start.url));
 
         // update id hashmaps
         for ref channel in start.channels.iter() {
@@ -552,26 +602,26 @@ impl RtmClient {
         self.start_info = Some(start);
 
         // Do websocket connection request
-		let req = try!(websocket::client::Client::connect(wss_url.clone()).map_err(|err| format!("{:?}, Websocket request to `{:?}` failed", err, wss_url)));
+		let req = try!(websocket::client::Client::connect(wss_url.clone()));
 
 		// Do websocket handshake.
-		let res = try!(req.send().map_err(|err| format!("{:?}, Websocket request to `{:?}` failed", err, wss_url)));
+		let res = try!(req.send());
 
         // Validate handshake
-		try!(res.validate().map_err(|err| format!("Error: res.validate(): {:?}", err)));
+		try!(res.validate());
 
         // setup channels for passing messages
 		let (tx,rx) = channel::<Message>();
 		self.outs = Some(tx.clone());
-		Ok((res.begin(),rx))
+		Ok((res.begin(), rx))
 	}
 
 	/// Runs the message receive loop
-	pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<Message>) -> Result<(),String> {
+	pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<Message>) -> Result<(), Error> {
 		// for sending messages
 		let tx = match self.outs {
-			Some(ref mut tx) => { tx.clone() },
-			None => { return Err("No tx!".to_string()); }
+			Some(ref mut tx) => tx.clone(),
+			None => return Err(Error::Internal(String::from("No tx!"))),
 		};
 
 		let (mut sender, mut receiver) = client.split();
@@ -607,7 +657,7 @@ impl RtmClient {
 				Ok(message) => message,
 				Err(err) => {
 					let _ = child.join();
-					return Err(format!("{:?}", err));
+					return Err(Error::Internal(format!("{:?}", err)));
 				}
 			};
 
@@ -622,7 +672,7 @@ impl RtmClient {
 						Ok(_) => {},
 						Err(err) => {
 							let _ = child.join();
-							return Err(format!("{:?}", err));
+							return Err(Error::Internal(format!("{:?}", err)));
 						}
 					}
 				},
@@ -633,7 +683,7 @@ impl RtmClient {
 						Ok(_) => {},
 						Err(err) => {
 							let _ = child.join();
-							return Err(format!("{:?}", err));
+							return Err(Error::Internal(format!("{:?}", err)));
 						}
 					}
 					let _ = child.join();
@@ -657,29 +707,29 @@ impl RtmClient {
 	/// Both loops should end on return.
 	/// Sending should be thread safe as the messages are passed in via a channel in
 	/// RtmClient.send and RtmClient.send_message
-	pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T) -> Result<(),String> {
-		let (client, rx) = try!(self.login().map_err(|err| format!("Error at Login: {:?}",err)));
+	pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T) -> Result<(), Error> {
+		let (client, rx) = try!(self.login());
 		self.run(handler, client, rx)
 	}
 
     /// Uses https://api.slack.com/methods/users.list to update users
-    pub fn update_users(&mut self) -> Result<Vec<User>, String> {
-        let mut res = try!(self.make_authed_api_call("users.list", HashMap::new()).map_err(|err| format!("{}", err)));
+    pub fn update_users(&mut self) -> Result<Vec<User>, Error> {
+        let mut res = try!(self.make_authed_api_call("users.list", HashMap::new()));
 
         // Read result string
         let mut res_str = String::new();
-        try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
+        try!(res.read_to_string(&mut res_str));
 
         // now that we know it isn't an error, decode
-        let data: UserListResponse = try!(json::decode(&res_str).map_err(|err| format!("Failed to decode json: {}", err)));
+        let data: UserListResponse = try!(json::decode(&res_str));
 
         if let Some(err) = data.err {
-            return Err(format!("Got a slack error: {}", err))
+            return Err(Error::Api(format!("Got a slack error: {}", err)));
         }
 
         let members = match data.members {
             Some(m) => m,
-            None => return Err(String::from("Members field missing in users.List response!")),
+            None => return Err(Error::Api(String::from("Members field missing in users.List response!"))),
         };
         // update user id map
         self.user_ids.clear();
@@ -692,23 +742,23 @@ impl RtmClient {
     }
 
     /// Uses https://api.slack.com/methods/channels.list to update channels
-    pub fn update_channels(&mut self) -> Result<Vec<Channel>, String> {
-        let mut res = try!(self.make_authed_api_call("channels.list", HashMap::new()).map_err(|err| format!("{}", err)));
+    pub fn update_channels(&mut self) -> Result<Vec<Channel>, Error> {
+        let mut res = try!(self.make_authed_api_call("channels.list", HashMap::new()));
 
         // Read result string
         let mut res_str = String::new();
-        try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
+        try!(res.read_to_string(&mut res_str));
 
         // now that we know it isn't an error, decode
-        let data: ChannelListResponse = try!(json::decode(&res_str).map_err(|err| format!("Failed to decode json: {}", err)));
+        let data: ChannelListResponse = try!(json::decode(&res_str));
 
         if let Some(err) = data.err {
-            return Err(format!("Got a slack error: {}", err));
+            return Err(Error::Api(format!("Got a slack error: {}", err)));
         }
 
         let channels = match data.channels {
             Some(c) => c,
-            None => return Err(String::from("Channels field missing in users.List response!")),
+            None => return Err(Error::Api(String::from("Channels field missing in users.List response!"))),
         };
         // update channel id map
         self.channel_ids.clear();
@@ -721,23 +771,23 @@ impl RtmClient {
     }
 
     /// Uses https://api.slack.com/methods/groups.list to update groups
-    pub fn update_groups(&mut self) -> Result<Vec<Group>, String> {
-        let mut res = try!(self.make_authed_api_call("groups.list", HashMap::new()).map_err(|err| format!("{}", err)));
+    pub fn update_groups(&mut self) -> Result<Vec<Group>, Error> {
+        let mut res = try!(self.make_authed_api_call("groups.list", HashMap::new()));
 
         // Read result string
         let mut res_str = String::new();
-        try!(res.read_to_string(&mut res_str).map_err(|err| format!("{:?}", err)));
+        try!(res.read_to_string(&mut res_str));
 
         // now that we know it isn't an error, decode
-        let data: GroupListResponse = try!(json::decode(&res_str).map_err(|err| format!("Failed to decode json: {}", err)));
+        let data: GroupListResponse = try!(json::decode(&res_str));
 
         if let Some(err) = data.err {
-            return Err(format!("Got a slack error: {}", err));
+            return Err(Error::Api(format!("Got a slack error: {}", err)));
         }
 
         let groups = match data.groups {
             Some(c) => c,
-            None => return Err(String::from("Channels field missing in users.List response!")),
+            None => return Err(Error::Api(String::from("Channels field missing in users.List response!"))),
         };
         // update group id map
         self.group_ids.clear();
@@ -753,13 +803,13 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/chat.postMessage
     /// json_payload can be a json formatted action or simple text that will be posted as a message.
     /// See https://api.slack.com/docs/formatting
-    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::response::Response, String> {
+    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::response::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
                 match self.get_channel_id(&channel[1..]) {
                     Some(s) => &(s[..]),
-                    None => return Err(String::from("start_info is invalid, need to login first")),
+                    None => return Err(Error::Api(String::from("start_info is invalid, need to login first"))),
                 }
             }
             false => channel,
@@ -777,13 +827,13 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/channels.setTopic
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// topic will be json escaped.
-    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<hyper::client::response::Response, String> {
+    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<hyper::client::response::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
                 match self.get_channel_id(&channel[1..]) {
                     Some(s) => &(s[..]),
-                    None => return Err(String::from("start_info is invalid, need to login first")),
+                    None => return Err(Error::Api(String::from("start_info is invalid, need to login first"))),
                 }
             }
             false => channel,
@@ -800,13 +850,13 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/channels.setPurpose
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// purpose will be json escaped.
-    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<hyper::client::response::Response, String> {
+    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<hyper::client::response::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
                 match self.get_channel_id(&channel[1..]) {
                     Some(s) => &(s[..]),
-                    None => return Err(String::from("start_info is invalid, need to login first")),
+                    None => return Err(Error::Api(String::from("start_info is invalid, need to login first"))),
                 }
             }
             false => channel,
@@ -822,13 +872,13 @@ impl RtmClient {
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
     /// if channel starts with a # then it will be looked up with get_channel_id
-    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<hyper::client::response::Response, String> {
+    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<hyper::client::response::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
                 match self.get_channel_id(&channel[1..]) {
                     Some(s) => &(s[..]),
-                    None => return Err(String::from("start_info is invalid, need to login first")),
+                    None => return Err(Error::Api(String::from("start_info is invalid, need to login first"))),
                 }
             }
             false => channel,
@@ -841,7 +891,7 @@ impl RtmClient {
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file
-    pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<hyper::client::response::Response, String> {
+    pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<hyper::client::response::Response, Error> {
         let mut params = HashMap::new();
         params.insert("name", emoji_name);
         params.insert("file", file);
@@ -849,7 +899,7 @@ impl RtmClient {
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file comment
-    pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<hyper::client::response::Response, String> {
+    pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<hyper::client::response::Response, Error> {
         let mut params = HashMap::new();
         params.insert("name", emoji_name);
         params.insert("file_comment", file_comment);
@@ -858,13 +908,13 @@ impl RtmClient {
 
     /// Make an API call to Slack that includes the configured token. Takes a map of parameters
     /// that get appended to the request as query params.
-    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<hyper::client::response::Response, String> {
+    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<hyper::client::response::Response, Error> {
         let url_string = format!("https://slack.com/api/{}", method);
-        let mut url = try!(hyper::Url::parse(&url_string).map_err(|err| err.to_string()));
+        let mut url = try!(hyper::Url::parse(&url_string));
 
         custom_params.insert("token", &self.token[..]);
         url.set_query_from_pairs(custom_params.into_iter());
 
-        hyper::Client::new().get(url).send().map_err(|err| err.to_string())
+        Ok(try!(hyper::Client::new().get(url).send()))
     }
 }
