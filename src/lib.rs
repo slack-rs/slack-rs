@@ -519,11 +519,7 @@ impl RtmClient {
 	/// Logs in to slack. Call this before calling run.
 	/// Alternatively use login_and_run
 	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), Error> {
-		let mut res = try!(self.make_authed_api_call("rtm.start", HashMap::new()));
-
-		// Read result string
-		let mut res_str = String::new();
-		try!(res.read_to_string(&mut res_str));
+		let res_str = try!(self.make_authed_api_call("rtm.start", HashMap::new()));
 
         // Parse json
         let start: RtmStart = try!(json::decode(&res_str));
@@ -668,11 +664,7 @@ impl RtmClient {
 
     /// Uses https://api.slack.com/methods/users.list to get a list of users
     pub fn list_users(&mut self) -> Result<Vec<User>, Error> {
-        let mut res = try!(self.make_authed_api_call("users.list", HashMap::new()));
-
-        // Read result string
-        let mut res_str = String::new();
-        try!(res.read_to_string(&mut res_str));
+        let res_str = try!(self.make_authed_api_call("users.list", HashMap::new()));
 
         // now that we know it isn't an error, decode
         let data: UserListResponse = try!(json::decode(&res_str));
@@ -691,11 +683,7 @@ impl RtmClient {
 
     /// Uses https://api.slack.com/methods/channels.list to get a list of channels
     pub fn list_channels(&mut self) -> Result<Vec<Channel>, Error> {
-        let mut res = try!(self.make_authed_api_call("channels.list", HashMap::new()));
-
-        // Read result string
-        let mut res_str = String::new();
-        try!(res.read_to_string(&mut res_str));
+        let res_str = try!(self.make_authed_api_call("channels.list", HashMap::new()));
 
         // now that we know it isn't an error, decode
         let data: ChannelListResponse = try!(json::decode(&res_str));
@@ -714,11 +702,7 @@ impl RtmClient {
 
     /// Uses https://api.slack.com/methods/groups.list to get a list of groups
     pub fn list_groups(&mut self) -> Result<Vec<Group>, Error> {
-        let mut res = try!(self.make_authed_api_call("groups.list", HashMap::new()));
-
-        // Read result string
-        let mut res_str = String::new();
-        try!(res.read_to_string(&mut res_str));
+        let res_str = try!(self.make_authed_api_call("groups.list", HashMap::new()));
 
         // now that we know it isn't an error, decode
         let data: GroupListResponse = try!(json::decode(&res_str));
@@ -783,7 +767,7 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/chat.postMessage
     /// json_payload can be a json formatted action or simple text that will be posted as a message.
     /// See https://api.slack.com/docs/formatting
-    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::Response, Error> {
+    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<String, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -806,7 +790,7 @@ impl RtmClient {
 
     /// Wraps https://api.slack.com/methods/chat.delete to delete a message
     /// See the slack api docs for timestamp formatting.
-    pub fn delete_message(&self, channel: &str, timestamp: &str) -> Result<hyper::client::Response, Error> {
+    pub fn delete_message(&self, channel: &str, timestamp: &str) -> Result<String, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -825,7 +809,7 @@ impl RtmClient {
 
     /// Wraps https://api.slack.com/methods/channels.mark to set the read cursor in a channel
     /// See the slack api docs for timestamp formatting.
-    pub fn mark(&self, channel: &str, timestamp: &str) -> Result<hyper::client::Response, Error> {
+    pub fn mark(&self, channel: &str, timestamp: &str) -> Result<String, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -846,7 +830,7 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/channels.setTopic
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// topic will be json escaped.
-    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<hyper::client::Response, Error> {
+    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<String, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -862,14 +846,14 @@ impl RtmClient {
         let escaped_topic = format!("{}",json::as_json(&topic));
         let mut params = HashMap::new();
         params.insert("channel", chan_id);
-        params.insert("topic", &escaped_topic[..]);
+        params.insert("topic", &escaped_topic[1..escaped_topic.len()-1]);
         self.make_authed_api_call("channels.setTopic", params)
     }
 
     /// Wraps https://api.slack.com/methods/channels.setPurpose
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// purpose will be json escaped.
-    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<hyper::client::Response, Error> {
+    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<String, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -885,13 +869,13 @@ impl RtmClient {
         let escaped_purpose = format!("{}",json::as_json(&purpose));
         let mut params = HashMap::new();
         params.insert("channel", chan_id);
-        params.insert("purpose", &escaped_purpose[..]);
+        params.insert("purpose", &escaped_purpose[1..escaped_purpose.len()-1]);
         self.make_authed_api_call("channels.setPurpose", params)
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
     /// if channel starts with a # then it will be looked up with get_channel_id
-    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<hyper::client::Response, Error> {
+    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<String, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -910,7 +894,7 @@ impl RtmClient {
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file
-    pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<hyper::client::response::Response, Error> {
+    pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<String, Error> {
         let mut params = HashMap::new();
         params.insert("name", emoji_name);
         params.insert("file", file);
@@ -918,7 +902,7 @@ impl RtmClient {
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file comment
-    pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<hyper::client::response::Response, Error> {
+    pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<String, Error> {
         let mut params = HashMap::new();
         params.insert("name", emoji_name);
         params.insert("file_comment", file_comment);
@@ -928,7 +912,7 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/chat.update
     /// json_payload can be a json formatted action or simple text that will be posted as a message.
     /// See https://api.slack.com/docs/formatting
-    pub fn update_message(&self, channel: &str, timestamp: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::Response, Error> {
+    pub fn update_message(&self, channel: &str, timestamp: &str, json_payload: &str, attachments: Option<String>) -> Result<String, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -951,13 +935,36 @@ impl RtmClient {
 
     /// Make an API call to Slack that includes the configured token. Takes a map of parameters
     /// that get appended to the request as query params.
-    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<hyper::client::Response, Error> {
+    /// Returns the response body string after checking it has "ok": true, or an Error
+    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<String, Error> {
         let url_string = format!("https://slack.com/api/{}", method);
         let mut url = try!(hyper::Url::parse(&url_string));
 
         custom_params.insert("token", &self.token[..]);
         url.set_query_from_pairs(custom_params.into_iter());
 
-        Ok(try!(hyper::Client::new().get(url).send()))
+        let mut res = try!(hyper::Client::new().get(url).send());
+
+        // Read result string
+        let mut res_str = String::new();
+        try!(res.read_to_string(&mut res_str));
+
+        // decode response to check "ok" field
+        let raw_json = try!(json::Json::from_str(&res_str));
+        // check that the ok field is present
+        if !raw_json.is_object() {
+            return Err(Error::Api(format!("bad slack json response (not an object) {:?}", raw_json)));
+        }
+        let jobj = raw_json.as_object().unwrap();
+        if !jobj.contains_key("ok") {
+            return Err(Error::Api(format!("slack json reponse does not contain \"ok\" field {:?}", raw_json)));
+        }
+        let ok = jobj.get("ok").unwrap();
+        if !ok.is_boolean() {
+            return Err(Error::Api(format!("slack json reponse \"ok\" is not a boolean: {:?}", raw_json)));
+        }
+
+        // return result
+        Ok(res_str)
     }
 }

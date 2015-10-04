@@ -17,6 +17,8 @@ pub enum Error {
     Url(url::ParseError),
     /// Error decoding Json
     JsonDecode(rustc_serialize::json::DecoderError),
+    /// Error parsing Json
+    JsonParse(rustc_serialize::json::ParserError),
     /// Error encoding Json
     JsonEncode(rustc_serialize::json::EncoderError),
     /// Slack Api Error
@@ -49,6 +51,12 @@ impl From<rustc_serialize::json::DecoderError> for Error {
     }
 }
 
+impl From<rustc_serialize::json::ParserError> for Error {
+    fn from(err: rustc_serialize::json::ParserError) -> Error {
+        Error::JsonParse(err)
+    }
+}
+
 impl From<rustc_serialize::json::EncoderError> for Error {
     fn from(err: rustc_serialize::json::EncoderError) -> Error {
         Error::JsonEncode(err)
@@ -68,6 +76,7 @@ impl fmt::Display for Error {
             Error::WebSocket(ref e) => format!("Http (hyper) Error: {:?}", e),
             Error::Url(ref e) => format!("Url Error: {:?}", e),
             Error::JsonDecode(ref e) => format!("Json Decode Error: {:?}", e),
+            Error::JsonParse(ref e) => format!("Json Parse Error: {:?}", e),
             Error::JsonEncode(ref e) => format!("Json Encode Error: {:?}", e),
             Error::Api(ref st) => format!("Slack Api Error: {:?}", st),
             Error::Internal(ref st) => format!("Internal Error: {:?}", st)
