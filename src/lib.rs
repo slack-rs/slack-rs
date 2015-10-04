@@ -933,6 +933,57 @@ impl RtmClient {
         self.make_authed_api_call("chat.update", params)
     }
 
+    /// Wraps https://api.slack.com/methods/im.close to close a direct message channel.
+    pub fn im_close(&self, channel_id: &str) -> Result<String, Error> {
+        let mut params = HashMap::new();
+        params.insert("channel", channel_id);
+        self.make_authed_api_call("im.close", params)
+    }
+
+    /// Wraps https://api.slack.com/methods/im.history to retrieve the history of messages and
+    /// events from a direct message channel.
+    pub fn im_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<String, Error> {
+        let mut params = HashMap::new();
+        params.insert("channel", channel_id);
+        if let Some(latest) = latest {
+            params.insert("latest", latest);
+        }
+        if let Some(oldest) = oldest {
+            params.insert("oldest", oldest);
+        }
+        if let Some(inclusive) = inclusive {
+            params.insert("inclusive", if inclusive { "1" } else { "0" });
+        }
+        if let Some(ref count) = count.map(|c| c.to_string()) {
+            params.insert("count", count);
+            self.make_authed_api_call("im.history", params)
+        } else {
+            self.make_authed_api_call("im.history", params)
+        }
+    }
+
+    /// Wraps https://api.slack.com/methods/im.list to get the list of all open direct message
+    /// channels the user has open.
+    pub fn im_list(&self) -> Result<String, Error> {
+        self.make_authed_api_call("im.list", HashMap::new())
+    }
+
+    /// Wraps https://api.slack.com/methods/im.mark to move the read cursor in a direct message
+    /// channel.
+    pub fn im_mark(&self, channel_id: &str, timestamp: &str) -> Result<String, Error> {
+        let mut params = HashMap::new();
+        params.insert("channel", channel_id);
+        params.insert("timestamp", timestamp);
+        self.make_authed_api_call("im.mark", params)
+    }
+
+    /// Wraps https://api.slack.com/methods/im.open to open a direct message channel with a user.
+    pub fn im_open(&self, user_id: &str) -> Result<String, Error> {
+        let mut params = HashMap::new();
+        params.insert("user", user_id);
+        self.make_authed_api_call("im.open", params)
+    }
+
     /// Make an API call to Slack that includes the configured token. Takes a map of parameters
     /// that get appended to the request as query params.
     /// Returns the response body string after checking it has "ok": true, or an Error
