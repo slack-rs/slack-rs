@@ -735,7 +735,6 @@ impl RtmClient {
 	}
 
 
-
     /// Uses https://api.slack.com/methods/users.list to get a list of users
     pub fn list_users(&mut self) -> Result<Vec<User>, Error> {
         let mut res = try!(self.make_authed_api_call("users.list", HashMap::new()));
@@ -853,7 +852,7 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/chat.postMessage
     /// json_payload can be a json formatted action or simple text that will be posted as a message.
     /// See https://api.slack.com/docs/formatting
-    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::response::Response, Error> {
+    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -874,10 +873,49 @@ impl RtmClient {
         self.make_authed_api_call("chat.postMessage", params)
     }
 
+    /// Wraps https://api.slack.com/methods/chat.delete to delete a message
+    /// See the slack api docs for timestamp formatting.
+    pub fn delete_message(&self, channel: &str, timestamp: &str) -> Result<hyper::client::Response, Error> {
+        // fixup the channel id if channel is: `#<channel>`
+        let chan_id = match channel.starts_with("#") {
+            true => {
+                match self.get_channel_id(&channel[1..]) {
+                    Some(s) => &(s[..]),
+                    None => return Err(Error::Api(String::from("start_info is invalid, need to login first"))),
+                }
+            }
+            false => channel,
+        };
+        let mut params = HashMap::new();
+        params.insert("channel", chan_id);
+        params.insert("ts", &timestamp);
+        self.make_authed_api_call("chat.delete", params)
+    }
+
+    /// Wraps https://api.slack.com/methods/channels.mark to set the read cursor in a channel
+    /// See the slack api docs for timestamp formatting.
+    pub fn mark(&self, channel: &str, timestamp: &str) -> Result<hyper::client::Response, Error> {
+        // fixup the channel id if channel is: `#<channel>`
+        let chan_id = match channel.starts_with("#") {
+            true => {
+                match self.get_channel_id(&channel[1..]) {
+                    Some(s) => &(s[..]),
+                    None => return Err(Error::Api(String::from("start_info is invalid, need to login first"))),
+                }
+            }
+            false => channel,
+        };
+        let mut params = HashMap::new();
+        params.insert("channel", chan_id);
+        params.insert("ts", &timestamp);
+        self.make_authed_api_call("channels.mark", params)
+    }
+
+
     /// Wraps https://api.slack.com/methods/channels.setTopic
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// topic will be json escaped.
-    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<hyper::client::response::Response, Error> {
+    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<hyper::client::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -900,7 +938,7 @@ impl RtmClient {
     /// Wraps https://api.slack.com/methods/channels.setPurpose
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// purpose will be json escaped.
-    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<hyper::client::response::Response, Error> {
+    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<hyper::client::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -922,7 +960,7 @@ impl RtmClient {
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
     /// if channel starts with a # then it will be looked up with get_channel_id
-    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<hyper::client::response::Response, Error> {
+    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<hyper::client::Response, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -958,7 +996,7 @@ impl RtmClient {
 
     /// Make an API call to Slack that includes the configured token. Takes a map of parameters
     /// that get appended to the request as query params.
-    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<hyper::client::response::Response, Error> {
+    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<hyper::client::Response, Error> {
         let url_string = format!("https://slack.com/api/{}", method);
         let mut url = try!(hyper::Url::parse(&url_string));
 
