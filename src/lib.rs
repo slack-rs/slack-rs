@@ -951,17 +951,25 @@ impl RtmClient {
 
         // decode response to check "ok" field
         let raw_json = try!(json::Json::from_str(&res_str));
-        // check that the ok field is present
+        // check that the top level json value is an object
         if !raw_json.is_object() {
             return Err(Error::Api(format!("bad slack json response (not an object) {:?}", raw_json)));
         }
+        // get object map
         let jobj = raw_json.as_object().unwrap();
+        // check that ok field is present
         if !jobj.contains_key("ok") {
             return Err(Error::Api(format!("slack json reponse does not contain \"ok\" field {:?}", raw_json)));
         }
+        // get the json value
         let ok = jobj.get("ok").unwrap();
+        // check that it is a boolean
         if !ok.is_boolean() {
             return Err(Error::Api(format!("slack json reponse \"ok\" is not a boolean: {:?}", raw_json)));
+        }
+        // ensure that ok is true
+        if !ok.as_boolean().unwrap() {
+            return Err(Error::Api(format!("slack json reponse \"ok\" is not true: {:?}", raw_json)));
         }
 
         // return result
