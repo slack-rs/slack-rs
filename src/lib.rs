@@ -28,6 +28,8 @@ limitations under the License.
 //!
 //!  - Exposed list_users, list_groups, list_channels
 //!
+//!  - Fixed bug where setPurpose called setTopic instead [!]
+//!
 //! Version 0.8.3 -- Moved example to examples dir thanks to https://github.com/mthjones: https://github.com/BenTheElder/slack-rs/pull/9
 //!
 //! Version 0.8.2 -- Fix https://github.com/BenTheElder/slack-rs/issues/8
@@ -915,7 +917,7 @@ impl RtmClient {
         let mut params = HashMap::new();
         params.insert("channel", chan_id);
         params.insert("purpose", &escaped_purpose[..]);
-        self.make_authed_api_call("channels.setTopic", params)
+        self.make_authed_api_call("channels.setPurpose", params)
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
