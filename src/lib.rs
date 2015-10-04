@@ -22,11 +22,11 @@ limitations under the License.
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
-//! Version 0.9.1 -- With help from https://github.com/mthjones, overhaul error handling and refactor.
+//! Version 0.9.1 -- With help from: https://github.com/mthjones, overhaul error handling and refactor, improve api support.
 //!
-//!  - Introduced slack::Error
+//!  - Introduced slack::error::Error
 //!
-//!  - Exposed list_users, list_groups, list_channels
+//!  - Added a number of bots api methods
 //!
 //!  - Fixed bug where setPurpose called setTopic instead [!]
 //!
@@ -923,6 +923,30 @@ impl RtmClient {
         params.insert("name", emoji_name);
         params.insert("file_comment", file_comment);
         self.make_authed_api_call("reactions.add", params)
+    }
+
+    /// Wraps https://api.slack.com/methods/chat.update
+    /// json_payload can be a json formatted action or simple text that will be posted as a message.
+    /// See https://api.slack.com/docs/formatting
+    pub fn update_message(&self, channel: &str, timestamp: &str, json_payload: &str, attachments: Option<String>) -> Result<hyper::client::Response, Error> {
+        // fixup the channel id if channel is: `#<channel>`
+        let chan_id = match channel.starts_with("#") {
+            true => {
+                match self.get_channel_id(&channel[1..]) {
+                    Some(s) => &(s[..]),
+                    None => return Err(Error::Api(String::from("start_info is invalid, need to login first"))),
+                }
+            }
+            false => channel,
+        };
+        let mut params = HashMap::new();
+        params.insert("channel", chan_id);
+        params.insert("text", json_payload);
+        params.insert("ts", timestamp);
+        if let Some(ref a) = attachments {
+            params.insert("attachments", a);
+        }
+        self.make_authed_api_call("chat.update", params)
     }
 
     /// Make an API call to Slack that includes the configured token. Takes a map of parameters
