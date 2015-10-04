@@ -17,13 +17,16 @@ limitations under the License.
 //! #Notes:
 //! - Structs except for RtmClient are derived from the slack api docs at: https://api.slack.com/
 //!    - Optional fields in Slack structs represent fields that may not be present in the serialized form.
-//!    - Currently fields in Slack structs are public, but in 0.8.X onward they will likely be wrapped in getters.
+//!    - Currently fields in Slack structs are public, but in the future they may be wrapped in getters.
 //!
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
 //! Version 0.9.1 -- With help from https://github.com/mthjones, overhaul error handling and refactor.
+//!
 //!  - Introduced slack::Error
+//!
+//!  - Exposed list_users, list_groups, list_channels
 //!
 //! Version 0.8.3 -- Moved example to examples dir thanks to https://github.com/mthjones: https://github.com/BenTheElder/slack-rs/pull/9
 //!
@@ -729,8 +732,10 @@ impl RtmClient {
 		self.run(handler, client, rx)
 	}
 
-    /// Uses https://api.slack.com/methods/users.list to update users
-    pub fn update_users(&mut self) -> Result<Vec<User>, Error> {
+
+
+    /// Uses https://api.slack.com/methods/users.list to get a list of users
+    pub fn list_users(&mut self) -> Result<Vec<User>, Error> {
         let mut res = try!(self.make_authed_api_call("users.list", HashMap::new()));
 
         // Read result string
@@ -748,18 +753,12 @@ impl RtmClient {
             Some(m) => m,
             None => return Err(Error::Api(String::from("Members field missing in users.List response!"))),
         };
-        // update user id map
-        self.user_ids.clear();
-        for ref user in members.iter() {
-            self.user_ids.insert(user.name.clone(), user.id.clone());
-        }
-        // update users
-        self.users = members.clone();
+
         Ok(members)
     }
 
-    /// Uses https://api.slack.com/methods/channels.list to update channels
-    pub fn update_channels(&mut self) -> Result<Vec<Channel>, Error> {
+    /// Uses https://api.slack.com/methods/channels.list to get a list of channels
+    pub fn list_channels(&mut self) -> Result<Vec<Channel>, Error> {
         let mut res = try!(self.make_authed_api_call("channels.list", HashMap::new()));
 
         // Read result string
@@ -777,18 +776,12 @@ impl RtmClient {
             Some(c) => c,
             None => return Err(Error::Api(String::from("Channels field missing in users.List response!"))),
         };
-        // update channel id map
-        self.channel_ids.clear();
-        for ref channel in channels.iter() {
-            self.channel_ids.insert(channel.name.clone(), channel.id.clone());
-        }
-        // update users
-        self.channels = channels.clone();
+
         Ok(channels)
     }
 
-    /// Uses https://api.slack.com/methods/groups.list to update groups
-    pub fn update_groups(&mut self) -> Result<Vec<Group>, Error> {
+    /// Uses https://api.slack.com/methods/groups.list to get a list of groups
+    pub fn list_groups(&mut self) -> Result<Vec<Group>, Error> {
         let mut res = try!(self.make_authed_api_call("groups.list", HashMap::new()));
 
         // Read result string
@@ -806,6 +799,44 @@ impl RtmClient {
             Some(c) => c,
             None => return Err(Error::Api(String::from("Channels field missing in users.List response!"))),
         };
+
+        Ok(groups)
+    }
+
+
+    /// Uses https://api.slack.com/methods/users.list to update users
+    pub fn update_users(&mut self) -> Result<Vec<User>, Error> {
+        let users = try!(self.list_users());
+
+        // update user id map
+        self.user_ids.clear();
+        for ref user in users.iter() {
+            self.user_ids.insert(user.name.clone(), user.id.clone());
+        }
+        // update users
+        self.users = users.clone();
+
+        Ok(users)
+    }
+
+    /// Uses https://api.slack.com/methods/channels.list to update channels
+    pub fn update_channels(&mut self) -> Result<Vec<Channel>, Error> {
+        let channels = try!(self.list_channels());
+
+        // update channel id map
+        self.channel_ids.clear();
+        for ref channel in channels.iter() {
+            self.channel_ids.insert(channel.name.clone(), channel.id.clone());
+        }
+        // update users
+        self.channels = channels.clone();
+
+        Ok(channels)
+    }
+
+    /// Uses https://api.slack.com/methods/groups.list to update groups
+    pub fn update_groups(&mut self) -> Result<Vec<Group>, Error> {
+        let groups = try!(self.list_groups());
         // update group id map
         self.group_ids.clear();
         for ref group in groups.iter() {
