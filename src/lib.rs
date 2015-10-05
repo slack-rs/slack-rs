@@ -60,13 +60,18 @@ extern crate websocket;
 extern crate openssl;
 extern crate rustc_serialize;
 extern crate url;
+#[cfg(test)]
+#[macro_use]
+extern crate yup_hyper_mock;
 
 pub mod error;
 use error::Error;
 
+pub mod api;
+pub use api::{Attachment,Channel,Group,Im,Team,User};
+
 use std::sync::mpsc::{Sender,Receiver,channel};
 use std::thread;
-use std::io::Read;
 use std::sync::atomic::{AtomicIsize, Ordering};
 use std::collections::HashMap;
 
@@ -100,258 +105,10 @@ pub trait EventHandler {
 	fn on_connect(&mut self, cli: &mut RtmClient);
 }
 
-/// See the slack api docs at: https://api.slack.com/
-// Currently missing "latest" field
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct Channel {
-    pub id: String,
-    pub name: String,
-    pub is_channel: bool,
-    pub created: i64,
-    pub creator: String,
-    pub is_archived: bool,
-    pub is_general: bool,
-    pub members: Option<Vec<String>>,
-    pub topic: Option<Topic>,
-    pub purpose: Option<Purpose>,
-    pub is_member: bool,
-    pub last_read: Option<String>,
-    pub unread_count: Option<i64>,
-    pub unread_count_display: Option<i64>,
-}
-
-/// See the slack api docs at: https://api.slack.com/
-// Currently missing "latest" field
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct Group {
-	pub id: String,
-	pub name: String,
-	pub is_group: bool,
-	pub created: i64,
-	pub creator:  String,
-	pub is_archived:  bool,
-	pub members: Option<Vec<String>>,
-	pub topic: Option<Topic>,
-	pub purpose: Option<Purpose>,
-	pub last_read: Option<String>,
-	pub unread_count: Option<i64>,
-	pub unread_count_display: Option<i64>,
-}
-
-
-/// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct User {
-    pub id: String,
-    pub name: String,
-    pub is_admin: Option<bool>,
-    pub is_owner: Option<bool>,
-    pub is_primary_owner: Option<bool>,
-    pub deleted: bool,
-    pub is_bot: bool,
-    pub tz_offset: Option<i64>,
-}
-
-/// See the slack api docs at: https://api.slack.com/
-// We've left out the prefs field for now
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct SelfData {
-    pub id: String,
-    pub name: String,
-    pub created: i64,
-    pub manual_presence: String,
-}
-
-/// See the slack api docs at: https://api.slack.com/
-// We've left out the prefs field for now
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct Team {
-	pub id: String,
-    pub name: String,
-    pub email_domain: String,
-	pub domain: String,
-    pub msg_edit_window_mins: i64,
-	pub over_storage_limit: bool,
-    pub plan: String,
-}
-
-/// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct Topic {
-    pub value: String,
-    pub creator: String,
-    pub last_set: i64,
-}
-
-/// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct Purpose {
-    pub value: String,
-    pub creator: String,
-    pub last_set: i64,
-}
-
-/// See the slack api docs at: https://api.slack.com/
-#[derive(RustcDecodable, RustcEncodable, Clone, Debug)]
-pub struct Im {
-	pub id: String,
-	pub is_im: bool,
-	pub user:  String,
-	pub created: i64,
-	pub is_user_deleted: Option<bool>,
-}
-
-/// See the slack api docs at: https://api.slack.com/
-// Bots field ignored for now
-//#[derive(RustcDecodable, RustcEncodable, Debug)]
-#[allow(dead_code)]
-pub struct RtmStart {
-  pub ok: bool,
-	pub url: String,
-	pub self_data: SelfData,
-	pub team: Team,
-	pub users: Vec<User>,
-	pub channels: Vec<Channel>,
-	pub groups: Vec<Group>,
-	pub ims: Vec<Im>,
-}
-
-// This is an ugly hack, we have to compile with --pretty expanded and fix up self to map to self_data.
-// An alternative would be using serde, but it won't do what we need on stable.
-impl ::rustc_serialize::Decodable for RtmStart {
-    fn decode<__D: ::rustc_serialize::Decoder>(__arg_0: &mut __D)
-     -> ::std::result::Result<RtmStart, __D::Error> {
-        __arg_0.read_struct("RtmStart", 8usize, |_d| -> _ {
-                            ::std::result::Result::Ok(RtmStart{ok:
-                                                                   match _d.read_struct_field("ok",
-                                                                                              0usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               url:
-                                                                   match _d.read_struct_field("url",
-                                                                                              1usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               self_data:
-                                                                   match _d.read_struct_field("self",
-                                                                                              2usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               team:
-                                                                   match _d.read_struct_field("team",
-                                                                                              3usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               users:
-                                                                   match _d.read_struct_field("users",
-                                                                                              4usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               channels:
-                                                                   match _d.read_struct_field("channels",
-                                                                                              5usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               groups:
-                                                                   match _d.read_struct_field("groups",
-                                                                                              6usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               ims:
-                                                                   match _d.read_struct_field("ims",
-                                                                                              7usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },}) })
-    }
-}
-
-// used only by update_users
-#[allow(dead_code)]
-#[derive(RustcDecodable)]
-struct UserListResponse {
-    ok: bool,
-    err: Option<String>,
-    members: Option<Vec<User>>,
-}
-
-// used only by update_groups
-#[allow(dead_code)]
-#[derive(RustcDecodable)]
-struct GroupListResponse {
-    ok: bool,
-    err: Option<String>,
-    groups: Option<Vec<Group>>,
-}
-
-// used only by update_channels
-#[allow(dead_code)]
-#[derive(RustcDecodable)]
-struct ChannelListResponse {
-    ok: bool,
-    err: Option<String>,
-    channels: Option<Vec<Channel>>,
-}
-
 /// The actual messaging client.
 pub struct RtmClient {
     token: String,
-    start_info: Option<RtmStart>,
+    start_info: Option<api::rtm::StartResponse>,
     channels: Vec<Channel>,
     groups: Vec<Group>,
     users: Vec<User>,
@@ -361,7 +118,6 @@ pub struct RtmClient {
 	msg_num: AtomicIsize,
 	outs : Option<Sender<Message>>
 }
-
 
 impl RtmClient {
 
@@ -521,15 +277,8 @@ impl RtmClient {
 	/// Logs in to slack. Call this before calling run.
 	/// Alternatively use login_and_run
 	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), Error> {
-		let res_str = try!(self.make_authed_api_call("rtm.start", HashMap::new()));
-
-        // Parse json
-        let start: RtmStart = try!(json::decode(&res_str));
-
-        // check "ok" field
-        if !start.ok {
-            return Err(Error::Api(format!("slack api error: (ok not true)")));
-        }
+        let client = hyper::Client::new();
+		let start = try!(api::rtm::start(&client, &self.token, None, None));
 
         // websocket url
 		let wss_url = try!(hyper::Url::parse(&start.url));
@@ -647,7 +396,6 @@ impl RtmClient {
 		Ok(())
 	}
 
-
 	/// Runs the main loop for the client after logging in to slack,
 	/// returns an error if the process fails at an point, or an Ok(()) on succesful
 	/// close.
@@ -663,64 +411,29 @@ impl RtmClient {
 		self.run(handler, client, rx)
 	}
 
-
     /// Uses https://api.slack.com/methods/users.list to get a list of users
     pub fn list_users(&mut self) -> Result<Vec<User>, Error> {
-        let res_str = try!(self.make_authed_api_call("users.list", HashMap::new()));
+        let client = hyper::Client::new();
+        let data = try!(api::users::list(&client, &self.token, None));
 
-        // now that we know it isn't an error, decode
-        let data: UserListResponse = try!(json::decode(&res_str));
-
-        if let Some(err) = data.err {
-            return Err(Error::Api(format!("Got a slack error: {}", err)));
-        }
-
-        let members = match data.members {
-            Some(m) => m,
-            None => return Err(Error::Api(String::from("Members field missing in users.List response!"))),
-        };
-
-        Ok(members)
+        Ok(data.members)
     }
 
     /// Uses https://api.slack.com/methods/channels.list to get a list of channels
     pub fn list_channels(&mut self) -> Result<Vec<Channel>, Error> {
-        let res_str = try!(self.make_authed_api_call("channels.list", HashMap::new()));
+        let client = hyper::Client::new();
+        let data = try!(api::channels::list(&client, &self.token, None));
 
-        // now that we know it isn't an error, decode
-        let data: ChannelListResponse = try!(json::decode(&res_str));
-
-        if let Some(err) = data.err {
-            return Err(Error::Api(format!("Got a slack error: {}", err)));
-        }
-
-        let channels = match data.channels {
-            Some(c) => c,
-            None => return Err(Error::Api(String::from("Channels field missing in users.List response!"))),
-        };
-
-        Ok(channels)
+        Ok(data.channels)
     }
 
     /// Uses https://api.slack.com/methods/groups.list to get a list of groups
     pub fn list_groups(&mut self) -> Result<Vec<Group>, Error> {
-        let res_str = try!(self.make_authed_api_call("groups.list", HashMap::new()));
+        let client = hyper::Client::new();
+        let data = try!(api::groups::list(&client, &self.token, None));
 
-        // now that we know it isn't an error, decode
-        let data: GroupListResponse = try!(json::decode(&res_str));
-
-        if let Some(err) = data.err {
-            return Err(Error::Api(format!("Got a slack error: {}", err)));
-        }
-
-        let groups = match data.groups {
-            Some(c) => c,
-            None => return Err(Error::Api(String::from("Channels field missing in users.List response!"))),
-        };
-
-        Ok(groups)
+        Ok(data.groups)
     }
-
 
     /// Uses https://api.slack.com/methods/users.list to update users
     pub fn update_users(&mut self) -> Result<Vec<User>, Error> {
@@ -765,11 +478,10 @@ impl RtmClient {
         Ok(groups)
     }
 
-
     /// Wraps https://api.slack.com/methods/chat.postMessage
     /// json_payload can be a json formatted action or simple text that will be posted as a message.
     /// See https://api.slack.com/docs/formatting
-    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<String>) -> Result<String, Error> {
+    pub fn post_message(&self, channel: &str, json_payload: &str, attachments: Option<&str>) -> Result<api::chat::PostMessageResponse, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -780,19 +492,13 @@ impl RtmClient {
             }
             false => channel,
         };
-        let mut params = HashMap::new();
-        params.insert("channel", chan_id);
-        params.insert("text", json_payload);
-        params.insert("as_user", "true");
-        if let Some(ref a) = attachments {
-            params.insert("attachments", a);
-        }
-        self.make_authed_api_call("chat.postMessage", params)
+        let client = hyper::Client::new();
+        api::chat::post_message(&client, &self.token, chan_id, json_payload, None, Some(true), None, None, attachments, None, None, None, None)
     }
 
     /// Wraps https://api.slack.com/methods/chat.delete to delete a message
     /// See the slack api docs for timestamp formatting.
-    pub fn delete_message(&self, channel: &str, timestamp: &str) -> Result<String, Error> {
+    pub fn delete_message(&self, channel: &str, timestamp: &str) -> Result<api::chat::DeleteResponse, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -803,15 +509,13 @@ impl RtmClient {
             }
             false => channel,
         };
-        let mut params = HashMap::new();
-        params.insert("channel", chan_id);
-        params.insert("ts", &timestamp);
-        self.make_authed_api_call("chat.delete", params)
+        let client = hyper::Client::new();
+        api::chat::delete(&client, &self.token, chan_id, timestamp)
     }
 
     /// Wraps https://api.slack.com/methods/channels.mark to set the read cursor in a channel
     /// See the slack api docs for timestamp formatting.
-    pub fn mark(&self, channel: &str, timestamp: &str) -> Result<String, Error> {
+    pub fn mark(&self, channel: &str, timestamp: &str) -> Result<api::channels::MarkResponse, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -822,17 +526,14 @@ impl RtmClient {
             }
             false => channel,
         };
-        let mut params = HashMap::new();
-        params.insert("channel", chan_id);
-        params.insert("ts", &timestamp);
-        self.make_authed_api_call("channels.mark", params)
+        let client = hyper::Client::new();
+        api::channels::mark(&client, &self.token, chan_id, timestamp)
     }
-
 
     /// Wraps https://api.slack.com/methods/channels.setTopic
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// topic will be json escaped.
-    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<String, Error> {
+    pub fn set_topic(&self, channel: &str, topic: &str) -> Result<api::channels::SetTopicResponse, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -846,16 +547,14 @@ impl RtmClient {
         // this will json format the string, which should escape it,
         // we'll need to slice out the quotes around it afterwards
         let escaped_topic = format!("{}",json::as_json(&topic));
-        let mut params = HashMap::new();
-        params.insert("channel", chan_id);
-        params.insert("topic", &escaped_topic[1..escaped_topic.len()-1]);
-        self.make_authed_api_call("channels.setTopic", params)
+        let client = hyper::Client::new();
+        api::channels::set_topic(&client, &self.token, chan_id, &escaped_topic[1..escaped_topic.len()-1])
     }
 
     /// Wraps https://api.slack.com/methods/channels.setPurpose
     /// if channel starts with a # then it will be looked up with get_channel_id
     /// purpose will be json escaped.
-    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<String, Error> {
+    pub fn set_purpose(&self, channel: &str, purpose: &str) -> Result<api::channels::SetPurposeResponse, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -869,15 +568,13 @@ impl RtmClient {
         // this will json format the string, which should escape it,
         // we'll need to slice out the quotes around it afterwards
         let escaped_purpose = format!("{}",json::as_json(&purpose));
-        let mut params = HashMap::new();
-        params.insert("channel", chan_id);
-        params.insert("purpose", &escaped_purpose[1..escaped_purpose.len()-1]);
-        self.make_authed_api_call("channels.setPurpose", params)
+        let client = hyper::Client::new();
+        api::channels::set_purpose(&client, &self.token, chan_id, &escaped_purpose[1..escaped_purpose.len()-1])
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
     /// if channel starts with a # then it will be looked up with get_channel_id
-    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<String, Error> {
+    pub fn add_reaction_timestamp(&self, emoji_name: &str, channel: &str, timestamp: &str) -> Result<api::reactions::AddResponse, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -888,33 +585,26 @@ impl RtmClient {
             }
             false => channel,
         };
-        let mut params = HashMap::new();
-        params.insert("name", emoji_name);
-        params.insert("channel", chan_id);
-        params.insert("timestamp", timestamp);
-        self.make_authed_api_call("reactions.add", params)
+        let client = hyper::Client::new();
+        api::reactions::add(&client, &self.token, emoji_name, None, None, Some(chan_id), Some(timestamp))
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file
-    pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<String, Error> {
-        let mut params = HashMap::new();
-        params.insert("name", emoji_name);
-        params.insert("file", file);
-        self.make_authed_api_call("reactions.add", params)
+    pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<api::reactions::AddResponse, Error> {
+        let client = hyper::Client::new();
+        api::reactions::add(&client, &self.token, emoji_name, Some(file), None, None, None)
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file comment
-    pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<String, Error> {
-        let mut params = HashMap::new();
-        params.insert("name", emoji_name);
-        params.insert("file_comment", file_comment);
-        self.make_authed_api_call("reactions.add", params)
+    pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<api::reactions::AddResponse, Error> {
+        let client = hyper::Client::new();
+        api::reactions::add(&client, &self.token, emoji_name, None, Some(file_comment), None, None)
     }
 
     /// Wraps https://api.slack.com/methods/chat.update
     /// json_payload can be a json formatted action or simple text that will be posted as a message.
     /// See https://api.slack.com/docs/formatting
-    pub fn update_message(&self, channel: &str, timestamp: &str, json_payload: &str, attachments: Option<String>) -> Result<String, Error> {
+    pub fn update_message(&self, channel: &str, timestamp: &str, json_payload: &str, attachments: Option<&str>) -> Result<api::chat::UpdateResponse, Error> {
         // fixup the channel id if channel is: `#<channel>`
         let chan_id = match channel.starts_with("#") {
             true => {
@@ -925,129 +615,47 @@ impl RtmClient {
             }
             false => channel,
         };
-        let mut params = HashMap::new();
-        params.insert("channel", chan_id);
-        params.insert("text", json_payload);
-        params.insert("ts", timestamp);
-        if let Some(ref a) = attachments {
-            params.insert("attachments", a);
-        }
-        self.make_authed_api_call("chat.update", params)
+        let client = hyper::Client::new();
+        api::chat::update(&client, &self.token, timestamp, chan_id, json_payload, attachments, None, None)
+    }
+
+    /// Wraps https://api.slack.com/methods/im.open to open a direct message channel with a user.
+    pub fn im_open(&self, user_id: &str) -> Result<api::im::OpenResponse, Error> {
+        let client = hyper::Client::new();
+        api::im::open(&client, &self.token, user_id)
     }
 
     /// Wraps https://api.slack.com/methods/channels.history to retrieve the history of messages and
     /// events from a channel.
-    pub fn channels_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<String, Error> {
-        let mut params = HashMap::new();
-        params.insert("channel", channel_id);
-        if let Some(latest) = latest {
-            params.insert("latest", latest);
-        }
-        if let Some(oldest) = oldest {
-            params.insert("oldest", oldest);
-        }
-        if let Some(inclusive) = inclusive {
-            params.insert("inclusive", if inclusive { "1" } else { "0" });
-        }
-        if let Some(ref count) = count.map(|c| c.to_string()) {
-            params.insert("count", count);
-            self.make_authed_api_call("channels.history", params)
-        } else {
-            self.make_authed_api_call("channels.history", params)
-        }
+    pub fn channels_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<api::channels::HistoryResponse, Error> {
+        let client = hyper::Client::new();
+        api::channels::history(&client, &self.token, channel_id, latest, oldest, inclusive, count)
     }
 
     /// Wraps https://api.slack.com/methods/im.close to close a direct message channel.
-    pub fn im_close(&self, channel_id: &str) -> Result<String, Error> {
-        let mut params = HashMap::new();
-        params.insert("channel", channel_id);
-        self.make_authed_api_call("im.close", params)
+    pub fn im_close(&self, channel_id: &str) -> Result<api::im::CloseResponse, Error> {
+        let client = hyper::Client::new();
+        api::im::close(&client, &self.token, channel_id)
     }
 
     /// Wraps https://api.slack.com/methods/im.history to retrieve the history of messages and
     /// events from a direct message channel.
-    pub fn im_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<String, Error> {
-        let mut params = HashMap::new();
-        params.insert("channel", channel_id);
-        if let Some(latest) = latest {
-            params.insert("latest", latest);
-        }
-        if let Some(oldest) = oldest {
-            params.insert("oldest", oldest);
-        }
-        if let Some(inclusive) = inclusive {
-            params.insert("inclusive", if inclusive { "1" } else { "0" });
-        }
-        if let Some(ref count) = count.map(|c| c.to_string()) {
-            params.insert("count", count);
-            self.make_authed_api_call("im.history", params)
-        } else {
-            self.make_authed_api_call("im.history", params)
-        }
+    pub fn im_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<api::im::HistoryResponse, Error> {
+        let client = hyper::Client::new();
+        api::im::history(&client, &self.token, channel_id, latest, oldest, inclusive, count)
     }
 
     /// Wraps https://api.slack.com/methods/im.list to get the list of all open direct message
     /// channels the user has open.
-    pub fn im_list(&self) -> Result<String, Error> {
-        self.make_authed_api_call("im.list", HashMap::new())
+    pub fn im_list(&self) -> Result<api::im::ListResponse, Error> {
+        let client = hyper::Client::new();
+        api::im::list(&client, &self.token)
     }
 
     /// Wraps https://api.slack.com/methods/im.mark to move the read cursor in a direct message
     /// channel.
-    pub fn im_mark(&self, channel_id: &str, timestamp: &str) -> Result<String, Error> {
-        let mut params = HashMap::new();
-        params.insert("channel", channel_id);
-        params.insert("timestamp", timestamp);
-        self.make_authed_api_call("im.mark", params)
-    }
-
-    /// Wraps https://api.slack.com/methods/im.open to open a direct message channel with a user.
-    pub fn im_open(&self, user_id: &str) -> Result<String, Error> {
-        let mut params = HashMap::new();
-        params.insert("user", user_id);
-        self.make_authed_api_call("im.open", params)
-    }
-
-    /// Make an API call to Slack that includes the configured token. Takes a map of parameters
-    /// that get appended to the request as query params.
-    /// Returns the response body string after checking it has "ok": true, or an Error
-    fn make_authed_api_call<'a>(&'a self, method: &str, mut custom_params: HashMap<&str, &'a str>) -> Result<String, Error> {
-        let url_string = format!("https://slack.com/api/{}", method);
-        let mut url = try!(hyper::Url::parse(&url_string));
-
-        custom_params.insert("token", &self.token[..]);
-        url.set_query_from_pairs(custom_params.into_iter());
-
-        let mut res = try!(hyper::Client::new().get(url).send());
-
-        // Read result string
-        let mut res_str = String::new();
-        try!(res.read_to_string(&mut res_str));
-
-        // decode response to check "ok" field
-        let raw_json = try!(json::Json::from_str(&res_str));
-        // check that the top level json value is an object
-        if !raw_json.is_object() {
-            return Err(Error::Api(format!("bad slack json response (not an object) {:?}", raw_json)));
-        }
-        // get object map
-        let jobj = raw_json.as_object().unwrap();
-        // check that ok field is present
-        if !jobj.contains_key("ok") {
-            return Err(Error::Api(format!("slack json reponse does not contain \"ok\" field {:?}", raw_json)));
-        }
-        // get the json value
-        let ok = jobj.get("ok").unwrap();
-        // check that it is a boolean
-        if !ok.is_boolean() {
-            return Err(Error::Api(format!("slack json reponse \"ok\" is not a boolean: {:?}", raw_json)));
-        }
-        // ensure that ok is true
-        if !ok.as_boolean().unwrap() {
-            return Err(Error::Api(format!("slack json reponse \"ok\" is not true: {:?}", raw_json)));
-        }
-
-        // return result
-        Ok(res_str)
+    pub fn im_mark(&self, channel_id: &str, timestamp: &str) -> Result<api::im::MarkResponse, Error> {
+        let client = hyper::Client::new();
+        api::im::mark(&client, &self.token, channel_id, timestamp)
     }
 }
