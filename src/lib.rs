@@ -933,6 +933,28 @@ impl RtmClient {
         self.make_authed_api_call("chat.update", params)
     }
 
+    /// Wraps https://api.slack.com/methods/channels.history to retrieve the history of messages and
+    /// events from a channel.
+    pub fn channels_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<String, Error> {
+        let mut params = HashMap::new();
+        params.insert("channel", channel_id);
+        if let Some(latest) = latest {
+            params.insert("latest", latest);
+        }
+        if let Some(oldest) = oldest {
+            params.insert("oldest", oldest);
+        }
+        if let Some(inclusive) = inclusive {
+            params.insert("inclusive", if inclusive { "1" } else { "0" });
+        }
+        if let Some(ref count) = count.map(|c| c.to_string()) {
+            params.insert("count", count);
+            self.make_authed_api_call("channels.history", params)
+        } else {
+            self.make_authed_api_call("channels.history", params)
+        }
+    }
+
     /// Wraps https://api.slack.com/methods/im.close to close a direct message channel.
     pub fn im_close(&self, channel_id: &str) -> Result<String, Error> {
         let mut params = HashMap::new();
