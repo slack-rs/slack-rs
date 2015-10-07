@@ -22,6 +22,8 @@ limitations under the License.
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.9.2: Add channels_history via https://github.com/jeehoonkang https://github.com/BenTheElder/slack-rs/pull/16
+//!
 //! Version 0.9.1 -- With help from: https://github.com/mthjones, overhaul error handling and refactor, improve api support.
 //!
 //!  - Introduced slack::error::Error
