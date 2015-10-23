@@ -22,6 +22,44 @@ limitations under the License.
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.10.1: Massive overhaul, implement support for almost all of the bots api, stronger error handling and lots of tests.
+//! Thanks a ton to https://github.com/mthjones, see https://github.com/BenTheElder/slack-rs/pull/17 for the main overhaul.
+//!
+//! Compatibility Changes: Methods that previously returned `Result<String,Error>` now return a typed `Result<Some_Slack_Response_Type, Error>`.
+//!
+//!    - `RtmClient::post_message` now returns `Result<api::chat::PostMessageResponse, Error>`
+//!
+//!    - `RtmClient::delete_message` now returns `Result<api::chat::DeleteResponse, Error>`
+//!
+//!    - `RtmClient::mark` now returns `Result<api::channels::MarkResponse, Error>`
+//!
+//!    - `RtmClient::set_topic` now returns `Result<api::channels::SetTopicResponse, Error>`
+//!
+//!    - `RtmClient::set_purpose` now returns `Result<api::channels::SetPurposeResponse, Error>`
+//!
+//!    - `RtmClient::add_reaction_timestamp` now returns `Result<api::reactions::AddResponse, Error>`
+//!
+//!    - `RtmClient::add_reaction_file` now returns `Result<api::reactions::AddResponse, Error>`
+//!
+//!    - `RtmClient::add_reaction_file_comment` now returns `Result<api::reactions::AddResponse, Error>`
+//!
+//!    - `RtmClient::update_message` now returns `Result<api::chat::UpdateResponse, Error>`
+//!
+//!    - `RtmClient::im_open` now returns `Result<api::im::OpenResponse, Error>`
+//!
+//!    - `RtmClient::channels_history` now returns `Result<api::channels::HistoryResponse, Error>`
+//!
+//!    - `RtmClient::im_close` now returns `Result<api::im::CloseResponse, Error>`
+//!
+//!    - `RtmClient::im_history` now returns `Result<api::im::HistoryResponse, Error>`
+//!
+//!    - `RtmClient::im_list` now returns `Result<api::im::ListResponse, Error>`
+//!
+//!    - `RtmClient::im_mark` now returns `Result<api::im::MarkResponse, Error>`
+//!
+//! Forthcoming releases will see the implementation of the remaining files.upload and some convenient helpers such as a message builder can be expected in a later release,
+//! and the Error::Api will expose Slack api error types more strongly in a forthcoming release.
+//!
 //! Version 0.9.2: Add channels_history via https://github.com/jeehoonkang https://github.com/BenTheElder/slack-rs/pull/16
 //!
 //! Version 0.9.1 -- With help from: https://github.com/mthjones, overhaul error handling and refactor, improve api support.
