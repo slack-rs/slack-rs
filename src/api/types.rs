@@ -134,7 +134,7 @@ pub struct User {
     pub id: String,
     pub name: String,
     pub deleted: bool,
-    pub color: String,
+    pub color: Option<String>,
     pub profile: UserProfile,
     pub is_admin: Option<bool>,
     pub is_owner: Option<bool>,

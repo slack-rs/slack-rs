@@ -49,7 +49,7 @@ impl slack::EventHandler for MyHandler {
 		// post a message as a user to the web api
 		let _ = cli.post_message("#general", "hello world! (postMessage)", None);
 		// set a channel topic via the web api
-		let _ = cli.set_topic("#general", "bots rule!");
+		//let _ = cli.set_topic("#general", "bots rule!");
 	}
 }
 
