@@ -220,7 +220,7 @@ pub struct Attachment {
 /// [`reactions.get`](https://api.slack.com/methods/reactions.get).
 #[derive(Clone,Debug)]
 pub enum Item {
-    Message { channel: String, message: Box<super::MessageEvent> },
+    Message { channel: String, message: Box<super::Message> },
     File { file: File },
     FileComment { file: File, comment: Comment }
 }
@@ -256,7 +256,7 @@ impl Decodable for Item {
 // options.
 #[derive(Clone,Debug)]
 pub enum StarredItem {
-    Message { channel: String, message: super::MessageEvent},
+    Message { channel: String, message: super::Message},
     File { file: super::File },
     FileComment { file: super::File, comment: super::Comment },
     Channel { channel: String },
@@ -303,7 +303,7 @@ impl Decodable for StarredItem {
 
 #[cfg(test)]
 mod tests {
-    use super::super::MessageEvent;
+    use super::super::Message;
     use super::*;
     use rustc_serialize::json;
 
@@ -322,7 +322,7 @@ mod tests {
             Item::Message { channel: c, message: m } => {
                 assert_eq!(c, "C2147483705");
                 match *m.clone() {
-                    MessageEvent::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
+                    Message::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                         assert_eq!(user.unwrap(), "123")
                     },
                     _ => panic!("Message decoded into incorrect variant.")
@@ -482,7 +482,7 @@ mod tests {
             StarredItem::Message { channel: c, message: m } => {
                 assert_eq!(c, "C2147483705");
                 match m.clone() {
-                    MessageEvent::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
+                    Message::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                         assert_eq!(user.unwrap(), "123");
                     },
                     _ => panic!("Message decoded into incorrect variant.")

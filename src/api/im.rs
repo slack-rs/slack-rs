@@ -48,7 +48,7 @@ pub fn history(client: &hyper::Client, token: &str, channel_id: &str, latest: Op
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct HistoryResponse {
     pub latest: String,
-    pub messages: Vec<super::MessageEvent>,
+    pub messages: Vec<super::Message>,
     pub has_more: bool,
 }
 
@@ -102,7 +102,7 @@ pub struct OpenResponse {
 mod tests {
     use hyper;
     use super::*;
-    use super::super::MessageEvent;
+    use super::super::Message;
 
     mock_slack_responder!(MockErrorResponder, r#"{"ok": false, "err": "some_error"}"#);
 
@@ -178,7 +178,7 @@ mod tests {
             panic!(format!("{:?}", err));
         }
         match result.unwrap().messages[0].clone() {
-            MessageEvent::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
+            Message::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                 assert_eq!(text.unwrap(), "Hello");
             },
             _ => panic!("Message decoded into incorrect variant.")

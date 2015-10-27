@@ -23,7 +23,7 @@ pub fn start(client: &hyper::Client, token: &str, simple_latest: Option<bool>, n
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct Bot {
     pub id: String,
-    pub deleted: bool,
+    pub deleted: Option<bool>,
     pub name: String,
     pub icons: Option<HashMap<String,String>>
 }
@@ -153,6 +153,7 @@ impl ::rustc_serialize::Decodable for StartResponse {
                                                                    },}) })
     }
 }
+
 
 #[cfg(test)]
 mod tests {

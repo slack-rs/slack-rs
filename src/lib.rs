@@ -22,6 +22,10 @@ limitations under the License.
 //! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.12.0
+//!
+//! Version 0.11.0 Bugfix changes the color field of User to `Option<String>`, see: https://github.com/BenTheElder/slack-rs/issues/22
+//!
 //! Version 0.10.1: Massive overhaul, implement support for almost all of the bots api, stronger error handling and lots of tests.
 //! Thanks a ton to https://github.com/mthjones, see https://github.com/BenTheElder/slack-rs/pull/17 for the main overhaul.
 //!
@@ -116,7 +120,7 @@ use std::collections::HashMap;
 use rustc_serialize::json;
 
 use websocket::Client;
-pub use websocket::message::Message;
+pub use websocket::message::Message as WebsocketMessage;
 use websocket::Sender as WsSender;
 use websocket::Receiver as WsReceiver;
 use websocket::dataframe::DataFrame;
@@ -154,7 +158,7 @@ pub struct RtmClient {
     group_ids: HashMap<String, String>,
     user_ids: HashMap<String, String>,
 	msg_num: AtomicIsize,
-	outs : Option<Sender<Message>>
+	outs : Option<Sender<WebsocketMessage>>
 }
 
 impl RtmClient {
@@ -179,7 +183,7 @@ impl RtmClient {
     /// Returns the sending half of the channel used internally for sending messages.
     /// Prefer send_message or send to this.
     /// Only valid after login, otherwise None.
-	pub fn get_message_sender(&self) -> Option<Sender<Message>> {
+	pub fn get_message_sender(&self) -> Option<Sender<WebsocketMessage>> {
 		self.outs.clone()
 	}
 
@@ -276,7 +280,7 @@ impl RtmClient {
 			Some(ref tx) => tx,
 			None => return Err(Error::Internal(String::from("Failed to get tx!")))
 		};
-	    try!(tx.send(Message::Text(s.to_string())).map_err(|err| Error::Internal(format!("{}", err))));
+	    try!(tx.send(WebsocketMessage::Text(s.to_string())).map_err(|err| Error::Internal(format!("{}", err))));
         Ok(())
 	}
 
@@ -308,13 +312,13 @@ impl RtmClient {
 			Some(ref tx) => tx,
 			None => return Err(Error::Internal(String::from("Failed to get tx!")))
 		};
-		try!(tx.send(Message::Text(mstr)).map_err(|err| Error::Internal(format!("{:?}", err))));
+		try!(tx.send(WebsocketMessage::Text(mstr)).map_err(|err| Error::Internal(format!("{:?}", err))));
 		Ok(())
 	}
 
 	/// Logs in to slack. Call this before calling run.
 	/// Alternatively use login_and_run
-	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), Error> {
+	pub fn login(&mut self) -> Result<(WsClient, Receiver<WebsocketMessage>), Error> {
         let client = hyper::Client::new();
 		let start = try!(api::rtm::start(&client, &self.token, None, None));
 
@@ -349,13 +353,13 @@ impl RtmClient {
 		try!(res.validate());
 
         // setup channels for passing messages
-		let (tx,rx) = channel::<Message>();
+		let (tx,rx) = channel::<WebsocketMessage>();
 		self.outs = Some(tx.clone());
 		Ok((res.begin(), rx))
 	}
 
 	/// Runs the message receive loop
-	pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<Message>) -> Result<(), Error> {
+	pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<WebsocketMessage>) -> Result<(), Error> {
 		// for sending messages
 		let tx = match self.outs {
 			Some(ref mut tx) => tx.clone(),
@@ -375,7 +379,7 @@ impl RtmClient {
 				};
 
 				let closing = match msg {
-					Message::Close(_) => { true },
+					WebsocketMessage::Close(_) => { true },
 					_ => { false }
 				};
 				match sender.send_message(msg) {
@@ -400,12 +404,12 @@ impl RtmClient {
 			};
 
 			match message {
-				Message::Text(data) => {
+				WebsocketMessage::Text(data) => {
 					handler.on_receive(self, &data);
 				},
-				Message::Ping(data) => {
+				WebsocketMessage::Ping(data) => {
 					handler.on_ping(self);
-					let message = Message::Pong(data);
+					let message = WebsocketMessage::Pong(data);
 					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => {
@@ -414,9 +418,9 @@ impl RtmClient {
 						}
 					}
 				},
-				Message::Close(data) => {
+				WebsocketMessage::Close(data) => {
 					handler.on_close(self);
-					let message = Message::Close(data);
+					let message = WebsocketMessage::Close(data);
 					match tx.send(message) {
 						Ok(_) => {},
 						Err(err) => {

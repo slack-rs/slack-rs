@@ -89,7 +89,7 @@ pub fn history(client: &hyper::Client, token: &str, channel: &str, latest: Optio
 pub struct HistoryResponse {
     pub latest: Option<String>,
     pub oldest: Option<String>,
-    pub messages: Vec<super::MessageEvent>,
+    pub messages: Vec<super::Message>,
     pub has_more: bool,
     pub is_limited: Option<bool>
 }

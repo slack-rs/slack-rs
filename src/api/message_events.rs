@@ -11,7 +11,7 @@ pub struct EditedMessageData {
 
 /// Represents Slack [message event](https://api.slack.com/events/message) types.
 #[derive(Clone,Debug)]
-pub enum MessageEvent {
+pub enum Message {
     /// The Slack [`Message`](https://api.slack.com/events/message) event that represents a message
     /// to a channel, group or im.
     Standard {
@@ -46,7 +46,7 @@ pub enum MessageEvent {
         hidden: bool,
         channel: String,
         ts: String,
-        message: Box<MessageEvent>
+        message: Box<Message>
     },
     /// Wraps the [`message_deleted`](https://api.slack.com/events/message/message_deleted) message
     /// event.
@@ -209,12 +209,12 @@ pub enum MessageEvent {
     }
 }
 
-impl Decodable for MessageEvent {
-    fn decode<D: Decoder>(d: &mut D) -> Result<MessageEvent, D::Error> {
+impl Decodable for Message {
+    fn decode<D: Decoder>(d: &mut D) -> Result<Message, D::Error> {
         d.read_struct("message", 0, |d| {
             let ty: Option<String> = try!(d.read_struct_field("subtype", 0, |d| Decodable::decode(d)));
             if ty.is_none() {
-                return Ok(MessageEvent::Standard {
+                return Ok(Message::Standard {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
@@ -228,7 +228,7 @@ impl Decodable for MessageEvent {
             }
             let ty = ty.unwrap();
             if ty == "bot_message" {
-                Ok(MessageEvent::BotMessage {
+                Ok(Message::BotMessage {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     bot_id: try!(d.read_struct_field("bot_id", 0, |d| Decodable::decode(d))),
@@ -236,55 +236,55 @@ impl Decodable for MessageEvent {
                     icons: try!(d.read_struct_field("icons", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "me_message" {
-                Ok(MessageEvent::MeMessage {
+                Ok(Message::MeMessage {
                     channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "message_changed" {
-                Ok(MessageEvent::MessageChanged {
+                Ok(Message::MessageChanged {
                     hidden: try!(d.read_struct_field("hidden", 0, |d| Decodable::decode(d))),
                     channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "message_deleted" {
-                Ok(MessageEvent::MessageDeleted {
+                Ok(Message::MessageDeleted {
                     hidden: try!(d.read_struct_field("hidden", 0, |d| Decodable::decode(d))),
                     channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     deleted_ts: try!(d.read_struct_field("deleted_ts", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "channel_join" {
-                Ok(MessageEvent::ChannelJoin {
+                Ok(Message::ChannelJoin {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     inviter: try!(d.read_struct_field("inviter", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "channel_leave" {
-                Ok(MessageEvent::ChannelLeave {
+                Ok(Message::ChannelLeave {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "channel_topic" {
-                Ok(MessageEvent::ChannelTopic {
+                Ok(Message::ChannelTopic {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     topic: try!(d.read_struct_field("topic", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "channel_purpose" {
-                Ok(MessageEvent::ChannelPurpose {
+                Ok(Message::ChannelPurpose {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     purpose: try!(d.read_struct_field("purpose", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "channel_name" {
-                Ok(MessageEvent::ChannelName {
+                Ok(Message::ChannelName {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     old_name: try!(d.read_struct_field("old_name", 0, |d| Decodable::decode(d))),
@@ -292,47 +292,47 @@ impl Decodable for MessageEvent {
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "channel_archive" {
-                Ok(MessageEvent::ChannelArchive {
+                Ok(Message::ChannelArchive {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     members: try!(d.read_struct_field("members", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "channel_unarchive" {
-                Ok(MessageEvent::ChannelUnarchive {
+                Ok(Message::ChannelUnarchive {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "group_join" {
-                Ok(MessageEvent::GroupJoin {
+                Ok(Message::GroupJoin {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     inviter: try!(d.read_struct_field("inviter", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "group_leave" {
-                Ok(MessageEvent::GroupLeave {
+                Ok(Message::GroupLeave {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "group_topic" {
-                Ok(MessageEvent::GroupTopic {
+                Ok(Message::GroupTopic {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     topic: try!(d.read_struct_field("topic", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "group_purpose" {
-                Ok(MessageEvent::GroupPurpose {
+                Ok(Message::GroupPurpose {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     purpose: try!(d.read_struct_field("purpose", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "group_name" {
-                Ok(MessageEvent::GroupName {
+                Ok(Message::GroupName {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     old_name: try!(d.read_struct_field("old_name", 0, |d| Decodable::decode(d))),
@@ -340,20 +340,20 @@ impl Decodable for MessageEvent {
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "group_archive" {
-                Ok(MessageEvent::GroupArchive {
+                Ok(Message::GroupArchive {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     members: try!(d.read_struct_field("members", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "group_unarchive" {
-                Ok(MessageEvent::GroupUnarchive {
+                Ok(Message::GroupUnarchive {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "file_share" {
-                Ok(MessageEvent::FileShare {
+                Ok(Message::FileShare {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
@@ -361,21 +361,21 @@ impl Decodable for MessageEvent {
                     upload: try!(d.read_struct_field("upload", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "file_comment" {
-                Ok(MessageEvent::FileComment {
+                Ok(Message::FileComment {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
                     comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "file_mention" {
-                Ok(MessageEvent::FileMention {
+                Ok(Message::FileMention {
                     ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
                     file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "pinned_item" {
-                Ok(MessageEvent::PinnedItem {
+                Ok(Message::PinnedItem {
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     item_type: try!(d.read_struct_field("item_type", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
@@ -385,7 +385,7 @@ impl Decodable for MessageEvent {
                     attachments: try!(d.read_struct_field("attachments", 0, |d| Decodable::decode(d)))
                 })
             } else if ty == "unpinned_item" {
-                Ok(MessageEvent::UnpinnedItem {
+                Ok(Message::UnpinnedItem {
                     user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
                     item_type: try!(d.read_struct_field("item_type", 0, |d| Decodable::decode(d))),
                     text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
@@ -395,7 +395,7 @@ impl Decodable for MessageEvent {
                     attachments: try!(d.read_struct_field("attachments", 0, |d| Decodable::decode(d)))
                 })
             } else {
-                Err(d.error(&format!("Unknown MessageEvent type: {}", ty)))
+                Err(d.error(&format!("Unknown Message type: {}", ty)))
             }
         })
     }
@@ -409,7 +409,7 @@ mod tests {
 
     #[test]
     fn decode_short_standard_message() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "ts": "1234567890.218332",
             "user": "U12345678",
@@ -417,7 +417,7 @@ mod tests {
             "channel": "C12345678"
         }"#).unwrap();
         match message {
-            MessageEvent::Standard { ts, channel: _, user, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
+            Message::Standard { ts, channel: _, user, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                 assert_eq!(ts, "1234567890.218332");
                 assert_eq!(text.unwrap(), "Hello world");
                 assert_eq!(user.unwrap(), "U12345678");
@@ -428,7 +428,7 @@ mod tests {
 
     #[test]
     fn decode_extended_standard_message() {
-        let message: MessageEvent = json::decode(r##"{
+        let message: Message = json::decode(r##"{
             "type": "message",
             "ts": "1234567890.218332",
             "user": "U12345678",
@@ -471,7 +471,7 @@ mod tests {
             ]
         }"##).unwrap();
         match message {
-            MessageEvent::Standard { ts: _, channel: _, user: _, text: _, is_starred, pinned_to: _, reactions: _, edited: _, attachments } => {
+            Message::Standard { ts: _, channel: _, user: _, text: _, is_starred, pinned_to: _, reactions: _, edited: _, attachments } => {
                 assert_eq!(is_starred, Some(false));
                 assert_eq!(attachments.unwrap()[0].color.as_ref().unwrap(), "#36a64f");
             },
@@ -481,7 +481,7 @@ mod tests {
 
     #[test]
     fn decode_bot_message() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "bot_message",
             "ts": "1358877455.000010",
@@ -493,7 +493,7 @@ mod tests {
             }
         }"#).unwrap();
         match message {
-            MessageEvent::BotMessage { ts, text, bot_id, username, icons: _ } => {
+            Message::BotMessage { ts, text, bot_id, username, icons: _ } => {
                 assert_eq!(ts, "1358877455.000010");
                 assert_eq!(text, "Pushing is the answer");
                 assert_eq!(bot_id, "BB12033");
@@ -505,7 +505,7 @@ mod tests {
 
     #[test]
     fn decode_me_message() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "me_message",
             "channel": "C2147483705",
@@ -514,7 +514,7 @@ mod tests {
             "ts": "1355517523.000005"
         }"#).unwrap();
         match message {
-            MessageEvent::MeMessage { ts, text, user, channel } => {
+            Message::MeMessage { ts, text, user, channel } => {
                 assert_eq!(ts, "1355517523.000005");
                 assert_eq!(text, "is doing that thing");
                 assert_eq!(channel, "C2147483705");
@@ -526,7 +526,7 @@ mod tests {
 
     #[test]
     fn decode_message_changed() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "message_changed",
             "hidden": true,
@@ -544,11 +544,11 @@ mod tests {
             }
         }"#).unwrap();
         match message {
-            MessageEvent::MessageChanged { hidden: _, channel, ts, message } => {
+            Message::MessageChanged { hidden: _, channel, ts, message } => {
                 assert_eq!(ts, "1358878755.000001");
                 assert_eq!(channel, "C2147483705");
                 match *message.clone() {
-                    MessageEvent::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited, attachments: _ } => {
+                    Message::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited, attachments: _ } => {
                         assert_eq!(user.unwrap(), "U2147483697");
                         assert_eq!(edited.unwrap().user, "U2147483697")
                     },
@@ -561,7 +561,7 @@ mod tests {
 
     #[test]
     fn decode_message_deleted() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "message_deleted",
             "hidden": true,
@@ -570,7 +570,7 @@ mod tests {
             "deleted_ts": "1358878749.000002"
         }"#).unwrap();
         match message {
-            MessageEvent::MessageDeleted { hidden: _, channel: _, ts, deleted_ts } => {
+            Message::MessageDeleted { hidden: _, channel: _, ts, deleted_ts } => {
                 assert_eq!(ts, "1358878755.000001");
                 assert_eq!(deleted_ts, "1358878749.000002");
             },
@@ -580,7 +580,7 @@ mod tests {
 
     #[test]
     fn decode_channel_join() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "channel_join",
             "ts": "1358877458.000011",
@@ -588,7 +588,7 @@ mod tests {
             "text": "<@U2147483828|cal> has joined the channel"
         }"#).unwrap();
         match message {
-            MessageEvent::ChannelJoin { user: _, text, ts: _, inviter } => {
+            Message::ChannelJoin { user: _, text, ts: _, inviter } => {
                 assert_eq!(text, "<@U2147483828|cal> has joined the channel");
                 assert_eq!(inviter, None);
             },
@@ -598,7 +598,7 @@ mod tests {
 
     #[test]
     fn decode_channel_leave() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "channel_leave",
             "ts": "1358877455.000010",
@@ -606,7 +606,7 @@ mod tests {
             "text": "<@U2147483828|cal> has left the channel"
         }"#).unwrap();
         match message {
-            MessageEvent::ChannelLeave { user: _, text, ts: _ } => {
+            Message::ChannelLeave { user: _, text, ts: _ } => {
                 assert_eq!(text, "<@U2147483828|cal> has left the channel");
             },
             _ => panic!("Message decoded into incorrect variant.")
@@ -615,7 +615,7 @@ mod tests {
 
     #[test]
     fn decode_channel_topic() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "channel_topic",
             "ts": "1358877455.000010",
@@ -624,7 +624,7 @@ mod tests {
             "text": "<@U2147483828|cal> set the channel topic: hello world"
         }"#).unwrap();
         match message {
-            MessageEvent::ChannelTopic { user: _, text, ts: _, topic } => {
+            Message::ChannelTopic { user: _, text, ts: _, topic } => {
                 assert_eq!(topic, "hello world");
                 assert_eq!(text, "<@U2147483828|cal> set the channel topic: hello world");
             },
@@ -634,7 +634,7 @@ mod tests {
 
     #[test]
     fn decode_channel_purpose() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "channel_purpose",
             "ts": "1358877455.000010",
@@ -643,7 +643,7 @@ mod tests {
             "text": "<@U2147483828|cal> set the channel purpose: whatever"
         }"#).unwrap();
         match message {
-            MessageEvent::ChannelPurpose { user: _, text, ts: _, purpose } => {
+            Message::ChannelPurpose { user: _, text, ts: _, purpose } => {
                 assert_eq!(purpose, "whatever");
                 assert_eq!(text, "<@U2147483828|cal> set the channel purpose: whatever");
             },
@@ -653,7 +653,7 @@ mod tests {
 
     #[test]
     fn decode_channel_name() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "channel_name",
             "ts": "1358877455.000010",
@@ -663,7 +663,7 @@ mod tests {
             "text": "<@U2147483828|cal> has renamed the channek from \"random\" to \"watercooler\""
         }"#).unwrap();
         match message {
-            MessageEvent::ChannelName { ts: _, user: _, old_name, name, text: _ } => {
+            Message::ChannelName { ts: _, user: _, old_name, name, text: _ } => {
                 assert_eq!(old_name, "random");
                 assert_eq!(name, "watercooler");
             },
@@ -673,7 +673,7 @@ mod tests {
 
     #[test]
     fn decode_channel_archive() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "channel_archive",
             "ts": "1361482916.000003",
@@ -682,7 +682,7 @@ mod tests {
             "members": ["U1234", "U5678"]
         }"#).unwrap();
         match message {
-            MessageEvent::ChannelArchive { ts: _, text: _, user, members } => {
+            Message::ChannelArchive { ts: _, text: _, user, members } => {
                 assert_eq!(user, "U1234");
                 assert_eq!(members[1], "U5678");
             },
@@ -692,7 +692,7 @@ mod tests {
 
     #[test]
     fn decode_channel_unarchive() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "channel_unarchive",
             "ts": "1361482916.000003",
@@ -700,7 +700,7 @@ mod tests {
             "user": "U1234"
         }"#).unwrap();
         match message {
-            MessageEvent::ChannelUnarchive { ts: _, text: _, user } => {
+            Message::ChannelUnarchive { ts: _, text: _, user } => {
                 assert_eq!(user, "U1234");
             },
             _ => panic!("Message decoded into incorrect variant.")
@@ -709,7 +709,7 @@ mod tests {
 
     #[test]
     fn decode_group_join() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "group_join",
             "ts": "1358877458.000011",
@@ -717,7 +717,7 @@ mod tests {
             "text": "<@U2147483828|cal> has joined the group"
         }"#).unwrap();
         match message {
-            MessageEvent::GroupJoin { user: _, text, ts: _, inviter } => {
+            Message::GroupJoin { user: _, text, ts: _, inviter } => {
                 assert_eq!(text, "<@U2147483828|cal> has joined the group");
                 assert_eq!(inviter, None);
             },
@@ -727,7 +727,7 @@ mod tests {
 
     #[test]
     fn decode_group_leave() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "group_leave",
             "ts": "1358877455.000010",
@@ -735,7 +735,7 @@ mod tests {
             "text": "<@U2147483828|cal> has left the group"
         }"#).unwrap();
         match message {
-            MessageEvent::GroupLeave { user: _, text, ts: _ } => {
+            Message::GroupLeave { user: _, text, ts: _ } => {
                 assert_eq!(text, "<@U2147483828|cal> has left the group");
             },
             _ => panic!("Message decoded into incorrect variant.")
@@ -744,7 +744,7 @@ mod tests {
 
     #[test]
     fn decode_group_topic() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "group_topic",
             "ts": "1358877455.000010",
@@ -753,7 +753,7 @@ mod tests {
             "text": "<@U2147483828|cal> set the group topic: hello world"
         }"#).unwrap();
         match message {
-            MessageEvent::GroupTopic { user: _, text, ts: _, topic } => {
+            Message::GroupTopic { user: _, text, ts: _, topic } => {
                 assert_eq!(topic, "hello world");
                 assert_eq!(text, "<@U2147483828|cal> set the group topic: hello world");
             },
@@ -763,7 +763,7 @@ mod tests {
 
     #[test]
     fn decode_group_purpose() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "group_purpose",
             "ts": "1358877455.000010",
@@ -772,7 +772,7 @@ mod tests {
             "text": "<@U2147483828|cal> set the group purpose: whatever"
         }"#).unwrap();
         match message {
-            MessageEvent::GroupPurpose { user: _, text, ts: _, purpose } => {
+            Message::GroupPurpose { user: _, text, ts: _, purpose } => {
                 assert_eq!(purpose, "whatever");
                 assert_eq!(text, "<@U2147483828|cal> set the group purpose: whatever");
             },
@@ -782,7 +782,7 @@ mod tests {
 
     #[test]
     fn decode_group_name() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "group_name",
             "ts": "1358877455.000010",
@@ -792,7 +792,7 @@ mod tests {
             "text": "<@U2147483828|cal> has renamed the group from \"random\" to \"watercooler\""
         }"#).unwrap();
         match message {
-            MessageEvent::GroupName { ts: _, user: _, old_name, name, text: _ } => {
+            Message::GroupName { ts: _, user: _, old_name, name, text: _ } => {
                 assert_eq!(old_name, "random");
                 assert_eq!(name, "watercooler");
             },
@@ -802,7 +802,7 @@ mod tests {
 
     #[test]
     fn decode_group_archive() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "group_archive",
             "ts": "1361482916.000003",
@@ -811,7 +811,7 @@ mod tests {
             "members": ["U1234", "U5678"]
         }"#).unwrap();
         match message {
-            MessageEvent::GroupArchive { ts: _, text: _, user, members } => {
+            Message::GroupArchive { ts: _, text: _, user, members } => {
                 assert_eq!(user, "U1234");
                 assert_eq!(members[1], "U5678");
             },
@@ -821,7 +821,7 @@ mod tests {
 
     #[test]
     fn decode_group_unarchive() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "group_unarchive",
             "ts": "1361482916.000003",
@@ -829,7 +829,7 @@ mod tests {
             "user": "U1234"
         }"#).unwrap();
         match message {
-            MessageEvent::GroupUnarchive { ts: _, text: _, user } => {
+            Message::GroupUnarchive { ts: _, text: _, user } => {
                 assert_eq!(user, "U1234");
             },
             _ => panic!("Message decoded into incorrect variant.")
@@ -838,7 +838,7 @@ mod tests {
 
     #[test]
     fn decode_file_share() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "file_share",
             "ts": "1358877455.000010",
@@ -898,7 +898,7 @@ mod tests {
             "upload": true
         }"#).unwrap();
         match message {
-            MessageEvent::FileShare { ts: _, file, text, user: _, upload: _ } => {
+            Message::FileShare { ts: _, file, text, user: _, upload: _ } => {
                 assert_eq!(text, "<@cal> uploaded a file: <https:...7.png|7.png>");
                 assert_eq!(file.id, "F12345678");
             },
@@ -908,7 +908,7 @@ mod tests {
 
     #[test]
     fn decode_file_comment() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "file_comment",
             "ts": "1358877455.000010",
@@ -972,7 +972,7 @@ mod tests {
             }
         }"#).unwrap();
         match message {
-            MessageEvent::FileComment { ts: _, file, text, comment } => {
+            Message::FileComment { ts: _, file, text, comment } => {
                 assert_eq!(text, "<@cal> commented on a file: ...");
                 assert_eq!(file.id, "F12345678");
                 assert_eq!(comment.id, "Fc12345678");
@@ -983,7 +983,7 @@ mod tests {
 
     #[test]
     fn decode_file_mention() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "file_mention",
             "ts": "1358877455.000010",
@@ -1042,7 +1042,7 @@ mod tests {
             "user": "U2147483697"
         }"#).unwrap();
         match message {
-            MessageEvent::FileMention { ts: _, file, text, user: _ } => {
+            Message::FileMention { ts: _, file, text, user: _ } => {
                 assert_eq!(text, "<@cal> mentioned a file: <https:...7.png|7.png>");
                 assert_eq!(file.id, "F12345678");
             },
@@ -1052,7 +1052,7 @@ mod tests {
 
     #[test]
     fn decode_pinned_item() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "pinned_item",
             "user": "U024BE7LH",
@@ -1116,7 +1116,7 @@ mod tests {
             "ts": "1360782804.083113"
         }"#).unwrap();
         match message {
-            MessageEvent::PinnedItem { ts: _, user: _, item_type, text: _, item, channel: _, attachments: _ } => {
+            Message::PinnedItem { ts: _, user: _, item_type, text: _, item, channel: _, attachments: _ } => {
                 assert_eq!(item_type, "F");
                 match item.unwrap() {
                     Item::File { file } => {
@@ -1131,7 +1131,7 @@ mod tests {
 
     #[test]
     fn decode_pinned_item_no_item() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "pinned_item",
             "user": "U12345678",
@@ -1152,7 +1152,7 @@ mod tests {
             "ts": "1445226479.000003"
         }"#).unwrap();
         match message {
-            MessageEvent::PinnedItem { ts: _, user: _, item_type: _, text: _, item, channel: _, attachments } => {
+            Message::PinnedItem { ts: _, user: _, item_type: _, text: _, item, channel: _, attachments } => {
                 assert!(item.is_none());
                 assert_eq!(attachments.unwrap()[0].color.as_ref().unwrap(), "D0D0D0");
             },
@@ -1162,7 +1162,7 @@ mod tests {
 
     #[test]
     fn decode_unpinned_item() {
-        let message: MessageEvent = json::decode(r#"{
+        let message: Message = json::decode(r#"{
             "type": "message",
             "subtype": "unpinned_item",
             "user": "USLACKBOT",
@@ -1226,7 +1226,7 @@ mod tests {
             "ts": "1360782804.083113"
         }"#).unwrap();
         match message {
-            MessageEvent::UnpinnedItem { ts: _, user: _, item_type, text: _, item, channel: _, attachments: _ } => {
+            Message::UnpinnedItem { ts: _, user: _, item_type, text: _, item, channel: _, attachments: _ } => {
                 assert_eq!(item_type, "G");
                 match item.unwrap() {
                     Item::File { file } => {

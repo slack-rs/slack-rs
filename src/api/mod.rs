@@ -24,7 +24,7 @@ mod types;
 pub use self::types::*;
 
 mod message_events;
-pub use self::message_events::MessageEvent;
+pub use self::message_events::Message;
 
 pub mod api;
 pub mod auth;

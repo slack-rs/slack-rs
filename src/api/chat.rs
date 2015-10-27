@@ -65,7 +65,7 @@ pub fn post_message(client: &hyper::Client, token: &str, channel: &str, text: &s
 pub struct PostMessageResponse {
     pub ts: String,
     pub channel: String,
-    pub message: super::MessageEvent,
+    pub message: super::Message,
 }
 
 /// Updates a message.
