@@ -200,7 +200,7 @@ pub struct AttachmentField {
 /// richly-formatted messages.
 #[derive(Clone,Debug,RustcDecodable,RustcEncodable)]
 pub struct Attachment {
-    pub fallback: String,
+    pub fallback: Option<String>,
     pub color: Option<String>,
     pub pretext: Option<String>,
     pub author_name: Option<String>,

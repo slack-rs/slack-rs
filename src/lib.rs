@@ -110,7 +110,7 @@ pub mod error;
 use error::Error;
 
 pub mod api;
-pub use api::{Attachment,Channel,Group,Im,Team,User};
+pub use api::{Attachment,Channel,Group,Im,Team,User,Event};
 
 use std::sync::mpsc::{Sender,Receiver,channel};
 use std::thread;
@@ -132,19 +132,19 @@ pub type WsClient = Client<websocket::dataframe::DataFrame,
 
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
-	/// When a message is received this will be called with self, the slack client,
-	/// and the json encoded string payload.
-	fn on_receive(&mut self, cli: &mut RtmClient, json_str: &str);
+    /// When a message is received this will be called with self, the slack client,
+    /// and the event received.
+    fn on_event(&mut self, cli: &mut RtmClient, event: &Event);
 
-	/// Called when a ping is received; you do NOT need to handle the reply pong,
-	/// but you may use this event to track the connection as a keep-alive.
-	fn on_ping(&mut self, cli: &mut RtmClient);
+    /// Called when a ping is received; you do NOT need to handle the reply pong,
+    /// but you may use this event to track the connection as a keep-alive.
+    fn on_ping(&mut self, cli: &mut RtmClient);
 
-	/// Called when the connection is closed for any reason.
-	fn on_close(&mut self, cli: &mut RtmClient);
+    /// Called when the connection is closed for any reason.
+    fn on_close(&mut self, cli: &mut RtmClient);
 
-	/// Called when the connection is opened.
-	fn on_connect(&mut self, cli: &mut RtmClient);
+    /// Called when the connection is opened.
+    fn on_connect(&mut self, cli: &mut RtmClient);
 }
 
 /// The actual messaging client.
@@ -405,7 +405,8 @@ impl RtmClient {
 
 			match message {
 				WebsocketMessage::Text(data) => {
-					handler.on_receive(self, &data);
+                    let event: Event = try!(json::decode(&data));
+					handler.on_event(self, &event);
 				},
 				WebsocketMessage::Ping(data) => {
 					handler.on_ping(self);
