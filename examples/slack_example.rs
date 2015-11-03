@@ -21,28 +21,24 @@ limitations under the License.
 
 extern crate slack;
 
-
-struct MyHandler {
-	count : i64
-}
+struct MyHandler;
 
 #[allow(unused_variables)]
 impl slack::EventHandler for MyHandler {
-	fn on_receive(&mut self, cli: &mut slack::RtmClient, json_str: &str){
-		println!("Received[{}]: {}", self.count, json_str.to_string());
-		self.count = self.count + 1;
+	fn on_event(&mut self, cli: &mut slack::RtmClient, event: &slack::Event){
+		println!("on_event(event: {:?})", event);
 	}
 
 	fn on_ping(&mut self, cli: &mut slack::RtmClient){
-		println!("<on_ping>");
+		println!("on_ping");
 	}
 
 	fn on_close(&mut self, cli: &mut slack::RtmClient){
-		println!("<on_close>");
+		println!("on_close");
 	}
 
 	fn on_connect(&mut self, cli: &mut slack::RtmClient){
-		println!("<on_connect>");
+		println!("on_connect");
 		// Do a few things using the api:
 		// send a message over the real time api websocket
 		let _ = cli.send_message("#general", "Hello world! (rtm)");
@@ -56,12 +52,12 @@ impl slack::EventHandler for MyHandler {
 fn main(){
   	let args: Vec<String> = std::env::args().collect();
   	let api_key = match args.len() {
-    	0 | 1 => panic!("No api-key in args! Usage: ./slack-demo <api-key>"),
+    	0 | 1 => panic!("No api-key in args! Usage: cargo run slack_example -- <api-key>"),
     	x => {
       		args[x-1].clone()
     	}
   	};
-  	let mut handler = MyHandler{count: 0};
+  	let mut handler = MyHandler;
   	let mut cli = slack::RtmClient::new(&api_key);
   	let r = cli.login_and_run::<MyHandler>(&mut handler);
   	match r {

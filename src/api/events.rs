@@ -6,7 +6,7 @@ pub enum Event {
     /// Represents the slack [`hello`](https://api.slack.com/events/hello) event.
     Hello,
     /// Represents the slack [`message`](https://api.slack.com/events/message) event.
-    MessageEvent(super::Message),
+    Message(super::Message),
     /// Represents the slack [`user_typing`](https://api.slack.com/events/user_typing) event.
     UserTyping {
         channel: String,
@@ -278,7 +278,7 @@ impl Decodable for Event {
         if ty == "hello" {
             return Ok(Event::Hello);
         } else if ty == "message" {
-            Ok(Event::MessageEvent(try!(super::Message::decode(d))))
+            Ok(Event::Message(try!(super::Message::decode(d))))
         } else if ty == "user_typing" {
             Ok(Event::UserTyping {
                 channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
@@ -547,3 +547,94 @@ impl Decodable for Event {
         }
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rustc_serialize::json;
+
+    #[test]
+    fn decode_short_standard_message() {
+        let event: Event = json::decode(r#"{
+            "type": "message",
+            "ts": "1234567890.218332",
+            "user": "U12345678",
+            "text": "Hello world",
+            "channel": "C12345678"
+        }"#).unwrap();
+        match event {
+            Event::Message(message) => {
+                match message {
+                    super::super::Message::Standard { ts, channel: _, user, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
+                        assert_eq!(ts, "1234567890.218332");
+                        assert_eq!(text.unwrap(), "Hello world");
+                        assert_eq!(user.unwrap(), "U12345678");
+                    },
+                    _ => panic!("Message decoded into incorrect variant.")
+                };
+            },
+            _ => panic!("Event decoded into incorrect variant.")
+        };
+    }
+
+    #[test]
+    fn decode_extended_standard_message() {
+        let event: Event = json::decode(r##"{
+            "type": "message",
+            "ts": "1234567890.218332",
+            "user": "U12345678",
+            "text": "Hello world",
+            "channel": "C12345678",
+            "is_starred": false,
+            "pinned_to": [ "C12345678" ],
+            "reactions": [
+                {
+                    "name": "astonished",
+                    "count": 5,
+                    "users": [ "U12345678", "U87654321" ]
+                }
+            ],
+            "edited": {
+                "user": "U12345678",
+                "ts": "1234567890.218332"
+            },
+            "attachments": [
+                {
+                    "fallback": "Required plain-text summary of the attachment.",
+                    "color": "#36a64f",
+                    "pretext": "Optional text that appears above the attachment block",
+                    "author_name": "Bobby Tables",
+                    "author_link": "http://flickr.com/bobby/",
+                    "author_icon": "http://flickr.com/icons/bobby.jpg",
+                    "title": "Slack API Documentation",
+                    "title_link": "https://api.slack.com/",
+                    "text": "Optional text that appears within the attachment",
+                    "fields": [
+                        {
+                            "title": "Priority",
+                            "value": "High",
+                            "short": false
+                        }
+                    ],
+                    "image_url": "http://my-website.com/path/to/image.jpg",
+                    "thumb_url": "http://example.com/path/to/thumb.png"
+                }
+            ]
+        }"##).unwrap();
+        match event {
+            Event::Message(message) => {
+                match message {
+                    super::super::Message::Standard { ts: _, channel: _, user: _, text: _, is_starred, pinned_to: _, reactions: _, edited: _, attachments } => {
+                        assert_eq!(is_starred, Some(false));
+                        assert_eq!(attachments.unwrap()[0].color.as_ref().unwrap(), "#36a64f");
+                    },
+                    _ => panic!("Message decoded into incorrect variant.")
+                };
+            },
+            _ => panic!("Event decoded into incorrect variant.")
+        };
+    }
+
+}
+

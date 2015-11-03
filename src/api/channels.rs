@@ -234,7 +234,7 @@ pub struct UnarchiveResponse;
 mod tests {
     use hyper;
     use super::*;
-    use super::super::MessageEvent;
+    use super::super::Message;
 
     mock_slack_responder!(MockErrorResponder, r#"{"ok": false, "err": "some_error"}"#);
 
@@ -328,7 +328,7 @@ mod tests {
             panic!(format!("{:?}", err));
         }
         match result.unwrap().messages[0].clone() {
-            MessageEvent::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
+            Message::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                 assert_eq!(text.unwrap(), "lol");
             },
             _ => panic!("Message decoded into incorrect variant.")

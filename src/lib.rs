@@ -110,7 +110,7 @@ pub mod error;
 use error::Error;
 
 pub mod api;
-pub use api::{Attachment,Channel,Group,Im,Team,User,Event};
+pub use api::{Attachment,Channel,Group,Im,Team,User,Event,Message};
 
 use std::sync::mpsc::{Sender,Receiver,channel};
 use std::thread;

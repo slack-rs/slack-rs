@@ -114,7 +114,7 @@ mod tests {
     use hyper;
     use super::*;
     use super::super::Item;
-    use super::super::MessageEvent;
+    use super::super::Message;
 
     mock_slack_responder!(MockErrorResponder, r#"{"ok": false, "err": "some_error"}"#);
 
@@ -174,7 +174,7 @@ mod tests {
             Item::Message { channel: c, message: m } => {
                 assert_eq!(c, "C1234567890");
                 match *m.clone() {
-                    MessageEvent::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions, edited: _, attachments: _ } => {
+                    Message::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions, edited: _, attachments: _ } => {
                         assert_eq!(text.unwrap(), "Hello world");
                         assert_eq!(reactions.unwrap()[0].name, "astonished");
                     },
