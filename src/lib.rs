@@ -107,7 +107,7 @@ extern crate url;
 extern crate yup_hyper_mock;
 
 pub mod error;
-use error::Error;
+pub use error::Error;
 
 pub mod api;
 pub use api::{Attachment,Channel,Group,Im,Team,User,Event,Message};
@@ -133,8 +133,8 @@ pub type WsClient = Client<websocket::dataframe::DataFrame,
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
     /// When a message is received this will be called with self, the slack client,
-    /// and the event received.
-    fn on_event(&mut self, cli: &mut RtmClient, event: &Event);
+    /// and the result of parsing the event received, as well as the raw json string.
+    fn on_event(&mut self, cli: &mut RtmClient, event: Result<&Event, Error>, raw_json: &str);
 
     /// Called when a ping is received; you do NOT need to handle the reply pong,
     /// but you may use this event to track the connection as a keep-alive.
@@ -405,8 +405,11 @@ impl RtmClient {
 
 			match message {
 				WebsocketMessage::Text(data) => {
-                    let event: Event = try!(json::decode(&data));
-					handler.on_event(self, &event);
+                    match json::decode(&data) {
+                        Ok(event) => handler.on_event(self, Ok(&event), &data),
+                        Err(err) => handler.on_event(self, Err(Error::JsonDecode(err)), &data),
+                    }
+
 				},
 				WebsocketMessage::Ping(data) => {
 					handler.on_ping(self);
