@@ -1,6 +1,7 @@
 //! Get info on members of your Slack team.
 //!
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -24,7 +25,7 @@ pub struct GetPresenceResponse {
     pub auto_away: Option<bool>,
     pub manual_away: Option<bool>,
     pub connection_count: Option<u32>,
-    pub last_activity: Option<u32>
+    pub last_activity: Option<u32>,
 }
 
 /// Gets information about a user.
@@ -38,7 +39,7 @@ pub fn info(client: &hyper::Client, token: &str, user: &str) -> ApiResult<InfoRe
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct InfoResponse {
-    pub user: super::User
+    pub user: super::User,
 }
 
 /// Lists all users in a Slack team.
@@ -47,14 +48,19 @@ pub struct InfoResponse {
 pub fn list(client: &hyper::Client, token: &str, presence: Option<bool>) -> ApiResult<ListResponse> {
     let mut params = HashMap::new();
     if let Some(presence) = presence {
-        params.insert("presence", if presence { "1" } else { "0" });
+        params.insert("presence",
+                      if presence {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     make_authed_api_call(client, "users.list", token, params)
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct ListResponse {
-    pub members: Vec<super::User>
+    pub members: Vec<super::User>,
 }
 
 /// Marks a user as active.
@@ -172,7 +178,8 @@ mod tests {
         }
         let result = result.unwrap();
         assert_eq!(result.user.id, "U023BECGF");
-        assert_eq!(result.user.profile.email.as_ref().unwrap(), "bobby@slack.com");
+        assert_eq!(result.user.profile.email.as_ref().unwrap(),
+                   "bobby@slack.com");
     }
 
     mock_slack_responder!(MockListOkResponder, r#"
@@ -238,7 +245,8 @@ mod tests {
         }
         let result = result.unwrap();
         assert_eq!(result.members[1].id, "U12345678");
-        assert_eq!(result.members[0].profile.email.as_ref().unwrap(), "bobby@slack.com");
+        assert_eq!(result.members[0].profile.email.as_ref().unwrap(),
+                   "bobby@slack.com");
     }
 
     mock_slack_responder!(MockSetActiveOkResponder, r#"{"ok": true}"#);

@@ -1,4 +1,4 @@
-use rustc_serialize::{Decodable,Decoder};
+use rustc_serialize::{Decodable, Decoder};
 
 /// The `Reaction` object as found in the [`File`](https://api.slack.com/types/file) type and some
 /// [`Message`](https://api.slack.com/events/message) responses.
@@ -6,7 +6,7 @@ use rustc_serialize::{Decodable,Decoder};
 pub struct Reaction {
     pub name: String,
     pub count: u32,
-    pub users: Vec<String>
+    pub users: Vec<String>,
 }
 
 /// The `Comment` object as found in the [`File`](https://api.slack.com/types/file) type and the
@@ -17,7 +17,7 @@ pub struct Comment {
     pub timestamp: u32,
     pub user: String,
     pub comment: String,
-    pub reactions: Option<Vec<Reaction>>
+    pub reactions: Option<Vec<Reaction>>,
 }
 
 /// The Slack [`File`](https://api.slack.com/types/file) type.
@@ -62,7 +62,7 @@ pub struct File {
     pub num_stars: Option<u32>,
     pub is_starred: Option<bool>,
     pub pinned_to: Option<Vec<String>>,
-    pub reactions: Option<Vec<Reaction>>
+    pub reactions: Option<Vec<Reaction>>,
 }
 
 /// The `Paging` object as found in API endpoints that return pages of items.
@@ -71,7 +71,7 @@ pub struct Pagination {
     pub count: u32,
     pub total: u32,
     pub page: u32,
-    pub pages: u32
+    pub pages: u32,
 }
 
 /// The Slack [`Channel`](https://api.slack.com/types/channel) type.
@@ -102,8 +102,8 @@ pub struct Group {
     pub name: String,
     pub is_group: bool,
     pub created: i64,
-    pub creator:  String,
-    pub is_archived:  bool,
+    pub creator: String,
+    pub is_archived: bool,
     pub members: Option<Vec<String>>,
     pub topic: Option<Topic>,
     pub purpose: Option<Purpose>,
@@ -125,7 +125,7 @@ pub struct UserProfile {
     pub image_32: String,
     pub image_48: String,
     pub image_72: String,
-    pub image_192: String
+    pub image_192: String,
 }
 
 /// The Slack [`User`](https://api.slack.com/types/user) type.
@@ -143,7 +143,7 @@ pub struct User {
     pub is_ultra_restricted: Option<bool>,
     pub has_2fa: Option<bool>,
     pub two_factor_type: Option<String>,
-    pub has_files: Option<bool>
+    pub has_files: Option<bool>,
 }
 
 /// The `Team` object as found in the [`rtm.start`](https://api.slack.com/methods/rtm.start)
@@ -183,7 +183,7 @@ pub struct Purpose {
 pub struct Im {
     pub id: String,
     pub is_im: bool,
-    pub user:  String,
+    pub user: String,
     pub created: i64,
     pub is_user_deleted: Option<bool>,
 }
@@ -193,7 +193,7 @@ pub struct Im {
 pub struct AttachmentField {
     pub title: String,
     pub value: String,
-    pub short: bool
+    pub short: bool,
 }
 
 /// The Slack [`Attachment`](https://api.slack.com/docs/attachments) object as found in
@@ -211,7 +211,7 @@ pub struct Attachment {
     pub text: String,
     pub fields: Option<Vec<AttachmentField>>,
     pub image_url: Option<String>,
-    pub thumb_url: Option<String>
+    pub thumb_url: Option<String>,
 }
 
 /// Represents a `Message`, `File` or `Comment` as returned by
@@ -220,9 +220,17 @@ pub struct Attachment {
 /// [`reactions.get`](https://api.slack.com/methods/reactions.get).
 #[derive(Clone,Debug)]
 pub enum Item {
-    Message { channel: String, message: Box<super::Message> },
-    File { file: File },
-    FileComment { file: File, comment: Comment }
+    Message {
+        channel: String,
+        message: Box<super::Message>,
+    },
+    File {
+        file: File,
+    },
+    FileComment {
+        file: File,
+        comment: Comment,
+    },
 }
 
 impl Decodable for Item {
@@ -232,16 +240,14 @@ impl Decodable for Item {
             if ty == "message" {
                 Ok(Item::Message {
                     channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                    message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d)))
+                    message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d))),
                 })
             } else if ty == "file" {
-                Ok(Item::File {
-                    file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d)))
-                })
+                Ok(Item::File { file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))) })
             } else if ty == "file_comment" {
                 Ok(Item::FileComment {
                     file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-                    comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d)))
+                    comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
                 })
             } else {
                 Err(d.error(&format!("Unknown Item type: {}", ty)))
@@ -256,12 +262,26 @@ impl Decodable for Item {
 // options.
 #[derive(Clone,Debug)]
 pub enum StarredItem {
-    Message { channel: String, message: super::Message},
-    File { file: super::File },
-    FileComment { file: super::File, comment: super::Comment },
-    Channel { channel: String },
-    Group { group: String },
-    Im { channel: String }
+    Message {
+        channel: String,
+        message: super::Message,
+    },
+    File {
+        file: super::File,
+    },
+    FileComment {
+        file: super::File,
+        comment: super::Comment,
+    },
+    Channel {
+        channel: String,
+    },
+    Group {
+        group: String,
+    },
+    Im {
+        channel: String,
+    },
 }
 
 impl Decodable for StarredItem {
@@ -271,29 +291,21 @@ impl Decodable for StarredItem {
             if ty == "message" {
                 Ok(StarredItem::Message {
                     channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                    message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d)))
+                    message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d))),
                 })
             } else if ty == "file" {
-                Ok(StarredItem::File {
-                    file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d)))
-                })
+                Ok(StarredItem::File { file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))) })
             } else if ty == "file_comment" {
                 Ok(StarredItem::FileComment {
                     file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-                    comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d)))
+                    comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
                 })
             } else if ty == "channel" {
-                Ok(StarredItem::Channel {
-                    channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                })
+                Ok(StarredItem::Channel { channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))) })
             } else if ty == "group" {
-                Ok(StarredItem::Group {
-                    group: try!(d.read_struct_field("group", 0, |d| Decodable::decode(d))),
-                })
+                Ok(StarredItem::Group { group: try!(d.read_struct_field("group", 0, |d| Decodable::decode(d))) })
             } else if ty == "im" {
-                Ok(StarredItem::Im {
-                    channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                })
+                Ok(StarredItem::Im { channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))) })
             } else {
                 Err(d.error(&format!("Unknown StarredItem type: {}", ty)))
             }
@@ -317,19 +329,20 @@ mod tests {
                 "user": "123",
                 "text": "something"
             }
-        }"#).unwrap();
+        }"#)
+                             .unwrap();
         match item {
             Item::Message { channel: c, message: m } => {
                 assert_eq!(c, "C2147483705");
                 match *m.clone() {
                     Message::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                         assert_eq!(user.unwrap(), "123")
-                    },
-                    _ => panic!("Message decoded into incorrect variant.")
+                    }
+                    _ => panic!("Message decoded into incorrect variant."),
                 }
-            },
-            _ => panic!("Item decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("Item decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -387,13 +400,14 @@ mod tests {
                 ],
                 "comments_count": 0
             }
-        }"#).unwrap();
+        }"#)
+                             .unwrap();
         match item {
             Item::File { file: f } => {
                 assert_eq!(f.id, "F12345678");
-            },
-            _ => panic!("Item decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("Item decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -457,14 +471,15 @@ mod tests {
                 "user": "U12345678",
                 "comment": "This is a comment"
             }
-        }"#).unwrap();
+        }"#)
+                             .unwrap();
         match item {
             Item::FileComment { file: f, comment: c } => {
                 assert_eq!(f.id, "F12345678");
                 assert_eq!(c.id, "Fc12345678");
-            },
-            _ => panic!("Item decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("Item decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -477,19 +492,20 @@ mod tests {
                 "user": "123",
                 "text": "something"
             }
-        }"#).unwrap();
+        }"#)
+                                    .unwrap();
         match item {
             StarredItem::Message { channel: c, message: m } => {
                 assert_eq!(c, "C2147483705");
                 match m.clone() {
                     Message::Standard { ts: _, channel: _, user, text: _, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                         assert_eq!(user.unwrap(), "123");
-                    },
-                    _ => panic!("Message decoded into incorrect variant.")
+                    }
+                    _ => panic!("Message decoded into incorrect variant."),
                 }
-            },
-            _ => panic!("StarredItem decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("StarredItem decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -547,13 +563,14 @@ mod tests {
                 ],
                 "comments_count": 0
             }
-        }"#).unwrap();
+        }"#)
+                                    .unwrap();
         match item {
             StarredItem::File { file: f } => {
                 assert_eq!(f.id, "F12345678");
-            },
-            _ => panic!("StarredItem decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("StarredItem decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -617,14 +634,15 @@ mod tests {
                 "user": "U12345678",
                 "comment": "This is a comment"
             }
-        }"#).unwrap();
+        }"#)
+                                    .unwrap();
         match item {
             StarredItem::FileComment { file: f, comment: c } => {
                 assert_eq!(f.id, "F12345678");
                 assert_eq!(c.id, "Fc12345678");
-            },
-            _ => panic!("StarredItem decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("StarredItem decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -633,9 +651,9 @@ mod tests {
         match item {
             StarredItem::Channel { channel: c } => {
                 assert_eq!(c, "C12345678");
-            },
-            _ => panic!("StarredItem decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("StarredItem decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -644,9 +662,9 @@ mod tests {
         match item {
             StarredItem::Group { group: g } => {
                 assert_eq!(g, "G12345678");
-            },
-            _ => panic!("StarredItem decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("StarredItem decoded into incorrect variant."),
+        }
     }
 
     #[test]
@@ -655,8 +673,8 @@ mod tests {
         match item {
             StarredItem::Im { channel: c } => {
                 assert_eq!(c, "D12345678");
-            },
-            _ => panic!("StarredItem decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("StarredItem decoded into incorrect variant."),
+        }
     }
 }

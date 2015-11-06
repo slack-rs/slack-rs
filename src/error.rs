@@ -25,7 +25,7 @@ pub enum Error {
     /// Slack Api Error
     Api(String),
     /// Errors that do not fit under the other types, Internal is for EG channel errors.
-    Internal(String)
+    Internal(String),
 }
 
 impl From<hyper::Error> for Error {

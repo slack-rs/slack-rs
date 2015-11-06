@@ -1,4 +1,5 @@
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -9,7 +10,14 @@ use super::make_authed_api_call;
 /// Adds a reaction to an item.
 ///
 /// Wraps https://api.slack.com/methods/reactions.add
-pub fn add(client: &hyper::Client, token: &str, name: &str, file: Option<&str>, file_comment: Option<&str>, channel: Option<&str>, timestamp: Option<&str>) -> ApiResult<AddResponse> {
+pub fn add(client: &hyper::Client,
+           token: &str,
+           name: &str,
+           file: Option<&str>,
+           file_comment: Option<&str>,
+           channel: Option<&str>,
+           timestamp: Option<&str>)
+           -> ApiResult<AddResponse> {
     let mut params = HashMap::new();
     params.insert("name", name);
     if let Some(file) = file {
@@ -33,7 +41,14 @@ pub struct AddResponse;
 /// Gets reactions for an item.
 ///
 /// Wraps https://api.slack.com/methods/reactions.get
-pub fn get(client: &hyper::Client, token: &str, file: Option<&str>, file_comment: Option<&str>, channel: Option<&str>, timestamp: Option<&str>, full: Option<&str>) -> ApiResult<GetResponse> {
+pub fn get(client: &hyper::Client,
+           token: &str,
+           file: Option<&str>,
+           file_comment: Option<&str>,
+           channel: Option<&str>,
+           timestamp: Option<&str>,
+           full: Option<&str>)
+           -> ApiResult<GetResponse> {
     let mut params = HashMap::new();
     if let Some(file) = file {
         params.insert("file", file);
@@ -53,7 +68,8 @@ pub fn get(client: &hyper::Client, token: &str, file: Option<&str>, file_comment
     make_authed_api_call(client, "reactions.get", token, params)
 }
 
-// This is an Item as returned by `reactions.list`, but instead of being a nested object like all
+// This is an Item as returned by `reactions.list`, but instead of being a
+// nested object like all
 // of the other endpoints is instead inlined at the top level.
 pub type GetResponse = super::Item;
 
@@ -82,13 +98,20 @@ pub fn list(client: &hyper::Client, token: &str, user: Option<&str>, full: Optio
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct ListResponse {
     pub items: Vec<super::Item>,
-    pub paging: super::Pagination
+    pub paging: super::Pagination,
 }
 
 /// Removes a reaction from an item.
 ///
 /// Wraps https://api.slack.com/methods/reactions.remove
-pub fn remove(client: &hyper::Client, token: &str, name: &str, file: Option<&str>, file_comment: Option<&str>, channel: Option<&str>, timestamp: Option<&str>) -> ApiResult<RemoveResponse> {
+pub fn remove(client: &hyper::Client,
+              token: &str,
+              name: &str,
+              file: Option<&str>,
+              file_comment: Option<&str>,
+              channel: Option<&str>,
+              timestamp: Option<&str>)
+              -> ApiResult<RemoveResponse> {
     let mut params = HashMap::new();
     params.insert("name", name);
     if let Some(file) = file {
@@ -121,7 +144,13 @@ mod tests {
     #[test]
     fn general_api_error_response() {
         let client = hyper::Client::with_connector(MockErrorResponder::default());
-        let result = add(&client, "TEST_TOKEN", "thumbsup", None, None, Some("C1234567890"), Some("1234567890.123456"));
+        let result = add(&client,
+                         "TEST_TOKEN",
+                         "thumbsup",
+                         None,
+                         None,
+                         Some("C1234567890"),
+                         Some("1234567890.123456"));
         assert!(result.is_err());
     }
 
@@ -130,7 +159,13 @@ mod tests {
     #[test]
     fn add_ok_response() {
         let client = hyper::Client::with_connector(MockAddOkResponder::default());
-        let result = add(&client, "TEST_TOKEN", "thumbsup", None, None, Some("C1234567890"), Some("1234567890.123456"));
+        let result = add(&client,
+                         "TEST_TOKEN",
+                         "thumbsup",
+                         None,
+                         None,
+                         Some("C1234567890"),
+                         Some("1234567890.123456"));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
@@ -166,7 +201,13 @@ mod tests {
     #[test]
     fn get_ok_response() {
         let client = hyper::Client::with_connector(MockGetOkResponder::default());
-        let result = get(&client, "TEST_TOKEN", None, None, Some("C1234567890"), Some("1234567890.123456"), None);
+        let result = get(&client,
+                         "TEST_TOKEN",
+                         None,
+                         None,
+                         Some("C1234567890"),
+                         Some("1234567890.123456"),
+                         None);
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
@@ -174,15 +215,16 @@ mod tests {
             Item::Message { channel: c, message: m } => {
                 assert_eq!(c, "C1234567890");
                 match *m.clone() {
-                    Message::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions, edited: _, attachments: _ } => {
+                    Message::Standard { ts: _, channel: _, user: _, text, is_starred: _,
+                         pinned_to: _, reactions, edited: _, attachments: _ } => {
                         assert_eq!(text.unwrap(), "Hello world");
                         assert_eq!(reactions.unwrap()[0].name, "astonished");
-                    },
-                    _ => panic!("Message decoded into incorrect variant.")
+                    }
+                    _ => panic!("Message decoded into incorrect variant."),
                 }
-            },
-            _ => panic!("Item decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("Item decoded into incorrect variant."),
+        }
     }
 
     mock_slack_responder!(MockListOkResponder,
@@ -294,9 +336,9 @@ mod tests {
             Item::File { file: ref f } => {
                 assert_eq!(f.id, "F12345678");
                 assert_eq!(f.reactions.as_ref().unwrap()[0].name, "thumbsup");
-            },
-            _ => panic!("Item decoded into incorrect variant.")
-        };
+            }
+            _ => panic!("Item decoded into incorrect variant."),
+        }
     }
 
     mock_slack_responder!(MockRemoveOkResponder, r#"{"ok": true}"#);
@@ -304,7 +346,13 @@ mod tests {
     #[test]
     fn remove_ok_response() {
         let client = hyper::Client::with_connector(MockRemoveOkResponder::default());
-        let result = remove(&client, "TEST_TOKEN", "thumbsup", None, None, Some("C1234567890"), Some("1234567890.123456"));
+        let result = remove(&client,
+                            "TEST_TOKEN",
+                            "thumbsup",
+                            None,
+                            None,
+                            Some("C1234567890"),
+                            Some("1234567890.123456"));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }

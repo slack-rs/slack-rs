@@ -1,4 +1,5 @@
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -12,10 +13,20 @@ use super::make_authed_api_call;
 pub fn start(client: &hyper::Client, token: &str, simple_latest: Option<bool>, no_unreads: Option<bool>) -> ApiResult<StartResponse> {
     let mut params = HashMap::new();
     if let Some(simple_latest) = simple_latest {
-        params.insert("simple_latest", if simple_latest { "1" } else { "0" });
+        params.insert("simple_latest",
+                      if simple_latest {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     if let Some(no_unreads) = no_unreads {
-        params.insert("no_unreads", if no_unreads { "1" } else { "0" });
+        params.insert("no_unreads",
+                      if no_unreads {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     make_authed_api_call(client, "rtm.start", token, params)
 }
@@ -25,7 +36,7 @@ pub struct Bot {
     pub id: String,
     pub deleted: Option<bool>,
     pub name: String,
-    pub icons: Option<HashMap<String,String>>
+    pub icons: Option<HashMap<String, String>>,
 }
 
 // We've left out the prefs field for now
@@ -46,111 +57,50 @@ pub struct StartResponse {
     pub channels: Vec<super::Channel>,
     pub groups: Vec<super::Group>,
     pub ims: Vec<super::Im>,
-    pub bots: Vec<Bot>
+    pub bots: Vec<Bot>,
 }
 
-// This is an ugly hack, we have to compile with --pretty expanded and fix up self to map to self_data.
+// This is an ugly hack, we have to compile with --pretty expanded and fix up
+// self to map to self_data.
 // An alternative would be using serde, but it won't do what we need on stable.
 impl ::rustc_serialize::Decodable for StartResponse {
-    fn decode<__D: ::rustc_serialize::Decoder>(__arg_0: &mut __D)
-     -> ::std::result::Result<StartResponse, __D::Error> {
+    fn decode<__D: ::rustc_serialize::Decoder>(__arg_0: &mut __D) -> ::std::result::Result<StartResponse, __D::Error> {
         __arg_0.read_struct("StartResponse", 8usize, |_d| -> _ {
-                            ::std::result::Result::Ok(StartResponse{url:
-                                                                   match _d.read_struct_field("url",
-                                                                                              0usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               self_data:
-                                                                   match _d.read_struct_field("self",
-                                                                                              1usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               team:
-                                                                   match _d.read_struct_field("team",
-                                                                                              2usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               users:
-                                                                   match _d.read_struct_field("users",
-                                                                                              3usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               channels:
-                                                                   match _d.read_struct_field("channels",
-                                                                                              4usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               groups:
-                                                                   match _d.read_struct_field("groups",
-                                                                                              5usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               ims:
-                                                                   match _d.read_struct_field("ims",
-                                                                                              6usize,
-                                                                                              ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },
-                                                               bots:
-                                                                   match _d.read_struct_field("bots",
-                                                                                          7usize,
-                                                                                          ::rustc_serialize::Decodable::decode)
-                                                                       {
-                                                                       ::std::result::Result::Ok(__try_var)
-                                                                       =>
-                                                                       __try_var,
-                                                                       ::std::result::Result::Err(__try_var)
-                                                                       =>
-                                                                       return ::std::result::Result::Err(__try_var),
-                                                                   },}) })
+            ::std::result::Result::Ok(StartResponse {
+                url: match _d.read_struct_field("url", 0usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+                self_data: match _d.read_struct_field("self", 1usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+                team: match _d.read_struct_field("team", 2usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+                users: match _d.read_struct_field("users", 3usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+                channels: match _d.read_struct_field("channels", 4usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+                groups: match _d.read_struct_field("groups", 5usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+                ims: match _d.read_struct_field("ims", 6usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+                bots: match _d.read_struct_field("bots", 7usize, ::rustc_serialize::Decodable::decode) {
+                    ::std::result::Result::Ok(__try_var) => __try_var,
+                    ::std::result::Result::Err(__try_var) => return ::std::result::Result::Err(__try_var),
+                },
+            })
+        })
     }
 }
 

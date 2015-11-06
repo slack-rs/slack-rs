@@ -1,6 +1,7 @@
 //! Get info on your team's private groups.
 //!
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -32,7 +33,7 @@ pub fn close(client: &hyper::Client, token: &str, channel: &str) -> ApiResult<Cl
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct CloseResponse {
     pub no_op: Option<bool>,
-    pub already_closed: Option<bool>
+    pub already_closed: Option<bool>,
 }
 
 /// Creates a private group.
@@ -46,7 +47,7 @@ pub fn create(client: &hyper::Client, token: &str, name: &str) -> ApiResult<Crea
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct CreateResponse {
-    pub group: super::Group
+    pub group: super::Group,
 }
 
 /// Clones and archives a private group.
@@ -60,13 +61,20 @@ pub fn create_child(client: &hyper::Client, token: &str, channel: &str) -> ApiRe
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct CreateChildResponse {
-    pub group: super::Group
+    pub group: super::Group,
 }
 
 /// Fetches history of messages and events from a private group.
 ///
 /// Wraps https://api.slack.com/methods/groups.history
-pub fn history(client: &hyper::Client, token: &str, channel: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> ApiResult<HistoryResponse> {
+pub fn history(client: &hyper::Client,
+               token: &str,
+               channel: &str,
+               latest: Option<&str>,
+               oldest: Option<&str>,
+               inclusive: Option<bool>,
+               count: Option<u32>)
+               -> ApiResult<HistoryResponse> {
     let count = count.map(|c| c.to_string());
     let mut params = HashMap::new();
     params.insert("channel", channel);
@@ -77,7 +85,12 @@ pub fn history(client: &hyper::Client, token: &str, channel: &str, latest: Optio
         params.insert("oldest", oldest);
     }
     if let Some(inclusive) = inclusive {
-        params.insert("inclusive", if inclusive { "1" } else { "0" });
+        params.insert("inclusive",
+                      if inclusive {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     if let Some(ref count) = count {
         params.insert("count", count);
@@ -91,7 +104,7 @@ pub struct HistoryResponse {
     pub oldest: Option<String>,
     pub messages: Vec<super::Message>,
     pub has_more: bool,
-    pub is_limited: Option<bool>
+    pub is_limited: Option<bool>,
 }
 
 /// Gets information about a private group.
@@ -105,7 +118,7 @@ pub fn info(client: &hyper::Client, token: &str, channel: &str) -> ApiResult<Inf
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct InfoResponse {
-    pub group: super::Group
+    pub group: super::Group,
 }
 
 /// Invites a user to a private group.
@@ -121,7 +134,7 @@ pub fn invite(client: &hyper::Client, token: &str, channel: &str, user: &str) ->
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct InviteResponse {
     pub group: super::Group,
-    pub already_in_group: Option<bool>
+    pub already_in_group: Option<bool>,
 }
 
 /// Removes a user from a private group.
@@ -155,14 +168,19 @@ pub struct LeaveResponse;
 pub fn list(client: &hyper::Client, token: &str, exclude_archived: Option<bool>) -> ApiResult<ListResponse> {
     let mut params = HashMap::new();
     if let Some(exclude_archived) = exclude_archived {
-        params.insert("exclude_archived", if exclude_archived { "1" } else { "0" });
+        params.insert("exclude_archived",
+                      if exclude_archived {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     make_authed_api_call(client, "groups.list", token, params)
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct ListResponse {
-    pub groups: Vec<super::Group>
+    pub groups: Vec<super::Group>,
 }
 
 /// Sets the read cursor in a private group.
@@ -190,7 +208,7 @@ pub fn open(client: &hyper::Client, token: &str, channel: &str) -> ApiResult<Ope
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct OpenResponse {
     pub no_op: Option<bool>,
-    pub already_open: Option<bool>
+    pub already_open: Option<bool>,
 }
 
 /// Renames a private group.
@@ -213,7 +231,7 @@ pub struct AbridgedGroup {
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct RenameResponse {
-    pub channel: AbridgedGroup
+    pub channel: AbridgedGroup,
 }
 
 /// Sets the purpose for a private group.
@@ -228,7 +246,7 @@ pub fn set_purpose(client: &hyper::Client, token: &str, channel: &str, purpose: 
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct SetPurposeResponse {
-    pub purpose: String
+    pub purpose: String,
 }
 
 /// Sets the topic for a private group.
@@ -243,7 +261,7 @@ pub fn set_topic(client: &hyper::Client, token: &str, channel: &str, topic: &str
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct SetTopicResponse {
-    pub topic: String
+    pub topic: String,
 }
 
 /// Unarchives a private group.
@@ -435,8 +453,8 @@ mod tests {
         match result.unwrap().messages[0].clone() {
             Message::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                 assert_eq!(text.unwrap(), "Hello")
-            },
-            _ => panic!("Message decoded into incorrect variant.")
+            }
+            _ => panic!("Message decoded into incorrect variant."),
         }
     }
 
@@ -702,7 +720,10 @@ mod tests {
     #[test]
     fn set_purpose_ok_response() {
         let client = hyper::Client::with_connector(MockSetPurposeOkResponder::default());
-        let result = set_purpose(&client, "TEST_TOKEN", "G12345678", "This is the new purpose!");
+        let result = set_purpose(&client,
+                                 "TEST_TOKEN",
+                                 "G12345678",
+                                 "This is the new purpose!");
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }

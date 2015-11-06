@@ -1,6 +1,7 @@
 //! Checks API calling code.
 //!
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -25,7 +26,7 @@ pub fn test(client: &hyper::Client, token: &str, args: Option<HashMap<&str, &str
 #[derive(RustcDecodable)]
 pub struct ApiTestResponse {
     pub error: Option<String>,
-    pub args: Option<HashMap<String, String>>
+    pub args: Option<HashMap<String, String>>,
 }
 
 #[cfg(test)]

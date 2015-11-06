@@ -1,7 +1,9 @@
-//! Get info on your team's Slack channels, create or archive channels, invite users, set the topic
+//! Get info on your team's Slack channels, create or archive channels, invite
+//! users, set the topic
 //! and purpose, and mark a channel as read.
 //!
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -38,7 +40,14 @@ pub struct CreateResponse {
 /// Fetches history of messages and events from a channel.
 ///
 /// Wraps https://api.slack.com/methods/channels.history
-pub fn history(client: &hyper::Client, token: &str, channel: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> ApiResult<HistoryResponse> {
+pub fn history(client: &hyper::Client,
+               token: &str,
+               channel: &str,
+               latest: Option<&str>,
+               oldest: Option<&str>,
+               inclusive: Option<bool>,
+               count: Option<u32>)
+               -> ApiResult<HistoryResponse> {
     let count = count.map(|c| c.to_string());
     let mut params = HashMap::new();
     params.insert("channel", channel);
@@ -49,7 +58,12 @@ pub fn history(client: &hyper::Client, token: &str, channel: &str, latest: Optio
         params.insert("oldest", oldest);
     }
     if let Some(inclusive) = inclusive {
-        params.insert("inclusive", if inclusive { "1" } else { "0" });
+        params.insert("inclusive",
+                      if inclusive {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     if let Some(ref count) = count {
         params.insert("count", count);
@@ -142,7 +156,12 @@ pub struct LeaveResponse {
 pub fn list(client: &hyper::Client, token: &str, exclude_archived: Option<bool>) -> ApiResult<ListResponse> {
     let mut params = HashMap::new();
     if let Some(exclude_archived) = exclude_archived {
-        params.insert("exclude_archived", if exclude_archived { "1" } else { "0" });
+        params.insert("exclude_archived",
+                      if exclude_archived {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     make_authed_api_call(client, "channels.list", token, params)
 }
@@ -323,15 +342,21 @@ mod tests {
     #[test]
     fn history_ok_response() {
         let client = hyper::Client::with_connector(MockHistoryOkResponder::default());
-        let result = history(&client, "TEST_TOKEN", "TEST_CHANNEL", None, None, None, None);
+        let result = history(&client,
+                             "TEST_TOKEN",
+                             "TEST_CHANNEL",
+                             None,
+                             None,
+                             None,
+                             None);
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
         match result.unwrap().messages[0].clone() {
             Message::Standard { ts: _, channel: _, user: _, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                 assert_eq!(text.unwrap(), "lol");
-            },
-            _ => panic!("Message decoded into incorrect variant.")
+            }
+            _ => panic!("Message decoded into incorrect variant."),
         }
     }
 
@@ -601,7 +626,10 @@ mod tests {
     #[test]
     fn set_purpose_ok_response() {
         let client = hyper::Client::with_connector(MockSetPurposeOkResponder::default());
-        let result = set_purpose(&client, "TEST_TOKEN", "TEST_CHANNEL", "This is the new purpose!");
+        let result = set_purpose(&client,
+                                 "TEST_TOKEN",
+                                 "TEST_CHANNEL",
+                                 "This is the new purpose!");
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }

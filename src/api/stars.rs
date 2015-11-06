@@ -1,4 +1,5 @@
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -9,7 +10,13 @@ use super::make_authed_api_call;
 /// Adds a star to an item.
 ///
 /// Wraps https://api.slack.com/methods/stars.add
-pub fn add(client: &hyper::Client, token: &str, file: Option<&str>, file_comment: Option<&str>, channel: Option<&str>, timestamp: Option<&str>) -> ApiResult<AddResponse> {
+pub fn add(client: &hyper::Client,
+           token: &str,
+           file: Option<&str>,
+           file_comment: Option<&str>,
+           channel: Option<&str>,
+           timestamp: Option<&str>)
+           -> ApiResult<AddResponse> {
     let mut params = HashMap::new();
     if let Some(file) = file {
         params.insert("file", file);
@@ -51,13 +58,19 @@ pub fn list(client: &hyper::Client, token: &str, user: Option<&str>, count: Opti
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct ListResponse {
     pub items: Vec<super::StarredItem>,
-    pub paging: super::Pagination
+    pub paging: super::Pagination,
 }
 
 /// Removes a star from an item.
 ///
 /// Wraps https://api.slack.com/methods/stars.remove
-pub fn remove(client: &hyper::Client, token: &str, file: Option<&str>, file_comment: Option<&str>, channel: Option<&str>, timestamp: Option<&str>) -> ApiResult<RemoveResponse> {
+pub fn remove(client: &hyper::Client,
+              token: &str,
+              file: Option<&str>,
+              file_comment: Option<&str>,
+              channel: Option<&str>,
+              timestamp: Option<&str>)
+              -> ApiResult<RemoveResponse> {
     let mut params = HashMap::new();
     if let Some(file) = file {
         params.insert("file", file);
@@ -88,7 +101,12 @@ mod tests {
     #[test]
     fn general_api_error_response() {
         let client = hyper::Client::with_connector(MockErrorResponder::default());
-        let result = add(&client, "TEST_TOKEN", None, None, Some("TEST_CHANNEL"), Some("1234567890.123456"));
+        let result = add(&client,
+                         "TEST_TOKEN",
+                         None,
+                         None,
+                         Some("TEST_CHANNEL"),
+                         Some("1234567890.123456"));
         assert!(result.is_err());
     }
 
@@ -97,7 +115,12 @@ mod tests {
     #[test]
     fn add_ok_response() {
         let client = hyper::Client::with_connector(MockAddOkResponder::default());
-        let result = add(&client, "TEST_TOKEN", None, None, Some("TEST_CHANNEL"), Some("1234567890.123456"));
+        let result = add(&client,
+                         "TEST_TOKEN",
+                         None,
+                         None,
+                         Some("TEST_CHANNEL"),
+                         Some("1234567890.123456"));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
@@ -193,7 +216,7 @@ mod tests {
         }
         match result.unwrap().items[2] {
             StarredItem::Channel { channel: ref c } => assert_eq!(c, "C2147483705"),
-            _ => panic!("Expected Channel")
+            _ => panic!("Expected Channel"),
         }
     }
 
@@ -202,7 +225,12 @@ mod tests {
     #[test]
     fn remove_ok_response() {
         let client = hyper::Client::with_connector(MockRemoveOkResponder::default());
-        let result = remove(&client, "TEST_TOKEN", None, None, Some("TEST_CHANNEL"), Some("1234567890.123456"));
+        let result = remove(&client,
+                            "TEST_TOKEN",
+                            None,
+                            None,
+                            Some("TEST_CHANNEL"),
+                            Some("1234567890.123456"));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }

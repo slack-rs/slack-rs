@@ -1,12 +1,13 @@
-//! Low-level, direct interface for the [Slack Web API](https://api.slack.com/methods).
+//! Low-level, direct interface for the [Slack Web
+//! API](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use std::io::Read;
 
 use hyper;
-use rustc_serialize::{json,Decodable};
+use rustc_serialize::{json, Decodable};
 
-use ::error::Error;
+use error::Error;
 
 #[cfg(test)]
 #[macro_use]
@@ -72,9 +73,13 @@ fn transform_api_result<T: Decodable>(mut res: hyper::client::response::Response
     try!(res.read_to_string(&mut res_str));
 
     let raw_json = try!(json::Json::from_str(&res_str));
-    let jobj = try!(raw_json.as_object().ok_or(Error::Api(format!("bad slack json response (not an object) {:?}", raw_json))));
-    let ok = try!(jobj.get("ok").ok_or(Error::Api(format!("slack json reponse does not contain \"ok\" field {:?}", raw_json))));
-    let is_ok = try!(ok.as_boolean().ok_or(Error::Api(format!("slack json reponse \"ok\" is not a boolean: {:?}", raw_json))));
+    let jobj = try!(raw_json.as_object()
+                            .ok_or(Error::Api(format!("bad slack json response (not an object) {:?}", raw_json))));
+    let ok = try!(jobj.get("ok")
+                      .ok_or(Error::Api(format!("slack json reponse does not contain \"ok\" field {:?}",
+                                                raw_json))));
+    let is_ok = try!(ok.as_boolean()
+                       .ok_or(Error::Api(format!("slack json reponse \"ok\" is not a boolean: {:?}", raw_json))));
     if !is_ok {
         return Err(Error::Api(format!("slack json reponse \"ok\" is not true: {:?}", raw_json)));
     }

@@ -1,4 +1,5 @@
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -33,13 +34,13 @@ pub struct LoginInfo {
     pub user_agent: String,
     pub isp: String,
     pub country: String,
-    pub region: String
+    pub region: String,
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct AccessLogsResponse {
     pub logins: Vec<LoginInfo>,
-    pub paging: super::Pagination
+    pub paging: super::Pagination,
 }
 
 /// Gets information about the current team.
@@ -57,7 +58,7 @@ pub struct IconInfo {
     pub image_88: String,
     pub image_102: String,
     pub image_132: String,
-    pub image_default: bool
+    pub image_default: bool,
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
@@ -66,12 +67,12 @@ pub struct TeamInfo {
     pub name: String,
     pub domain: String,
     pub email_domain: String,
-    pub icon: IconInfo
+    pub icon: IconInfo,
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct InfoResponse {
-    pub team: TeamInfo
+    pub team: TeamInfo,
 }
 
 #[cfg(test)]
