@@ -1,5 +1,6 @@
 use std::fmt;
 use std::io;
+use std::error;
 
 use hyper;
 use websocket;
@@ -71,16 +72,43 @@ impl From<io::Error> for Error {
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let s = match *self {
-            Error::Http(ref e) => format!("Http (hyper) Error: {:?}", e),
-            Error::WebSocket(ref e) => format!("Http (hyper) Error: {:?}", e),
-            Error::Url(ref e) => format!("Url Error: {:?}", e),
-            Error::JsonDecode(ref e) => format!("Json Decode Error: {:?}", e),
-            Error::JsonParse(ref e) => format!("Json Parse Error: {:?}", e),
-            Error::JsonEncode(ref e) => format!("Json Encode Error: {:?}", e),
-            Error::Api(ref st) => format!("Slack Api Error: {:?}", st),
-            Error::Internal(ref st) => format!("Internal Error: {:?}", st)
-        };
-        f.write_str(&s)
+        match *self {
+            Error::Http(ref e) => write!(f, "Http (hyper) Error: {:?}", e),
+            Error::WebSocket(ref e) => write!(f, "Http (hyper) Error: {:?}", e),
+            Error::Url(ref e) => write!(f, "Url Error: {:?}", e),
+            Error::JsonDecode(ref e) => write!(f, "Json Decode Error: {:?}", e),
+            Error::JsonParse(ref e) => write!(f, "Json Parse Error: {:?}", e),
+            Error::JsonEncode(ref e) => write!(f, "Json Encode Error: {:?}", e),
+            Error::Api(ref st) => write!(f, "Slack Api Error: {:?}", st),
+            Error::Internal(ref st) => write!(f, "Internal Error: {:?}", st)
+        }
+    }
+}
+
+impl error::Error for Error {
+    fn description(&self) -> &str {
+        match *self {
+            Error::Http(ref e) => e.description(),
+            Error::WebSocket(ref e) => e.description(),
+            Error::Url(ref e) => e.description(),
+            Error::JsonDecode(ref e) => e.description(),
+            Error::JsonParse(ref e) => e.description(),
+            Error::JsonEncode(ref e) => e.description(),
+            Error::Api(ref st) => st,
+            Error::Internal(ref st) => st
+        }
+    }
+
+    fn cause(&self) -> Option<&error::Error> {
+        match *self {
+            Error::Http(ref e) => Some(e),
+            Error::WebSocket(ref e) => Some(e),
+            Error::Url(ref e) => Some(e),
+            Error::JsonDecode(ref e) => Some(e),
+            Error::JsonParse(ref e) => Some(e),
+            Error::JsonEncode(ref e) => Some(e),
+            Error::Api(_) => None,
+            Error::Internal(_) => None
+        }
     }
 }
