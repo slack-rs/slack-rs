@@ -152,8 +152,11 @@ use rustc_serialize::json;
 
 use websocket::Client;
 pub use websocket::message::Message as WebsocketMessage;
-use websocket::Sender as WsSender;
-use websocket::Receiver as WsReceiver;
+use websocket::client::Sender as WsSender;
+use websocket::ws::sender::Sender as WsSenderTrait;
+use websocket::ws::receiver::Receiver as WsReceiverTrait;
+use websocket::client::Receiver as WsReceiver;
+use websocket::message::Type as WsType;
 use websocket::dataframe::DataFrame;
 use websocket::stream::WebSocketStream;
 
@@ -178,6 +181,13 @@ pub trait EventHandler {
     fn on_connect(&mut self, cli: &mut RtmClient);
 }
 
+/// Used for passing websocket messages in channels
+pub enum WsMessage {
+    Close,
+    Text(String),
+    Pong(String),
+}
+
 /// The actual messaging client.
 pub struct RtmClient {
     token: String,
@@ -189,7 +199,7 @@ pub struct RtmClient {
     group_ids: HashMap<String, String>,
     user_ids: HashMap<String, String>,
     msg_num: AtomicIsize,
-    outs: Option<Sender<WebsocketMessage>>,
+    outs: Option<Sender<WsMessage>>,
 }
 
 impl RtmClient {
@@ -208,14 +218,6 @@ impl RtmClient {
             msg_num: AtomicIsize::new(0),
             outs: None,
         }
-    }
-
-
-    /// Returns the sending half of the channel used internally for sending messages.
-    /// Prefer send_message or send to this.
-    /// Only valid after login, otherwise None.
-    pub fn get_message_sender(&self) -> Option<Sender<WebsocketMessage>> {
-        self.outs.clone()
     }
 
     /// Returns the name of the bot/user connected to the client.
@@ -311,7 +313,7 @@ impl RtmClient {
             Some(ref tx) => tx,
             None => return Err(Error::Internal(String::from("Failed to get tx!"))),
         };
-        try!(tx.send(WebsocketMessage::Text(s.to_string()))
+        try!(tx.send(WsMessage::Text(s.to_string()))
                .map_err(|err| Error::Internal(format!("{}", err))));
         Ok(())
     }
@@ -347,14 +349,14 @@ impl RtmClient {
             Some(ref tx) => tx,
             None => return Err(Error::Internal(String::from("Failed to get tx!"))),
         };
-        try!(tx.send(WebsocketMessage::Text(mstr))
+        try!(tx.send(WsMessage::Text(mstr))
                .map_err(|err| Error::Internal(format!("{:?}", err))));
         Ok(())
     }
 
     /// Logs in to slack. Call this before calling run.
     /// Alternatively use login_and_run
-    pub fn login(&mut self) -> Result<(WsClient, Receiver<WebsocketMessage>), Error> {
+    pub fn login(&mut self) -> Result<(WsClient, Receiver<WsMessage>), Error> {
         let client = hyper::Client::new();
         let start = try!(api::rtm::start(&client, &self.token, None, None));
 
@@ -389,13 +391,13 @@ impl RtmClient {
         try!(res.validate());
 
         // setup channels for passing messages
-        let (tx, rx) = channel::<WebsocketMessage>();
+        let (tx, rx) = channel::<WsMessage>();
         self.outs = Some(tx.clone());
         Ok((res.begin(), rx))
     }
 
     /// Runs the message receive loop
-    pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<WebsocketMessage>) -> Result<(), Error> {
+    pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<WsMessage>) -> Result<(), Error> {
         // for sending messages
         let tx = match self.outs {
             Some(ref mut tx) => tx.clone(),
@@ -410,38 +412,42 @@ impl RtmClient {
         let child = thread::spawn(move || -> () {
             loop {
                 let msg = match rx.recv() {
-                    Ok(m) => {
-                        m
-                    }
+                    Ok(m) => m,
                     Err(_) => {
                         return;
                     }
                 };
 
-                let closing = match msg {
-                    WebsocketMessage::Close(_) => {
-                        true
-                    }
-                    _ => {
-                        false
+                match msg {
+                    WsMessage::Close => {
+                        drop(rx);
+                        return;
+                    },
+                    WsMessage::Text(text) => {
+                        let message = WebsocketMessage::text(text);
+                        match sender.send_message(&message) {
+                            Ok(_) => {},
+                            Err(_) => {
+                                return;
+                            }
+                        }
+                    },
+                    WsMessage::Pong(data) => {
+                        let message = WebsocketMessage::pong(data.as_bytes());
+                        match sender.send_message(&message) {
+                            Ok(_) => {},
+                            Err(_) => {
+                                return;
+                            }
+                        }
                     }
                 };
-                match sender.send_message(msg) {
-                    Ok(_) => {}
-                    Err(_) => {
-                        return;
-                    }
-                }
-                if closing {
-                    drop(rx);
-                    return;
-                }
             }
         });
 
         // receive loop
         for message in receiver.incoming_messages() {
-            let message = match message {
+            let message : WebsocketMessage = match message {
                 Ok(message) => message,
                 Err(err) => {
                     let _ = child.join();
@@ -449,18 +455,18 @@ impl RtmClient {
                 }
             };
 
-            match message {
-                WebsocketMessage::Text(data) => {
-                    match json::decode(&data) {
-                        Ok(event) => handler.on_event(self, Ok(&event), &data),
-                        Err(err) => handler.on_event(self, Err(Error::JsonDecode(err)), &data),
+            match message.opcode {
+                WsType::Text => {
+                    let raw_string : String = try!(String::from_utf8(message.payload.into_owned()));
+                    match json::decode(&raw_string) {
+                        Ok(event) => handler.on_event(self, Ok(&event), &raw_string),
+                        Err(err) => handler.on_event(self, Err(Error::JsonDecode(err)), &raw_string),
                     }
-
                 }
-                WebsocketMessage::Ping(data) => {
+                WsType::Ping => {
                     handler.on_ping(self);
-                    let message = WebsocketMessage::Pong(data);
-                    match tx.send(message) {
+                    let raw_string : String = try!(String::from_utf8(message.payload.into_owned()));
+                    match tx.send(WsMessage::Pong(raw_string)) {
                         Ok(_) => {}
                         Err(err) => {
                             let _ = child.join();
@@ -468,10 +474,9 @@ impl RtmClient {
                         }
                     }
                 }
-                WebsocketMessage::Close(data) => {
+                WsType::Close => {
                     handler.on_close(self);
-                    let message = WebsocketMessage::Close(data);
-                    match tx.send(message) {
+                    match tx.send(WsMessage::Close) {
                         Ok(_) => {}
                         Err(err) => {
                             let _ = child.join();
