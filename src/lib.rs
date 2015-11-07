@@ -26,7 +26,20 @@
 //! conjunction with RtmClient.
 //!
 //! #Changelog:
-//! Version 0.12.0
+//! Version 0.12.0 Overhauled event parsing and added Event type,
+//! updated the EventHandler api, updated dependencies,
+//! added Error::Utf8 for utf8 decoding errors, rustfmt-ed the sources,
+//! various bugfixes.
+//!
+//! Compatibility Changes:
+//!
+//! - EventHandler's on_receive is now on_event with a different
+//! signature that takes the raw json string as well as the result of parsing the Event,
+//! for less library-user parsing and greater flexibility.
+//!
+//! - RtmClient's get_outs method has been removed, and the type of the channel used for
+//! passing messages between the working threads has changed.
+//!
 //!
 //! Version 0.11.0 Bugfix changes the color field of User to `Option<String>`,
 //! see: https://github.com/BenTheElder/slack-rs/issues/22
