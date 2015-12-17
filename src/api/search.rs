@@ -1,6 +1,7 @@
 //! Search your team's files and messages.
 //!
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -12,7 +13,7 @@ use super::make_authed_api_call;
 pub struct SearchMatches<T> {
     pub total: u32,
     pub matches: Vec<T>,
-    pub paging: super::Pagination
+    pub paging: super::Pagination,
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
@@ -20,13 +21,13 @@ pub struct MessageLink {
     pub user: String,
     pub username: String,
     pub ts: String,
-    pub text: String
+    pub text: String,
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct SearchMessageChannel {
     pub id: String,
-    pub name: String
+    pub name: String,
 }
 
 #[derive(Clone,Debug,RustcDecodable)]
@@ -40,13 +41,21 @@ pub struct SearchMessage {
     pub previous: Option<MessageLink>,
     pub previous_2: Option<MessageLink>,
     pub next: Option<MessageLink>,
-    pub next_2: Option<MessageLink>
+    pub next_2: Option<MessageLink>,
 }
 
 /// Searches for messages and files matching a query.
 ///
 /// Wraps https://api.slack.com/methods/search.all
-pub fn all(client: &hyper::Client, token: &str, query: &str, sort: Option<&str>, sort_dir: Option<&str>, highlight: Option<bool>, count: Option<u32>, page: Option<u32>) -> ApiResult<AllResponse> {
+pub fn all(client: &hyper::Client,
+           token: &str,
+           query: &str,
+           sort: Option<&str>,
+           sort_dir: Option<&str>,
+           highlight: Option<bool>,
+           count: Option<u32>,
+           page: Option<u32>)
+           -> ApiResult<AllResponse> {
     let count = count.map(|c| c.to_string());
     let page = page.map(|p| p.to_string());
     let mut params = HashMap::new();
@@ -58,7 +67,12 @@ pub fn all(client: &hyper::Client, token: &str, query: &str, sort: Option<&str>,
         params.insert("sort_dir", sort_dir);
     }
     if let Some(highlight) = highlight {
-        params.insert("highlight", if highlight { "1" } else { "0" });
+        params.insert("highlight",
+                      if highlight {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     if let Some(ref count) = count {
         params.insert("count", count);
@@ -73,13 +87,21 @@ pub fn all(client: &hyper::Client, token: &str, query: &str, sort: Option<&str>,
 pub struct AllResponse {
     pub query: String,
     pub messages: SearchMatches<SearchMessage>,
-    pub files: SearchMatches<super::File>
+    pub files: SearchMatches<super::File>,
 }
 
 /// Searches for files matching a query.
 ///
 /// Wraps https://api.slack.com/methods/search.files
-pub fn files(client: &hyper::Client, token: &str, query: &str, sort: Option<&str>, sort_dir: Option<&str>, highlight: Option<bool>, count: Option<u32>, page: Option<u32>) -> ApiResult<FilesResponse> {
+pub fn files(client: &hyper::Client,
+             token: &str,
+             query: &str,
+             sort: Option<&str>,
+             sort_dir: Option<&str>,
+             highlight: Option<bool>,
+             count: Option<u32>,
+             page: Option<u32>)
+             -> ApiResult<FilesResponse> {
     let count = count.map(|c| c.to_string());
     let page = page.map(|p| p.to_string());
     let mut params = HashMap::new();
@@ -91,7 +113,12 @@ pub fn files(client: &hyper::Client, token: &str, query: &str, sort: Option<&str
         params.insert("sort_dir", sort_dir);
     }
     if let Some(highlight) = highlight {
-        params.insert("highlight", if highlight { "1" } else { "0" });
+        params.insert("highlight",
+                      if highlight {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     if let Some(ref count) = count {
         params.insert("count", count);
@@ -105,13 +132,21 @@ pub fn files(client: &hyper::Client, token: &str, query: &str, sort: Option<&str
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct FilesResponse {
     pub query: String,
-    pub files: SearchMatches<super::File>
+    pub files: SearchMatches<super::File>,
 }
 
 /// Searches for messages matching a query.
 ///
 /// Wraps https://api.slack.com/methods/search.messages
-pub fn messages(client: &hyper::Client, token: &str, query: &str, sort: Option<&str>, sort_dir: Option<&str>, highlight: Option<bool>, count: Option<u32>, page: Option<u32>) -> ApiResult<MessagesResponse> {
+pub fn messages(client: &hyper::Client,
+                token: &str,
+                query: &str,
+                sort: Option<&str>,
+                sort_dir: Option<&str>,
+                highlight: Option<bool>,
+                count: Option<u32>,
+                page: Option<u32>)
+                -> ApiResult<MessagesResponse> {
     let count = count.map(|c| c.to_string());
     let page = page.map(|p| p.to_string());
     let mut params = HashMap::new();
@@ -123,7 +158,12 @@ pub fn messages(client: &hyper::Client, token: &str, query: &str, sort: Option<&
         params.insert("sort_dir", sort_dir);
     }
     if let Some(highlight) = highlight {
-        params.insert("highlight", if highlight { "1" } else { "0" });
+        params.insert("highlight",
+                      if highlight {
+                          "1"
+                      } else {
+                          "0"
+                      });
     }
     if let Some(ref count) = count {
         params.insert("count", count);
@@ -137,7 +177,7 @@ pub fn messages(client: &hyper::Client, token: &str, query: &str, sort: Option<&
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct MessagesResponse {
     pub query: String,
-    pub messages: SearchMatches<SearchMessage>
+    pub messages: SearchMatches<SearchMessage>,
 }
 
 #[cfg(test)]
@@ -150,7 +190,14 @@ mod tests {
     #[test]
     fn general_api_error_response() {
         let client = hyper::Client::with_connector(MockErrorResponder::default());
-        let result = all(&client, "TEST_TOKEN", "pickleface", Some("timestamp"), Some("asc"), Some(true), Some(100), Some(1));
+        let result = all(&client,
+                         "TEST_TOKEN",
+                         "pickleface",
+                         Some("timestamp"),
+                         Some("asc"),
+                         Some(true),
+                         Some(100),
+                         Some(1));
         assert!(result.is_err());
     }
 
@@ -285,7 +332,14 @@ mod tests {
     #[test]
     fn all_ok_response() {
         let client = hyper::Client::with_connector(MockAllOkResponder::default());
-        let result = all(&client, "TEST_TOKEN", "pickleface", Some("timestamp"), Some("asc"), Some(true), Some(100), Some(1));
+        let result = all(&client,
+                         "TEST_TOKEN",
+                         "pickleface",
+                         Some("timestamp"),
+                         Some("asc"),
+                         Some(true),
+                         Some(100),
+                         Some(1));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
@@ -374,7 +428,14 @@ mod tests {
     #[test]
     fn files_ok_response() {
         let client = hyper::Client::with_connector(MockFilesOkResponder::default());
-        let result = files(&client, "TEST_TOKEN", "pickleface", Some("timestamp"), Some("asc"), Some(true), Some(100), Some(1));
+        let result = files(&client,
+                           "TEST_TOKEN",
+                           "pickleface",
+                           Some("timestamp"),
+                           Some("asc"),
+                           Some(true),
+                           Some(100),
+                           Some(1));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
@@ -443,7 +504,14 @@ mod tests {
     #[test]
     fn messages_ok_response() {
         let client = hyper::Client::with_connector(MockMessagesOkResponder::default());
-        let result = messages(&client, "TEST_TOKEN", "pickleface", Some("timestamp"), Some("asc"), Some(true), Some(100), Some(1));
+        let result = messages(&client,
+                              "TEST_TOKEN",
+                              "pickleface",
+                              Some("timestamp"),
+                              Some("asc"),
+                              Some(true),
+                              Some(100),
+                              Some(1));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }

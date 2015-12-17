@@ -1,4 +1,5 @@
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -9,7 +10,13 @@ use super::make_authed_api_call;
 /// Pins an item to a channel.
 ///
 /// Wraps https://api.slack.com/methods/pins.add
-pub fn add(client: &hyper::Client, token: &str, channel: &str, file: Option<&str>, file_comment: Option<&str>, timestamp: Option<&str>) -> ApiResult<AddResponse> {
+pub fn add(client: &hyper::Client,
+           token: &str,
+           channel: &str,
+           file: Option<&str>,
+           file_comment: Option<&str>,
+           timestamp: Option<&str>)
+           -> ApiResult<AddResponse> {
     let mut params = HashMap::new();
     params.insert("channel", channel);
     if let Some(file) = file {
@@ -38,13 +45,19 @@ pub fn list(client: &hyper::Client, token: &str, channel: &str) -> ApiResult<Lis
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct ListResponse {
-    pub items: Vec<super::Item>
+    pub items: Vec<super::Item>,
 }
 
 /// Un-pins an item from a channel.
 ///
 /// Wraps https://api.slack.com/methods/pins.remove
-pub fn remove(client: &hyper::Client, token: &str, channel: &str, file: Option<&str>, file_comment: Option<&str>, timestamp: Option<&str>) -> ApiResult<RemoveResponse> {
+pub fn remove(client: &hyper::Client,
+              token: &str,
+              channel: &str,
+              file: Option<&str>,
+              file_comment: Option<&str>,
+              timestamp: Option<&str>)
+              -> ApiResult<RemoveResponse> {
     let mut params = HashMap::new();
     params.insert("channel", channel);
     if let Some(file) = file {
@@ -82,7 +95,12 @@ mod tests {
     #[test]
     fn add_ok_response() {
         let client = hyper::Client::with_connector(MockAddOkResponder::default());
-        let result = add(&client, "TEST_TOKEN", "TEST_CHANNEL", None, None, Some("1234567890.123456"));
+        let result = add(&client,
+                         "TEST_TOKEN",
+                         "TEST_CHANNEL",
+                         None,
+                         None,
+                         Some("1234567890.123456"));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
@@ -227,7 +245,7 @@ mod tests {
         }
         match result.unwrap().items[0] {
             Item::Message { channel: ref c, message: _ } => assert_eq!(c, "C2147483705"),
-            _ => panic!("Incorrect item type. Expected message.")
+            _ => panic!("Incorrect item type. Expected message."),
         }
     }
 
@@ -236,7 +254,12 @@ mod tests {
     #[test]
     fn remove_ok_response() {
         let client = hyper::Client::with_connector(MockRemoveOkResponder::default());
-        let result = remove(&client, "TEST_TOKEN", "TEST_CHANNEL", None, None, Some("1234567890.123456"));
+        let result = remove(&client,
+                            "TEST_TOKEN",
+                            "TEST_CHANNEL",
+                            None,
+                            None,
+                            Some("1234567890.123456"));
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }

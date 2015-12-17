@@ -1,4 +1,5 @@
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use std::io::Read;
@@ -6,7 +7,7 @@ use hyper;
 use rustc_serialize::json;
 
 use super::ApiResult;
-use ::error::Error;
+use error::Error;
 
 /// Exchanges a temporary OAuth code for an API token.
 ///
@@ -32,9 +33,11 @@ fn transform_oauth_response(mut res: hyper::client::response::Response) -> ApiRe
     try!(res.read_to_string(&mut res_str));
 
     let raw_json = try!(json::Json::from_str(&res_str));
-    let jobj = try!(raw_json.as_object().ok_or(Error::Api(format!("bad slack json response (not an object) {:?}", raw_json))));
+    let jobj = try!(raw_json.as_object()
+                            .ok_or(Error::Api(format!("bad slack json response (not an object) {:?}", raw_json))));
     if let Some(ok) = jobj.get("ok") {
-        let is_ok = try!(ok.as_boolean().ok_or(Error::Api(format!("slack json reponse \"ok\" is not a boolean: {:?}", raw_json))));
+        let is_ok = try!(ok.as_boolean()
+                           .ok_or(Error::Api(format!("slack json reponse \"ok\" is not a boolean: {:?}", raw_json))));
         if !is_ok {
             return Err(Error::Api(format!("slack json reponse \"ok\" is not true: {:?}", raw_json)));
         }
@@ -46,7 +49,7 @@ fn transform_oauth_response(mut res: hyper::client::response::Response) -> ApiRe
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct AccessResponse {
     pub access_token: String,
-    pub scope: String
+    pub scope: String,
 }
 
 #[cfg(test)]
@@ -77,6 +80,7 @@ mod tests {
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
-        assert_eq!(result.unwrap().access_token, "xoxt-23984754863-2348975623103");
+        assert_eq!(result.unwrap().access_token,
+                   "xoxt-23984754863-2348975623103");
     }
 }

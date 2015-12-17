@@ -1,6 +1,7 @@
 //! Checks authentication & identity.
 //!
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;

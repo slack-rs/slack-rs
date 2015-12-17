@@ -1,4 +1,5 @@
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -15,7 +16,7 @@ pub fn list(client: &hyper::Client, token: &str) -> ApiResult<ListResponse> {
 
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct ListResponse {
-    pub emoji: HashMap<String, String>
+    pub emoji: HashMap<String, String>,
 }
 
 #[cfg(test)]
@@ -50,6 +51,7 @@ mod tests {
         if let Err(err) = result {
             panic!(format!("{:?}", err));
         }
-        assert_eq!(result.unwrap().emoji.get("shipit").unwrap(), "alias:squirrel");
+        assert_eq!(result.unwrap().emoji.get("shipit").unwrap(),
+                   "alias:squirrel");
     }
 }

@@ -1,68 +1,111 @@
-/*
-Copyright 2014 Benjamin Elder from https://github.com/BenTheElder/slack-rs
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+//
+// Copyright 2014 Benjamin Elder from https://github.com/BenTheElder/slack-rs
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 
 //! #Notes:
-//! - Structs except for RtmClient are derived from the slack api docs at: https://api.slack.com/
-//!    - Optional fields in Slack structs represent fields that may not be present in the serialized form.
-//!    - Currently fields in Slack structs are public, but in the future they may be wrapped in getters.
+//! - Structs except for RtmClient are derived from the slack api docs at:
+//! https://api.slack.com/
+//! - Optional fields in Slack structs represent fields that may not be
+//! present in the serialized form.
+//! - Currently fields in Slack structs are public, but in the future they
+//! may be wrapped in getters.
 //!
-//! - Usage: Implement an EventHandler to handle slack events and messages in conjunction with RtmClient.
+//! - Usage: Implement an EventHandler to handle slack events and messages in
+//! conjunction with RtmClient.
 //!
 //! #Changelog:
-//! Version 0.10.1: Massive overhaul, implement support for almost all of the bots api, stronger error handling and lots of tests.
-//! Thanks a ton to https://github.com/mthjones, see https://github.com/BenTheElder/slack-rs/pull/17 for the main overhaul.
+//! Version 0.12.0 Overhauled event parsing and added Event type,
+//! updated the EventHandler api, updated dependencies,
+//! added Error::Utf8 for utf8 decoding errors, rustfmt-ed the sources,
+//! various bugfixes.
 //!
-//! Compatibility Changes: Methods that previously returned `Result<String,Error>` now return a typed `Result<Some_Slack_Response_Type, Error>`.
+//! Compatibility Changes:
 //!
-//!    - `RtmClient::post_message` now returns `Result<api::chat::PostMessageResponse, Error>`
+//! - EventHandler's on_receive is now on_event with a different
+//! signature that takes the raw json string as well as the result of parsing the Event,
+//! for less library-user parsing and greater flexibility.
 //!
-//!    - `RtmClient::delete_message` now returns `Result<api::chat::DeleteResponse, Error>`
+//! - RtmClient's get_outs method has been removed, and the type of the channel used for
+//! passing messages between the working threads has changed.
 //!
-//!    - `RtmClient::mark` now returns `Result<api::channels::MarkResponse, Error>`
 //!
-//!    - `RtmClient::set_topic` now returns `Result<api::channels::SetTopicResponse, Error>`
+//! Version 0.11.0 Bugfix changes the color field of User to `Option<String>`,
+//! see: https://github.com/BenTheElder/slack-rs/issues/22
 //!
-//!    - `RtmClient::set_purpose` now returns `Result<api::channels::SetPurposeResponse, Error>`
+//! Version 0.10.1: Massive overhaul, implement support for almost all of the
+//! bots api, stronger error handling and lots of tests.
+//! Thanks a ton to https://github.com/mthjones, see
+//! https://github.com/BenTheElder/slack-rs/pull/17 for the main overhaul.
 //!
-//!    - `RtmClient::add_reaction_timestamp` now returns `Result<api::reactions::AddResponse, Error>`
+//! Compatibility Changes: Methods that previously returned
+//! `Result<String,Error>` now return a typed `Result<Some_Slack_Response_Type,
+//! Error>`.
 //!
-//!    - `RtmClient::add_reaction_file` now returns `Result<api::reactions::AddResponse, Error>`
+//! - `RtmClient::post_message` now returns
+//! `Result<api::chat::PostMessageResponse, Error>`
 //!
-//!    - `RtmClient::add_reaction_file_comment` now returns `Result<api::reactions::AddResponse, Error>`
+//! - `RtmClient::delete_message` now returns
+//! `Result<api::chat::DeleteResponse, Error>`
 //!
-//!    - `RtmClient::update_message` now returns `Result<api::chat::UpdateResponse, Error>`
+//! - `RtmClient::mark` now returns `Result<api::channels::MarkResponse,
+//! Error>`
+//!
+//! - `RtmClient::set_topic` now returns
+//! `Result<api::channels::SetTopicResponse, Error>`
+//!
+//! - `RtmClient::set_purpose` now returns
+//! `Result<api::channels::SetPurposeResponse, Error>`
+//!
+//! - `RtmClient::add_reaction_timestamp` now returns
+//! `Result<api::reactions::AddResponse, Error>`
+//!
+//! - `RtmClient::add_reaction_file` now returns
+//! `Result<api::reactions::AddResponse, Error>`
+//!
+//! - `RtmClient::add_reaction_file_comment` now returns
+//! `Result<api::reactions::AddResponse, Error>`
+//!
+//! - `RtmClient::update_message` now returns
+//! `Result<api::chat::UpdateResponse, Error>`
 //!
 //!    - `RtmClient::im_open` now returns `Result<api::im::OpenResponse, Error>`
 //!
-//!    - `RtmClient::channels_history` now returns `Result<api::channels::HistoryResponse, Error>`
+//! - `RtmClient::channels_history` now returns
+//! `Result<api::channels::HistoryResponse, Error>`
 //!
-//!    - `RtmClient::im_close` now returns `Result<api::im::CloseResponse, Error>`
+//! - `RtmClient::im_close` now returns `Result<api::im::CloseResponse,
+//! Error>`
 //!
-//!    - `RtmClient::im_history` now returns `Result<api::im::HistoryResponse, Error>`
+//! - `RtmClient::im_history` now returns `Result<api::im::HistoryResponse,
+//! Error>`
 //!
 //!    - `RtmClient::im_list` now returns `Result<api::im::ListResponse, Error>`
 //!
 //!    - `RtmClient::im_mark` now returns `Result<api::im::MarkResponse, Error>`
 //!
-//! Forthcoming releases will see the implementation of the remaining files.upload and some convenient helpers such as a message builder can be expected in a later release,
-//! and the Error::Api will expose Slack api error types more strongly in a forthcoming release.
+//! Forthcoming releases will see the implementation of the remaining
+//! files.upload and some convenient helpers such as a message builder can be
+//! expected in a later release,
+//! and the Error::Api will expose Slack api error types more strongly in a
+//! forthcoming release.
 //!
-//! Version 0.9.2: Add channels_history via https://github.com/jeehoonkang https://github.com/BenTheElder/slack-rs/pull/16
+//! Version 0.9.2: Add channels_history via https://github.com/jeehoonkang
+//! https://github.com/BenTheElder/slack-rs/pull/16
 //!
-//! Version 0.9.1 -- With help from: https://github.com/mthjones, overhaul error handling and refactor, improve api support.
+//! Version 0.9.1 -- With help from: https://github.com/mthjones, overhaul
+//! error handling and refactor, improve api support.
 //!
 //!  - Introduced slack::error::Error
 //!
@@ -70,7 +113,8 @@ limitations under the License.
 //!
 //!  - Fixed bug where setPurpose called setTopic instead [!]
 //!
-//! Version 0.8.3 -- Moved example to examples dir thanks to https://github.com/mthjones: https://github.com/BenTheElder/slack-rs/pull/9
+//! Version 0.8.3 -- Moved example to examples dir thanks to
+//! https://github.com/mthjones: https://github.com/BenTheElder/slack-rs/pull/9
 //!
 //! Version 0.8.2 -- Fix https://github.com/BenTheElder/slack-rs/issues/8
 //!
@@ -78,18 +122,22 @@ limitations under the License.
 //!
 //!  - TODO: expect the error type overhaul to be pushed back to 0.9.X
 //!
-//!  - NOTE: Compatibility changes from 0.7.X include: RtmClient::new now takes the bot token/api_key and login,
+//! - NOTE: Compatibility changes from 0.7.X include: RtmClient::new now takes
+//! the bot token/api_key and login,
 //! login_and_run do not.
 //!
 //!
-//! Version 0.7.2 -- Bugfix via https://github.com/Farthen: https://github.com/BenTheElder/slack-rs/pull/6
+//! Version 0.7.2 -- Bugfix via https://github.com/Farthen:
+//! https://github.com/BenTheElder/slack-rs/pull/6
 //!
 //! Version 0.7.1 -- Cleaned up the api and json handling.
 //!
 //! - TODO: expect better error handling in 0.8.X
 //!
-//! - NOTE: Compatibility changes from 0.6.1 include: 'MessageHandler' is now 'EventHandler' and all of the
-//! slack data structs have been updated to match the api as closely as possible.
+//! - NOTE: Compatibility changes from 0.6.1 include: 'MessageHandler' is now
+//! 'EventHandler' and all of the
+//! slack data structs have been updated to match the api as closely as
+//! possible.
 //!
 //! Version 0.6.1 -- Updated to stable rust.
 
@@ -103,12 +151,12 @@ extern crate url;
 extern crate yup_hyper_mock;
 
 pub mod error;
-use error::Error;
+pub use error::Error;
 
 pub mod api;
-pub use api::{Attachment,Channel,Group,Im,Team,User};
+pub use api::{Attachment, Channel, Group, Im, Team, User, Event, Message};
 
-use std::sync::mpsc::{Sender,Receiver,channel};
+use std::sync::mpsc::{Sender, Receiver, channel};
 use std::thread;
 use std::sync::atomic::{AtomicIsize, Ordering};
 use std::collections::HashMap;
@@ -116,31 +164,41 @@ use std::collections::HashMap;
 use rustc_serialize::json;
 
 use websocket::Client;
-pub use websocket::message::Message;
-use websocket::Sender as WsSender;
-use websocket::Receiver as WsReceiver;
+pub use websocket::message::Message as WebsocketMessage;
+use websocket::client::Sender as WsSender;
+use websocket::ws::sender::Sender as WsSenderTrait;
+use websocket::ws::receiver::Receiver as WsReceiverTrait;
+use websocket::client::Receiver as WsReceiver;
+use websocket::message::Type as WsType;
 use websocket::dataframe::DataFrame;
 use websocket::stream::WebSocketStream;
 
 pub type WsClient = Client<websocket::dataframe::DataFrame,
-                           websocket::client::sender::Sender<websocket::stream::WebSocketStream>,
-                           websocket::client::receiver::Receiver<websocket::stream::WebSocketStream>>;
+                           WsSender<websocket::stream::WebSocketStream>,
+                           WsReceiver<websocket::stream::WebSocketStream>>;
 
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
-	/// When a message is received this will be called with self, the slack client,
-	/// and the json encoded string payload.
-	fn on_receive(&mut self, cli: &mut RtmClient, json_str: &str);
+    /// When a message is received this will be called with self, the slack client,
+    /// and the result of parsing the event received, as well as the raw json string.
+    fn on_event(&mut self, cli: &mut RtmClient, event: Result<&Event, Error>, raw_json: &str);
 
-	/// Called when a ping is received; you do NOT need to handle the reply pong,
-	/// but you may use this event to track the connection as a keep-alive.
-	fn on_ping(&mut self, cli: &mut RtmClient);
+    /// Called when a ping is received; you do NOT need to handle the reply pong,
+    /// but you may use this event to track the connection as a keep-alive.
+    fn on_ping(&mut self, cli: &mut RtmClient);
 
-	/// Called when the connection is closed for any reason.
-	fn on_close(&mut self, cli: &mut RtmClient);
+    /// Called when the connection is closed for any reason.
+    fn on_close(&mut self, cli: &mut RtmClient);
 
-	/// Called when the connection is opened.
-	fn on_connect(&mut self, cli: &mut RtmClient);
+    /// Called when the connection is opened.
+    fn on_connect(&mut self, cli: &mut RtmClient);
+}
+
+/// Used for passing websocket messages in channels
+pub enum WsMessage {
+    Close,
+    Text(String),
+    Pong(String),
 }
 
 /// The actual messaging client.
@@ -153,62 +211,54 @@ pub struct RtmClient {
     channel_ids: HashMap<String, String>,
     group_ids: HashMap<String, String>,
     user_ids: HashMap<String, String>,
-	msg_num: AtomicIsize,
-	outs : Option<Sender<Message>>
+    msg_num: AtomicIsize,
+    outs: Option<Sender<WsMessage>>,
 }
 
 impl RtmClient {
 
-	/// Creates a new client from a token
-	pub fn new(token: &str) -> RtmClient {
-		RtmClient{
+    /// Creates a new client from a token
+    pub fn new(token: &str) -> RtmClient {
+        RtmClient {
             token: String::from(token),
-            start_info : None,
+            start_info: None,
             channels: Vec::new(),
             groups: Vec::new(),
             users: Vec::new(),
             channel_ids: HashMap::new(),
             group_ids: HashMap::new(),
             user_ids: HashMap::new(),
-			msg_num: AtomicIsize::new(0),
-			outs : None
-		}
-	}
+            msg_num: AtomicIsize::new(0),
+            outs: None,
+        }
+    }
 
-
-    /// Returns the sending half of the channel used internally for sending messages.
-    /// Prefer send_message or send to this.
+    /// Returns the name of the bot/user connected to the client.
     /// Only valid after login, otherwise None.
-	pub fn get_message_sender(&self) -> Option<Sender<Message>> {
-		self.outs.clone()
-	}
-
-	/// Returns the name of the bot/user connected to the client.
-	/// Only valid after login, otherwise None.
-	pub fn get_name(&self) -> Option<String> {
+    pub fn get_name(&self) -> Option<String> {
         match self.start_info {
-		    Some(ref s) => Some(s.self_data.name.clone()),
-            None => None
-        }
-	}
-
-	/// Returns the id of the bot/user connected to the client.
-	/// Only valid after login, otherwise None.
-	pub fn get_id(&self) -> Option<String> {
-        match self.start_info {
-		    Some(ref s) => Some(s.self_data.id.clone()),
-            None => None
-        }
-	}
-
-	/// Returns the Team struct of the bot/user connected to the client.
-	//// Only valid after login, otherwise None.
-	pub fn get_team(&self) -> Option<Team> {
-        match self.start_info {
-		    Some(ref s) => Some(s.team.clone()),
+            Some(ref s) => Some(s.self_data.name.clone()),
             None => None,
         }
-	}
+    }
+
+    /// Returns the id of the bot/user connected to the client.
+    /// Only valid after login, otherwise None.
+    pub fn get_id(&self) -> Option<String> {
+        match self.start_info {
+            Some(ref s) => Some(s.self_data.id.clone()),
+            None => None,
+        }
+    }
+
+    /// Returns the Team struct of the bot/user connected to the client.
+    /// / Only valid after login, otherwise None.
+    pub fn get_team(&self) -> Option<Team> {
+        match self.start_info {
+            Some(ref s) => Some(s.team.clone()),
+            None => None,
+        }
+    }
 
     /// Get a user id from a username
     /// Only valid after login.
@@ -229,26 +279,26 @@ impl RtmClient {
     }
 
     /// Returns a vector of Users from the team the bot/client is connected to.
-	/// Only valid after login.
+    /// Only valid after login.
     pub fn get_users(&self) -> Vec<User> {
         self.users.clone()
     }
 
     /// Returns a vector of Channels from the team the bot/client is connected to.
-	/// Only valid after login.
-	pub fn get_channels(&self) -> Vec<Channel> {
+    /// Only valid after login.
+    pub fn get_channels(&self) -> Vec<Channel> {
         self.channels.clone()
     }
 
     /// Returns a vector of Groups from the team the bot/client is connected to.
-	/// Only valid after login.
-	pub fn get_groups(&self) -> Vec<Group> {
+    /// Only valid after login.
+    pub fn get_groups(&self) -> Vec<Group> {
         self.groups.clone()
     }
 
     /// Returns a vector of Ims received on login the bot/client is connected to.
-	/// Only valid after login, otherwise None.
-	pub fn get_start_ims(&self) ->  Option<Vec<Im>> {
+    /// Only valid after login, otherwise None.
+    pub fn get_start_ims(&self) -> Option<Vec<Im>> {
         match self.start_info {
             Some(ref s) => Some(s.ims.clone()),
             None => None,
@@ -256,41 +306,42 @@ impl RtmClient {
     }
 
 
-	///Returns a unique identifier to be used in the 'id' field of a message
-	///sent to slack.
-	pub fn get_msg_uid(&self) -> isize {
-		self.msg_num.fetch_add(1, Ordering::SeqCst)
-	}
+    ///Returns a unique identifier to be used in the 'id' field of a message
+    ///sent to slack.
+    pub fn get_msg_uid(&self) -> isize {
+        self.msg_num.fetch_add(1, Ordering::SeqCst)
+    }
 
 
-	/// Allows sending a json string message over the websocket connection.
-	/// Note that this only passes the message over a channel to the
-	/// Messaging task, and therfore a succesful return value does not
-	/// mean the message has been actually put on the wire yet.
-	/// Note that you will need to form a valid json reply yourself if you
-	/// use this method, and you will also need to retrieve a unique id for
-	/// the message via RtmClient.get_msg_uid()
-	/// Only valid after login.
-	pub fn send(&mut self, s : &str) -> Result<(), Error> {
-		let tx = match self.outs {
-			Some(ref tx) => tx,
-			None => return Err(Error::Internal(String::from("Failed to get tx!")))
-		};
-	    try!(tx.send(Message::Text(s.to_string())).map_err(|err| Error::Internal(format!("{}", err))));
+    /// Allows sending a json string message over the websocket connection.
+    /// Note that this only passes the message over a channel to the
+    /// Messaging task, and therfore a succesful return value does not
+    /// mean the message has been actually put on the wire yet.
+    /// Note that you will need to form a valid json reply yourself if you
+    /// use this method, and you will also need to retrieve a unique id for
+    /// the message via RtmClient.get_msg_uid()
+    /// Only valid after login.
+    pub fn send(&mut self, s: &str) -> Result<(), Error> {
+        let tx = match self.outs {
+            Some(ref tx) => tx,
+            None => return Err(Error::Internal(String::from("Failed to get tx!"))),
+        };
+        try!(tx.send(WsMessage::Text(s.to_string()))
+               .map_err(|err| Error::Internal(format!("{}", err))));
         Ok(())
-	}
+    }
 
-	/// Allows sending a textual string message over the websocket connection,
-	/// to the requested channel id. Ideal usage would be EG:
-	/// extract the channel in on_receive and then send back a message to the channel.
-	/// Note that this only passes the message over a channel to the
-	/// Messaging task, and therfore a succesful return value does not
-	/// mean the message has been actually put on the wire yet.
-	/// This method also handles getting a unique id and formatting the actual json
-	/// sent.
-	/// Only valid after login.
-	pub fn send_message(&self, chan: &str, msg: &str) -> Result<(), Error>{
-		let n = self.get_msg_uid();
+    /// Allows sending a textual string message over the websocket connection,
+    /// to the requested channel id. Ideal usage would be EG:
+    /// extract the channel in on_receive and then send back a message to the channel.
+    /// Note that this only passes the message over a channel to the
+    /// Messaging task, and therfore a succesful return value does not
+    /// mean the message has been actually put on the wire yet.
+    /// This method also handles getting a unique id and formatting the actual json
+    /// sent.
+    /// Only valid after login.
+    pub fn send_message(&self, chan: &str, msg: &str) -> Result<(), Error> {
+        let n = self.get_msg_uid();
         // fixup the channel id if chan is: `#<channel>`
         let chan_id = match chan.starts_with("#") {
             true => {
@@ -302,24 +353,28 @@ impl RtmClient {
             false => chan,
         };
         let msg_json = format!("{}", json::as_json(&msg));
-		let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,n,chan_id, &msg_json[1..msg_json.len()-1]);
+        let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
+                           n,
+                           chan_id,
+                           &msg_json[1..msg_json.len() - 1]);
         println!("{}", mstr);
-		let tx = match self.outs {
-			Some(ref tx) => tx,
-			None => return Err(Error::Internal(String::from("Failed to get tx!")))
-		};
-		try!(tx.send(Message::Text(mstr)).map_err(|err| Error::Internal(format!("{:?}", err))));
-		Ok(())
-	}
+        let tx = match self.outs {
+            Some(ref tx) => tx,
+            None => return Err(Error::Internal(String::from("Failed to get tx!"))),
+        };
+        try!(tx.send(WsMessage::Text(mstr))
+               .map_err(|err| Error::Internal(format!("{:?}", err))));
+        Ok(())
+    }
 
-	/// Logs in to slack. Call this before calling run.
-	/// Alternatively use login_and_run
-	pub fn login(&mut self) -> Result<(WsClient, Receiver<Message>), Error> {
+    /// Logs in to slack. Call this before calling run.
+    /// Alternatively use login_and_run
+    pub fn login(&mut self) -> Result<(WsClient, Receiver<WsMessage>), Error> {
         let client = hyper::Client::new();
-		let start = try!(api::rtm::start(&client, &self.token, None, None));
+        let start = try!(api::rtm::start(&client, &self.token, None, None));
 
         // websocket url
-		let wss_url = try!(hyper::Url::parse(&start.url));
+        let wss_url = try!(hyper::Url::parse(&start.url));
 
         // update id hashmaps
         for ref channel in start.channels.iter() {
@@ -340,114 +395,131 @@ impl RtmClient {
         self.start_info = Some(start);
 
         // Do websocket connection request
-		let req = try!(websocket::client::Client::connect(wss_url.clone()));
+        let req = try!(websocket::client::Client::connect(wss_url.clone()));
 
-		// Do websocket handshake.
-		let res = try!(req.send());
+        // Do websocket handshake.
+        let res = try!(req.send());
 
         // Validate handshake
-		try!(res.validate());
+        try!(res.validate());
 
         // setup channels for passing messages
-		let (tx,rx) = channel::<Message>();
-		self.outs = Some(tx.clone());
-		Ok((res.begin(), rx))
-	}
+        let (tx, rx) = channel::<WsMessage>();
+        self.outs = Some(tx.clone());
+        Ok((res.begin(), rx))
+    }
 
-	/// Runs the message receive loop
-	pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<Message>) -> Result<(), Error> {
-		// for sending messages
-		let tx = match self.outs {
-			Some(ref mut tx) => tx.clone(),
-			None => return Err(Error::Internal(String::from("No tx!"))),
-		};
+    /// Runs the message receive loop
+    pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<WsMessage>) -> Result<(), Error> {
+        // for sending messages
+        let tx = match self.outs {
+            Some(ref mut tx) => tx.clone(),
+            None => return Err(Error::Internal(String::from("No tx!"))),
+        };
 
-		let (mut sender, mut receiver) = client.split();
+        let (mut sender, mut receiver) = client.split();
 
-		handler.on_connect(self);
-		// websocket send loop
-		// We used thread::scoped previously but it is no longer stable...
-		let child = thread::spawn(move || -> () {
-			loop {
-				let msg = match rx.recv() {
-					Ok(m) => { m },
-					Err(_) => { return; }
-				};
+        handler.on_connect(self);
+        // websocket send loop
+        // We used thread::scoped previously but it is no longer stable...
+        let child = thread::spawn(move || -> () {
+            loop {
+                let msg = match rx.recv() {
+                    Ok(m) => m,
+                    Err(_) => {
+                        return;
+                    }
+                };
 
-				let closing = match msg {
-					Message::Close(_) => { true },
-					_ => { false }
-				};
-				match sender.send_message(msg) {
-					Ok(_) => {},
-					Err(_) => { return; }
-				}
-				if closing {
-					drop(rx);
-					return;
-				}
-			}
-		});
+                match msg {
+                    WsMessage::Close => {
+                        drop(rx);
+                        return;
+                    },
+                    WsMessage::Text(text) => {
+                        let message = WebsocketMessage::text(text);
+                        match sender.send_message(&message) {
+                            Ok(_) => {},
+                            Err(_) => {
+                                return;
+                            }
+                        }
+                    },
+                    WsMessage::Pong(data) => {
+                        let message = WebsocketMessage::pong(data.as_bytes());
+                        match sender.send_message(&message) {
+                            Ok(_) => {},
+                            Err(_) => {
+                                return;
+                            }
+                        }
+                    }
+                };
+            }
+        });
 
-		// receive loop
-		for message in receiver.incoming_messages() {
-			let message = match message {
-				Ok(message) => message,
-				Err(err) => {
-					let _ = child.join();
-					return Err(Error::Internal(format!("{:?}", err)));
-				}
-			};
+        // receive loop
+        for message in receiver.incoming_messages() {
+            let message : WebsocketMessage = match message {
+                Ok(message) => message,
+                Err(err) => {
+                    let _ = child.join();
+                    return Err(Error::Internal(format!("{:?}", err)));
+                }
+            };
 
-			match message {
-				Message::Text(data) => {
-					handler.on_receive(self, &data);
-				},
-				Message::Ping(data) => {
-					handler.on_ping(self);
-					let message = Message::Pong(data);
-					match tx.send(message) {
-						Ok(_) => {},
-						Err(err) => {
-							let _ = child.join();
-							return Err(Error::Internal(format!("{:?}", err)));
-						}
-					}
-				},
-				Message::Close(data) => {
-					handler.on_close(self);
-					let message = Message::Close(data);
-					match tx.send(message) {
-						Ok(_) => {},
-						Err(err) => {
-							let _ = child.join();
-							return Err(Error::Internal(format!("{:?}", err)));
-						}
-					}
-					let _ = child.join();
-					return Ok(());
-				},
-				_ => {}
-			}
-		}
-		let _ = child.join();
-		Ok(())
-	}
+            match message.opcode {
+                WsType::Text => {
+                    let raw_string : String = try!(String::from_utf8(message.payload.into_owned()));
+                    match json::decode(&raw_string) {
+                        Ok(event) => handler.on_event(self, Ok(&event), &raw_string),
+                        Err(err) => handler.on_event(self, Err(Error::JsonDecode(err)), &raw_string),
+                    }
+                }
+                WsType::Ping => {
+                    handler.on_ping(self);
+                    let raw_string : String = try!(String::from_utf8(message.payload.into_owned()));
+                    match tx.send(WsMessage::Pong(raw_string)) {
+                        Ok(_) => {}
+                        Err(err) => {
+                            let _ = child.join();
+                            return Err(Error::Internal(format!("{:?}", err)));
+                        }
+                    }
+                }
+                WsType::Close => {
+                    handler.on_close(self);
+                    match tx.send(WsMessage::Close) {
+                        Ok(_) => {}
+                        Err(err) => {
+                            let _ = child.join();
+                            return Err(Error::Internal(format!("{:?}", err)));
+                        }
+                    }
+                    let _ = child.join();
+                    return Ok(());
+                }
+                _ => {}
+            }
+        }
+        let _ = child.join();
+        Ok(())
+    }
 
-	/// Runs the main loop for the client after logging in to slack,
-	/// returns an error if the process fails at an point, or an Ok(()) on succesful
-	/// close.
-	/// Takes a EventHandler (implemented by the user) to call events handlers on.
-	/// once the first on_receive() or on_ping is called on the EventHandler, you
-	/// can soon the 'Only valid after login' methods are safe to use.
-	/// Sending is run in a thread in parallel while the receive loop runs on the main thread.
-	/// Both loops should end on return.
-	/// Sending should be thread safe as the messages are passed in via a channel in
-	/// RtmClient.send and RtmClient.send_message
-	pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T) -> Result<(), Error> {
-		let (client, rx) = try!(self.login());
-		self.run(handler, client, rx)
-	}
+    /// Runs the main loop for the client after logging in to slack,
+    /// returns an error if the process fails at an point, or an Ok(()) on succesful
+    /// close.
+    /// Takes a EventHandler (implemented by the user) to call events handlers on.
+    /// once the first on_receive() or on_ping is called on the EventHandler, you
+    /// can soon the 'Only valid after login' methods are safe to use.
+    /// Sending is run in a thread in parallel while the receive loop runs on the main thread.
+    /// Both loops should end on return.
+    /// Sending should be thread safe as the messages are passed in via a channel in
+    /// RtmClient.send and RtmClient.send_message
+    pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T) -> Result<(), Error> {
+        let (client, rx) = try!(self.login());
+        self.run(handler, client, rx)
+    }
 
     /// Uses https://api.slack.com/methods/users.list to get a list of users
     pub fn list_users(&mut self) -> Result<Vec<User>, Error> {
@@ -531,7 +603,19 @@ impl RtmClient {
             false => channel,
         };
         let client = hyper::Client::new();
-        api::chat::post_message(&client, &self.token, chan_id, json_payload, None, Some(true), None, None, attachments, None, None, None, None)
+        api::chat::post_message(&client,
+                                &self.token,
+                                chan_id,
+                                json_payload,
+                                None,
+                                Some(true),
+                                None,
+                                None,
+                                attachments,
+                                None,
+                                None,
+                                None,
+                                None)
     }
 
     /// Wraps https://api.slack.com/methods/chat.delete to delete a message
@@ -584,9 +668,12 @@ impl RtmClient {
         };
         // this will json format the string, which should escape it,
         // we'll need to slice out the quotes around it afterwards
-        let escaped_topic = format!("{}",json::as_json(&topic));
+        let escaped_topic = format!("{}", json::as_json(&topic));
         let client = hyper::Client::new();
-        api::channels::set_topic(&client, &self.token, chan_id, &escaped_topic[1..escaped_topic.len()-1])
+        api::channels::set_topic(&client,
+                                 &self.token,
+                                 chan_id,
+                                 &escaped_topic[1..escaped_topic.len() - 1])
     }
 
     /// Wraps https://api.slack.com/methods/channels.setPurpose
@@ -605,9 +692,12 @@ impl RtmClient {
         };
         // this will json format the string, which should escape it,
         // we'll need to slice out the quotes around it afterwards
-        let escaped_purpose = format!("{}",json::as_json(&purpose));
+        let escaped_purpose = format!("{}", json::as_json(&purpose));
         let client = hyper::Client::new();
-        api::channels::set_purpose(&client, &self.token, chan_id, &escaped_purpose[1..escaped_purpose.len()-1])
+        api::channels::set_purpose(&client,
+                                   &self.token,
+                                   chan_id,
+                                   &escaped_purpose[1..escaped_purpose.len() - 1])
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
@@ -624,19 +714,37 @@ impl RtmClient {
             false => channel,
         };
         let client = hyper::Client::new();
-        api::reactions::add(&client, &self.token, emoji_name, None, None, Some(chan_id), Some(timestamp))
+        api::reactions::add(&client,
+                            &self.token,
+                            emoji_name,
+                            None,
+                            None,
+                            Some(chan_id),
+                            Some(timestamp))
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file
     pub fn add_reaction_file(&self, emoji_name: &str, file: &str) -> Result<api::reactions::AddResponse, Error> {
         let client = hyper::Client::new();
-        api::reactions::add(&client, &self.token, emoji_name, Some(file), None, None, None)
+        api::reactions::add(&client,
+                            &self.token,
+                            emoji_name,
+                            Some(file),
+                            None,
+                            None,
+                            None)
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file comment
     pub fn add_reaction_file_comment(&self, emoji_name: &str, file_comment: &str) -> Result<api::reactions::AddResponse, Error> {
         let client = hyper::Client::new();
-        api::reactions::add(&client, &self.token, emoji_name, None, Some(file_comment), None, None)
+        api::reactions::add(&client,
+                            &self.token,
+                            emoji_name,
+                            None,
+                            Some(file_comment),
+                            None,
+                            None)
     }
 
     /// Wraps https://api.slack.com/methods/chat.update
@@ -654,7 +762,14 @@ impl RtmClient {
             false => channel,
         };
         let client = hyper::Client::new();
-        api::chat::update(&client, &self.token, timestamp, chan_id, json_payload, attachments, None, None)
+        api::chat::update(&client,
+                          &self.token,
+                          timestamp,
+                          chan_id,
+                          json_payload,
+                          attachments,
+                          None,
+                          None)
     }
 
     /// Wraps https://api.slack.com/methods/im.open to open a direct message channel with a user.
@@ -665,9 +780,21 @@ impl RtmClient {
 
     /// Wraps https://api.slack.com/methods/channels.history to retrieve the history of messages and
     /// events from a channel.
-    pub fn channels_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<api::channels::HistoryResponse, Error> {
+    pub fn channels_history(&self,
+                            channel_id: &str,
+                            latest: Option<&str>,
+                            oldest: Option<&str>,
+                            inclusive: Option<bool>,
+                            count: Option<u32>)
+                            -> Result<api::channels::HistoryResponse, Error> {
         let client = hyper::Client::new();
-        api::channels::history(&client, &self.token, channel_id, latest, oldest, inclusive, count)
+        api::channels::history(&client,
+                               &self.token,
+                               channel_id,
+                               latest,
+                               oldest,
+                               inclusive,
+                               count)
     }
 
     /// Wraps https://api.slack.com/methods/im.close to close a direct message channel.
@@ -678,9 +805,21 @@ impl RtmClient {
 
     /// Wraps https://api.slack.com/methods/im.history to retrieve the history of messages and
     /// events from a direct message channel.
-    pub fn im_history(&self, channel_id: &str, latest: Option<&str>, oldest: Option<&str>, inclusive: Option<bool>, count: Option<u32>) -> Result<api::im::HistoryResponse, Error> {
+    pub fn im_history(&self,
+                      channel_id: &str,
+                      latest: Option<&str>,
+                      oldest: Option<&str>,
+                      inclusive: Option<bool>,
+                      count: Option<u32>)
+                      -> Result<api::im::HistoryResponse, Error> {
         let client = hyper::Client::new();
-        api::im::history(&client, &self.token, channel_id, latest, oldest, inclusive, count)
+        api::im::history(&client,
+                         &self.token,
+                         channel_id,
+                         latest,
+                         oldest,
+                         inclusive,
+                         count)
     }
 
     /// Wraps https://api.slack.com/methods/im.list to get the list of all open direct message

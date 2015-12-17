@@ -1,6 +1,7 @@
 //! Get info on files uploaded to Slack, upload new files to Slack.
 //!
-//! For more information, see [Slack's API documentation](https://api.slack.com/methods).
+//! For more information, see [Slack's API
+//! documentation](https://api.slack.com/methods).
 
 use std::collections::HashMap;
 use hyper;
@@ -41,13 +42,21 @@ pub fn info(client: &hyper::Client, token: &str, file: &str, count: Option<u32>,
 pub struct InfoResponse {
     pub file: super::File,
     pub comments: Vec<super::Comment>,
-    pub paging: super::Pagination
+    pub paging: super::Pagination,
 }
 
 /// Lists & filters team files.
 ///
 /// Wraps https://api.slack.com/methods/files.list
-pub fn list(client: &hyper::Client, token: &str, user: Option<&str>, ts_from: Option<&str>, ts_to: Option<&str>, types: Option<&str>, count: Option<u32>, page: Option<u32>) -> ApiResult<ListResponse> {
+pub fn list(client: &hyper::Client,
+            token: &str,
+            user: Option<&str>,
+            ts_from: Option<&str>,
+            ts_to: Option<&str>,
+            types: Option<&str>,
+            count: Option<u32>,
+            page: Option<u32>)
+            -> ApiResult<ListResponse> {
     let count = count.map(|c| c.to_string());
     let page = page.map(|p| p.to_string());
     let mut params = HashMap::new();
@@ -75,14 +84,17 @@ pub fn list(client: &hyper::Client, token: &str, user: Option<&str>, ts_from: Op
 #[derive(Clone,Debug,RustcDecodable)]
 pub struct ListResponse {
     pub files: Vec<super::File>,
-    pub paging: super::Pagination
+    pub paging: super::Pagination,
 }
 
 // /// Uploads or creates a file.
 // ///
 // /// Wraps https://api.slack.com/methods/files.upload
 // #[allow(unused_variables)]
-// pub fn upload(client: &hyper::Client, token: &str, file: Option<Vec<u8>>, content: Option<&str>, filetype: Option<&str>, filename: Option<&str>, title: Option<&str>, initial_comment: Option<&str>, channels: Option<&str>) -> ApiResult<UploadResponse> {
+// pub fn upload(client: &hyper::Client, token: &str, file: Option<Vec<u8>>,
+// content: Option<&str>, filetype: Option<&str>, filename: Option<&str>,
+// title: Option<&str>, initial_comment: Option<&str>, channels: Option<&str>)
+// -> ApiResult<UploadResponse> {
 //     Err(::error::Error::Api(String::from("Currently unsupported.")))
 // }
 //

@@ -1,6 +1,7 @@
 use std::fmt;
 use std::io;
 use std::error;
+use std::string::FromUtf8Error;
 
 use hyper;
 use websocket;
@@ -14,6 +15,8 @@ pub enum Error {
     Http(hyper::Error),
     /// WebSocket connection error
     WebSocket(websocket::result::WebSocketError),
+    /// Error decoding websocket text frame Utf8
+    Utf8(FromUtf8Error),
     /// Error parsing url
     Url(url::ParseError),
     /// Error decoding Json
@@ -25,7 +28,7 @@ pub enum Error {
     /// Slack Api Error
     Api(String),
     /// Errors that do not fit under the other types, Internal is for EG channel errors.
-    Internal(String)
+    Internal(String),
 }
 
 impl From<hyper::Error> for Error {
@@ -70,11 +73,18 @@ impl From<io::Error> for Error {
     }
 }
 
+impl From<FromUtf8Error> for Error {
+    fn from(err: FromUtf8Error) -> Error {
+        Error::Utf8(err)
+    }
+}
+
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Error::Http(ref e) => write!(f, "Http (hyper) Error: {:?}", e),
-            Error::WebSocket(ref e) => write!(f, "Http (hyper) Error: {:?}", e),
+            Error::WebSocket(ref e) => write!(f, "Websocket Error: {:?}", e),
+            Error::Utf8(ref e) => write!(f, "Utf8 decode Error: {:?}", e),
             Error::Url(ref e) => write!(f, "Url Error: {:?}", e),
             Error::JsonDecode(ref e) => write!(f, "Json Decode Error: {:?}", e),
             Error::JsonParse(ref e) => write!(f, "Json Parse Error: {:?}", e),
@@ -90,6 +100,7 @@ impl error::Error for Error {
         match *self {
             Error::Http(ref e) => e.description(),
             Error::WebSocket(ref e) => e.description(),
+            Error::Utf8(ref e) => e.description(),
             Error::Url(ref e) => e.description(),
             Error::JsonDecode(ref e) => e.description(),
             Error::JsonParse(ref e) => e.description(),
@@ -103,6 +114,7 @@ impl error::Error for Error {
         match *self {
             Error::Http(ref e) => Some(e),
             Error::WebSocket(ref e) => Some(e),
+            Error::Utf8(ref e) => Some(e),
             Error::Url(ref e) => Some(e),
             Error::JsonDecode(ref e) => Some(e),
             Error::JsonParse(ref e) => Some(e),

@@ -14,7 +14,7 @@
 
 [package]
 name = "slack"
-version = "0.11.0"
+version = "0.12.0"
 authors = ["Benjamin Elder <ben.the.elder@gmail.com>", "Matt Jones <mthjones@gmail.com>"]
 repository = "https://github.com/BenTheElder/slack-rs.git"
 documentation = "https://bentheelder.github.io/slack-rs"
@@ -26,13 +26,13 @@ name = "slack"
 path = "src/lib.rs"
 
 [dependencies]
-websocket = "~0.12.2"
+websocket = "^0.14"
 # http library:
-hyper = "~0.6.14"
+hyper = "^0.7"
 # NOTE: coordinate these with hyper
-openssl = "^0.6.4"
+openssl = "^0.7"
 rustc-serialize = "^0.3"
-url = "^0.2"
+url = "^0.5"
 
 [dev-dependencies]
 yup-hyper-mock = "*"
