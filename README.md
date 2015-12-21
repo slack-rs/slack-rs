@@ -2,7 +2,7 @@
 
 [Slack][slack] realtime messaging client and API interface.
 
-[![Build Status][ci-img]][ci-url] [![Crates.io][crates-img]][crates-url]
+[![Build Status][ci-img]][ci-url] [![License][license-img]][license-url] [![Crates.io][crates-img]][crates-url]
 
 [Documentation](https://bentheelder.github.io/slack-rs)
 
@@ -30,4 +30,6 @@ See the [examples directory](./examples).
 [ci-url]: https://travis-ci.org/BenTheElder/slack-rs
 [crates-img]: https://img.shields.io/crates/v/slack.svg
 [crates-url]: https://crates.io/crates/slack
+[license-img]: https://img.shields.io/github/license/BenTheElder/slack-rs.svg
+[license-url]: https://raw.githubusercontent.com/BenTheElder/slack-rs/master/LICENSE
 [slack]: https://api.slack.com/
