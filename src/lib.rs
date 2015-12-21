@@ -164,7 +164,8 @@ use std::collections::HashMap;
 use rustc_serialize::json;
 
 use websocket::Client;
-pub use websocket::message::Message as WebsocketMessage;
+pub use websocket::message::Message as WebSocketMessage;
+use websocket::result::WebSocketResult;
 use websocket::client::Sender as WsSender;
 use websocket::ws::sender::Sender as WsSenderTrait;
 use websocket::ws::receiver::Receiver as WsReceiverTrait;
@@ -427,6 +428,12 @@ impl RtmClient {
                 let msg = match rx.recv() {
                     Ok(m) => m,
                     Err(_) => {
+                        // if we had an error receiving, shutdown the sender
+                        // and receiver so that we return.
+                        match sender.shutdown_all() {
+                            Ok(_) => {},
+                            Err(err) => panic!(err),
+                        };
                         return;
                     }
                 };
@@ -437,19 +444,31 @@ impl RtmClient {
                         return;
                     },
                     WsMessage::Text(text) => {
-                        let message = WebsocketMessage::text(text);
+                        let message = WebSocketMessage::text(text);
                         match sender.send_message(&message) {
                             Ok(_) => {},
                             Err(_) => {
+                                // if we had an error sending, shutdown the sender
+                                // and receiver so that we return.
+                                match sender.shutdown_all() {
+                                    Ok(_) => {},
+                                    Err(err) => panic!(err),
+                                };
                                 return;
                             }
                         }
                     },
                     WsMessage::Pong(data) => {
-                        let message = WebsocketMessage::pong(data.as_bytes());
+                        let message = WebSocketMessage::pong(data.as_bytes());
                         match sender.send_message(&message) {
                             Ok(_) => {},
                             Err(_) => {
+                                // if we had an error sending, shutdown the sender
+                                // and receiver so that we return.
+                                match sender.shutdown_all() {
+                                    Ok(_) => {},
+                                    Err(err) => panic!(err),
+                                };
                                 return;
                             }
                         }
@@ -459,15 +478,21 @@ impl RtmClient {
         });
 
         // receive loop
-        for message in receiver.incoming_messages() {
-            let message : WebsocketMessage = match message {
+        loop {
+            // receive
+            let message_result : WebSocketResult<WebSocketMessage> = receiver.recv_message();
+            // unwrap result
+            let message : WebSocketMessage = match message_result {
                 Ok(message) => message,
                 Err(err) => {
+                    // shutdown sender and receiver, then join the child thread
+                    // and return an error.
+                    let _ = receiver.shutdown_all();
                     let _ = child.join();
                     return Err(Error::Internal(format!("{:?}", err)));
                 }
             };
-
+            // handle the message
             match message.opcode {
                 WsType::Text => {
                     let raw_string : String = try!(String::from_utf8(message.payload.into_owned()));
@@ -482,6 +507,9 @@ impl RtmClient {
                     match tx.send(WsMessage::Pong(raw_string)) {
                         Ok(_) => {}
                         Err(err) => {
+                            // shutdown sender and receiver, then join the child thread
+                            // and return an error.
+                            let _ = receiver.shutdown_all();
                             let _ = child.join();
                             return Err(Error::Internal(format!("{:?}", err)));
                         }
@@ -492,18 +520,24 @@ impl RtmClient {
                     match tx.send(WsMessage::Close) {
                         Ok(_) => {}
                         Err(err) => {
+                            // shutdown sender and receiver, then join the child thread
+                            // and return an error.
+                            let _ = receiver.shutdown_all();
                             let _ = child.join();
                             return Err(Error::Internal(format!("{:?}", err)));
                         }
                     }
-                    let _ = child.join();
-                    return Ok(());
+                    // close the sender and receiver
+                    let _ = receiver.shutdown_all();
+                    // join the child thread, return error if the child thread paniced
+                    return match child.join() {
+                        Ok(_) => Ok(()),
+                        Err(err) => Err(Error::Internal(format!("child thread error in run: {:?}", err)))
+                    };
                 }
                 _ => {}
             }
         }
-        let _ = child.join();
-        Ok(())
     }
 
     /// Runs the main loop for the client after logging in to slack,
