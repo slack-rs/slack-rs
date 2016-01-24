@@ -26,6 +26,8 @@
 //! conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.12.1 overhaul websocket teardown logic.
+//!
 //! Version 0.12.0 Overhauled event parsing and added Event type,
 //! updated the EventHandler api, updated dependencies,
 //! added Error::Utf8 for utf8 decoding errors, rustfmt-ed the sources,
