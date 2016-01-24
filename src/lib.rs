@@ -489,6 +489,7 @@ impl RtmClient {
                 Err(err) => {
                     // shutdown sender and receiver, then join the child thread
                     // and return an error.
+                    let _ = tx.send(WsMessage::Close);
                     let _ = receiver.shutdown_all();
                     let _ = child.join();
                     return Err(Error::Internal(format!("{:?}", err)));
