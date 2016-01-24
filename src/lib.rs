@@ -167,7 +167,7 @@ use rustc_serialize::json;
 
 use websocket::Client;
 pub use websocket::message::Message as WebSocketMessage;
-use websocket::result::WebSocketResult;
+use websocket::result::{WebSocketResult, WebSocketError};
 use websocket::client::Sender as WsSender;
 use websocket::ws::sender::Sender as WsSenderTrait;
 use websocket::ws::receiver::Receiver as WsReceiverTrait;
@@ -479,13 +479,28 @@ impl RtmClient {
             }
         });
 
+        // set receive timeout
+        {
+            let read_timeout = std::time::Duration::from_secs(5);
+            let mut ws_stream = receiver.get_mut().get_mut();
+            let tcp_stream: &mut std::net::TcpStream = match ws_stream {
+                &mut WebSocketStream::Tcp(ref mut s) => s,
+                &mut WebSocketStream::Ssl(ref mut s) => s.get_mut(),
+            };
+            try!(tcp_stream.set_read_timeout(Some(read_timeout)));
+        }
+
         // receive loop
         loop {
             // receive
             let message_result : WebSocketResult<WebSocketMessage> = receiver.recv_message();
+            
             // unwrap result
+            let timeout_code = Some(10060);
             let message : WebSocketMessage = match message_result {
                 Ok(message) => message,
+                Err(WebSocketError::IoError(ref e @ _))
+                    if e.raw_os_error() == timeout_code => continue,
                 Err(err) => {
                     // shutdown sender and receiver, then join the child thread
                     // and return an error.
