@@ -26,6 +26,11 @@
 //! conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.12.2 Thanks to https://github.com/squidpickles handle new reconnect_url
+//! events, and rewrite event API to use match instead of if/else branches.
+//! Also change dev-dependencies to specific versions to comply with crates.io
+//!
+//!
 //! Version 0.12.1 overhaul websocket teardown logic.
 //!
 //! Version 0.12.0 Overhauled event parsing and added Event type,
