@@ -237,20 +237,17 @@ impl Decodable for Item {
     fn decode<D: Decoder>(d: &mut D) -> Result<Item, D::Error> {
         d.read_struct("item", 0, |d| {
             let ty: String = try!(d.read_struct_field("type", 0, |d| Decodable::decode(d)));
-            if ty == "message" {
-                Ok(Item::Message {
+            match ty.as_ref() {
+                "message" => Ok(Item::Message {
                     channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
                     message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d))),
-                })
-            } else if ty == "file" {
-                Ok(Item::File { file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))) })
-            } else if ty == "file_comment" {
-                Ok(Item::FileComment {
+                }),
+                "file" => Ok(Item::File { file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))) }),
+                "file_comment" => Ok(Item::FileComment {
                     file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
                     comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
-                })
-            } else {
-                Err(d.error(&format!("Unknown Item type: {}", ty)))
+                }),
+                _ => Err(d.error(&format!("Unknown Item type: {}", ty)))
             }
         })
     }
@@ -288,26 +285,20 @@ impl Decodable for StarredItem {
     fn decode<D: Decoder>(d: &mut D) -> Result<StarredItem, D::Error> {
         d.read_struct("item", 0, |d| {
             let ty: String = try!(d.read_struct_field("type", 0, |d| Decodable::decode(d)));
-            if ty == "message" {
-                Ok(StarredItem::Message {
-                    channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                    message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d))),
-                })
-            } else if ty == "file" {
-                Ok(StarredItem::File { file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))) })
-            } else if ty == "file_comment" {
-                Ok(StarredItem::FileComment {
-                    file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-                    comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
-                })
-            } else if ty == "channel" {
-                Ok(StarredItem::Channel { channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))) })
-            } else if ty == "group" {
-                Ok(StarredItem::Group { group: try!(d.read_struct_field("group", 0, |d| Decodable::decode(d))) })
-            } else if ty == "im" {
-                Ok(StarredItem::Im { channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))) })
-            } else {
-                Err(d.error(&format!("Unknown StarredItem type: {}", ty)))
+            match ty.as_ref() {
+                "message" => Ok(StarredItem::Message {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                        message: try!(d.read_struct_field("message", 0, |d| Decodable::decode(d))),
+                    }),
+                "file" => Ok(StarredItem::File { file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))) }),
+                "file_comment" => Ok(StarredItem::FileComment {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                        comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
+                    }),
+                "channel" => Ok(StarredItem::Channel { channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))) }),
+                "group" => Ok(StarredItem::Group { group: try!(d.read_struct_field("group", 0, |d| Decodable::decode(d))) }),
+                "im" => Ok(StarredItem::Im { channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))) }),
+                _ => Err(d.error(&format!("Unknown StarredItem type: {}", ty))),
             }
         })
     }
