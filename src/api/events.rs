@@ -337,6 +337,10 @@ pub enum Event {
     /// [`team_migration_started`](https://api.slack.
     /// com/event/team_migration_started) event.
     TeamMigrationStarted,
+    /// Represents the slack
+    /// [`reconnect_url`](https://api.slack.com/event/reconnect_url)
+    /// event.
+    ReconnectUrl,
 }
 
 impl Decodable for Event {
@@ -502,6 +506,7 @@ impl Decodable for Event {
         "bot_changed" => Ok(Event::BotChanged { bot: try!(d.read_struct_field("bot", 0, |d| Decodable::decode(d))) }),
         "accounts_changed" => Ok(Event::AccountsChanged),
         "team_migration_started" => Ok(Event::TeamMigrationStarted),
+        "reconnect_url" => Ok(Event::ReconnectUrl),
         _ => Err(d.error(&format!("Unknown Message type: {}", ty)))
         }
     }
