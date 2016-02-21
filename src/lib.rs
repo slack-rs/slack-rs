@@ -365,7 +365,6 @@ impl RtmClient {
                            n,
                            chan_id,
                            &msg_json[1..msg_json.len() - 1]);
-        println!("{}", mstr);
         let tx = match self.outs {
             Some(ref tx) => tx,
             None => return Err(Error::Internal(String::from("Failed to get tx!"))),
