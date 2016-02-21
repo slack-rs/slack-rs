@@ -348,7 +348,7 @@ impl RtmClient {
     /// This method also handles getting a unique id and formatting the actual json
     /// sent.
     /// Only valid after login.
-    pub fn send_message(&self, chan: &str, msg: &str) -> Result<(), Error> {
+    pub fn send_message(&self, chan: &str, msg: &str) -> Result<isize, Error> {
         let n = self.get_msg_uid();
         // fixup the channel id if chan is: `#<channel>`
         let chan_id = match chan.starts_with("#") {
@@ -372,7 +372,7 @@ impl RtmClient {
         };
         try!(tx.send(WsMessage::Text(mstr))
                .map_err(|err| Error::Internal(format!("{:?}", err))));
-        Ok(())
+        Ok(n)
     }
 
     /// Logs in to slack. Call this before calling run.

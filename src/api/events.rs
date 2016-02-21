@@ -341,226 +341,262 @@ pub enum Event {
     /// [`reconnect_url`](https://api.slack.com/event/reconnect_url)
     /// event.
     ReconnectUrl,
+    /// Represents a confirmation of a message sent
+    MessageSent {
+        reply_to: isize,
+        ts: String,
+        text: String,
+    },
+    /// Represents an error sending a message
+    MessageError {
+        reply_to: isize,
+        code: isize,
+        message: String,
+    },
 }
 
 impl Decodable for Event {
     fn decode<D: Decoder>(d: &mut D) -> Result<Event, D::Error> {
-        let ty: String = try!(d.read_struct_field("type", 0, |d| Decodable::decode(d)));
-        match ty.as_ref() {
-            "hello" => Ok(Event::Hello),
-            "message" => Ok(Event::Message(try!(super::Message::decode(d)))),
-            "user_typing" => Ok(Event::UserTyping {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_marked" => Ok(Event::ChannelMarked {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_created" => Ok(Event::ChannelCreated {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_joined" => Ok(Event::ChannelJoined {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_left" => Ok(Event::ChannelLeft {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_deleted" => Ok(Event::ChannelDeleted {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_rename" => Ok(Event::ChannelRename {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_archive" => Ok(Event::ChannelArchive {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_unarchive" => Ok(Event::ChannelUnArchive {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-            }),
-            "channel_history_changed" => Ok(Event::ChannelHistoryChanged {
-                latest: try!(d.read_struct_field("latest", 0, |d| Decodable::decode(d))),
-                ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "im_created" => Ok(Event::ImCreated {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "im_open" => Ok(Event::ImOpen {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "im_close" => Ok(Event::ImClose {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "im_marked" => Ok(Event::ImMarked {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
-            }),
-            "im_history_changed" => Ok(Event::ImHistoryChanged {
-                latest: try!(d.read_struct_field("latest", 0, |d| Decodable::decode(d))),
-                ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "group_joined" => Ok(Event::GroupJoined {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "group_left" => Ok(Event::GroupLeft {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "group_open" => Ok(Event::GroupOpen {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "group_close" => Ok(Event::GroupClose {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "group_archive" => Ok(Event::GroupArchive {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "group_unarchive" => Ok(Event::GroupUnArchive {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "group_rename" => Ok(Event::GroupRename {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "group_marked" => Ok(Event::GroupMarked {
-                channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-                ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
-            }),
-            "group_history_changed" => Ok(Event::GroupHistoryChanged {
-                latest: try!(d.read_struct_field("latest", 0, |d| Decodable::decode(d))),
-                ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
-            }),
-            "file_created" => Ok(Event::FileCreated {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-            }),
-            "file_shared" => Ok(Event::FileShared {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-            }),
-            "file_unshared" => Ok(Event::FileUnShared {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-            }),
-            "file_public" => Ok(Event::FilePublic {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-            }),
-            "file_private" => Ok(Event::FilePrivate {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-            }),
-            "file_change" => Ok(Event::FileChange {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-            }),
-            "file_deleted" => Ok(Event::FileDeleted {
-                file_id: try!(d.read_struct_field("file_id", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "file_comment_added" => Ok(Event::FileCommentAdded {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-                comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
-            }),
-            "file_comment_edited" => Ok(Event::FileCommentEdited {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-                comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
-            }),
-            "file_comment_deleted" => Ok(Event::FileCommentDeleted {
-                file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
-                comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
-            }),
-            "pin_added" => Ok(Event::PinAdded {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                channel_id: try!(d.read_struct_field("channel_id", 0, |d| Decodable::decode(d))),
-                item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "pin_removed" => Ok(Event::PinRemoved {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                channel_id: try!(d.read_struct_field("channel_id", 0, |d| Decodable::decode(d))),
-                item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
-                has_pins: try!(d.read_struct_field("has_pins", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "presence_change" => Ok(Event::PresenceChange {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                presence: try!(d.read_struct_field("presence", 0, |d| Decodable::decode(d))),
-            }),
-            "manual_presence_change" => Ok(Event::ManualPresenceChange {
-                presence: try!(d.read_struct_field("presence", 0, |d| Decodable::decode(d))),
-            }),
-            "pref_change" => Ok(Event::PrefChange {
-                name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
-                value: try!(d.read_struct_field("value", 0, |d| Decodable::decode(d))),
-            }),
-            "user_change" => Ok(Event::UserChange {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-            }),
-            "team_join" => Ok(Event::TeamJoin {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-            }),
-            "star_added" => Ok(Event::StarAdded {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "star_removed" => Ok(Event::StarRemoved {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "reaction_added" => Ok(Event::ReactionAdded {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
-                item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "reaction_removed" => Ok(Event::ReactionRemoved {
-                user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
-                item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "emoji_changed" => Ok(Event::EmojiChanged {
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "commands_changed" => Ok(Event::CommandsChanged {
-                event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-            }),
-            "team_plan_change" => Ok(Event::TeamPlanChange {
-                plan: try!(d.read_struct_field("plan", 0, |d| Decodable::decode(d))),
-            }),
-            "team_pref_change" => Ok(Event::TeamPrefChange {
-                name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
-                value: try!(d.read_struct_field("value", 0, |d| Decodable::decode(d))),
-            }),
-            "team_rename" => Ok(Event::TeamRename {
-                name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
-            }),
-            "team_domain_change" => Ok(Event::TeamDomainChange {
-                url: try!(d.read_struct_field("url", 0, |d| Decodable::decode(d))),
-                domain: try!(d.read_struct_field("domain", 0, |d| Decodable::decode(d))),
-            }),
-            "email_domain_changeed" =>
-                Ok(Event::EmailDomainChanged {
-                    email_domain: try!(d.read_struct_field("email_domain",
-                                                           0,
-                                                           |d| Decodable::decode(d))),
-                    event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-                }),
-            "bot_added" => Ok(Event::BotAdded {
-                bot: try!(d.read_struct_field("bot", 0, |d| Decodable::decode(d))),
-            }),
-            "bot_changed" => Ok(Event::BotChanged {
-                bot: try!(d.read_struct_field("bot", 0, |d| Decodable::decode(d))),
-            }),
-            "accounts_changed" => Ok(Event::AccountsChanged),
-            "team_migration_started" => Ok(Event::TeamMigrationStarted),
-            "reconnect_url" => Ok(Event::ReconnectUrl),
-            _ => Err(d.error(&format!("Unknown Message type: {}", ty))),
+        let ty: Option<String> = try!(d.read_struct_field("type", 0, |d| Decodable::decode(d)));
+        match ty {
+            Some(ty) => {
+                match ty.as_ref() {
+                    "hello" => Ok(Event::Hello),
+                    "message" => Ok(Event::Message(try!(super::Message::decode(d)))),
+                    "user_typing" => Ok(Event::UserTyping {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_marked" => Ok(Event::ChannelMarked {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                        ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_created" => Ok(Event::ChannelCreated {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_joined" => Ok(Event::ChannelJoined {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_left" => Ok(Event::ChannelLeft {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_deleted" => Ok(Event::ChannelDeleted {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_rename" => Ok(Event::ChannelRename {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_archive" => Ok(Event::ChannelArchive {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_unarchive" => Ok(Event::ChannelUnArchive {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                    }),
+                    "channel_history_changed" => Ok(Event::ChannelHistoryChanged {
+                        latest: try!(d.read_struct_field("latest", 0, |d| Decodable::decode(d))),
+                        ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "im_created" => Ok(Event::ImCreated {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "im_open" => Ok(Event::ImOpen {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "im_close" => Ok(Event::ImClose {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "im_marked" => Ok(Event::ImMarked {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                        ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "im_history_changed" => Ok(Event::ImHistoryChanged {
+                        latest: try!(d.read_struct_field("latest", 0, |d| Decodable::decode(d))),
+                        ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_joined" => Ok(Event::GroupJoined {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_left" => Ok(Event::GroupLeft {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_open" => Ok(Event::GroupOpen {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_close" => Ok(Event::GroupClose {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_archive" => Ok(Event::GroupArchive {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_unarchive" => Ok(Event::GroupUnArchive {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_rename" => Ok(Event::GroupRename {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_marked" => Ok(Event::GroupMarked {
+                        channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                        ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "group_history_changed" => Ok(Event::GroupHistoryChanged {
+                        latest: try!(d.read_struct_field("latest", 0, |d| Decodable::decode(d))),
+                        ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_created" => Ok(Event::FileCreated {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_shared" => Ok(Event::FileShared {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_unshared" => Ok(Event::FileUnShared {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_public" => Ok(Event::FilePublic {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_private" => Ok(Event::FilePrivate {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_change" => Ok(Event::FileChange {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_deleted" => Ok(Event::FileDeleted {
+                        file_id: try!(d.read_struct_field("file_id", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_comment_added" => Ok(Event::FileCommentAdded {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                        comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_comment_edited" => Ok(Event::FileCommentEdited {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                        comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
+                    }),
+                    "file_comment_deleted" => Ok(Event::FileCommentDeleted {
+                        file: try!(d.read_struct_field("file", 0, |d| Decodable::decode(d))),
+                        comment: try!(d.read_struct_field("comment", 0, |d| Decodable::decode(d))),
+                    }),
+                    "pin_added" => Ok(Event::PinAdded {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        channel_id: try!(d.read_struct_field("channel_id", 0, |d| Decodable::decode(d))),
+                        item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "pin_removed" => Ok(Event::PinRemoved {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        channel_id: try!(d.read_struct_field("channel_id", 0, |d| Decodable::decode(d))),
+                        item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        has_pins: try!(d.read_struct_field("has_pins", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "presence_change" => Ok(Event::PresenceChange {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        presence: try!(d.read_struct_field("presence", 0, |d| Decodable::decode(d))),
+                    }),
+                    "manual_presence_change" => Ok(Event::ManualPresenceChange {
+                        presence: try!(d.read_struct_field("presence", 0, |d| Decodable::decode(d))),
+                    }),
+                    "pref_change" => Ok(Event::PrefChange {
+                        name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
+                        value: try!(d.read_struct_field("value", 0, |d| Decodable::decode(d))),
+                    }),
+                    "user_change" => Ok(Event::UserChange {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                    }),
+                    "team_join" => Ok(Event::TeamJoin {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                    }),
+                    "star_added" => Ok(Event::StarAdded {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "star_removed" => Ok(Event::StarRemoved {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "reaction_added" => Ok(Event::ReactionAdded {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
+                        item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "reaction_removed" => Ok(Event::ReactionRemoved {
+                        user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
+                        name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
+                        item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "emoji_changed" => Ok(Event::EmojiChanged {
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "commands_changed" => Ok(Event::CommandsChanged {
+                        event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                    }),
+                    "team_plan_change" => Ok(Event::TeamPlanChange {
+                        plan: try!(d.read_struct_field("plan", 0, |d| Decodable::decode(d))),
+                    }),
+                    "team_pref_change" => Ok(Event::TeamPrefChange {
+                        name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
+                        value: try!(d.read_struct_field("value", 0, |d| Decodable::decode(d))),
+                    }),
+                    "team_rename" => Ok(Event::TeamRename {
+                        name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
+                    }),
+                    "team_domain_change" => Ok(Event::TeamDomainChange {
+                        url: try!(d.read_struct_field("url", 0, |d| Decodable::decode(d))),
+                        domain: try!(d.read_struct_field("domain", 0, |d| Decodable::decode(d))),
+                    }),
+                    "email_domain_changeed" =>
+                        Ok(Event::EmailDomainChanged {
+                            email_domain: try!(d.read_struct_field("email_domain",
+                                                                   0,
+                                                                   |d| Decodable::decode(d))),
+                            event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
+                        }),
+                    "bot_added" => Ok(Event::BotAdded {
+                        bot: try!(d.read_struct_field("bot", 0, |d| Decodable::decode(d))),
+                    }),
+                    "bot_changed" => Ok(Event::BotChanged {
+                        bot: try!(d.read_struct_field("bot", 0, |d| Decodable::decode(d))),
+                    }),
+                    "accounts_changed" => Ok(Event::AccountsChanged),
+                    "team_migration_started" => Ok(Event::TeamMigrationStarted),
+                    "reconnect_url" => Ok(Event::ReconnectUrl),
+                    _ => Err(d.error(&format!("Unknown Message type: {}", ty))),
+                }
+            }
+            None => {
+                // message confirmations don't have a type field
+                let ok: bool = try!(d.read_struct_field("ok", 0, |d| Decodable::decode(d)));
+                let reply_to: isize = try!(d.read_struct_field("reply_to", 0, |d| Decodable::decode(d)));
+                if ok {
+                    Ok(Event::MessageSent {
+                        reply_to: reply_to,
+                        ts: try!(d.read_struct_field("ts", 0, |d| Decodable::decode(d))),
+                        text: try!(d.read_struct_field("text", 0, |d| Decodable::decode(d))),
+                    })
+                } else {
+                    d.read_struct_field("error", 0, |d| {
+                        Ok(Event::MessageError {
+                            reply_to: reply_to,
+                            code: try!(d.read_struct_field("code", 0, |d| Decodable::decode(d))),
+                            message: try!(d.read_struct_field("msg", 0, |d| Decodable::decode(d))),
+                        })
+                    })
+                }
+            }
         }
     }
 }
@@ -592,6 +628,44 @@ mod tests {
                     _ => panic!("Message decoded into incorrect variant."),
                 }
             }
+            _ => panic!("Event decoded into incorrect variant."),
+        }
+    }
+
+    #[test]
+    fn decode_sent_ok() {
+        let event: Event = json::decode(r#"{
+            "ok": true,
+            "reply_to": 1,
+            "ts": "1234567890.218332",
+            "text": "Hello world"
+        }"#).unwrap();
+        match event {
+            Event::MessageSent{reply_to, ts, text} => {
+                assert_eq!(reply_to, 1);
+                assert_eq!(ts, "1234567890.218332");
+                assert_eq!(text, "Hello world");
+            },
+            _ => panic!("Event decoded into incorrect variant."),
+        }
+    }
+
+    #[test]
+    fn decode_sent_not_ok() {
+        let event: Event = json::decode(r#"{
+            "ok": false,
+            "reply_to": 1,
+            "error": {
+                "code": 2,
+                "msg": "message text is missing"
+            }
+        }"#).unwrap();
+        match event {
+            Event::MessageError{reply_to, code, message} => {
+                assert_eq!(reply_to, 1);
+                assert_eq!(code, 2);
+                assert_eq!(message, "message text is missing");
+            },
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
