@@ -26,6 +26,17 @@
 //! conjunction with RtmClient.
 //!
 //! #Changelog:
+//! Version 0.13.0 Thanks to https://github.com/squidpickles and https://github.com/dten
+//! respectively: add unnoficial events to handle message sending success and error,
+//! and add timeout on the rtm sockeckt.
+//!
+//! Compatibility Changes:
+//!
+//! - Two new Events: `MessageSent` and `MessageError`
+//!
+//! - The RtmClient now has a 70 second timeout on the socket. This will be adjusted
+//! in the future.
+//!
 //! Version 0.12.2 Thanks to https://github.com/squidpickles handle new reconnect_url
 //! events, and rewrite event API to use match instead of if/else branches.
 //! Also change dev-dependencies to specific versions to comply with crates.io
