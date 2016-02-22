@@ -483,6 +483,17 @@ impl RtmClient {
             }
         });
 
+        // set receive timeout long enough for slack ping
+        {
+            let read_timeout = std::time::Duration::from_secs(70);
+            let mut ws_stream = receiver.get_mut().get_mut();
+            let tcp_stream: &mut std::net::TcpStream = match ws_stream {
+                &mut WebSocketStream::Tcp(ref mut s) => s,
+                &mut WebSocketStream::Ssl(ref mut s) => s.get_mut(),
+            };
+            try!(tcp_stream.set_read_timeout(Some(read_timeout)));
+        }
+
         // receive loop
         loop {
             // receive
@@ -493,6 +504,7 @@ impl RtmClient {
                 Err(err) => {
                     // shutdown sender and receiver, then join the child thread
                     // and return an error.
+                    let _ = tx.send(WsMessage::Close);
                     let _ = receiver.shutdown_all();
                     let _ = child.join();
                     return Err(Error::Internal(format!("{:?}", err)));
