@@ -5,7 +5,6 @@ use std::string::FromUtf8Error;
 
 use hyper;
 use websocket;
-use url;
 use rustc_serialize;
 
 /// slack::Error represents errors that can happen while using the RtmClient
@@ -18,7 +17,7 @@ pub enum Error {
     /// Error decoding websocket text frame Utf8
     Utf8(FromUtf8Error),
     /// Error parsing url
-    Url(url::ParseError),
+    Url(hyper::Error),
     /// Error decoding Json
     JsonDecode(rustc_serialize::json::DecoderError),
     /// Error parsing Json
@@ -33,19 +32,16 @@ pub enum Error {
 
 impl From<hyper::Error> for Error {
     fn from(err: hyper::Error) -> Error {
-        Error::Http(err)
+        match err {
+            hyper::Error::Uri(_) => Error::Url(err),
+            _ => Error::Http(err)
+        }
     }
 }
 
 impl From<websocket::result::WebSocketError> for Error {
     fn from(err: websocket::result::WebSocketError) -> Error {
         Error::WebSocket(err)
-    }
-}
-
-impl From<url::ParseError> for Error {
-    fn from(err: url::ParseError) -> Error {
-        Error::Url(err)
     }
 }
 

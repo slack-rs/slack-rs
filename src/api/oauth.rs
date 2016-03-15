@@ -21,7 +21,7 @@ pub fn access(client: &hyper::Client, client_id: &str, client_secret: &str, code
         params.insert("redirect_uri", redirect_uri);
     }
 
-    let mut url = try!(hyper::Url::parse("https://slack.com/api/oauth.access"));
+    let mut url = try!(hyper::Url::parse("https://slack.com/api/oauth.access").map_err(|e| hyper::Error::Uri(e)));
     url.set_query_from_pairs(params.into_iter());
 
     let response = try!(client.get(url).send());
