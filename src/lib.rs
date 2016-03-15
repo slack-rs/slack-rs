@@ -161,9 +161,7 @@
 
 extern crate hyper;
 extern crate websocket;
-extern crate openssl;
 extern crate rustc_serialize;
-extern crate url;
 #[cfg(test)]
 #[macro_use]
 extern crate yup_hyper_mock;
@@ -189,7 +187,6 @@ use websocket::ws::sender::Sender as WsSenderTrait;
 use websocket::ws::receiver::Receiver as WsReceiverTrait;
 use websocket::client::Receiver as WsReceiver;
 use websocket::message::Type as WsType;
-use websocket::dataframe::DataFrame;
 use websocket::stream::WebSocketStream;
 
 pub type WsClient = Client<websocket::dataframe::DataFrame,
@@ -392,7 +389,7 @@ impl RtmClient {
         let start = try!(api::rtm::start(&client, &self.token, None, None));
 
         // websocket url
-        let wss_url = try!(hyper::Url::parse(&start.url));
+        let wss_url = try!(hyper::Url::parse(&start.url).map_err(|e| hyper::Error::Uri(e)));
 
         // update id hashmaps
         for ref channel in start.channels.iter() {

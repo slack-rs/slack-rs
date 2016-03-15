@@ -52,7 +52,7 @@ pub type ApiResult<T> = Result<T, Error>;
 /// params. Returns the response body string after checking it has "ok": true, or an Error
 fn make_api_call<'a, T: Decodable>(client: &hyper::Client, method: &str, custom_params: HashMap<&str, &'a str>) -> ApiResult<T> {
     let url_string = format!("https://slack.com/api/{}", method);
-    let mut url = try!(hyper::Url::parse(&url_string));
+    let mut url = try!(hyper::Url::parse(&url_string).map_err(|e| hyper::Error::Uri(e)));
 
     url.set_query_from_pairs(custom_params.into_iter());
 

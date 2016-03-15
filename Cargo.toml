@@ -26,14 +26,10 @@ name = "slack"
 path = "src/lib.rs"
 
 [dependencies]
-websocket = "^0.14"
-# http library:
-hyper = "^0.7"
-# NOTE: coordinate these with hyper
-openssl = "^0.7"
-rustc-serialize = "^0.3"
-url = "^0.5"
+websocket = "0.14.0"
+hyper = "0.8.0"
+rustc-serialize = "0.3.18"
 
 [dev-dependencies]
-yup-hyper-mock = "^1.3.2"
-log = "^0.3.5"
+yup-hyper-mock = "1.3.2"
+log = "0.3.5"
