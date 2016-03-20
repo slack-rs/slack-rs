@@ -1,5 +1,5 @@
 //
-// Copyright 2014 Benjamin Elder from https://github.com/BenTheElder/slack-rs
+// Copyright 2014-2016 the slack-rs authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
