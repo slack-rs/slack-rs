@@ -5,8 +5,7 @@
 
 ### Compatibility Changes
 - Two new Events: `MessageSent` and `MessageError`
-- The RtmClient now has a 70 second timeout on the socket. This will be adjusted
-in the future.
+- The RtmClient now has a 70 second timeout on the socket. This will be adjusted in the future.
 
 ## 0.12.2
 - Thanks to https://github.com/squidpickles handle new reconnect_url events, and rewrite event API to use match instead of if/else branches. Also change dev-dependencies to specific versions to comply with crates.io
@@ -29,13 +28,11 @@ in the future.
 - Massive overhaul, implement support for almost all of the bots api, stronger error handling and lots of tests. Thanks a ton to https://github.com/mthjones, see https://github.com/BenTheElder/slack-rs/pull/17 for the main overhaul.
 
 ### Compatibility Changes
-Methods that previously returned `Result<String,Error>` now return a typed `Result<Some_Slack_Response_Type,
-Error>`:
+Methods that previously returned `Result<String,Error>` now return a typed `Result<Some_Slack_Response_Type, Error>`:
 
 - `RtmClient::post_message` now returns `Result<api::chat::PostMessageResponse, Error>`
 - `RtmClient::delete_message` now returns `Result<api::chat::DeleteResponse, Error>`
-- `RtmClient::mark` now returns `Result<api::channels::MarkResponse,
-Error>`
+- `RtmClient::mark` now returns `Result<api::channels::MarkResponse, Error>`
 - `RtmClient::set_topic` now returns `Result<api::channels::SetTopicResponse, Error>`
 - `RtmClient::set_purpose` now returns `Result<api::channels::SetPurposeResponse, Error>`
 - `RtmClient::add_reaction_timestamp` now returns `Result<api::reactions::AddResponse, Error>`
