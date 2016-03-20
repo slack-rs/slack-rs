@@ -1,6 +1,5 @@
 //
-// Copyright 2014 Benjamin Elder from
-// https://github.com/BenTheElder/slack-rs-demo
+// Copyright 2014-2016 the slack-rs authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 //
 // This is a simple example of using slack-rs.
 // You can run it with `cargo run example -- <api_key>`
