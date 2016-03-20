@@ -13,6 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//! Slack realtime messaging client: https://api.slack.com/bot-users
+//!
+//! See [CHANGELOG.md](https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md) for latest release notes.
+
 extern crate hyper;
 extern crate websocket;
 extern crate rustc_serialize;
