@@ -162,11 +162,12 @@
 extern crate hyper;
 extern crate websocket;
 extern crate rustc_serialize;
-extern crate slack_api as api;
+extern crate slack_api;
 
 pub mod error;
 pub use error::Error;
 
+pub use slack_api as api;
 pub use api::{Attachment, Channel, Group, Im, Team, User, Event, Message};
 
 use std::sync::mpsc::{Sender, Receiver, channel};
