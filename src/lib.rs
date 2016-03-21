@@ -168,7 +168,10 @@ pub mod error;
 pub use error::Error;
 
 pub use slack_api as api;
-pub use api::{Attachment, Channel, Group, Im, Team, User, Event, Message};
+pub use api::{Attachment, Channel, Group, Im, Team, User, Message};
+
+mod events;
+pub use events::Event;
 
 use std::sync::mpsc::{Sender, Receiver, channel};
 use std::thread;
