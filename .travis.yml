@@ -14,10 +14,10 @@ deploy:
   provider: releases
   api_key:
     secure: GjugkoRWPpkA5U+fDtPIXVN7mz5vd1uI+o/9i/8er/a0yEPxzq1DqKZhQ+X/qjiYZqZpq14TprezQhsI3yIDoBO8ktZF3qUffM0ceV74kIUhjV4t9U/lWkNAVwve3Z7dNOgpAIpRWfGXkpwGEb/8tkr+ugg0yz9oB9m/FHQ6FO7AqHWv8JLvh/riyaQ2hWc4Rzh8/5j9DIE53jJZEVGA4RjJFXDIegsWtp/o+P+LhFYoCHOumcSgzesgyPT/6y2ud4UdogIitsPBk6Q0vfwCRguVLF+6gDTGJUPO94cO20x8PIR+lhPEeCWPbAH7mL7E/Y1MfUTrX45lnkvxeZDlbjrb9xC1TiyKBsFZvENS1QpNhpQNcozs9PctDcyPyGA2pPsEvAmH7Sb8F8NFH67boTRG8JB2STBt465kJJPr5IBBVelrMttX+uy00LngQHjLuA929IPpeAqhcCxJ2grM8t5VBsp0l5cgrPgWNLCG6++kiRyFuSRRnRWEJ2a/fo0kLAOf6xrHO6nS7LqLF6dfC27NG148tE8HZiGugTuenMz0UulAL9pYsrqHbm5CiycH6Uk0xhWIdnP6Pt3DchXebeR1xjLtWRYNqY9QrEgFibVtd/suiVoW8wk/omAZZ6yyNuwBUhJx66OIEUb80TWznJTUO3F48GBtCC0P8r2foMo=
-  file: target/package/slack_api-${TRAVIS_TAG:1}.crate
+  file: target/package/slack-${TRAVIS_TAG:1}.crate
   skip_cleanup: true
   on:
-    repo: slack-rs/slack-rs-api
+    repo: slack-rs/slack-rs
     tags: true
     condition: $TRAVIS_RUST_VERSION = stable
 after_deploy:
