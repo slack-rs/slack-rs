@@ -31,4 +31,5 @@ after_deploy:
   git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
 env:
   global:
-  - secure: "LXMIKPwTF5tQApO/FqW3fWAuYjFK2bzU+D5k8wGo1eMhRaZq8vGLVby8HzhF19+CNuEBqgK/fiOMVFWdQhfv6YpDJKLt0aUq8AVRkWQl5BXzHDSdI9aNvBF0VgcEnpJpNhRftOjZhUspmDJjCImOhwZ1aHW4SV2129FoRKp2Vsk="
+  - secure: LXMIKPwTF5tQApO/FqW3fWAuYjFK2bzU+D5k8wGo1eMhRaZq8vGLVby8HzhF19+CNuEBqgK/fiOMVFWdQhfv6YpDJKLt0aUq8AVRkWQl5BXzHDSdI9aNvBF0VgcEnpJpNhRftOjZhUspmDJjCImOhwZ1aHW4SV2129FoRKp2Vsk=
+  - secure: VCPsi2uYdci9Dml59dm0tFnmreDl0YRWH/KbTH61NHezyMuLIKgZd/ctlwsNo4ouu3vpN4R2Fgbc41IbM2LaDaoQiUB/qTJJmuIkS/NyAVSi0e/MyJbAJugvXHgduLsbfqgAxaJqG3QglyY6+XUrROdbHujFu/ITdYOIzEeRpxE=
