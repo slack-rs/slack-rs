@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+use api::{Message, Item, File, Channel, Comment, User};
+use api::rtm::Bot;
 use rustc_serialize::{Decodable, Decoder};
 
 /// Represents Slack [rtm event](https://api.slack.com/rtm) types.
@@ -23,7 +25,7 @@ pub enum Event {
     Hello,
     /// Represents the slack [`message`](https://api.slack.com/events/message)
     /// event.
-    Message(super::Message),
+    Message(Message),
     /// Represents the slack
     /// [`user_typing`](https://api.slack.com/events/user_typing) event.
     UserTyping {
@@ -39,12 +41,12 @@ pub enum Event {
     /// Represents the slack
     /// [`channel_created`](https://api.slack.com/events/channel_created) event.
     ChannelCreated {
-        channel: super::Channel,
+        channel: Channel,
     },
     /// Represents the slack
     /// [`channel_joined`](https://api.slack.com/events/channel_joined) event.
     ChannelJoined {
-        channel: super::Channel,
+        channel: Channel,
     },
     /// Represents the slack
     /// [`channel_left`](https://api.slack.com/events/channel_left) event.
@@ -59,7 +61,7 @@ pub enum Event {
     /// Represents the slack
     /// [`channel_rename`](https://api.slack.com/events/channel_rename) event.
     ChannelRename {
-        channel: super::Channel,
+        channel: Channel,
     },
     /// Represents the slack
     /// [`channel_archive`](https://api.slack.com/events/channel_archive) event.
@@ -85,7 +87,7 @@ pub enum Event {
     /// [`im_created`](https://api.slack.com/events/im_created) event.
     ImCreated {
         user: String,
-        channel: super::Channel,
+        channel: Channel,
     },
     /// Represents the slack [`im_open`](https://api.slack.com/events/im_open)
     /// event.
@@ -116,12 +118,12 @@ pub enum Event {
     /// Represents the slack
     /// [`group_joined`](https://api.slack.com/events/group_joined) event.
     GroupJoined {
-        channel: super::Channel,
+        channel: Channel,
     },
     /// Represents the slack
     /// [`group_left`](https://api.slack.com/events/group_left) event.
     GroupLeft {
-        channel: super::Channel,
+        channel: Channel,
     },
     /// Represents the slack
     /// [`group_open`](https://api.slack.com/events/group_open) event.
@@ -148,7 +150,7 @@ pub enum Event {
     /// Represents the slack
     /// [`group_rename`](https://api.slack.com/events/group_rename) event.
     GroupRename {
-        channel: super::Channel,
+        channel: Channel,
     },
     /// Represents the slack
     /// [`group_marked`](https://api.slack.com/events/group_marked) event.
@@ -167,22 +169,22 @@ pub enum Event {
     /// Represents the slack
     /// [`file_created`](https://api.slack.com/events/file_created) event.
     FileCreated {
-        file: super::File,
+        file: File,
     },
     /// Represents the slack
     /// [`file_shared`](https://api.slack.com/events/file_shared) event.
     FileShared {
-        file: super::File,
+        file: File,
     },
     /// Represents the slack
     /// [`file_unshared`](https://api.slack.com/events/file_unshared) event.
     FileUnShared {
-        file: super::File,
+        file: File,
     },
     /// Represents the slack
     /// [`file_public`](https://api.slack.com/events/file_public) event.
     FilePublic {
-        file: super::File,
+        file: File,
     },
     /// Represents the slack
     /// [`file_private`](https://api.slack.com/events/file_private) event.
@@ -192,7 +194,7 @@ pub enum Event {
     /// Represents the slack
     /// [`file_change`](https://api.slack.com/events/file_change) event.
     FileChange {
-        file: super::File,
+        file: File,
     },
     /// Represents the slack
     /// [`file_deleted`](https://api.slack.com/events/file_deleted) event.
@@ -204,21 +206,21 @@ pub enum Event {
     /// [`file_comment_added`](https://api.slack.com/events/file_comment_added)
     /// event.
     FileCommentAdded {
-        file: super::File,
-        comment: super::Comment,
+        file: File,
+        comment: Comment,
     },
     /// Represents the slack
     /// [`file_comment_edited`](https://api.slack.com/events/file_comment_edited)
     /// event.
     FileCommentEdited {
-        file: super::File,
-        comment: super::Comment,
+        file: File,
+        comment: Comment,
     },
     /// Represents the slack
     /// [`file_comment_deleted`](https://api.slack.com/events/file_comment_deleted)
     /// event.
     FileCommentDeleted {
-        file: super::File,
+        file: File,
         comment: String,
     },
     /// Represents the slack [`pin_added`](https://api.slack.com/events/pin_added)
@@ -226,7 +228,7 @@ pub enum Event {
     PinAdded {
         user: String,
         channel_id: String,
-        item: super::Item,
+        item: Item,
         event_ts: String,
     },
     /// Represents the slack
@@ -234,7 +236,7 @@ pub enum Event {
     PinRemoved {
         user: String,
         channel_id: String,
-        item: super::Item,
+        item: Item,
         has_pins: bool,
         event_ts: String,
     },
@@ -259,25 +261,25 @@ pub enum Event {
     /// Represents the slack
     /// [`user_change`](https://api.slack.com/events/user_change) event.
     UserChange {
-        user: super::User,
+        user: User,
     },
     /// Represents the slack [`team_join`](https://api.slack.com/events/team_join)
     /// event.
     TeamJoin {
-        user: super::User,
+        user: User,
     },
     /// Represents the slack
     /// [`star_added`](https://api.slack.com/events/star_added) event.
     StarAdded {
         user: String,
-        item: super::Item,
+        item: Item,
         event_ts: String,
     },
     /// Represents the slack
     /// [`star_removed`](https://api.slack.com/events/star_removed) event.
     StarRemoved {
         user: String,
-        item: super::Item,
+        item: Item,
         event_ts: String,
     },
     /// Represents the slack
@@ -285,7 +287,7 @@ pub enum Event {
     ReactionAdded {
         user: String,
         name: String,
-        item: super::Item,
+        item: Item,
         event_ts: String,
     },
     /// Represents the slack
@@ -293,7 +295,7 @@ pub enum Event {
     ReactionRemoved {
         user: String,
         name: String,
-        item: super::Item,
+        item: Item,
         event_ts: String,
     },
     /// Represents the slack
@@ -339,12 +341,12 @@ pub enum Event {
     /// Represents the slack [`bot_added`](https://api.slack.com/event/bot_added)
     /// event.
     BotAdded {
-        bot: super::rtm::Bot,
+        bot: Bot,
     },
     /// Represents the slack
     /// [`bot_changed`](https://api.slack.com/event/bot_changed) event.
     BotChanged {
-        bot: super::rtm::Bot,
+        bot: Bot,
     },
     /// Represents the slack
     /// [`accounts_changed`](https://api.slack.com/event/accounts_changed) event.
@@ -378,7 +380,7 @@ impl Decodable for Event {
             Some(ty) => {
                 match ty.as_ref() {
                     "hello" => Ok(Event::Hello),
-                    "message" => Ok(Event::Message(try!(super::Message::decode(d)))),
+                    "message" => Ok(Event::Message(try!(Message::decode(d)))),
                     "user_typing" => Ok(Event::UserTyping {
                         channel: try!(d.read_struct_field("channel", 0, |d| Decodable::decode(d))),
                         user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
@@ -621,6 +623,7 @@ impl Decodable for Event {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use api::Message;
     use rustc_serialize::json;
 
     #[test]
@@ -636,7 +639,7 @@ mod tests {
         match event {
             Event::Message(message) => {
                 match message {
-                    super::super::Message::Standard { ts, channel: _, user, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
+                    Message::Standard { ts, channel: _, user, text, is_starred: _, pinned_to: _, reactions: _, edited: _, attachments: _ } => {
                         assert_eq!(ts, "1234567890.218332");
                         assert_eq!(text.unwrap(), "Hello world");
                         assert_eq!(user.unwrap(), "U12345678");
@@ -734,7 +737,7 @@ mod tests {
         match event {
             Event::Message(message) => {
                 match message {
-                    super::super::Message::Standard { ts: _, channel: _, user: _, text: _, is_starred, pinned_to: _, reactions: _, edited: _, attachments } => {
+                    Message::Standard { ts: _, channel: _, user: _, text: _, is_starred, pinned_to: _, reactions: _, edited: _, attachments } => {
                         assert_eq!(is_starred, Some(false));
                         assert_eq!(attachments.unwrap()[0].color.as_ref().unwrap(), "#36a64f");
                     }

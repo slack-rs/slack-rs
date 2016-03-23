@@ -20,15 +20,16 @@
 extern crate hyper;
 extern crate websocket;
 extern crate rustc_serialize;
-#[cfg(test)]
-#[macro_use]
-extern crate yup_hyper_mock;
+extern crate slack_api;
 
 pub mod error;
 pub use error::Error;
 
-pub mod api;
-pub use api::{Attachment, Channel, Group, Im, Team, User, Event, Message};
+pub use slack_api as api;
+pub use api::{Attachment, Channel, Group, Im, Team, User, Message};
+
+mod events;
+pub use events::Event;
 
 use std::sync::mpsc::{Sender, Receiver, channel};
 use std::thread;
@@ -533,7 +534,7 @@ impl RtmClient {
                                 None,
                                 None,
                                 None,
-                                None)
+                                None).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/chat.delete to delete a message
@@ -550,7 +551,7 @@ impl RtmClient {
             false => channel,
         };
         let client = hyper::Client::new();
-        api::chat::delete(&client, &self.token, chan_id, timestamp)
+        api::chat::delete(&client, &self.token, chan_id, timestamp).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/channels.mark to set the read cursor in a channel
@@ -567,7 +568,7 @@ impl RtmClient {
             false => channel,
         };
         let client = hyper::Client::new();
-        api::channels::mark(&client, &self.token, chan_id, timestamp)
+        api::channels::mark(&client, &self.token, chan_id, timestamp).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/channels.setTopic
@@ -591,7 +592,7 @@ impl RtmClient {
         api::channels::set_topic(&client,
                                  &self.token,
                                  chan_id,
-                                 &escaped_topic[1..escaped_topic.len() - 1])
+                                 &escaped_topic[1..escaped_topic.len() - 1]).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/channels.setPurpose
@@ -615,7 +616,7 @@ impl RtmClient {
         api::channels::set_purpose(&client,
                                    &self.token,
                                    chan_id,
-                                   &escaped_purpose[1..escaped_purpose.len() - 1])
+                                   &escaped_purpose[1..escaped_purpose.len() - 1]).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a message
@@ -638,7 +639,7 @@ impl RtmClient {
                             None,
                             None,
                             Some(chan_id),
-                            Some(timestamp))
+                            Some(timestamp)).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file
@@ -650,7 +651,7 @@ impl RtmClient {
                             Some(file),
                             None,
                             None,
-                            None)
+                            None).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/reactions.add to add an emoji reaction to a file comment
@@ -662,7 +663,7 @@ impl RtmClient {
                             None,
                             Some(file_comment),
                             None,
-                            None)
+                            None).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/chat.update
@@ -687,13 +688,13 @@ impl RtmClient {
                           json_payload,
                           attachments,
                           None,
-                          None)
+                          None).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/im.open to open a direct message channel with a user.
     pub fn im_open(&self, user_id: &str) -> Result<api::im::OpenResponse, Error> {
         let client = hyper::Client::new();
-        api::im::open(&client, &self.token, user_id)
+        api::im::open(&client, &self.token, user_id).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/channels.history to retrieve the history of messages and
@@ -712,13 +713,13 @@ impl RtmClient {
                                latest,
                                oldest,
                                inclusive,
-                               count)
+                               count).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/im.close to close a direct message channel.
     pub fn im_close(&self, channel_id: &str) -> Result<api::im::CloseResponse, Error> {
         let client = hyper::Client::new();
-        api::im::close(&client, &self.token, channel_id)
+        api::im::close(&client, &self.token, channel_id).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/im.history to retrieve the history of messages and
@@ -737,20 +738,20 @@ impl RtmClient {
                          latest,
                          oldest,
                          inclusive,
-                         count)
+                         count).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/im.list to get the list of all open direct message
     /// channels the user has open.
     pub fn im_list(&self) -> Result<api::im::ListResponse, Error> {
         let client = hyper::Client::new();
-        api::im::list(&client, &self.token)
+        api::im::list(&client, &self.token).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/im.mark to move the read cursor in a direct message
     /// channel.
     pub fn im_mark(&self, channel_id: &str, timestamp: &str) -> Result<api::im::MarkResponse, Error> {
         let client = hyper::Client::new();
-        api::im::mark(&client, &self.token, channel_id, timestamp)
+        api::im::mark(&client, &self.token, channel_id, timestamp).map_err(|e| e.into())
     }
 }
