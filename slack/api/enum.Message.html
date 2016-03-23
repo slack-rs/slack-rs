@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Message` enum in crate `slack`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Message">
+
+    <title>slack::api::Message - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>slack</a>::<wbr><a href='index.html'>api</a></p><script>window.sidebarCurrent = {name: 'Message', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content enum">
+<h1 class='fqn'><span class='in-band'>Enum <a href='../index.html'>slack</a>::<wbr><a href='index.html'>api</a>::<wbr><a class='enum' href=''>Message</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-1254' class='srclink' href='../../slack_api/message_events/enum.Message.html?gotosrc=1254' title='goto source code'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum Message {
+    pub Standard {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub channel: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+        pub user: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+        pub text: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+        pub is_starred: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;,
+        pub pinned_to: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;&gt;,
+        pub reactions: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../slack/api/struct.Reaction.html' title='slack::api::Reaction'>Reaction</a>&gt;&gt;,
+        pub edited: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../../slack_api/message_events/struct.EditedMessageData.html' title='slack_api::message_events::EditedMessageData'>EditedMessageData</a>&gt;,
+        pub attachments: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../slack/struct.Attachment.html' title='slack::Attachment'>Attachment</a>&gt;&gt;,
+    },
+    pub BotMessage {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub bot_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub username: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+        pub icons: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html' title='std::collections::hash::map::HashMap'>HashMap</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.RandomState.html' title='std::collections::hash::map::RandomState'>RandomState</a>&gt;&gt;,
+    },
+    pub MeMessage {
+        pub channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub MessageChanged {
+        pub hidden: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+        pub channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub message: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../../slack/enum.Message.html' title='slack::Message'>Message</a>&gt;,
+    },
+    pub MessageDeleted {
+        pub hidden: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+        pub channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub deleted_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub ChannelJoin {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub inviter: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+    },
+    pub ChannelLeave {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub ChannelTopic {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub topic: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub ChannelPurpose {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub purpose: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub ChannelName {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub old_name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub ChannelArchive {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub members: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+    },
+    pub ChannelUnarchive {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub GroupJoin {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub inviter: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+    },
+    pub GroupLeave {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub GroupTopic {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub topic: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub GroupPurpose {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub purpose: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub GroupName {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub old_name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub GroupArchive {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub members: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+    },
+    pub GroupUnarchive {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub FileShare {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub file: <a class='struct' href='../../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub upload: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
+    },
+    pub FileComment {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub file: <a class='struct' href='../../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        pub comment: <a class='struct' href='../../slack/api/struct.Comment.html' title='slack::api::Comment'>Comment</a>,
+    },
+    pub FileMention {
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub file: <a class='struct' href='../../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    },
+    pub PinnedItem {
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub item_type: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub item: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='enum' href='../../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>&gt;,
+        pub channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub attachments: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../slack/struct.Attachment.html' title='slack::Attachment'>Attachment</a>&gt;&gt;,
+    },
+    pub UnpinnedItem {
+        pub user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub item_type: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub item: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='enum' href='../../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>&gt;,
+        pub channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        pub attachments: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../slack/struct.Attachment.html' title='slack::Attachment'>Attachment</a>&gt;&gt;,
+    },
+}</pre><div class='docblock'><p>Represents Slack <a href="https://api.slack.com/events/message">message event</a> types.</p>
+</div><h2 class='variants'>Variants</h2>
+<table><tr><td id='variant.Standard'><code>Standard</code></td><td><div class='docblock'><p>The Slack <a href="https://api.slack.com/events/message"><code>Message</code></a> event that represents a message
+to a channel, group or im.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.Standard.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.Standard.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.Standard.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.Standard.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.Standard.field.is_starred'><code>is_starred</code></td><td></td></tr><tr><td id='variant.Standard.field.pinned_to'><code>pinned_to</code></td><td></td></tr><tr><td id='variant.Standard.field.reactions'><code>reactions</code></td><td></td></tr><tr><td id='variant.Standard.field.edited'><code>edited</code></td><td></td></tr><tr><td id='variant.Standard.field.attachments'><code>attachments</code></td><td></td></tr></table></td></tr><tr><td id='variant.BotMessage'><code>BotMessage</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/bot_message"><code>bot_message</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.BotMessage.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.BotMessage.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.BotMessage.field.bot_id'><code>bot_id</code></td><td></td></tr><tr><td id='variant.BotMessage.field.username'><code>username</code></td><td></td></tr><tr><td id='variant.BotMessage.field.icons'><code>icons</code></td><td></td></tr></table></td></tr><tr><td id='variant.MeMessage'><code>MeMessage</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/me_message"><code>me_message</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.MeMessage.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.MeMessage.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.MeMessage.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.MeMessage.field.ts'><code>ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.MessageChanged'><code>MessageChanged</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/message_changed"><code>message_changed</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.MessageChanged.field.hidden'><code>hidden</code></td><td></td></tr><tr><td id='variant.MessageChanged.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.MessageChanged.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.MessageChanged.field.message'><code>message</code></td><td></td></tr></table></td></tr><tr><td id='variant.MessageDeleted'><code>MessageDeleted</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/message_deleted"><code>message_deleted</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.MessageDeleted.field.hidden'><code>hidden</code></td><td></td></tr><tr><td id='variant.MessageDeleted.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.MessageDeleted.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.MessageDeleted.field.deleted_ts'><code>deleted_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelJoin'><code>ChannelJoin</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/channel_join"><code>channel_join</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.ChannelJoin.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelJoin.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ChannelJoin.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.ChannelJoin.field.inviter'><code>inviter</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelLeave'><code>ChannelLeave</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/channel_leave"><code>channel_leave</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.ChannelLeave.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelLeave.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ChannelLeave.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelTopic'><code>ChannelTopic</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/channel_topic"><code>channel_topic</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.ChannelTopic.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelTopic.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ChannelTopic.field.topic'><code>topic</code></td><td></td></tr><tr><td id='variant.ChannelTopic.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelPurpose'><code>ChannelPurpose</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/channel_purpose"><code>channel_purpose</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.ChannelPurpose.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelPurpose.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ChannelPurpose.field.purpose'><code>purpose</code></td><td></td></tr><tr><td id='variant.ChannelPurpose.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelName'><code>ChannelName</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/channel_name"><code>channel_name</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.ChannelName.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelName.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ChannelName.field.old_name'><code>old_name</code></td><td></td></tr><tr><td id='variant.ChannelName.field.name'><code>name</code></td><td></td></tr><tr><td id='variant.ChannelName.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelArchive'><code>ChannelArchive</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/channel_archive"><code>channel_archive</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.ChannelArchive.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelArchive.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.ChannelArchive.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ChannelArchive.field.members'><code>members</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelUnarchive'><code>ChannelUnarchive</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/channel_unarchive"><code>channel_unarchive</code></a>
+message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.ChannelUnarchive.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelUnarchive.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.ChannelUnarchive.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupJoin'><code>GroupJoin</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/group_join"><code>group_join</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.GroupJoin.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupJoin.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupJoin.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.GroupJoin.field.inviter'><code>inviter</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupLeave'><code>GroupLeave</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/group_leave"><code>group_leave</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.GroupLeave.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupLeave.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupLeave.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupTopic'><code>GroupTopic</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/group_topic"><code>group_topic</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.GroupTopic.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupTopic.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupTopic.field.topic'><code>topic</code></td><td></td></tr><tr><td id='variant.GroupTopic.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupPurpose'><code>GroupPurpose</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/group_purpose"><code>group_purpose</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.GroupPurpose.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupPurpose.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupPurpose.field.purpose'><code>purpose</code></td><td></td></tr><tr><td id='variant.GroupPurpose.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupName'><code>GroupName</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/group_name"><code>group_name</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.GroupName.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupName.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupName.field.old_name'><code>old_name</code></td><td></td></tr><tr><td id='variant.GroupName.field.name'><code>name</code></td><td></td></tr><tr><td id='variant.GroupName.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupArchive'><code>GroupArchive</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/group_archive"><code>group_archive</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.GroupArchive.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupArchive.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.GroupArchive.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupArchive.field.members'><code>members</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupUnarchive'><code>GroupUnarchive</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/group_unarchive"><code>group_unarchive</code></a>
+message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.GroupUnarchive.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupUnarchive.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.GroupUnarchive.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileShare'><code>FileShare</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/file_share"><code>file_share</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.FileShare.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.FileShare.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.FileShare.field.file'><code>file</code></td><td></td></tr><tr><td id='variant.FileShare.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.FileShare.field.upload'><code>upload</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileComment'><code>FileComment</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/file_comment"><code>file_comment</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.FileComment.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.FileComment.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.FileComment.field.file'><code>file</code></td><td></td></tr><tr><td id='variant.FileComment.field.comment'><code>comment</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileMention'><code>FileMention</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/file_mention"><code>file_mention</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.FileMention.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.FileMention.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.FileMention.field.file'><code>file</code></td><td></td></tr><tr><td id='variant.FileMention.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.PinnedItem'><code>PinnedItem</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/pinned_item"><code>pinned_item</code></a> message event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.PinnedItem.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.PinnedItem.field.item_type'><code>item_type</code></td><td></td></tr><tr><td id='variant.PinnedItem.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.PinnedItem.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.PinnedItem.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.PinnedItem.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.PinnedItem.field.attachments'><code>attachments</code></td><td></td></tr></table></td></tr><tr><td id='variant.UnpinnedItem'><code>UnpinnedItem</code></td><td><div class='docblock'><p>Wraps the <a href="https://api.slack.com/events/message/unpinned_item"><code>unpinned_item</code></a> message
+event.</p>
+</div><h3 class='fields'>Fields</h3>
+
+                                              <table><tr><td id='variant.UnpinnedItem.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.UnpinnedItem.field.item_type'><code>item_type</code></td><td></td></tr><tr><td id='variant.UnpinnedItem.field.text'><code>text</code></td><td></td></tr><tr><td id='variant.UnpinnedItem.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.UnpinnedItem.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.UnpinnedItem.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.UnpinnedItem.field.attachments'><code>attachments</code></td><td></td></tr></table></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='../../rustc_serialize/serialize/trait.Decodable.html' title='rustc_serialize::serialize::Decodable'>Decodable</a> for <a class='enum' href='../../slack/enum.Message.html' title='slack::Message'>Message</a></code></h3><div class='impl-items'><h4 id='method.decode' class='method'><code>fn <a href='../../rustc_serialize/serialize/trait.Decodable.html#method.decode' class='fnname'>decode</a>&lt;D&gt;(d: &amp;mut D) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='enum' href='../../slack/enum.Message.html' title='slack::Message'>Message</a>, D::<a class='trait' href='../../rustc_serialize/serialize/trait.Decoder.html' title='rustc_serialize::serialize::Decoder'>Error</a>&gt; <span class='where'>where D: <a class='trait' href='../../rustc_serialize/serialize/trait.Decoder.html' title='rustc_serialize::serialize::Decoder'>Decoder</a></span></code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../../slack/enum.Message.html' title='slack::Message'>Message</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Error.html' title='core::fmt::Error'>Error</a>&gt;</code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../../slack/enum.Message.html' title='slack::Message'>Message</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../../slack/enum.Message.html' title='slack::Message'>Message</a></code></h4>
+<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "slack";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `slack` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, slack">
+
+    <title>slack - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'slack', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>slack</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/slack/lib.rs.html#16-757' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Slack realtime messaging client: <a href="https://api.slack.com/bot-users">https://api.slack.com/bot-users</a></p>
+
+<p>See <a href="https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md">CHANGELOG.md</a> for latest release notes.</p>
+</div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
+<table><tr><td><code>pub use error::<a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='api/index.html'
+                               title='slack::api'>api</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='error/index.html'
+                               title='slack::error'>error</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Attachment.html'
+                               title='slack::Attachment'>Attachment</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/docs/attachments"><code>Attachment</code></a> object as found in
+richly-formatted messages.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Channel.html'
+                               title='slack::Channel'>Channel</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/channel"><code>Channel</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Group.html'
+                               title='slack::Group'>Group</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/group"><code>Group</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Im.html'
+                               title='slack::Im'>Im</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/im"><code>Im</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.RtmClient.html'
+                               title='slack::RtmClient'>RtmClient</a></td>
+                        <td class='docblock short'>
+                             <p>The actual messaging client.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Team.html'
+                               title='slack::Team'>Team</a></td>
+                        <td class='docblock short'>
+                             <p>The <code>Team</code> object as found in the <a href="https://api.slack.com/methods/rtm.start"><code>rtm.start</code></a>
+response.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.User.html'
+                               title='slack::User'>User</a></td>
+                        <td class='docblock short'>
+                             <p>The Slack <a href="https://api.slack.com/types/user"><code>User</code></a> type.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.WebSocketMessage.html'
+                               title='slack::WebSocketMessage'>WebSocketMessage</a></td>
+                        <td class='docblock short'>
+                             <p>Represents a WebSocket message.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.Event.html'
+                               title='slack::Event'>Event</a></td>
+                        <td class='docblock short'>
+                             <p>Represents Slack <a href="https://api.slack.com/rtm">rtm event</a> types.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.Message.html'
+                               title='slack::Message'>Message</a></td>
+                        <td class='docblock short'>
+                             <p>Represents Slack <a href="https://api.slack.com/events/message">message event</a> types.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.WsMessage.html'
+                               title='slack::WsMessage'>WsMessage</a></td>
+                        <td class='docblock short'>
+                             <p>Used for passing websocket messages in channels</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='trait' href='trait.EventHandler.html'
+                               title='slack::EventHandler'>EventHandler</a></td>
+                        <td class='docblock short'>
+                             <p>Implement this trait in your code to handle message events</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.WsClient.html'
+                               title='slack::WsClient'>WsClient</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "slack";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

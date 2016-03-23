@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `websocket` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, websocket">
+
+    <title>websocket - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'websocket', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>websocket</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/websocket/lib.rs.html#1-70' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Rust-WebSocket is a WebSocket (RFC6455) library written in Rust.</p>
+
+<h1 id='clients' class='section-header'><a href='#clients'>Clients</a></h1>
+<p>WebSocket clients make use of the <code>Client</code> object, which features two connection
+functions: <code>connect()</code> and <code>connect_ssl_context()</code>. See the <code>Client</code> struct
+documentation for more information. These both return a client-side <code>Request</code>
+object which is sent to the server with the <code>send()</code> method. The <code>Request</code> can
+be altered, typically using <code>Request.headers.set()</code> to add additional headers
+or change existing ones before calling <code>send()</code>.</p>
+
+<p>Calling <code>send()</code> on a <code>Request</code> will obtain a <code>Response</code>, which can be checked
+with the <code>validate()</code> method, which will return <code>Ok(())</code> if the response is a
+valid one. Data frames and messages can then be sent by obtaining a <code>Client</code>
+object with <code>begin()</code>.</p>
+
+<h1 id='servers' class='section-header'><a href='#servers'>Servers</a></h1>
+<p>WebSocket servers act similarly to the <code>TcpListener</code>, and listen for connections.
+See the <code>Server</code> struct documentation for more information. The <code>bind()</code> and
+<code>bind_secure()</code> functions will bind the server to the given <code>SocketAddr</code>.
+<code>Server</code> implements Iterator and can be used to iterate over incoming <code>Request</code>
+items.</p>
+
+<p>Requests can be validated using <code>validate()</code>, and other parts of the request may
+be examined (e.g. the Host header and/or the Origin header). A call to <code>accept()</code>
+or <code>fail()</code> will generate a <code>Response</code> which either accepts the connection, or
+denies it respectively.</p>
+
+<p>A <code>Response</code> can then be altered if necessary, and is sent with the &#39;send()<code>method, returning a</code>Client` ready to send and receive data frames or messages.</p>
+
+<h1 id='extending-rust-websocket' class='section-header'><a href='#extending-rust-websocket'>Extending Rust-WebSocket</a></h1>
+<p>The <code>ws</code> module contains the traits and functions used by Rust-WebSockt at a lower
+level. Their usage is explained in the module documentation.</p>
+</div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
+<table><tr><td><code>pub use self::<a class='mod'
+                                            href='./client/index.html'>client</a>::<a class='struct' href='../websocket/client/struct.Client.html' title='websocket::client::Client'>Client</a>;</code></td></tr><tr><td><code>pub use self::<a class='mod'
+                                            href='./server/index.html'>server</a>::<a class='struct' href='../websocket/server/struct.Server.html' title='websocket::server::Server'>Server</a>;</code></td></tr><tr><td><code>pub use self::<a class='mod'
+                                            href='./dataframe/index.html'>dataframe</a>::<a class='struct' href='../websocket/dataframe/struct.DataFrame.html' title='websocket::dataframe::DataFrame'>DataFrame</a>;</code></td></tr><tr><td><code>pub use self::<a class='mod'
+                                            href='./message/index.html'>message</a>::<a class='struct' href='../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>;</code></td></tr><tr><td><code>pub use self::<a class='mod'
+                                            href='./stream/index.html'>stream</a>::<a class='enum' href='../websocket/stream/enum.WebSocketStream.html' title='websocket::stream::WebSocketStream'>WebSocketStream</a>;</code></td></tr><tr><td><code>pub use self::<a class='mod'
+                                            href='./ws/index.html'>ws</a>::<a class='trait' href='../websocket/ws/sender/trait.Sender.html' title='websocket::ws::sender::Sender'>Sender</a>;</code></td></tr><tr><td><code>pub use self::<a class='mod'
+                                            href='./ws/index.html'>ws</a>::<a class='trait' href='../websocket/ws/receiver/trait.Receiver.html' title='websocket::ws::receiver::Receiver'>Receiver</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='client/index.html'
+                               title='websocket::client'>client</a></td>
+                        <td class='docblock short'>
+                             <p>Contains the WebSocket client.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='dataframe/index.html'
+                               title='websocket::dataframe'>dataframe</a></td>
+                        <td class='docblock short'>
+                             <p>Module containing the default implementation of data frames.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='header/index.html'
+                               title='websocket::header'>header</a></td>
+                        <td class='docblock short'>
+                             <p>Structs representing headers relevant in a WebSocket context.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='message/index.html'
+                               title='websocket::message'>message</a></td>
+                        <td class='docblock short'>
+                             <p>Module containing the default implementation for messages.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='receiver/index.html'
+                               title='websocket::receiver'>receiver</a></td>
+                        <td class='docblock short'>
+                             <p>The default implementation of a WebSocket Receiver.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='result/index.html'
+                               title='websocket::result'>result</a></td>
+                        <td class='docblock short'>
+                             <p>The result type used within Rust-WebSocket</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='sender/index.html'
+                               title='websocket::sender'>sender</a></td>
+                        <td class='docblock short'>
+                             <p>The default implementation of a WebSocket Sender.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='server/index.html'
+                               title='websocket::server'>server</a></td>
+                        <td class='docblock short'>
+                             <p>Provides an implementation of a WebSocket server</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='stream/index.html'
+                               title='websocket::stream'>stream</a></td>
+                        <td class='docblock short'>
+                             <p>Provides the default stream type for WebSocket connections.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='ws/index.html'
+                               title='websocket::ws'>ws</a></td>
+                        <td class='docblock short'>
+                             <p>A module containing the traits and structs that lower layer of Rust-WebSocket is based on.</p>
+
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "websocket";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

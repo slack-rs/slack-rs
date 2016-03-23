@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `groups` mod in crate `slack`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, groups">
+
+    <title>slack::api::groups - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>slack</a>::<wbr><a href='../index.html'>api</a></p><script>window.sidebarCurrent = {name: 'groups', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../../index.html'>slack</a>::<wbr><a href='../index.html'>api</a>::<wbr><a class='mod' href=''>groups</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-3704' class='srclink' href='../../../slack_api/groups/index.html?gotosrc=3704' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Get info on your team&#39;s private groups.</p>
+
+<p>For more information, see <a href="https://api.slack.com/methods">Slack&#39;s API
+documentation</a>.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.AbridgedGroup.html'
+                               title='slack::api::groups::AbridgedGroup'>AbridgedGroup</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.ArchiveResponse.html'
+                               title='slack::api::groups::ArchiveResponse'>ArchiveResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.CloseResponse.html'
+                               title='slack::api::groups::CloseResponse'>CloseResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.CreateChildResponse.html'
+                               title='slack::api::groups::CreateChildResponse'>CreateChildResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.CreateResponse.html'
+                               title='slack::api::groups::CreateResponse'>CreateResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.HistoryResponse.html'
+                               title='slack::api::groups::HistoryResponse'>HistoryResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.InfoResponse.html'
+                               title='slack::api::groups::InfoResponse'>InfoResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.InviteResponse.html'
+                               title='slack::api::groups::InviteResponse'>InviteResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.KickResponse.html'
+                               title='slack::api::groups::KickResponse'>KickResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.LeaveResponse.html'
+                               title='slack::api::groups::LeaveResponse'>LeaveResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.ListResponse.html'
+                               title='slack::api::groups::ListResponse'>ListResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.MarkResponse.html'
+                               title='slack::api::groups::MarkResponse'>MarkResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.OpenResponse.html'
+                               title='slack::api::groups::OpenResponse'>OpenResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.RenameResponse.html'
+                               title='slack::api::groups::RenameResponse'>RenameResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.SetPurposeResponse.html'
+                               title='slack::api::groups::SetPurposeResponse'>SetPurposeResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.SetTopicResponse.html'
+                               title='slack::api::groups::SetTopicResponse'>SetTopicResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.UnarchiveResponse.html'
+                               title='slack::api::groups::UnarchiveResponse'>UnarchiveResponse</a></td>
+                        <td class='docblock short'>
+                             
+                        </td>
+                    </tr>
+                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.archive.html'
+                               title='slack::api::groups::archive'>archive</a></td>
+                        <td class='docblock short'>
+                             <p>Archives a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.close.html'
+                               title='slack::api::groups::close'>close</a></td>
+                        <td class='docblock short'>
+                             <p>Closes a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.create.html'
+                               title='slack::api::groups::create'>create</a></td>
+                        <td class='docblock short'>
+                             <p>Creates a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.create_child.html'
+                               title='slack::api::groups::create_child'>create_child</a></td>
+                        <td class='docblock short'>
+                             <p>Clones and archives a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.history.html'
+                               title='slack::api::groups::history'>history</a></td>
+                        <td class='docblock short'>
+                             <p>Fetches history of messages and events from a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.info.html'
+                               title='slack::api::groups::info'>info</a></td>
+                        <td class='docblock short'>
+                             <p>Gets information about a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.invite.html'
+                               title='slack::api::groups::invite'>invite</a></td>
+                        <td class='docblock short'>
+                             <p>Invites a user to a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.kick.html'
+                               title='slack::api::groups::kick'>kick</a></td>
+                        <td class='docblock short'>
+                             <p>Removes a user from a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.leave.html'
+                               title='slack::api::groups::leave'>leave</a></td>
+                        <td class='docblock short'>
+                             <p>Leaves a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.list.html'
+                               title='slack::api::groups::list'>list</a></td>
+                        <td class='docblock short'>
+                             <p>Lists private groups that the calling user has access to.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.mark.html'
+                               title='slack::api::groups::mark'>mark</a></td>
+                        <td class='docblock short'>
+                             <p>Sets the read cursor in a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.open.html'
+                               title='slack::api::groups::open'>open</a></td>
+                        <td class='docblock short'>
+                             <p>Opens a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.rename.html'
+                               title='slack::api::groups::rename'>rename</a></td>
+                        <td class='docblock short'>
+                             <p>Renames a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.set_purpose.html'
+                               title='slack::api::groups::set_purpose'>set_purpose</a></td>
+                        <td class='docblock short'>
+                             <p>Sets the purpose for a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.set_topic.html'
+                               title='slack::api::groups::set_topic'>set_topic</a></td>
+                        <td class='docblock short'>
+                             <p>Sets the topic for a private group.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='fn' href='fn.unarchive.html'
+                               title='slack::api::groups::unarchive'>unarchive</a></td>
+                        <td class='docblock short'>
+                             <p>Unarchives a private group.</p>
+
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "slack";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

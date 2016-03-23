@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["parse_url","Gets the host, port, resource, and secure flag from a url"],["parse_url_str","Gets the host, port, resource and secure from the string representation of a url"]],"trait":[["ToWebSocketUrlComponents","Trait that gets required WebSocket URL components"]]});

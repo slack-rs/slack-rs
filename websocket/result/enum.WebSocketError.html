@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `WebSocketError` enum in crate `websocket`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, WebSocketError">
+
+    <title>websocket::result::WebSocketError - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>websocket</a>::<wbr><a href='index.html'>result</a></p><script>window.sidebarCurrent = {name: 'WebSocketError', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content enum">
+<h1 class='fqn'><span class='in-band'>Enum <a href='../index.html'>websocket</a>::<wbr><a href='index.html'>result</a>::<wbr><a class='enum' href=''>WebSocketError</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-1394' class='srclink' href='../../src/websocket/result.rs.html#18-41' title='goto source code'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum WebSocketError {
+    ProtocolError(&amp;'static <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>),
+    RequestError(&amp;'static <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>),
+    ResponseError(&amp;'static <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>),
+    DataFrameError(&amp;'static <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>),
+    NoDataAvailable,
+    IoError(<a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>),
+    HttpError(<a class='enum' href='../../hyper/error/enum.Error.html' title='hyper::error::Error'>HttpError</a>),
+    UrlError(<a class='enum' href='../../url/parser/enum.ParseError.html' title='url::parser::ParseError'>ParseError</a>),
+    WebSocketUrlError(<a class='enum' href='../../websocket/result/enum.WSUrlErrorKind.html' title='websocket::result::WSUrlErrorKind'>WSUrlErrorKind</a>),
+    SslError(<a class='enum' href='../../openssl/ssl/error/enum.SslError.html' title='openssl::ssl::error::SslError'>SslError</a>),
+    Utf8Error(<a class='struct' href='https://doc.rust-lang.org/nightly/core/str/struct.Utf8Error.html' title='core::str::Utf8Error'>Utf8Error</a>),
+}</pre><div class='docblock'><p>Represents a WebSocket error</p>
+</div><h2 class='variants'>Variants</h2>
+<table><tr><td id='variant.ProtocolError'><code>ProtocolError</code></td><td><div class='docblock'><p>A WebSocket protocol error</p>
+</div></td></tr><tr><td id='variant.RequestError'><code>RequestError</code></td><td><div class='docblock'><p>Invalid WebSocket request error</p>
+</div></td></tr><tr><td id='variant.ResponseError'><code>ResponseError</code></td><td><div class='docblock'><p>Invalid WebSocket response error</p>
+</div></td></tr><tr><td id='variant.DataFrameError'><code>DataFrameError</code></td><td><div class='docblock'><p>Invalid WebSocket data frame error</p>
+</div></td></tr><tr><td id='variant.NoDataAvailable'><code>NoDataAvailable</code></td><td><div class='docblock'><p>No data available</p>
+</div></td></tr><tr><td id='variant.IoError'><code>IoError</code></td><td><div class='docblock'><p>An input/output error</p>
+</div></td></tr><tr><td id='variant.HttpError'><code>HttpError</code></td><td><div class='docblock'><p>An HTTP parsing error</p>
+</div></td></tr><tr><td id='variant.UrlError'><code>UrlError</code></td><td><div class='docblock'><p>A URL parsing error</p>
+</div></td></tr><tr><td id='variant.WebSocketUrlError'><code>WebSocketUrlError</code></td><td><div class='docblock'><p>A WebSocket URL error</p>
+</div></td></tr><tr><td id='variant.SslError'><code>SslError</code></td><td><div class='docblock'><p>An SSL error</p>
+</div></td></tr><tr><td id='variant.Utf8Error'><code>Utf8Error</code></td><td><div class='docblock'><p>A UTF-8 error</p>
+</div></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a> for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#method.fmt' class='fnname'>fmt</a>(&amp;self, fmt: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html' title='std::error::Error'>Error</a> for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.description' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html#method.description' class='fnname'>description</a>(&amp;self) -&gt; &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></h4>
+<h4 id='method.cause' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html#method.cause' class='fnname'>cause</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='trait' href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html' title='std::error::Error'>Error</a>&gt;</code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt; for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(err: <a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>) -&gt; <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='enum' href='../../hyper/error/enum.Error.html' title='hyper::error::Error'>HttpError</a>&gt; for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.from-1' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(err: <a class='enum' href='../../hyper/error/enum.Error.html' title='hyper::error::Error'>HttpError</a>) -&gt; <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='enum' href='../../url/parser/enum.ParseError.html' title='url::parser::ParseError'>ParseError</a>&gt; for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.from-2' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(err: <a class='enum' href='../../url/parser/enum.ParseError.html' title='url::parser::ParseError'>ParseError</a>) -&gt; <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='enum' href='../../openssl/ssl/error/enum.SslError.html' title='openssl::ssl::error::SslError'>SslError</a>&gt; for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.from-3' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(err: <a class='enum' href='../../openssl/ssl/error/enum.SslError.html' title='openssl::ssl::error::SslError'>SslError</a>) -&gt; <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/core/str/struct.Utf8Error.html' title='core::str::Utf8Error'>Utf8Error</a>&gt; for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.from-4' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(err: <a class='struct' href='https://doc.rust-lang.org/nightly/core/str/struct.Utf8Error.html' title='core::str::Utf8Error'>Utf8Error</a>) -&gt; <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='enum' href='../../byteorder/new/enum.Error.html' title='byteorder::new::Error'>Error</a>&gt; for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.from-5' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(err: <a class='enum' href='../../byteorder/new/enum.Error.html' title='byteorder::new::Error'>Error</a>) -&gt; <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='enum' href='../../websocket/result/enum.WSUrlErrorKind.html' title='websocket::result::WSUrlErrorKind'>WSUrlErrorKind</a>&gt; for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.from-6' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(err: <a class='enum' href='../../websocket/result/enum.WSUrlErrorKind.html' title='websocket::result::WSUrlErrorKind'>WSUrlErrorKind</a>) -&gt; <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../../websocket/result/enum.WebSocketError.html' title='websocket::result::WebSocketError'>WebSocketError</a></code></h3><div class='impl-items'><h4 id='method.fmt-1' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "websocket";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

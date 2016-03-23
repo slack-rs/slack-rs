@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["WSUrlErrorKind","Represents a WebSocket URL error"],["WebSocketError","Represents a WebSocket error"]],"type":[["WebSocketResult","The type used for WebSocket results"]]});

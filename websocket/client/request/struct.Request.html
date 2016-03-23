@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Request` struct in crate `websocket`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Request">
+
+    <title>websocket::client::request::Request - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>websocket</a>::<wbr><a href='../index.html'>client</a>::<wbr><a href='index.html'>request</a></p><script>window.sidebarCurrent = {name: 'Request', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>websocket</a>::<wbr><a href='../index.html'>client</a>::<wbr><a href='index.html'>request</a>::<wbr><a class='struct' href=''>Request</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-589' class='srclink' href='../../../src/websocket/client/request.rs.html#22-31' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Request&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a>, W: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a>&gt; {
+    pub version: <a class='enum' href='../../../hyper/version/enum.HttpVersion.html' title='hyper::version::HttpVersion'>HttpVersion</a>,
+    pub headers: <a class='struct' href='../../../websocket/header/struct.Headers.html' title='websocket::header::Headers'>Headers</a>,
+    // some fields omitted
+}</pre><div class='docblock'><p>Represents a WebSocket request.</p>
+
+<p>Note that nothing is written to the internal Writer until the <code>send()</code> method is called.</p>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                                  <td id='structfield.version'><code>version</code></td><td><div class='docblock'><p>The HTTP version of this request.</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.headers'><code>headers</code></td><td><div class='docblock'><p>The headers of this request.</p>
+</div></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a>, W: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a>&gt; <a class='struct' href='../../../websocket/client/request/struct.Request.html' title='websocket::client::request::Request'>Request</a>&lt;R, W&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>&lt;T: <a class='trait' href='../../../websocket/ws/util/url/trait.ToWebSocketUrlComponents.html' title='websocket::ws::util::url::ToWebSocketUrlComponents'>ToWebSocketUrlComponents</a>&gt;(components: T, reader: R, writer: W) -&gt; <a class='type' href='../../../websocket/result/type.WebSocketResult.html' title='websocket::result::WebSocketResult'>WebSocketResult</a>&lt;<a class='struct' href='../../../websocket/client/request/struct.Request.html' title='websocket::client::request::Request'>Request</a>&lt;R, W&gt;&gt;</code></h4>
+<div class='docblock'><p>Creates a new client-side request.</p>
+
+<p>In general <code>Client::connect()</code> should be used for connecting to servers.
+However, if the request is to be written to a different Writer, this function
+may be used.</p>
+</div><h4 id='method.key' class='method'><code>fn <a href='#method.key' class='fnname'>key</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='../../../websocket/header/struct.WebSocketKey.html' title='websocket::header::WebSocketKey'>WebSocketKey</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain the WebSocketKey value.</p>
+</div><h4 id='method.version' class='method'><code>fn <a href='#method.version' class='fnname'>version</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='enum' href='../../../websocket/header/enum.WebSocketVersion.html' title='websocket::header::WebSocketVersion'>WebSocketVersion</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain the WebSocketVersion value.</p>
+</div><h4 id='method.protocol' class='method'><code>fn <a href='#method.protocol' class='fnname'>protocol</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='../../../websocket/header/struct.WebSocketProtocol.html' title='websocket::header::WebSocketProtocol'>WebSocketProtocol</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain the WebSocketProtocol value.</p>
+</div><h4 id='method.extensions' class='method'><code>fn <a href='#method.extensions' class='fnname'>extensions</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='../../../websocket/header/extensions/struct.WebSocketExtensions.html' title='websocket::header::extensions::WebSocketExtensions'>WebSocketExtensions</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain the WebSocketExtensions value.</p>
+</div><h4 id='method.origin' class='method'><code>fn <a href='#method.origin' class='fnname'>origin</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='../../../websocket/header/struct.Origin.html' title='websocket::header::Origin'>Origin</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain the Origin value.</p>
+</div><h4 id='method.key_mut' class='method'><code>fn <a href='#method.key_mut' class='fnname'>key_mut</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut <a class='struct' href='../../../websocket/header/struct.WebSocketKey.html' title='websocket::header::WebSocketKey'>WebSocketKey</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain a mutable reference to the WebSocketKey value.</p>
+
+<p>Note that to add a header that does not already exist, <code>Request.headers.set()</code>
+must be used.</p>
+</div><h4 id='method.version_mut' class='method'><code>fn <a href='#method.version_mut' class='fnname'>version_mut</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut <a class='enum' href='../../../websocket/header/enum.WebSocketVersion.html' title='websocket::header::WebSocketVersion'>WebSocketVersion</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain a mutable reference to the WebSocketVersion value.</p>
+
+<p>Note that to add a header that does not already exist, <code>Request.headers.set()</code>
+must be used.</p>
+</div><h4 id='method.protocol_mut' class='method'><code>fn <a href='#method.protocol_mut' class='fnname'>protocol_mut</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut <a class='struct' href='../../../websocket/header/struct.WebSocketProtocol.html' title='websocket::header::WebSocketProtocol'>WebSocketProtocol</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtaina mutable reference to  the WebSocketProtocol value.</p>
+
+<p>Note that to add a header that does not already exist, <code>Request.headers.set()</code>
+must be used.</p>
+</div><h4 id='method.extensions_mut' class='method'><code>fn <a href='#method.extensions_mut' class='fnname'>extensions_mut</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut <a class='struct' href='../../../websocket/header/extensions/struct.WebSocketExtensions.html' title='websocket::header::extensions::WebSocketExtensions'>WebSocketExtensions</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain a mutable reference to the WebSocketExtensions value.</p>
+
+<p>Note that to add a header that does not already exist, <code>Request.headers.set()</code>
+must be used.</p>
+</div><h4 id='method.origin_mut' class='method'><code>fn <a href='#method.origin_mut' class='fnname'>origin_mut</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut <a class='struct' href='../../../websocket/header/struct.Origin.html' title='websocket::header::Origin'>Origin</a>&gt;</code></h4>
+<div class='docblock'><p>Short-cut to obtain a mutable reference to the Origin value.</p>
+
+<p>Note that to add a header that does not already exist, <code>Request.headers.set()</code>
+must be used.</p>
+</div><h4 id='method.get_reader' class='method'><code>fn <a href='#method.get_reader' class='fnname'>get_reader</a>(&amp;self) -&gt; &amp;<a class='struct' href='../../../hyper/buffer/struct.BufReader.html' title='hyper::buffer::BufReader'>BufReader</a>&lt;R&gt;</code></h4>
+<div class='docblock'><p>Returns a reference to the inner Reader.</p>
+</div><h4 id='method.get_writer' class='method'><code>fn <a href='#method.get_writer' class='fnname'>get_writer</a>(&amp;self) -&gt; &amp;W</code></h4>
+<div class='docblock'><p>Returns a reference to the inner Writer.</p>
+</div><h4 id='method.get_mut_reader' class='method'><code>fn <a href='#method.get_mut_reader' class='fnname'>get_mut_reader</a>(&amp;mut self) -&gt; &amp;mut <a class='struct' href='../../../hyper/buffer/struct.BufReader.html' title='hyper::buffer::BufReader'>BufReader</a>&lt;R&gt;</code></h4>
+<div class='docblock'><p>Returns a mutable reference to the inner Reader.</p>
+</div><h4 id='method.get_mut_writer' class='method'><code>fn <a href='#method.get_mut_writer' class='fnname'>get_mut_writer</a>(&amp;mut self) -&gt; &amp;mut W</code></h4>
+<div class='docblock'><p>Returns a mutable reference to the inner Writer.</p>
+</div><h4 id='method.into_inner' class='method'><code>fn <a href='#method.into_inner' class='fnname'>into_inner</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='struct' href='../../../hyper/buffer/struct.BufReader.html' title='hyper::buffer::BufReader'>BufReader</a>&lt;R&gt;, W)</a></code></h4>
+<div class='docblock'><p>Return the inner Reader and Writer.</p>
+</div><h4 id='method.send' class='method'><code>fn <a href='#method.send' class='fnname'>send</a>(self) -&gt; <a class='type' href='../../../websocket/result/type.WebSocketResult.html' title='websocket::result::WebSocketResult'>WebSocketResult</a>&lt;<a class='struct' href='../../../websocket/client/response/struct.Response.html' title='websocket::client::response::Response'>Response</a>&lt;R, W&gt;&gt;</code></h4>
+<div class='docblock'><p>Sends the request to the server and returns a response.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;R, W&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> for <a class='struct' href='../../../websocket/client/request/struct.Request.html' title='websocket::client::request::Request'>Request</a>&lt;R, W&gt; <span class='where'>where R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>, W: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a></span></code></h3><div class='impl-items'></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "websocket";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

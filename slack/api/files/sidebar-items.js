@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["delete","Deletes a file."],["info","Gets information about a team file."],["list","Lists & filters team files."]],"struct":[["DeleteResponse",""],["InfoResponse",""],["ListResponse",""]]});

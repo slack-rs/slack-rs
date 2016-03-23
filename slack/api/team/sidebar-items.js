@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["access_logs","Gets the access logs for the current team."],["info","Gets information about the current team."]],"struct":[["AccessLogsResponse",""],["IconInfo",""],["InfoResponse",""],["LoginInfo",""],["TeamInfo",""]]});

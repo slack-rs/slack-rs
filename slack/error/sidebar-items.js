@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","slack::Error represents errors that can happen while using the RtmClient"]]});

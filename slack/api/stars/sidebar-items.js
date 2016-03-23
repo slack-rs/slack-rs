@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["add","Adds a star to an item."],["list","Lists stars for a user."],["remove","Removes a star from an item."]],"struct":[["AddResponse",""],["ListResponse",""],["RemoveResponse",""]]});

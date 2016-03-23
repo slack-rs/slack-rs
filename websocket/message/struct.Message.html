@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Message` struct in crate `websocket`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Message">
+
+    <title>websocket::message::Message - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>websocket</a>::<wbr><a href='index.html'>message</a></p><script>window.sidebarCurrent = {name: 'Message', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>websocket</a>::<wbr><a href='index.html'>message</a>::<wbr><a class='struct' href=''>Message</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-1244' class='srclink' href='../../src/websocket/message.rs.html#37-45' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Message&lt;'a&gt; {
+    pub opcode: <a class='enum' href='../../websocket/message/enum.Type.html' title='websocket::message::Type'>Type</a>,
+    pub cd_status_code: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>&gt;,
+    pub payload: <a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a>&gt;,
+}</pre><div class='docblock'><p>Represents a WebSocket message.</p>
+
+<p>This message also has the ability to not own its payload, and stores its entire payload in
+chunks that get written in order when the message gets sent. This makes the <code>write_payload</code>
+allocate less memory than the <code>payload</code> method (which creates a new buffer every time).</p>
+
+<p>Incidentally this (the default implementation of Message) implements the DataFrame trait
+because this message just gets sent as one single DataFrame.</p>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                                  <td id='structfield.opcode'><code>opcode</code></td><td><div class='docblock'><p>Type of WebSocket message</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.cd_status_code'><code>cd_status_code</code></td><td><div class='docblock'><p>Optional status code to send when closing a connection.
+(only used if this message is of Type::Close)</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.payload'><code>payload</code></td><td><div class='docblock'><p>Main payload</p>
+</div></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;'a&gt; <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;</code></h3><div class='impl-items'><h4 id='method.text' class='method'><code>fn <a href='#method.text' class='fnname'>text</a>&lt;S&gt;(data: S) -&gt; Self <span class='where'>where S: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.Into.html' title='core::convert::Into'>Into</a>&lt;<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;&gt;</span></code></h4>
+<div class='docblock'><p>Create a new WebSocket message with text data</p>
+</div><h4 id='method.binary' class='method'><code>fn <a href='#method.binary' class='fnname'>binary</a>&lt;B&gt;(data: B) -&gt; Self <span class='where'>where B: <a class='trait' href='../../websocket/message/trait.IntoCowBytes.html' title='websocket::message::IntoCowBytes'>IntoCowBytes</a>&lt;'a&gt;</span></code></h4>
+<div class='docblock'><p>Create a new WebSocket message with binary data</p>
+</div><h4 id='method.close' class='method'><code>fn <a href='#method.close' class='fnname'>close</a>() -&gt; Self</code></h4>
+<div class='docblock'><p>Create a new WebSocket message that signals the end of a WebSocket
+connection, although messages can still be sent after sending this</p>
+</div><h4 id='method.close_because' class='method'><code>fn <a href='#method.close_because' class='fnname'>close_because</a>&lt;S&gt;(code: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>, reason: S) -&gt; Self <span class='where'>where S: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.Into.html' title='core::convert::Into'>Into</a>&lt;<a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'a, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;&gt;</span></code></h4>
+<div class='docblock'><p>Create a new WebSocket message that signals the end of a WebSocket
+connection and provide a text reason and a status code for why.
+Messages can still be sent after sending this message.</p>
+</div><h4 id='method.ping' class='method'><code>fn <a href='#method.ping' class='fnname'>ping</a>&lt;P&gt;(data: P) -&gt; Self <span class='where'>where P: <a class='trait' href='../../websocket/message/trait.IntoCowBytes.html' title='websocket::message::IntoCowBytes'>IntoCowBytes</a>&lt;'a&gt;</span></code></h4>
+<div class='docblock'><p>Create a ping WebSocket message, a pong is usually sent back
+after sending this with the same data</p>
+</div><h4 id='method.pong' class='method'><code>fn <a href='#method.pong' class='fnname'>pong</a>&lt;P&gt;(data: P) -&gt; Self <span class='where'>where P: <a class='trait' href='../../websocket/message/trait.IntoCowBytes.html' title='websocket::message::IntoCowBytes'>IntoCowBytes</a>&lt;'a&gt;</span></code></h4>
+<div class='docblock'><p>Create a pong WebSocket message, usually a response to a
+ping message</p>
+</div><h4 id='method.into_pong' class='method'><code>fn <a href='#method.into_pong' class='fnname'>into_pong</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Convert a ping message to a pong, keeping the data.
+This will fail if the original message is not a ping.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;'a&gt; <a class='trait' href='../../websocket/ws/dataframe/trait.DataFrame.html' title='websocket::ws::dataframe::DataFrame'>DataFrame</a> for <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;</code></h3><div class='impl-items'><h4 id='method.is_last' class='method'><code>fn <a href='../../websocket/ws/dataframe/trait.DataFrame.html#method.is_last' class='fnname'>is_last</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.opcode' class='method'><code>fn <a href='../../websocket/ws/dataframe/trait.DataFrame.html#method.opcode' class='fnname'>opcode</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a></code></h4>
+<h4 id='method.reserved' class='method'><code>fn <a href='../../websocket/ws/dataframe/trait.DataFrame.html#method.reserved' class='fnname'>reserved</a>&lt;'b&gt;(&amp;'b self) -&gt; &amp;'b <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.array.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>; 3]</a></code></h4>
+<h4 id='method.payload' class='method'><code>fn <a href='../../websocket/ws/dataframe/trait.DataFrame.html#method.payload' class='fnname'>payload</a>&lt;'b&gt;(&amp;'b self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/collections/borrow/enum.Cow.html' title='collections::borrow::Cow'>Cow</a>&lt;'b, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a>&gt;</code></h4>
+<h4 id='method.size' class='method'><code>fn <a href='../../websocket/ws/dataframe/trait.DataFrame.html#method.size' class='fnname'>size</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h4>
+<h4 id='method.write_payload' class='method'><code>fn <a href='../../websocket/ws/dataframe/trait.DataFrame.html#method.write_payload' class='fnname'>write_payload</a>&lt;W&gt;(&amp;self, socket: &amp;mut W) -&gt; <a class='type' href='../../websocket/result/type.WebSocketResult.html' title='websocket::result::WebSocketResult'>WebSocketResult</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt; <span class='where'>where W: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a></span></code></h4>
+<h4 id='method.write_to' class='method'><code>fn <a href='../../websocket/ws/dataframe/trait.DataFrame.html#method.write_to' class='fnname'>write_to</a>&lt;W&gt;(&amp;self, writer: &amp;mut W, mask: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) -&gt; <a class='type' href='../../websocket/result/type.WebSocketResult.html' title='websocket::result::WebSocketResult'>WebSocketResult</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt; <span class='where'>where W: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a></span></code></h4>
+</div><h3 class='impl'><code>impl&lt;'a, 'b&gt; <a class='trait' href='../../websocket/ws/message/trait.Message.html' title='websocket::ws::message::Message'>Message</a>&lt;'b, &amp;'b <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;&gt; for <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;</code></h3><div class='impl-items'><h4 id='assoc_type.DataFrameIterator' class='type'><code>type DataFrameIterator = <a class='struct' href='https://doc.rust-lang.org/nightly/core/iter/struct.Take.html' title='core::iter::Take'>Take</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/core/iter/struct.Repeat.html' title='core::iter::Repeat'>Repeat</a>&lt;&amp;'b <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;&gt;&gt;</code></h4>
+<h4 id='method.dataframes' class='method'><code>fn <a href='../../websocket/ws/message/trait.Message.html#method.dataframes' class='fnname'>dataframes</a>(&amp;'b self) -&gt; Self::<a class='trait' href='../../websocket/ws/message/trait.Message.html' title='websocket::ws::message::Message'>DataFrameIterator</a></code></h4>
+<h4 id='method.from_dataframes' class='method'><code>fn <a href='../../websocket/ws/message/trait.Message.html#method.from_dataframes' class='fnname'>from_dataframes</a>&lt;D&gt;(frames: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;D&gt;) -&gt; <a class='type' href='../../websocket/result/type.WebSocketResult.html' title='websocket::result::WebSocketResult'>WebSocketResult</a>&lt;Self&gt; <span class='where'>where D: <a class='trait' href='../../websocket/ws/dataframe/trait.DataFrame.html' title='websocket::ws::dataframe::DataFrame'>DataFrame</a></span></code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;</code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+</div><h3 class='impl'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;</code></h4>
+<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+</div><h3 class='impl'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a> for <a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;</code></h3><div class='impl-items'><h4 id='method.eq' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.ne' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class='struct' href='../../websocket/message/struct.Message.html' title='websocket::message::Message'>Message</a>&lt;'a&gt;) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "websocket";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

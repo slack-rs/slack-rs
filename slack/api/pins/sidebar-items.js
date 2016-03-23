@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["add","Pins an item to a channel."],["list","Lists items pinned to a channel."],["remove","Un-pins an item from a channel."]],"struct":[["AddResponse",""],["ListResponse",""],["RemoveResponse",""]]});

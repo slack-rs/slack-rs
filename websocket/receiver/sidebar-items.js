@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Receiver","A Receiver that wraps a Reader and provides a default implementation using DataFrames and Messages."]]});

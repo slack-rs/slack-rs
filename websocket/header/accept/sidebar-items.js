@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WebSocketAccept","Represents a Sec-WebSocket-Accept header"]]});
