@@ -286,16 +286,18 @@ pub enum Event {
     /// [`reaction_added`](https://api.slack.com/events/reaction_added) event.
     ReactionAdded {
         user: String,
-        name: String,
+        reaction: String,
         item: Item,
+        item_user: String,
         event_ts: String,
     },
     /// Represents the slack
     /// [`reaction_removed`](https://api.slack.com/events/reaction_removed) event.
     ReactionRemoved {
         user: String,
-        name: String,
+        reaction: String,
         item: Item,
+        item_user: String,
         event_ts: String,
     },
     /// Represents the slack
@@ -546,16 +548,18 @@ impl Decodable for Event {
                     }),
                     "reaction_added" => Ok(Event::ReactionAdded {
                         user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                        name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
+                        reaction: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
                         item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        item_user: try!(d.read_struct_field("item_user", 0, |d| Decodable::decode(d))),
                         event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
                     }),
                     "reaction_removed" => Ok(Event::ReactionRemoved {
                         user: try!(d.read_struct_field("user", 0, |d| Decodable::decode(d))),
-                        name: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
+                        reaction: try!(d.read_struct_field("name", 0, |d| Decodable::decode(d))),
                         item: try!(d.read_struct_field("item", 0, |d| Decodable::decode(d))),
+                        item_user: try!(d.read_struct_field("item_user", 0, |d| Decodable::decode(d))),
                         event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
-                    }),
+                      }),
                     "emoji_changed" => Ok(Event::EmojiChanged {
                         event_ts: try!(d.read_struct_field("event_ts", 0, |d| Decodable::decode(d))),
                     }),
