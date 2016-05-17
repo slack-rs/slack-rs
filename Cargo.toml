@@ -1,6 +1,6 @@
 [package]
 name = "slack"
-version = "0.13.0"
+version = "0.14.0"
 authors = ["Benjamin Elder <bentheelder@gmail.com>", "Matt Jones <mthjones@gmail.com>"]
 repository = "https://github.com/slack-rs/slack-rs.git"
 documentation = "http://slack-rs.github.io/slack-rs/slack/index.html"
@@ -8,7 +8,7 @@ description = "slack realtime messaging client: https://api.slack.com/bot-users"
 license = "Apache-2.0"
 
 [dependencies]
-websocket = "0.15.2"
-hyper = "0.8.0"
+websocket = "0.17.1"
+hyper = "0.9.5"
 rustc-serialize = "0.3.18"
-slack_api = "0.13.0"
+slack_api = "0.15.0"
