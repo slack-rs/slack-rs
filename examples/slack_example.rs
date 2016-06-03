@@ -15,7 +15,10 @@
 //
 //
 // This is a simple example of using slack-rs.
-// You can run it with `cargo run example -- <api_key>`
+// You can run it with `cargo run --example slack_example -- <api_key>`
+//
+// NOTE: This will post in the #general channel of the account you connect
+// to.
 //
 
 extern crate slack;
@@ -51,7 +54,7 @@ impl slack::EventHandler for MyHandler {
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let api_key = match args.len() {
-        0 | 1 => panic!("No api-key in args! Usage: cargo run slack_example -- <api-key>"),
+        0 | 1 => panic!("No api-key in args! Usage: cargo run --example slack_example -- <api-key>"),
         x => {
             args[x - 1].clone()
         }
