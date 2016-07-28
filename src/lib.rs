@@ -30,9 +30,10 @@ pub use api::{Attachment, Channel, Group, Im, Team, User, Message};
 mod events;
 pub use events::Event;
 
-use std::sync::mpsc::{Sender, Receiver, channel};
+use std::sync::mpsc::{self, channel};
 use std::thread;
 use std::sync::atomic::{AtomicIsize, Ordering};
+use std::sync::Arc;
 use std::collections::HashMap;
 
 use rustc_serialize::json;
@@ -85,8 +86,52 @@ pub struct RtmClient {
     channel_ids: HashMap<String, String>,
     group_ids: HashMap<String, String>,
     user_ids: HashMap<String, String>,
-    msg_num: AtomicIsize,
-    outs: Option<Sender<WsMessage>>,
+    msg_num: Arc<AtomicIsize>,
+    outs: Option<mpsc::Sender<WsMessage>>,
+}
+
+/// Thread-safe API for sending messages asynchronously
+pub struct Sender {
+    inner: mpsc::Sender<WsMessage>,
+    msg_num: Arc<AtomicIsize>
+}
+
+impl Sender {
+    /// Get the next message id
+    ///
+    /// A value returned from this method *must* be included in the JSON payload
+    /// (the `id` field) when constructing your own message.
+    pub fn get_msg_uid(&self) -> isize {
+        self.msg_num.fetch_add(1, Ordering::SeqCst)
+    }
+
+    /// Send a raw message
+    ///
+    /// Must set `message.id` using result of `get_msg_id()`.
+    ///
+    /// Success from this API does not guarantee the message is delivered
+    /// successfully since that runs on a separate task.
+    pub fn send(&self, raw: &str) -> Result<(), Error> {
+        try!(self.inner.send(WsMessage::Text(raw.to_string()))
+                       .map_err(|err| Error::Internal(format!("{}", err))));
+        Ok(())
+    }
+
+    /// Send a message to the specified channel id
+    ///
+    /// Success from this API does not guarantee the message is delivered
+    /// successfully since that runs on a separate task.
+    pub fn send_message_chid(&self, chan_id: &str, msg: &str) -> Result<isize, Error> {
+        let n = self.get_msg_uid();
+        let msg_json = format!("{}", json::as_json(&msg));
+        let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
+                           n,
+                           chan_id,
+                           &msg_json[1..msg_json.len() - 1]);
+
+        try!(self.send(&mstr[..]));
+        Ok(n)
+    }
 }
 
 impl RtmClient {
@@ -102,7 +147,7 @@ impl RtmClient {
             channel_ids: HashMap::new(),
             group_ids: HashMap::new(),
             user_ids: HashMap::new(),
-            msg_num: AtomicIsize::new(0),
+            msg_num: Arc::new(AtomicIsize::new(0)),
             outs: None,
         }
     }
@@ -186,6 +231,14 @@ impl RtmClient {
         self.msg_num.fetch_add(1, Ordering::SeqCst)
     }
 
+    /// Get a thread-safe message sender
+    pub fn channel(&self) -> Option<Sender> {
+        self.outs.as_ref().cloned().map(|send| Sender {
+            inner: send,
+            msg_num: self.msg_num.clone(),
+        })
+    }
+
 
     /// Allows sending a json string message over the websocket connection.
     /// Note that this only passes the message over a channel to the
@@ -242,7 +295,7 @@ impl RtmClient {
 
     /// Logs in to slack. Call this before calling run.
     /// Alternatively use login_and_run
-    pub fn login(&mut self) -> Result<(WsClient, Receiver<WsMessage>), Error> {
+    pub fn login(&mut self) -> Result<(WsClient, mpsc::Receiver<WsMessage>), Error> {
         let client = hyper::Client::new();
         let start = try!(api::rtm::start(&client, &self.token, None, None));
 
@@ -283,7 +336,7 @@ impl RtmClient {
     }
 
     /// Runs the message receive loop
-    pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: Receiver<WsMessage>) -> Result<(), Error> {
+    pub fn run<T: EventHandler>(&mut self, handler: &mut T, client: WsClient, rx: mpsc::Receiver<WsMessage>) -> Result<(), Error> {
         // for sending messages
         let tx = match self.outs {
             Some(ref mut tx) => tx.clone(),
