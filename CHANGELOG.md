@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.15.0
+- Add async message sending API thanks to https://github.com/jwilm
+
+## 0.14.0
+- Update dependencies thanks to https://github.com/jgulotta
+- Update usage information for example thanks to https://github.com/wezm
+
 ## 0.13.0
 - Thanks to https://github.com/squidpickles and https://github.com/dten respectively: add unnoficial events to handle message sending success and error, and add timeout on the rtm sockeckt.
 
