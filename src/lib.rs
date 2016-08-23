@@ -59,7 +59,7 @@ pub type WsClient = Client<websocket::dataframe::DataFrame,
 pub trait EventHandler {
     /// When a message is received this will be called with self, the slack client,
     /// and the result of parsing the event received, as well as the raw json string.
-    fn on_event(&mut self, cli: &mut RtmClient, event: Result<&Event, Error>, raw_json: &str);
+    fn on_event(&mut self, cli: &mut RtmClient, event: Result<Event, Error>, raw_json: &str);
 
     /// Called when a ping is received; you do NOT need to handle the reply pong,
     /// but you may use this event to track the connection as a keep-alive.
@@ -444,7 +444,7 @@ impl RtmClient {
                 WsType::Text => {
                     let raw_string : String = try!(String::from_utf8(message.payload.into_owned()));
                     match json::decode(&raw_string) {
-                        Ok(event) => handler.on_event(self, Ok(&event), &raw_string),
+                        Ok(event) => handler.on_event(self, Ok(event), &raw_string),
                         Err(err) => handler.on_event(self, Err(Error::JsonDecode(err)), &raw_string),
                     }
                 }
