@@ -15,7 +15,8 @@
 
 //! Slack realtime messaging client: https://api.slack.com/bot-users
 //!
-//! See [CHANGELOG.md](https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md) for latest release notes.
+//! See [CHANGELOG.md](https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md) for latest
+//! release notes.
 
 extern crate hyper;
 extern crate websocket;
@@ -30,11 +31,12 @@ pub use api::{Attachment, Channel, Group, Im, Team, User, Message};
 mod events;
 pub use events::Event;
 
+use std::collections::HashMap;
+use std::io;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicIsize, Ordering};
 use std::sync::mpsc::{self, channel};
 use std::thread;
-use std::sync::atomic::{AtomicIsize, Ordering};
-use std::sync::Arc;
-use std::collections::HashMap;
 
 use rustc_serialize::json;
 
@@ -47,6 +49,7 @@ use websocket::ws::receiver::Receiver as WsReceiverTrait;
 use websocket::client::Receiver as WsReceiver;
 use websocket::message::Type as WsType;
 use websocket::stream::WebSocketStream;
+use websocket::result::WebSocketError;
 
 pub type WsClient = Client<websocket::dataframe::DataFrame,
                            WsSender<websocket::stream::WebSocketStream>,
@@ -421,6 +424,13 @@ impl RtmClient {
             let message : WebSocketMessage = match message_result {
                 Ok(message) => message,
                 Err(err) => {
+                    // If error is equivalent of EAGAIN, just loop
+                    if let WebSocketError::IoError(ref io_err) = err {
+                        if io_err.kind() == io::ErrorKind::WouldBlock {
+                            continue
+                        }
+                    }
+
                     // shutdown sender and receiver, then join the child thread
                     // and return an error.
                     let _ = tx.send(WsMessage::Close);
