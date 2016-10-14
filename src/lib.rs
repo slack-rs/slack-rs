@@ -188,6 +188,22 @@ impl RtmClient {
         self.user_ids.get(username)
     }
 
+    /// Get channel id from a channel string
+    /// Only valid after login.
+    pub fn get_channel_id_from_string(&self, chan: &str) -> Result<String, Error> {
+        let id = match chan.starts_with("#") {
+            true => {
+                match self.get_channel_id(&chan[1..]) {
+                    Some(s) => s,
+                    None => return Err(Error::Internal(String::from("need to login first to retrieve channel list"))),
+                }
+            }
+            false => chan,
+        };
+
+        Ok(id.to_string())
+    }
+
     /// Get a channel id from a channel name, note that channel_name does not begin with a '#'
     /// Only valid after login.
     pub fn get_channel_id(&self, channel_name: &str) -> Option<&String> {
@@ -272,16 +288,12 @@ impl RtmClient {
     /// Only valid after login.
     pub fn send_message(&self, chan: &str, msg: &str) -> Result<isize, Error> {
         let n = self.get_msg_uid();
-        // fixup the channel id if chan is: `#<channel>`
-        let chan_id = match chan.starts_with("#") {
-            true => {
-                match self.get_channel_id(&chan[1..]) {
-                    Some(s) => &(s[..]),
-                    None => return Err(Error::Internal(String::from("start_info is invalid, need to login first"))),
-                }
-            }
-            false => chan,
+
+        let chan_id = match self.get_channel_id_from_string(chan) {
+            Ok(id) => id,
+            _ => return Err(Error::Internal(String::from("Failed to get channel id")))
         };
+
         let msg_json = format!("{}", json::as_json(&msg));
         let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
                            n,
