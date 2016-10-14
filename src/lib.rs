@@ -308,6 +308,28 @@ impl RtmClient {
         Ok(n)
     }
 
+    pub fn send_typing(&self, chan: &str) -> Result<isize, Error> {
+        let n = self.get_msg_uid();
+
+        let chan_id = match self.get_channel_id_from_string(chan) {
+            Ok(id) => id,
+            _ => return Err(Error::Internal(String::from("Failed to get channel id")))
+        };
+
+        let mstr = format!(r#"{{"id": {}, "type": "typing", "channel": "{}"}}"#,
+                           n,
+                           chan_id);
+
+        let tx = match self.outs {
+            Some(ref tx) => tx,
+            None => return Err(Error::Internal(String::from("Failed to get tx!"))),
+        };
+
+        try!(tx.send(WsMessage::Text(mstr))
+             .map_err(|err| Error::Internal(format!("{:?}", err))));
+        Ok(n)
+    }
+
     /// Logs in to slack. Call this before calling run.
     /// Alternatively use login_and_run
     pub fn login(&mut self) -> Result<(WsClient, mpsc::Receiver<WsMessage>), Error> {
