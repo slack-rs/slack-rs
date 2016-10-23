@@ -308,6 +308,11 @@ impl RtmClient {
         Ok(n)
     }
 
+    /// Marks connected client as being typing to a channel
+    /// This is mostly used to signal to other peers that a message
+    /// is being typed. Will have the server send a "user_typing" message to all the
+    /// peers.
+    /// Slack doc can be found at https://api.slack.com/rtm under "Typing Indicators"
     pub fn send_typing(&self, chan: &str) -> Result<isize, Error> {
         let n = self.get_msg_uid();
 
