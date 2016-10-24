@@ -188,9 +188,11 @@ impl RtmClient {
         self.user_ids.get(username)
     }
 
-    /// Get channel id from a channel string
+    /// Evaluate if chan is a channel name or channel id
+    /// If channel name, returns its id
+    /// If channel id, returns itself
     /// Only valid after login.
-    pub fn get_channel_id_from_string(&self, chan: &str) -> Result<String, Error> {
+    fn evaluate_channel_id(&self, chan: &str) -> Result<String, Error> {
         let id = match chan.starts_with("#") {
             true => {
                 match self.get_channel_id(&chan[1..]) {
@@ -289,7 +291,7 @@ impl RtmClient {
     pub fn send_message(&self, chan: &str, msg: &str) -> Result<isize, Error> {
         let n = self.get_msg_uid();
 
-        let chan_id = match self.get_channel_id_from_string(chan) {
+        let chan_id = match self.evaluate_channel_id(chan) {
             Ok(id) => id,
             _ => return Err(Error::Internal(String::from("Failed to get channel id")))
         };
@@ -316,7 +318,7 @@ impl RtmClient {
     pub fn send_typing(&self, chan: &str) -> Result<isize, Error> {
         let n = self.get_msg_uid();
 
-        let chan_id = match self.get_channel_id_from_string(chan) {
+        let chan_id = match self.evaluate_channel_id(chan) {
             Ok(id) => id,
             _ => return Err(Error::Internal(String::from("Failed to get channel id")))
         };
