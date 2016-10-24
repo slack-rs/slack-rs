@@ -188,6 +188,24 @@ impl RtmClient {
         self.user_ids.get(username)
     }
 
+    /// Evaluate if chan is a channel name or channel id
+    /// If channel name, returns its id
+    /// If channel id, returns itself
+    /// Only valid after login.
+    fn evaluate_channel_id(&self, chan: &str) -> Result<String, Error> {
+        let id = match chan.starts_with("#") {
+            true => {
+                match self.get_channel_id(&chan[1..]) {
+                    Some(s) => s,
+                    None => return Err(Error::Internal(String::from("need to login first to retrieve channel list"))),
+                }
+            }
+            false => chan,
+        };
+
+        Ok(id.to_string())
+    }
+
     /// Get a channel id from a channel name, note that channel_name does not begin with a '#'
     /// Only valid after login.
     pub fn get_channel_id(&self, channel_name: &str) -> Option<&String> {
@@ -272,16 +290,12 @@ impl RtmClient {
     /// Only valid after login.
     pub fn send_message(&self, chan: &str, msg: &str) -> Result<isize, Error> {
         let n = self.get_msg_uid();
-        // fixup the channel id if chan is: `#<channel>`
-        let chan_id = match chan.starts_with("#") {
-            true => {
-                match self.get_channel_id(&chan[1..]) {
-                    Some(s) => &(s[..]),
-                    None => return Err(Error::Internal(String::from("start_info is invalid, need to login first"))),
-                }
-            }
-            false => chan,
+
+        let chan_id = match self.evaluate_channel_id(chan) {
+            Ok(id) => id,
+            _ => return Err(Error::Internal(String::from("Failed to get channel id")))
         };
+
         let msg_json = format!("{}", json::as_json(&msg));
         let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
                            n,
@@ -293,6 +307,33 @@ impl RtmClient {
         };
         try!(tx.send(WsMessage::Text(mstr))
                .map_err(|err| Error::Internal(format!("{:?}", err))));
+        Ok(n)
+    }
+
+    /// Marks connected client as being typing to a channel
+    /// This is mostly used to signal to other peers that a message
+    /// is being typed. Will have the server send a "user_typing" message to all the
+    /// peers.
+    /// Slack doc can be found at https://api.slack.com/rtm under "Typing Indicators"
+    pub fn send_typing(&self, chan: &str) -> Result<isize, Error> {
+        let n = self.get_msg_uid();
+
+        let chan_id = match self.evaluate_channel_id(chan) {
+            Ok(id) => id,
+            _ => return Err(Error::Internal(String::from("Failed to get channel id")))
+        };
+
+        let mstr = format!(r#"{{"id": {}, "type": "typing", "channel": "{}"}}"#,
+                           n,
+                           chan_id);
+
+        let tx = match self.outs {
+            Some(ref tx) => tx,
+            None => return Err(Error::Internal(String::from("Failed to get tx!"))),
+        };
+
+        try!(tx.send(WsMessage::Text(mstr))
+             .map_err(|err| Error::Internal(format!("{:?}", err))));
         Ok(n)
     }
 
