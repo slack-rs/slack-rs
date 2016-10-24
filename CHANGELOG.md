@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.16.0
+- Retry receive message on EAGAIN (jwilm) (#61)
+- Change type signatures of handlers to take Event instead of &Event (pinkisemils) (#62)
+- Add send typing api and cleanup get_channel_id (vampolo) (#65)
+
 ## 0.15.0
 - Add async message sending API thanks to https://github.com/jwilm
 
