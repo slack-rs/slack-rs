@@ -529,11 +529,11 @@ impl RtmClient {
     }
 
     /// Runs the main loop for the client after logging in to slack,
-    /// returns an error if the process fails at an point, or an Ok(()) on succesful
+    /// returns an error if the process fails at any point, or an Ok(()) on successful
     /// close.
-    /// Takes a EventHandler (implemented by the user) to call events handlers on.
-    /// once the first on_receive() or on_ping is called on the EventHandler, you
-    /// can soon the 'Only valid after login' methods are safe to use.
+    /// Takes an EventHandler (implemented by the user) to call events handlers on.
+    /// Once the first on_receive() or on_ping is called on the EventHandler, you
+    /// can assume the 'Only valid after login' methods are safe to use.
     /// Sending is run in a thread in parallel while the receive loop runs on the main thread.
     /// Both loops should end on return.
     /// Sending should be thread safe as the messages are passed in via a channel in
