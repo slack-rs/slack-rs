@@ -654,7 +654,7 @@ impl RtmClient {
             false => channel,
         };
         let client = hyper::Client::new();
-        api::chat::delete(&client, &self.token, chan_id, timestamp).map_err(|e| e.into())
+        api::chat::delete(&client, &self.token, timestamp, chan_id).map_err(|e| e.into())
     }
 
     /// Wraps https://api.slack.com/methods/channels.mark to set the read cursor in a channel
