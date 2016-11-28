@@ -465,13 +465,6 @@ impl RtmClient {
             let message : WebSocketMessage = match message_result {
                 Ok(message) => message,
                 Err(err) => {
-                    // If error is equivalent of EAGAIN, just loop
-                    if let WebSocketError::IoError(ref io_err) = err {
-                        if io_err.kind() == io::ErrorKind::WouldBlock {
-                            continue
-                        }
-                    }
-
                     // shutdown sender and receiver, then join the child thread
                     // and return an error.
                     let _ = tx.send(WsMessage::Close);
