@@ -410,6 +410,12 @@ impl RtmClient {
                 match msg {
                     WsMessage::Close => {
                         drop(rx);
+                        // websocket is closed, so shutdown the sender and receiver so that we
+                        // return.
+                        match sender.shutdown_all() {
+                            Ok(_) => {}
+                            Err(err) => panic!(err),
+                        };
                         return;
                     },
                     WsMessage::Text(text) => {
@@ -541,6 +547,18 @@ impl RtmClient {
     pub fn login_and_run<T: EventHandler>(&mut self, handler: &mut T) -> Result<(), Error> {
         let (client, rx) = try!(self.login());
         self.run(handler, client, rx)
+    }
+
+
+    /// Shutdown `RtmClient`
+    pub fn shutdown(&self) -> Result<(), Error> {
+        match self.outs {
+            Some(ref tx) => {
+                tx.send(WsMessage::Close)
+                    .map_err(|_| Error::Internal("Error sending shutdown message".into()))
+            }
+            None => Err(Error::Internal("Cannot shutdown without a sender".into())),
+        }
     }
 
     /// Uses https://api.slack.com/methods/users.list to get a list of users
