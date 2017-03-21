@@ -12,5 +12,6 @@ reqwest = "0.4.0"
 slack_api = { version = "0.16.0", features = ["reqwest"] }
 serde = "0.9"
 serde_json = "0.9"
+serde_derive = "0.9"
 tungstenite = "0.1.0"
 native-tls = "0.1.1"

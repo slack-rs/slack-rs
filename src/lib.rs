@@ -20,7 +20,8 @@
 
 extern crate reqwest;
 pub extern crate slack_api as api;
-extern crate serde;
+#[macro_use]
+extern crate serde_derive;
 extern crate serde_json;
 extern crate tungstenite;
 extern crate native_tls;

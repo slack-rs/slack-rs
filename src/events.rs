@@ -16,11 +16,12 @@
 
 use api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
           stars, reactions};
-use serde::{de, Deserialize, Deserializer};
 use std::boxed::Box;
 
 /// Represents Slack [rtm event](https://api.slack.com/rtm) types.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Deserialize)]
+#[serde(tag = "type")]
+#[serde(rename_all = "snake_case")]
 pub enum Event {
     /// Represents the slack [`hello`](https://api.slack.com/events/hello) event.
     Hello,
@@ -273,72 +274,6 @@ pub enum Event {
         code: isize,
         message: String,
     },
-}
-
-impl Deserialize for Event {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer
-    {
-        struct EventVisitor;
-
-        impl de::Visitor for EventVisitor {
-            type Value = Event;
-
-            fn expecting(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-                formatter.write_str("a map")
-            }
-
-            fn visit_map<V>(self, mut visitor: V) -> Result<Self::Value, V::Error>
-                where V: de::MapVisitor
-            {
-                // assume first value provided is "type"
-                let first: Option<(String, String)> = visitor.visit()?;
-                if let Some((key, value)) = first {
-                    match key.as_str() {
-                        "type" => {
-                            match value.as_str() {
-                                "hello" => Ok(Event::Hello),
-                                "message" => {
-                                    let d = de::value::MapVisitorDeserializer::new(&mut visitor);
-                                    Ok(Event::Message(Box::new(Message::deserialize(d)?)))
-                                }
-                                "accounts_changed" => Ok(Event::AccountsChanged),
-                                "team_migration_started" => Ok(Event::TeamMigrationStarted),
-                                "reconnect_url" => Ok(Event::ReconnectUrl),
-                                "user_typing" => {
-                                    let mut channel = None;
-                                    let mut user = None;
-                                    while let Some(key) = visitor.visit_key::<String>()? {
-                                        match key.as_str() {
-                                            "channel" => channel = Some(visitor.visit_value()?),
-                                            "user" => user = Some(visitor.visit_value()?),
-                                            _ => {}
-                                        }
-                                    }
-                                    match (channel, user) {
-                                        (Some(channel), Some(user)) => {
-                                            Ok(Event::UserTyping { user, channel })
-                                        }
-                                        s => {
-                                            Err(de::Error::custom(&format!("missing fields: {:?}",
-                                                                           s)))
-                                        }
-                                    }
-                                }
-                                ty => {
-                                    Err(de::Error::custom(&format!("Unknown Message type: {}", ty)))
-                                }
-                            }
-                        }
-                        _ => unimplemented!(),
-                    }
-                } else {
-                    unimplemented!()
-                }
-            }
-        }
-        deserializer.deserialize_map(EventVisitor)
-    }
 }
 
 #[cfg(test)]
