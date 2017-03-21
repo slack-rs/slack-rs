@@ -8,7 +8,9 @@ description = "slack realtime messaging client: https://api.slack.com/bot-users"
 license = "Apache-2.0"
 
 [dependencies]
-websocket = "0.17.1"
-hyper = "0.9.5"
-rustc-serialize = "0.3.18"
-slack_api = "0.15.0"
+reqwest = "0.4.0"
+slack_api = { version = "0.16.0", features = ["reqwest"] }
+serde = "0.9"
+serde_json = "0.9"
+tungstenite = "0.1.0"
+native-tls = "0.1.1"

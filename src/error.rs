@@ -19,64 +19,48 @@ use std::io;
 use std::error;
 use std::string::FromUtf8Error;
 
-use hyper;
-use websocket;
-use rustc_serialize;
 use api;
 
 /// slack::Error represents errors that can happen while using the RtmClient
 #[derive(Debug)]
 pub enum Error {
     /// Http client error
-    Http(hyper::Error),
+    Http(::reqwest::Error),
     /// WebSocket connection error
-    WebSocket(websocket::result::WebSocketError),
+    WebSocket(::tungstenite::Error),
     /// Error decoding websocket text frame Utf8
     Utf8(FromUtf8Error),
     /// Error parsing url
-    Url(hyper::Error),
+    Url(::reqwest::UrlError),
     /// Error decoding Json
-    JsonDecode(rustc_serialize::json::DecoderError),
-    /// Error parsing Json
-    JsonParse(rustc_serialize::json::ParserError),
-    /// Error encoding Json
-    JsonEncode(rustc_serialize::json::EncoderError),
+    Json(::serde_json::Error),
     /// Slack Api Error
     Api(String),
     /// Errors that do not fit under the other types, Internal is for EG channel errors.
     Internal(String),
 }
 
-impl From<hyper::Error> for Error {
-    fn from(err: hyper::Error) -> Error {
-        match err {
-            hyper::Error::Uri(_) => Error::Url(err),
-            _ => Error::Http(err)
-        }
+impl From<::reqwest::Error> for Error {
+    fn from(err: ::reqwest::Error) -> Error {
+        Error::Http(err)
     }
 }
 
-impl From<websocket::result::WebSocketError> for Error {
-    fn from(err: websocket::result::WebSocketError) -> Error {
+impl From<::reqwest::UrlError> for Error {
+    fn from(err: ::reqwest::UrlError) -> Error {
+        Error::Url(err)
+    }
+}
+
+impl From<::tungstenite::Error> for Error {
+    fn from(err: ::tungstenite::Error) -> Error {
         Error::WebSocket(err)
     }
 }
 
-impl From<rustc_serialize::json::DecoderError> for Error {
-    fn from(err: rustc_serialize::json::DecoderError) -> Error {
-        Error::JsonDecode(err)
-    }
-}
-
-impl From<rustc_serialize::json::ParserError> for Error {
-    fn from(err: rustc_serialize::json::ParserError) -> Error {
-        Error::JsonParse(err)
-    }
-}
-
-impl From<rustc_serialize::json::EncoderError> for Error {
-    fn from(err: rustc_serialize::json::EncoderError) -> Error {
-        Error::JsonEncode(err)
+impl From<::serde_json::Error> for Error {
+    fn from(err: ::serde_json::Error) -> Error {
+        Error::Json(err)
     }
 }
 
@@ -92,24 +76,47 @@ impl From<FromUtf8Error> for Error {
     }
 }
 
-impl From<api::Error> for Error {
-    fn from(err: api::Error) -> Error {
-        Error::Api(format!("{}", err))
+/// helper macro to make `impl From<>` for api errors.
+macro_rules! impl_api_from {
+    {
+        $name:ty
+    } => {
+        impl From<$name> for Error {
+            fn from(err: $name) -> Error {
+                Error::Api(format!("{}: {:?}", stringify!($name), err))
+            }
+        }
     }
 }
+
+impl_api_from!(api::rtm::StartError<::reqwest::Error>);
+impl_api_from!(api::users::ListError<::reqwest::Error>);
+impl_api_from!(api::channels::ListError<::reqwest::Error>);
+impl_api_from!(api::channels::MarkError<::reqwest::Error>);
+impl_api_from!(api::channels::SetTopicError<::reqwest::Error>);
+impl_api_from!(api::channels::SetPurposeError<::reqwest::Error>);
+impl_api_from!(api::channels::HistoryError<::reqwest::Error>);
+impl_api_from!(api::reactions::AddError<::reqwest::Error>);
+impl_api_from!(api::groups::ListError<::reqwest::Error>);
+impl_api_from!(api::chat::PostMessageError<::reqwest::Error>);
+impl_api_from!(api::chat::UpdateError<::reqwest::Error>);
+impl_api_from!(api::chat::DeleteError<::reqwest::Error>);
+impl_api_from!(api::im::ListError<::reqwest::Error>);
+impl_api_from!(api::im::OpenError<::reqwest::Error>);
+impl_api_from!(api::im::CloseError<::reqwest::Error>);
+impl_api_from!(api::im::HistoryError<::reqwest::Error>);
+impl_api_from!(api::im::MarkError<::reqwest::Error>);
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            Error::Http(ref e) => write!(f, "Http (hyper) Error: {:?}", e),
+            Error::Http(ref e) => write!(f, "Http (reqwest) Error: {:?}", e),
             Error::WebSocket(ref e) => write!(f, "Websocket Error: {:?}", e),
             Error::Utf8(ref e) => write!(f, "Utf8 decode Error: {:?}", e),
             Error::Url(ref e) => write!(f, "Url Error: {:?}", e),
-            Error::JsonDecode(ref e) => write!(f, "Json Decode Error: {:?}", e),
-            Error::JsonParse(ref e) => write!(f, "Json Parse Error: {:?}", e),
-            Error::JsonEncode(ref e) => write!(f, "Json Encode Error: {:?}", e),
+            Error::Json(ref e) => write!(f, "Json Error: {:?}", e),
             Error::Api(ref st) => write!(f, "Slack Api Error: {:?}", st),
-            Error::Internal(ref st) => write!(f, "Internal Error: {:?}", st)
+            Error::Internal(ref st) => write!(f, "Internal Error: {:?}", st),
         }
     }
 }
@@ -121,11 +128,9 @@ impl error::Error for Error {
             Error::WebSocket(ref e) => e.description(),
             Error::Utf8(ref e) => e.description(),
             Error::Url(ref e) => e.description(),
-            Error::JsonDecode(ref e) => e.description(),
-            Error::JsonParse(ref e) => e.description(),
-            Error::JsonEncode(ref e) => e.description(),
+            Error::Json(ref e) => e.description(),
             Error::Api(ref st) => st,
-            Error::Internal(ref st) => st
+            Error::Internal(ref st) => st,
         }
     }
 
@@ -135,11 +140,9 @@ impl error::Error for Error {
             Error::WebSocket(ref e) => Some(e),
             Error::Utf8(ref e) => Some(e),
             Error::Url(ref e) => Some(e),
-            Error::JsonDecode(ref e) => Some(e),
-            Error::JsonParse(ref e) => Some(e),
-            Error::JsonEncode(ref e) => Some(e),
+            Error::Json(ref e) => Some(e),
             Error::Api(_) => None,
-            Error::Internal(_) => None
+            Error::Internal(_) => None,
         }
     }
 }
