@@ -21,7 +21,7 @@ use std::string::FromUtf8Error;
 
 use api;
 
-/// slack::Error represents errors that can happen while using the RtmClient
+/// `slack::Error` represents errors that can happen while using the `RtmClient`
 #[derive(Debug)]
 pub enum Error {
     /// Http client error
@@ -129,7 +129,7 @@ impl error::Error for Error {
             Error::Utf8(ref e) => e.description(),
             Error::Url(ref e) => e.description(),
             Error::Json(ref e) => e.description(),
-            Error::Api(ref st) => st,
+            Error::Api(ref st) |
             Error::Internal(ref st) => st,
         }
     }
@@ -141,7 +141,7 @@ impl error::Error for Error {
             Error::Utf8(ref e) => Some(e),
             Error::Url(ref e) => Some(e),
             Error::Json(ref e) => Some(e),
-            Error::Api(_) => None,
+            Error::Api(_) |
             Error::Internal(_) => None,
         }
     }

@@ -17,6 +17,7 @@
 use api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
           stars, reactions};
 use serde::{de, Deserialize, Deserializer};
+use std::boxed::Box;
 
 /// Represents Slack [rtm event](https://api.slack.com/rtm) types.
 #[derive(Clone, Debug)]
@@ -25,7 +26,7 @@ pub enum Event {
     Hello,
     /// Represents the slack [`message`](https://api.slack.com/events/message)
     /// event.
-    Message(Message),
+    Message(Box<Message>),
     /// Represents the slack
     /// [`user_typing`](https://api.slack.com/events/user_typing) event.
     UserTyping { channel: String, user: String },
@@ -34,10 +35,10 @@ pub enum Event {
     ChannelMarked { channel: String, ts: String },
     /// Represents the slack
     /// [`channel_created`](https://api.slack.com/events/channel_created) event.
-    ChannelCreated { channel: Channel },
+    ChannelCreated { channel: Box<Channel> },
     /// Represents the slack
     /// [`channel_joined`](https://api.slack.com/events/channel_joined) event.
-    ChannelJoined { channel: Channel },
+    ChannelJoined { channel: Box<Channel> },
     /// Represents the slack
     /// [`channel_left`](https://api.slack.com/events/channel_left) event.
     ChannelLeft { channel: String },
@@ -46,7 +47,7 @@ pub enum Event {
     ChannelDeleted { channel: String },
     /// Represents the slack
     /// [`channel_rename`](https://api.slack.com/events/channel_rename) event.
-    ChannelRename { channel: Channel },
+    ChannelRename { channel: Box<Channel> },
     /// Represents the slack
     /// [`channel_archive`](https://api.slack.com/events/channel_archive) event.
     ChannelArchive { channel: String, user: String },
@@ -63,7 +64,7 @@ pub enum Event {
     },
     /// Represents the slack
     /// [`im_created`](https://api.slack.com/events/im_created) event.
-    ImCreated { user: String, channel: Channel },
+    ImCreated { user: String, channel: Box<Channel> },
     /// Represents the slack [`im_open`](https://api.slack.com/events/im_open)
     /// event.
     ImOpen { user: String, channel: String },
@@ -83,10 +84,10 @@ pub enum Event {
     },
     /// Represents the slack
     /// [`group_joined`](https://api.slack.com/events/group_joined) event.
-    GroupJoined { channel: Channel },
+    GroupJoined { channel: Box<Channel> },
     /// Represents the slack
     /// [`group_left`](https://api.slack.com/events/group_left) event.
-    GroupLeft { channel: Channel },
+    GroupLeft { channel: Box<Channel> },
     /// Represents the slack
     /// [`group_open`](https://api.slack.com/events/group_open) event.
     GroupOpen { user: String, channel: String },
@@ -101,7 +102,7 @@ pub enum Event {
     GroupUnArchive { channel: String },
     /// Represents the slack
     /// [`group_rename`](https://api.slack.com/events/group_rename) event.
-    GroupRename { channel: Channel },
+    GroupRename { channel: Box<Channel> },
     /// Represents the slack
     /// [`group_marked`](https://api.slack.com/events/group_marked) event.
     GroupMarked { channel: String, ts: String },
@@ -115,43 +116,49 @@ pub enum Event {
     },
     /// Represents the slack
     /// [`file_created`](https://api.slack.com/events/file_created) event.
-    FileCreated { file: File },
+    FileCreated { file: Box<File> },
     /// Represents the slack
     /// [`file_shared`](https://api.slack.com/events/file_shared) event.
-    FileShared { file: File },
+    FileShared { file: Box<File> },
     /// Represents the slack
     /// [`file_unshared`](https://api.slack.com/events/file_unshared) event.
-    FileUnShared { file: File },
+    FileUnShared { file: Box<File> },
     /// Represents the slack
     /// [`file_public`](https://api.slack.com/events/file_public) event.
-    FilePublic { file: File },
+    FilePublic { file: Box<File> },
     /// Represents the slack
     /// [`file_private`](https://api.slack.com/events/file_private) event.
     FilePrivate { file: String },
     /// Represents the slack
     /// [`file_change`](https://api.slack.com/events/file_change) event.
-    FileChange { file: File },
+    FileChange { file: Box<File> },
     /// Represents the slack
     /// [`file_deleted`](https://api.slack.com/events/file_deleted) event.
     FileDeleted { file_id: String, event_ts: String },
     /// Represents the slack
     /// [`file_comment_added`](https://api.slack.com/events/file_comment_added)
     /// event.
-    FileCommentAdded { file: File, comment: FileComment },
+    FileCommentAdded {
+        file: Box<File>,
+        comment: FileComment,
+    },
     /// Represents the slack
     /// [`file_comment_edited`](https://api.slack.com/events/file_comment_edited)
     /// event.
-    FileCommentEdited { file: File, comment: FileComment },
+    FileCommentEdited {
+        file: Box<File>,
+        comment: FileComment,
+    },
     /// Represents the slack
     /// [`file_comment_deleted`](https://api.slack.com/events/file_comment_deleted)
     /// event.
-    FileCommentDeleted { file: File, comment: String },
+    FileCommentDeleted { file: Box<File>, comment: String },
     /// Represents the slack [`pin_added`](https://api.slack.com/events/pin_added)
     /// event.
     PinAdded {
         user: String,
         channel_id: String,
-        item: MessagePinnedItem,
+        item: Box<MessagePinnedItem>,
         event_ts: String,
     },
     /// Represents the slack
@@ -159,7 +166,7 @@ pub enum Event {
     PinRemoved {
         user: String,
         channel_id: String,
-        item: MessageUnpinnedItem,
+        item: Box<MessageUnpinnedItem>,
         has_pins: bool,
         event_ts: String,
     },
@@ -175,22 +182,22 @@ pub enum Event {
     PrefChange { name: String, value: String },
     /// Represents the slack
     /// [`user_change`](https://api.slack.com/events/user_change) event.
-    UserChange { user: User },
+    UserChange { user: Box<User> },
     /// Represents the slack [`team_join`](https://api.slack.com/events/team_join)
     /// event.
-    TeamJoin { user: User },
+    TeamJoin { user: Box<User> },
     /// Represents the slack
     /// [`star_added`](https://api.slack.com/events/star_added) event.
     StarAdded {
         user: String,
-        item: stars::ListResponseItem,
+        item: Box<stars::ListResponseItem>,
         event_ts: String,
     },
     /// Represents the slack
     /// [`star_removed`](https://api.slack.com/events/star_removed) event.
     StarRemoved {
         user: String,
-        item: stars::ListResponseItem,
+        item: Box<stars::ListResponseItem>,
         event_ts: String,
     },
     /// Represents the slack
@@ -198,7 +205,7 @@ pub enum Event {
     ReactionAdded {
         user: String,
         reaction: String,
-        item: reactions::ListResponseItem,
+        item: Box<reactions::ListResponseItem>,
         item_user: String,
         event_ts: String,
     },
@@ -207,7 +214,7 @@ pub enum Event {
     ReactionRemoved {
         user: String,
         reaction: String,
-        item: reactions::ListResponseItem,
+        item: Box<reactions::ListResponseItem>,
         item_user: String,
         event_ts: String,
     },
@@ -293,7 +300,7 @@ impl Deserialize for Event {
                                 "hello" => Ok(Event::Hello),
                                 "message" => {
                                     let d = de::value::MapVisitorDeserializer::new(&mut visitor);
-                                    Ok(Event::Message(Message::deserialize(d)?))
+                                    Ok(Event::Message(Box::new(Message::deserialize(d)?)))
                                 }
                                 "accounts_changed" => Ok(Event::AccountsChanged),
                                 "team_migration_started" => Ok(Event::TeamMigrationStarted),

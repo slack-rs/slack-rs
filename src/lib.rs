@@ -178,14 +178,13 @@ impl RtmClient {
     /// If channel id, returns itself
     /// Only valid after login.
     fn evaluate_channel_id(&self, chan: &str) -> Result<String, Error> {
-        let id = match chan.starts_with("#") {
-            true => {
-                match self.get_channel_id(&chan[1..]) {
-                    Some(s) => s,
-                    None => return Err(Error::Internal(String::from("need to login first to retrieve channel list"))),
-                }
+        let id = if chan.starts_with('#') {
+            match self.get_channel_id(&chan[1..]) {
+                Some(s) => s,
+                None => return Err(Error::Internal(String::from("need to login first to retrieve channel list"))),
             }
-            false => chan,
+        } else {
+            chan
         };
 
         Ok(id.to_string())
@@ -332,24 +331,24 @@ impl RtmClient {
         let start_url = &start.url.clone().expect("websocket url from slack");
 
         // websocket url
-        let wss_url = reqwest::Url::parse(&start_url)?;
+        let wss_url = reqwest::Url::parse(start_url)?;
 
         // update id hashmaps
         if let Some(ref channels) = start.channels {
-            for ref channel in channels.iter() {
+            for channel in channels {
                 self.channel_ids.insert(channel.name.clone().unwrap(), channel.id.clone().unwrap());
             }
             self.channels = channels.clone();
         }
         if let Some(ref groups) = start.groups {
-            for ref group in groups.iter() {
+            for group in groups {
                 self.group_ids.insert(group.name.clone().unwrap(), group.id.clone().unwrap());
             }
             self.groups = groups.clone();
         }
 
         if let Some(ref users) = start.users {
-            for ref user in users.iter() {
+            for user in users {
                 self.user_ids.insert(user.name.clone().unwrap(), user.id.clone().unwrap());
             }
             self.users = users.clone();
@@ -473,7 +472,7 @@ impl RtmClient {
             Some(users) => {
                 // update user id map
                 self.user_ids.clear();
-                for ref user in users.iter() {
+                for user in &users {
                     self.user_ids.insert(user.name.clone().unwrap(), user.id.clone().unwrap());
                 }
                 // update users
@@ -493,7 +492,7 @@ impl RtmClient {
             Some(channels) => {
                 // update channel id map
                 self.channel_ids.clear();
-                for channel in channels.iter() {
+                for channel in &channels {
                     self.channel_ids.insert(channel.name.clone().unwrap(),
                                             channel.id.clone().unwrap());
                 }
@@ -515,7 +514,7 @@ impl RtmClient {
             Some(groups) => {
                 // update group id map
                 self.group_ids.clear();
-                for ref group in groups.iter() {
+                for group in &groups {
                     self.group_ids.insert(group.name.clone().unwrap(), group.id.clone().unwrap());
                 }
                 // update users
