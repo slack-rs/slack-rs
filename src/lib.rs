@@ -39,6 +39,7 @@ use std::sync::mpsc::{self, channel};
 use std::thread;
 
 use rustc_serialize::json;
+use rustc_serialize::Encodable;
 
 use websocket::Client;
 pub use websocket::message::Message as WebSocketMessage;
@@ -308,6 +309,21 @@ impl RtmClient {
         try!(tx.send(WsMessage::Text(mstr))
                .map_err(|err| Error::Internal(format!("{:?}", err))));
         Ok(n)
+    }
+
+    /// Send a rich message, which comprises a string (which may be empty) and a list of
+    /// attachments. Note that rich messages must be sent using the slack web API (like
+    /// `post_message`), rather than the slack RTD API (like `send_message`).
+    ///
+    /// See https://api.slack.com/docs/message-attachments
+    pub fn send_rich_message(&self,
+                             chan: &str,
+                             msg: &str,
+                             attachments: &[Attachment])
+                             -> Result<api::chat::PostMessageResponse, Error> {
+        let mut buf = String::new();
+        attachments.encode(&mut json::Encoder::new(&mut buf))?;
+        self.post_message(chan, msg, Some(&buf))
     }
 
     /// Marks connected client as being typing to a channel
