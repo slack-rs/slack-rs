@@ -25,6 +25,19 @@ extern crate serde_derive;
 extern crate serde_json;
 extern crate tungstenite;
 extern crate native_tls;
+#[macro_use]
+extern crate cfg_if;
+
+cfg_if! {
+    if #[cfg(feature = "future")] {
+        extern crate tokio_tungstenite;
+        extern crate futures;
+        extern crate tokio_core;
+        extern crate tokio_tls;
+        extern crate url;
+        pub mod future;
+    } else {}
+}
 
 pub mod error;
 pub use error::Error;

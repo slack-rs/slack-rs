@@ -38,6 +38,10 @@ pub enum Error {
     Api(String),
     /// Errors that do not fit under the other types, Internal is for EG channel errors.
     Internal(String),
+    /// `NativeTls` error
+    NativeTls(::native_tls::Error),
+    /// Unit `()` error, used for futures
+    Unit,
 }
 
 impl From<::reqwest::Error> for Error {
@@ -73,6 +77,18 @@ impl From<io::Error> for Error {
 impl From<FromUtf8Error> for Error {
     fn from(err: FromUtf8Error) -> Error {
         Error::Utf8(err)
+    }
+}
+
+impl From<::native_tls::Error> for Error {
+    fn from(err: ::native_tls::Error) -> Error {
+        Error::NativeTls(err)
+    }
+}
+
+impl From<()> for Error {
+    fn from(_: ()) -> Error {
+        Error::Unit
     }
 }
 
@@ -117,6 +133,8 @@ impl fmt::Display for Error {
             Error::Json(ref e) => write!(f, "Json Error: {:?}", e),
             Error::Api(ref st) => write!(f, "Slack Api Error: {:?}", st),
             Error::Internal(ref st) => write!(f, "Internal Error: {:?}", st),
+            Error::NativeTls(ref e) => write!(f, "Native TLS error: {:?}", e),
+            Error::Unit => write!(f, "Error unit"),
         }
     }
 }
@@ -129,8 +147,10 @@ impl error::Error for Error {
             Error::Utf8(ref e) => e.description(),
             Error::Url(ref e) => e.description(),
             Error::Json(ref e) => e.description(),
+            Error::NativeTls(ref e) => e.description(),
             Error::Api(ref st) |
             Error::Internal(ref st) => st,
+            Error::Unit => "Unit",
         }
     }
 
@@ -141,8 +161,10 @@ impl error::Error for Error {
             Error::Utf8(ref e) => Some(e),
             Error::Url(ref e) => Some(e),
             Error::Json(ref e) => Some(e),
+            Error::NativeTls(ref e) => Some(e),
             Error::Api(_) |
-            Error::Internal(_) => None,
+            Error::Internal(_) |
+            Error::Unit => None,
         }
     }
 }
