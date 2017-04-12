@@ -80,16 +80,22 @@ pub trait EventHandler {
     /// When a message is received this will be called with self, the slack client,
     /// and the result of parsing the event received, as well as the raw json string.
     fn on_event(&mut self,
-                cli: &mut Client,
-                event: Result<Event, Error>,
-                raw_json: &str)
-                -> Box<Future<Item = (), Error = ()>>;
+                _cli: &mut Client,
+                _event: Result<Event, Error>,
+                _raw_json: &str)
+                -> Box<Future<Item = (), Error = ()>> {
+        Box::new(ok(()))
+    }
 
     /// Called when the connection is closed for any reason.
-    fn on_close(&mut self, cli: &mut Client) -> Box<Future<Item = (), Error = ()>>;
+    fn on_close(&mut self, _cli: &mut Client) -> Box<Future<Item = (), Error = ()>> {
+        Box::new(ok(()))
+    }
 
     /// Called when the connection is opened.
-    fn on_connect(&mut self, cli: &mut Client) -> Box<Future<Item = (), Error = ()>>;
+    fn on_connect(&mut self, _cli: &mut Client) -> Box<Future<Item = (), Error = ()>> {
+        Box::new(ok(()))
+    }
 }
 
 /// Like `try!` but for a future
