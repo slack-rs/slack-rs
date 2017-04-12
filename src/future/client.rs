@@ -275,4 +275,20 @@ impl Client {
             .map_err(Error::from);
         Box::new(client)
     }
+
+    /// Send a shutdown message to close the connection to slack
+    pub fn shutdown(&self) -> Result<(), Error> {
+        match self.sender {
+            Some(ref sender) => {
+                (&sender.inner)
+                    .send(WsMessage::Close)
+                    .map_err(|_| Error::Internal("Sending shutdown message failed".into()))
+            }
+            None => {
+                Err(Error::Internal("Cannot shutdown without a sender. Ensure you have run `login`."
+                                        .into()))
+            }
+        }
+
+    }
 }
