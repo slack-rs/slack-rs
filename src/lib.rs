@@ -398,7 +398,7 @@ impl RtmClient {
                             }
                             WsMessage::Close => {
                                 handler.on_close(self);
-                                return websocket.close().map_err(|e| e.into());
+                                return websocket.close(None).map_err(|e| e.into());
                             }
                         }
                     }
