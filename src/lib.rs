@@ -49,7 +49,7 @@ pub use events::Event;
 
 use std::collections::HashMap;
 use std::sync::Arc;
-use std::sync::atomic::{AtomicIsize, Ordering};
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc::{self, channel};
 use native_tls::TlsStream;
 use std::net::TcpStream;
@@ -86,14 +86,14 @@ pub struct RtmClient {
     channel_ids: HashMap<String, String>,
     group_ids: HashMap<String, String>,
     user_ids: HashMap<String, String>,
-    msg_num: Arc<AtomicIsize>,
+    msg_num: Arc<AtomicUsize>,
     outs: Option<mpsc::Sender<WsMessage>>,
 }
 
 /// Thread-safe API for sending messages asynchronously
 pub struct Sender {
     inner: mpsc::Sender<WsMessage>,
-    msg_num: Arc<AtomicIsize>,
+    msg_num: Arc<AtomicUsize>,
 }
 
 impl Sender {
@@ -101,7 +101,7 @@ impl Sender {
     ///
     /// A value returned from this method *must* be included in the JSON payload
     /// (the `id` field) when constructing your own message.
-    pub fn get_msg_uid(&self) -> isize {
+    pub fn get_msg_uid(&self) -> usize {
         self.msg_num.fetch_add(1, Ordering::SeqCst)
     }
 
@@ -122,7 +122,7 @@ impl Sender {
     ///
     /// Success from this API does not guarantee the message is delivered
     /// successfully since that runs on a separate task.
-    pub fn send_message_chid(&self, chan_id: &str, msg: &str) -> Result<isize, Error> {
+    pub fn send_message_chid(&self, chan_id: &str, msg: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
         let msg_json = serde_json::to_string(&msg)?;
         let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
@@ -147,7 +147,7 @@ impl RtmClient {
             channel_ids: HashMap::new(),
             group_ids: HashMap::new(),
             user_ids: HashMap::new(),
-            msg_num: Arc::new(AtomicIsize::new(0)),
+            msg_num: Arc::new(AtomicUsize::new(0)),
             outs: None,
         }
     }
@@ -246,7 +246,7 @@ impl RtmClient {
 
     ///Returns a unique identifier to be used in the 'id' field of a message
     ///sent to slack.
-    pub fn get_msg_uid(&self) -> isize {
+    pub fn get_msg_uid(&self) -> usize {
         self.msg_num.fetch_add(1, Ordering::SeqCst)
     }
 
@@ -290,7 +290,7 @@ impl RtmClient {
     /// This method also handles getting a unique id and formatting the actual json
     /// sent.
     /// Only valid after login.
-    pub fn send_message(&self, chan: &str, msg: &str) -> Result<isize, Error> {
+    pub fn send_message(&self, chan: &str, msg: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
 
         let chan_id = match self.evaluate_channel_id(chan) {
@@ -317,7 +317,7 @@ impl RtmClient {
     /// is being typed. Will have the server send a "user_typing" message to all the
     /// peers.
     /// Slack doc can be found at https://api.slack.com/rtm under "Typing Indicators"
-    pub fn send_typing(&self, chan: &str) -> Result<isize, Error> {
+    pub fn send_typing(&self, chan: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
 
         let chan_id = match self.evaluate_channel_id(chan) {
