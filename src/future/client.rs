@@ -25,7 +25,6 @@ pub struct Client {
     channel_ids: HashMap<String, String>,
     group_ids: HashMap<String, String>,
     user_ids: HashMap<String, String>,
-    msg_num: Arc<AtomicUsize>,
     rx: Option<mpsc::UnboundedReceiver<WsMessage>>,
     sender: Option<Sender>,
 }
@@ -121,7 +120,6 @@ impl Client {
             channel_ids: HashMap::new(),
             group_ids: HashMap::new(),
             user_ids: HashMap::new(),
-            msg_num: Arc::new(AtomicUsize::new(0)),
             rx: None,
             sender: None,
         }
@@ -160,7 +158,7 @@ impl Client {
         let (tx, rx) = mpsc::unbounded();
         let sender = Sender {
             inner: tx,
-            msg_num: self.msg_num.clone(),
+            msg_num: Arc::new(AtomicUsize::new(0)),
         };
         self.sender = Some(sender);
         self.rx = Some(rx);
