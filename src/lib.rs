@@ -70,6 +70,7 @@ pub trait EventHandler {
 }
 
 /// Used for passing websocket messages in channels
+#[derive(Debug)]
 pub enum WsMessage {
     Close,
     Text(String),
