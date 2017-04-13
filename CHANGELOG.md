@@ -25,6 +25,8 @@ from the `slack-api` crate.
   - `add_reaction` replaces `add_reaction_file` and `add_reaction_file_comment`
   - `im_open`, `im_close`, `im_history`, `im_list`, `im_mark`
   - `channels_history`
+- Removed `RtmClient::get_name` and `RtmClient::get_id` as the new version of `slack-rs-api` does
+not return these values.
 
 ## 0.16.0
 - Retry receive message on EAGAIN (jwilm) (#61)

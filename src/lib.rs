@@ -117,28 +117,8 @@ impl RtmClient {
         }
     }
 
-    // TODO: remove these? they are not returned in:
-    // https://docs.rs/slack_api/0.16.0/slack_api/rtm/struct.StartResponse.html
-
-    // /// Returns the name of the bot/user connected to the client.
-    // /// Only valid after login, otherwise None.
-    // pub fn get_name(&self) -> Option<String> {
-    //     match self.start_info {
-    //         Some(ref s) => Some(s.self_data.name.clone()),
-    //         None => None,
-    //     }
-    // }
-    //
-    // /// Returns the id of the bot/user connected to the client.
-    // /// Only valid after login, otherwise None.
-    // pub fn get_id(&self) -> Option<String> {
-    //     match self.start_info {
-    //         Some(ref s) => Some(s.self_data.id.clone()),
-    //         None => None,
-    //     }
-    // }
-    //
     client_common_non_blocking!();
+
     /// Logs in to slack. Call this before calling run.
     /// Alternatively use login_and_run
     pub fn login(&mut self) -> Result<(SlackWebsocket, mpsc::Receiver<WsMessage>), Error> {
