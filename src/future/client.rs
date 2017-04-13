@@ -217,7 +217,7 @@ impl Client {
                     .on_connect(self)
                     .map_err(Error::from)
                     .and_then(move |_| {
-                        let (sink, stream) = ws_stream.split();
+                        let (mut sink, stream) = ws_stream.split();
                         let ws_reader = stream
                             .map_err(Error::from)
                             .and_then(move |message| match message {
@@ -244,21 +244,21 @@ impl Client {
                                       })
                             .for_each(|_| Ok(()));
 
-                        let ws_writer = rx.fold(sink, |mut sink, msg| {
+                        let ws_writer = rx.take_while(|msg| match *msg {
+                                                          WsMessage::Close => Ok(false),
+                                                          _ => Ok(true),
+                                                      })
+                            .for_each(move |msg| {
                                 use futures::Sink;
                                 match msg {
-                                    WsMessage::Close => {
-                                        if sink.close().is_err() {
-                                            return Err(());
-                                        }
-                                    }
                                     WsMessage::Text(text) => {
                                         if sink.start_send(Message::Text(text)).is_err() {
                                             return Err(());
                                         }
                                     }
+                                    WsMessage::Close => unreachable!(),
                                 }
-                                Ok(sink)
+                                Ok(())
                             })
                             .map_err(|_| Error::Unit)
                             .map(|_| ());
@@ -289,6 +289,5 @@ impl Client {
                                         .into()))
             }
         }
-
     }
 }
