@@ -113,8 +113,8 @@ impl Sender {
     /// successfully since that runs on a separate task.
     pub fn send(&self, raw: &str) -> Result<(), Error> {
         try!(self.inner
-            .send(WsMessage::Text(raw.to_string()))
-            .map_err(|err| Error::Internal(format!("{}", err))));
+                 .send(WsMessage::Text(raw.to_string()))
+                 .map_err(|err| Error::Internal(format!("{}", err))));
         Ok(())
     }
 
@@ -174,7 +174,7 @@ impl RtmClient {
     // }
     //
     /// Returns the Team struct of the bot/user connected to the client.
-    /// / Only valid after login, otherwise None.
+    /// Only valid after login, otherwise None.
     pub fn get_team(&self) -> Option<Team> {
         match self.start_info {
             Some(ref s) => s.team.clone(),
@@ -276,9 +276,8 @@ impl RtmClient {
             Some(ref tx) => tx,
             None => return Err(Error::Internal(String::from("Failed to get tx!"))),
         };
-        try!(tx.send(WsMessage::Text(s.to_string())).map_err(|err| {
-                                                                 Error::Internal(format!("{}", err))
-                                                             }));
+        try!(tx.send(WsMessage::Text(s.to_string()))
+                 .map_err(|err| Error::Internal(format!("{}", err))));
         Ok(())
     }
 
@@ -308,7 +307,8 @@ impl RtmClient {
             Some(ref tx) => tx,
             None => return Err(Error::Internal(String::from("Failed to get tx!"))),
         };
-        try!(tx.send(WsMessage::Text(mstr)).map_err(|err| Error::Internal(format!("{:?}", err))));
+        try!(tx.send(WsMessage::Text(mstr))
+                 .map_err(|err| Error::Internal(format!("{:?}", err))));
         Ok(n)
     }
 
@@ -334,7 +334,8 @@ impl RtmClient {
             None => return Err(Error::Internal(String::from("Failed to get tx!"))),
         };
 
-        try!(tx.send(WsMessage::Text(mstr)).map_err(|err| Error::Internal(format!("{:?}", err))));
+        try!(tx.send(WsMessage::Text(mstr))
+                 .map_err(|err| Error::Internal(format!("{:?}", err))));
         Ok(n)
     }
 
@@ -351,20 +352,23 @@ impl RtmClient {
         // update id hashmaps
         if let Some(ref channels) = start.channels {
             for channel in channels {
-                self.channel_ids.insert(channel.name.clone().unwrap(), channel.id.clone().unwrap());
+                self.channel_ids
+                    .insert(channel.name.clone().unwrap(), channel.id.clone().unwrap());
             }
             self.channels = channels.clone();
         }
         if let Some(ref groups) = start.groups {
             for group in groups {
-                self.group_ids.insert(group.name.clone().unwrap(), group.id.clone().unwrap());
+                self.group_ids
+                    .insert(group.name.clone().unwrap(), group.id.clone().unwrap());
             }
             self.groups = groups.clone();
         }
 
         if let Some(ref users) = start.users {
             for user in users {
-                self.user_ids.insert(user.name.clone().unwrap(), user.id.clone().unwrap());
+                self.user_ids
+                    .insert(user.name.clone().unwrap(), user.id.clone().unwrap());
             }
             self.users = users.clone();
         }
@@ -395,7 +399,8 @@ impl RtmClient {
                     Ok(msg) => {
                         match msg {
                             WsMessage::Text(text) => {
-                                websocket.write_message(tungstenite::Message::Text(text))?
+                                websocket
+                                    .write_message(tungstenite::Message::Text(text))?
                             }
                             WsMessage::Close => {
                                 handler.on_close(self);
@@ -488,7 +493,8 @@ impl RtmClient {
                 // update user id map
                 self.user_ids.clear();
                 for user in &users {
-                    self.user_ids.insert(user.name.clone().unwrap(), user.id.clone().unwrap());
+                    self.user_ids
+                        .insert(user.name.clone().unwrap(), user.id.clone().unwrap());
                 }
                 // update users
                 self.users = users.clone();
@@ -508,8 +514,8 @@ impl RtmClient {
                 // update channel id map
                 self.channel_ids.clear();
                 for channel in &channels {
-                    self.channel_ids.insert(channel.name.clone().unwrap(),
-                                            channel.id.clone().unwrap());
+                    self.channel_ids
+                        .insert(channel.name.clone().unwrap(), channel.id.clone().unwrap());
                 }
                 // update users
                 self.channels = channels.clone();
@@ -530,7 +536,8 @@ impl RtmClient {
                 // update group id map
                 self.group_ids.clear();
                 for group in &groups {
-                    self.group_ids.insert(group.name.clone().unwrap(), group.id.clone().unwrap());
+                    self.group_ids
+                        .insert(group.name.clone().unwrap(), group.id.clone().unwrap());
                 }
                 // update users
                 self.groups = groups.clone();

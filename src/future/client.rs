@@ -169,7 +169,7 @@ impl Client {
     }
 
     /// Run a non-blocking slack client
-    // XXX: once `impl Trait` is stabilized we can get rid of all of these boxes
+    // XXX: once `impl Trait` is stabilized we can get rid of all of these `Box`es
     pub fn run<'a, T: EventHandler>(&'a mut self,
                                     handler: &'a mut T,
                                     wss_url: reqwest::Url,
