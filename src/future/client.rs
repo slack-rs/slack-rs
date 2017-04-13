@@ -1,6 +1,6 @@
 use {url, reqwest, tokio_core, Error, Event, serde_json, WsMessage};
 use std::sync::atomic::{AtomicUsize, Ordering};
-use api::{self, Channel, Group, User};
+use api::{self, Channel, Group, User, Team, Im};
 use futures::sync::mpsc;
 use futures::{Future, Stream};
 use futures::future::{err, ok};
@@ -29,50 +29,14 @@ pub struct Client {
     sender: Option<Sender>,
 }
 
+/// Thread-safe API for sending messages asynchronously
 #[derive(Clone)]
 pub struct Sender {
-    inner: mpsc::UnboundedSender<WsMessage>,
+    tx: mpsc::UnboundedSender<WsMessage>,
     msg_num: Arc<AtomicUsize>,
 }
 
-impl Sender {
-    /// Get the next message id
-    ///
-    /// A value returned from this method *must* be included in the JSON payload
-    /// (the `id` field) when constructing your own message.
-    pub fn get_msg_uid(&self) -> usize {
-        self.msg_num.fetch_add(1, Ordering::SeqCst)
-    }
-
-    /// Send a raw message
-    ///
-    /// Must set `message.id` using result of `get_msg_id()`.
-    ///
-    /// Success from this API does not guarantee the message is delivered
-    /// successfully since that runs on a separate task.
-    pub fn send(&self, raw: &str) -> Result<(), Error> {
-        try!(self.inner
-                 .send(WsMessage::Text(raw.to_string()))
-                 .map_err(|err| Error::Internal(format!("{}", err))));
-        Ok(())
-    }
-
-    /// Send a message to the specified channel id
-    ///
-    /// Success from this API does not guarantee the message is delivered
-    /// successfully since that runs on a separate task.
-    pub fn send_message_chid(&self, chan_id: &str, msg: &str) -> Result<usize, Error> {
-        let n = self.get_msg_uid();
-        let msg_json = serde_json::to_string(&msg)?;
-        let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
-                           n,
-                           chan_id,
-                           &msg_json[1..msg_json.len() - 1]);
-
-        try!(self.send(&mstr[..]));
-        Ok(n)
-    }
-}
+impl_sender!();
 
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
@@ -125,6 +89,8 @@ impl Client {
         }
     }
 
+    client_common_non_blocking!();
+
     /// Login to slack and get the websocket url (needed for calling `run`)
     pub fn login(&mut self) -> Result<reqwest::Url, Error> {
         let client = reqwest::Client::new()?;
@@ -157,7 +123,7 @@ impl Client {
 
         let (tx, rx) = mpsc::unbounded();
         let sender = Sender {
-            inner: tx,
+            tx: tx,
             msg_num: Arc::new(AtomicUsize::new(0)),
         };
         self.sender = Some(sender);
@@ -278,7 +244,7 @@ impl Client {
     pub fn shutdown(&self) -> Result<(), Error> {
         match self.sender {
             Some(ref sender) => {
-                (&sender.inner)
+                (&sender.tx)
                     .send(WsMessage::Close)
                     .map_err(|_| Error::Internal("Sending shutdown message failed".into()))
             }
