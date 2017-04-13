@@ -186,24 +186,25 @@ impl Client {
                             .map_err(Error::from)
                             .and_then(move |message| match message {
                                           Message::Text(text) => {
-                                let event = serde_json::from_str::<Event>(&text[..]);
-                                match event {
-                                    Ok(event) => {
-                                        Box::new(handler
-                                                     .on_event(self, Ok(event), &text)
-                                                     .map_err(|_| Error::Unit)) as
-                                        Box<Future<Item = (), Error = Error>>
-                                    }
-                                    Err(err) => {
-                                        Box::new(handler
-                                                     .on_event(self,
-                                                               Err(Error::Json(err)),
-                                                               &text)
-                                                     .map_err(|_| Error::Unit)) as
-                                        Box<Future<Item = (), Error = Error>>
-                                    }
-                                }
-                            }
+                                              match Event::from_json(&text[..]) {
+                                                  Ok(event) => {
+                                                      Box::new(handler
+                                                                   .on_event(self,
+                                                                             Ok(event),
+                                                                             &text)
+                                                                   .map_err(|_| Error::Unit)) as
+                                                      Box<Future<Item = (), Error = Error>>
+                                                  }
+                                                  Err(err) => {
+                                                      Box::new(handler
+                                                                   .on_event(self,
+                                                                             Err(err),
+                                                                             &text)
+                                                                   .map_err(|_| Error::Unit)) as
+                                                      Box<Future<Item = (), Error = Error>>
+                                                  }
+                                              }
+                                          }
                                           Message::Binary(_) => Box::new(ok::<(), Error>(())),
                                       })
                             .for_each(|_| Ok(()));

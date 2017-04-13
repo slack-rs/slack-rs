@@ -14,8 +14,10 @@
 // limitations under the License.
 //
 
+use serde_json;
 use api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
           stars, reactions};
+use error::Error;
 use std::boxed::Box;
 
 /// Represents Slack [rtm event](https://api.slack.com/rtm) types.
@@ -263,28 +265,62 @@ pub enum Event {
     /// event.
     ReconnectUrl,
     /// Represents a confirmation of a message sent
-    MessageSent {
-        reply_to: isize,
-        ts: String,
-        text: String,
-    },
+    MessageSent(MessageSent),
     /// Represents an error sending a message
-    MessageError {
-        reply_to: isize,
-        code: isize,
-        message: String,
-    },
+    MessageError(MessageError),
+}
+
+impl Event {
+    /// Try to deserialize an `Event` from a json-encoded `&str`
+    pub fn from_json(s: &str) -> Result<Event, Error> {
+        match serde_json::from_str::<Event>(s) {
+            Ok(ev) => Ok(ev),
+            Err(e) => {
+                // try for the MessageSent / MessageError variants that don't expose type
+                if let Ok(ev) = serde_json::from_str::<MessageSent>(s) {
+                    Ok(Event::MessageSent(ev))
+                } else if let Ok(ev) = serde_json::from_str::<MessageError>(s) {
+                    Ok(Event::MessageError(ev))
+                } else {
+                    Err(e.into())
+                }
+            }
+        }
+    }
+}
+
+/// Represents a confirmation of a message sent
+#[derive(Debug, Clone, Deserialize)]
+pub struct MessageSent {
+    pub ok: bool,
+    pub reply_to: isize,
+    pub text: String,
+    pub ts: String,
+}
+
+/// Represents an error sending a message
+#[derive(Debug, Clone, Deserialize)]
+pub struct MessageError {
+    pub ok: bool,
+    pub reply_to: isize,
+    pub error: MessageErrorDetail,
+}
+
+/// Details of an error sending a message
+#[derive(Debug, Clone, Deserialize)]
+pub struct MessageErrorDetail {
+    pub code: isize,
+    pub msg: String,
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use api::Message;
-    use rustc_serialize::json;
+    use api::{Message, MessageStandard};
 
     #[test]
     fn decode_short_standard_message() {
-        let event: Event = json::decode(r#"{
+        let event: Event = Event::from_json(r#"{
             "type": "message",
             "ts": "1234567890.218332",
             "user": "U12345678",
@@ -294,21 +330,16 @@ mod tests {
                 .unwrap();
         match event {
             Event::Message(message) => {
-                match message {
-                    Message::Standard {
-                        ts,
-                        channel: _,
-                        user,
-                        text,
-                        is_starred: _,
-                        pinned_to: _,
-                        reactions: _,
-                        edited: _,
-                        attachments: _,
-                    } => {
-                        assert_eq!(ts, "1234567890.218332");
-                        assert_eq!(text.unwrap(), "Hello world");
-                        assert_eq!(user.unwrap(), "U12345678");
+                match *message {
+                    Message::Standard(MessageStandard {
+                                          ref ts,
+                                          ref user,
+                                          ref text,
+                                          ..
+                                      }) => {
+                        assert_eq!(ts.as_ref().unwrap(), "1234567890.218332");
+                        assert_eq!(text.as_ref().unwrap(), "Hello world");
+                        assert_eq!(user.as_ref().unwrap(), "U12345678");
                     }
                     _ => panic!("Message decoded into incorrect variant."),
                 }
@@ -319,7 +350,7 @@ mod tests {
 
     #[test]
     fn decode_sent_ok() {
-        let event: Event = json::decode(r#"{
+        let event: Event = Event::from_json(r#"{
             "ok": true,
             "reply_to": 1,
             "ts": "1234567890.218332",
@@ -327,7 +358,7 @@ mod tests {
         }"#)
                 .unwrap();
         match event {
-            Event::MessageSent { reply_to, ts, text } => {
+            Event::MessageSent(MessageSent { reply_to, ts, text, .. }) => {
                 assert_eq!(reply_to, 1);
                 assert_eq!(ts, "1234567890.218332");
                 assert_eq!(text, "Hello world");
@@ -338,7 +369,7 @@ mod tests {
 
     #[test]
     fn decode_sent_not_ok() {
-        let event: Event = json::decode(r#"{
+        let event: Event = Event::from_json(r#"{
             "ok": false,
             "reply_to": 1,
             "error": {
@@ -348,14 +379,14 @@ mod tests {
         }"#)
                 .unwrap();
         match event {
-            Event::MessageError {
-                reply_to,
-                code,
-                message,
-            } => {
+            Event::MessageError(MessageError {
+                                    reply_to,
+                                    error: MessageErrorDetail { code, msg, .. },
+                                    ..
+                                }) => {
                 assert_eq!(reply_to, 1);
                 assert_eq!(code, 2);
-                assert_eq!(message, "message text is missing");
+                assert_eq!(msg, "message text is missing");
             }
             _ => panic!("Event decoded into incorrect variant."),
         }
@@ -363,13 +394,12 @@ mod tests {
 
     #[test]
     fn decode_extended_standard_message() {
-        let event: Event = json::decode(r##"{
+        let event: Event = Event::from_json(r##"{
             "type": "message",
             "ts": "1234567890.218332",
             "user": "U12345678",
             "text": "Hello world",
             "channel": "C12345678",
-            "is_starred": false,
             "pinned_to": [ "C12345678" ],
             "reactions": [
                 {
@@ -408,19 +438,8 @@ mod tests {
                 .unwrap();
         match event {
             Event::Message(message) => {
-                match message {
-                    Message::Standard {
-                        ts: _,
-                        channel: _,
-                        user: _,
-                        text: _,
-                        is_starred,
-                        pinned_to: _,
-                        reactions: _,
-                        edited: _,
-                        attachments,
-                    } => {
-                        assert_eq!(is_starred, Some(false));
+                match *message {
+                    Message::Standard(MessageStandard { attachments, .. }) => {
                         assert_eq!(attachments.unwrap()[0].color.as_ref().unwrap(), "#36a64f");
                     }
                     _ => panic!("Message decoded into incorrect variant."),
@@ -429,5 +448,4 @@ mod tests {
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
-
 }

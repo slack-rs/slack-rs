@@ -22,17 +22,17 @@
 //
 
 extern crate slack;
+use slack::api;
 
 struct MyHandler;
 
 #[allow(unused_variables)]
 impl slack::EventHandler for MyHandler {
-    fn on_event(&mut self, cli: &mut slack::RtmClient, event: Result<slack::Event, slack::Error>, raw_json: &str) {
+    fn on_event(&mut self,
+                cli: &mut slack::RtmClient,
+                event: Result<slack::Event, slack::Error>,
+                raw_json: &str) {
         println!("on_event(event: {:?}, raw_json: {:?})", event, raw_json);
-    }
-
-    fn on_ping(&mut self, cli: &mut slack::RtmClient) {
-        println!("on_ping");
     }
 
     fn on_close(&mut self, cli: &mut slack::RtmClient) {
@@ -45,7 +45,11 @@ impl slack::EventHandler for MyHandler {
         // send a message over the real time api websocket
         let _ = cli.send_message("#general", "Hello world! (rtm)");
         // post a message as a user to the web api
-        let _ = cli.post_message("#general", "hello world! (postMessage)", None);
+        let _ = cli.post_message(&api::chat::PostMessageRequest {
+                                      channel: "#general",
+                                      text: "hello world! (postMessage)",
+                                      ..Default::default()
+                                  });
         // set a channel topic via the web api
         // let _ = cli.set_topic("#general", "bots rule!");
     }
@@ -55,9 +59,7 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let api_key = match args.len() {
         0 | 1 => panic!("No api-key in args! Usage: cargo run --example slack_example -- <api-key>"),
-        x => {
-            args[x - 1].clone()
-        }
+        x => args[x - 1].clone(),
     };
     let mut handler = MyHandler;
     let mut cli = slack::RtmClient::new(&api_key);
@@ -66,6 +68,5 @@ fn main() {
         Ok(_) => {}
         Err(err) => panic!("Error: {}", err),
     }
-    println!("{}", cli.get_name().unwrap());
-    println!("{}", cli.get_team().unwrap().name);
+    println!("{:?}", cli.get_team().unwrap().name);
 }

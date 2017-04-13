@@ -225,10 +225,9 @@ impl RtmClient {
             // handle the message
             match message {
                 tungstenite::Message::Text(text) => {
-                    let event = serde_json::from_str::<Event>(&text[..]);
-                    match event {
+                    match Event::from_json(&text[..]) {
                         Ok(event) => handler.on_event(self, Ok(event), &text),
-                        Err(err) => handler.on_event(self, Err(Error::Json(err)), &text),
+                        Err(err) => handler.on_event(self, Err(err), &text),
                     }
                 }
                 tungstenite::Message::Binary(_) => {}
