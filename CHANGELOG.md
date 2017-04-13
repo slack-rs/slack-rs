@@ -4,7 +4,8 @@
 
 - Updates to support new `slack-api` version and remove dependencies on openssl `0.7.x` and hyper
 `0.9.x`.
-- Introduces a new non-blocking futures-based client in `slack::future::client::Client`.
+- Introduces an optional non-blocking futures-based client in `slack::future::client::Client`.
+You can enable this client implementation by specifying the feature `future`.
 
 ### Breaking Changes
 
@@ -16,7 +17,7 @@ from the `slack-api` crate.
 - Replaced `hyper` with `reqwest`.
 - Removed `on_ping` from `EventHander`. Websocket pings are handled internally.
 - Removed `WsMessage::Ping` variant.
-- Removed `Error` variants: `Error::JsonDecode`, `Error::JsonEncode`
+- Removed `Error` variants: `Error::JsonDecode` and `Error::JsonEncode`.
 - The following `RtmClient` functions have had their signatures changed to use the appropriate
 `slack-api` request structs:
   - `post_message`, `update_message`, `delete_message`
@@ -28,6 +29,10 @@ from the `slack-api` crate.
   - `channels_history`
 - Removed `RtmClient::get_name` and `RtmClient::get_id` as the new version of `slack-rs-api` does
 not return these values.
+- Some `Event` variants are now inside a `Box` (see:
+https://github.com/Manishearth/rust-clippy/wiki#large_enum_variant).
+- `Event::MessageSent` and `Event::MessageError` expose new interior structs: `MessageSent` and
+`MessageError` respectively.
 
 ## 0.16.0
 - Retry receive message on EAGAIN (jwilm) (#61)
