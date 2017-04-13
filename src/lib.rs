@@ -286,7 +286,7 @@ impl RtmClient {
     /// to the requested channel id. Ideal usage would be EG:
     /// extract the channel in on_receive and then send back a message to the channel.
     /// Note that this only passes the message over a channel to the
-    /// Messaging task, and therfore a succesful return value does not
+    /// Messaging task, and therefore a successful return value does not
     /// mean the message has been actually put on the wire yet.
     /// This method also handles getting a unique id and formatting the actual json
     /// sent.
