@@ -4,6 +4,7 @@
 
 - Updates to support new `slack-api` version and remove dependencies on openssl `0.7.x` and hyper
 `0.9.x`.
+- Introduces a new non-blocking futures-based client in `slack::future::client::Client`.
 
 ### Breaking Changes
 
