@@ -42,6 +42,9 @@ pub enum Error {
     NativeTls(::native_tls::Error),
     /// Unit `()` error, used for futures
     Unit,
+    /// Futures Receiver canceled
+    #[cfg(feature = "future")]
+    RxCanceled,
 }
 
 impl From<::reqwest::Error> for Error {
@@ -92,6 +95,13 @@ impl From<()> for Error {
     }
 }
 
+#[cfg(feature = "future")]
+impl From<::futures::sync::oneshot::Canceled> for Error {
+    fn from(_: ::futures::sync::oneshot::Canceled) -> Error {
+        Error::RxCanceled
+    }
+}
+
 /// helper macro to make `impl From<>` for api errors.
 macro_rules! impl_api_from {
     {
@@ -135,6 +145,8 @@ impl fmt::Display for Error {
             Error::Internal(ref st) => write!(f, "Internal Error: {:?}", st),
             Error::NativeTls(ref e) => write!(f, "Native TLS error: {:?}", e),
             Error::Unit => write!(f, "Error unit"),
+            #[cfg(feature = "future")]
+            Error::RxCanceled => write!(f, "Rx Canceled"),
         }
     }
 }
@@ -151,6 +163,8 @@ impl error::Error for Error {
             Error::Api(ref st) |
             Error::Internal(ref st) => st,
             Error::Unit => "Unit",
+            #[cfg(feature = "future")]
+            Error::RxCanceled => "Receiver canceled",
         }
     }
 
@@ -165,6 +179,8 @@ impl error::Error for Error {
             Error::Api(_) |
             Error::Internal(_) |
             Error::Unit => None,
+            #[cfg(feature = "future")]
+            Error::RxCanceled => None,
         }
     }
 }

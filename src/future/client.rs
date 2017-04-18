@@ -1,9 +1,9 @@
 use {url, reqwest, tokio_core, Error, Event, serde_json, WsMessage};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use api::{self, Channel, Group, User, Team, Im};
-use futures::sync::mpsc;
+use futures::sync::{mpsc, oneshot};
 use futures::{Future, Stream};
-use futures::future::{err, ok};
+use futures::future::{err, ok, IntoFuture};
 use tokio_core::net::TcpStream;
 use native_tls::TlsConnector;
 use tokio_tls::TlsConnectorExt;
@@ -13,7 +13,7 @@ use tungstenite::Message;
 use tokio_tungstenite::client_async;
 use std::boxed::Box;
 use std::sync::Arc;
-use std::mem;
+use std::{mem, thread};
 
 /// The slack messaging client.
 pub struct Client {
@@ -27,6 +27,25 @@ pub struct Client {
     user_ids: HashMap<String, String>,
     rx: Option<mpsc::UnboundedReceiver<WsMessage>>,
     sender: Option<Sender>,
+    wss_url: Option<reqwest::Url>,
+}
+
+impl Clone for Client {
+    fn clone(&self) -> Self {
+        Client {
+            token: self.token.clone(),
+            start_info: self.start_info.clone(),
+            channels: self.channels.clone(),
+            groups: self.groups.clone(),
+            users: self.users.clone(),
+            channel_ids: self.channel_ids.clone(),
+            group_ids: self.group_ids.clone(),
+            user_ids: self.user_ids.clone(),
+            rx: None, // UnboundedReceiver is not Clone
+            sender: self.sender.clone(),
+            wss_url: self.wss_url.clone(),
+        }
+    }
 }
 
 /// Thread-safe API for sending messages asynchronously
@@ -40,25 +59,23 @@ impl_sender!();
 
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
+    type EventFut: IntoFuture<Item = (), Error = ()>;
+    type OnCloseFut: IntoFuture<Item = (), Error = ()>;
+    type OnConnectFut: IntoFuture<Item = (), Error = ()>;
+
     /// When a message is received this will be called with self, the slack client,
     /// and the result of parsing the event received, as well as the raw json string.
     fn on_event(&mut self,
-                _cli: &mut Client,
-                _event: Result<Event, Error>,
-                _raw_json: &str)
-                -> Box<Future<Item = (), Error = ()>> {
-        Box::new(ok(()))
-    }
+                cli: &mut Client,
+                event: Result<Event, Error>,
+                raw_json: &str)
+                -> Self::EventFut;
 
     /// Called when the connection is closed for any reason.
-    fn on_close(&mut self, _cli: &mut Client) -> Box<Future<Item = (), Error = ()>> {
-        Box::new(ok(()))
-    }
+    fn on_close(&mut self, cli: &mut Client) -> Self::OnCloseFut;
 
     /// Called when the connection is opened.
-    fn on_connect(&mut self, _cli: &mut Client) -> Box<Future<Item = (), Error = ()>> {
-        Box::new(ok(()))
-    }
+    fn on_connect(&mut self, cli: &mut Client) -> Self::OnConnectFut;
 }
 
 /// Like `try!` but for a future
@@ -74,7 +91,7 @@ macro_rules! try_fut {
 
 impl Client {
     /// Creates a new client from a token
-    pub fn new(token: &str) -> Client {
+    fn new(token: &str) -> Client {
         Client {
             token: String::from(token),
             start_info: None,
@@ -86,17 +103,18 @@ impl Client {
             user_ids: HashMap::new(),
             rx: None,
             sender: None,
+            wss_url: None,
         }
     }
 
     client_common_non_blocking!();
 
-    /// Login to slack and get the websocket url (needed for calling `run`)
-    pub fn login(&mut self) -> Result<reqwest::Url, Error> {
+    fn login_blocking(mut self) -> Result<Self, Error> {
         let client = reqwest::Client::new()?;
         let start = try!(api::rtm::start(&client, &self.token, &Default::default()));
         let start_url = &start.url.clone().expect("websocket url from slack");
         let wss_url = reqwest::Url::parse(&start_url)?;
+        self.wss_url = Some(wss_url);
 
         if let Some(ref channels) = start.channels {
             for ref channel in channels.iter() {
@@ -131,24 +149,35 @@ impl Client {
 
         // store rtm.Start data
         self.start_info = Some(start);
-        Ok(wss_url)
+        Ok(self)
+    }
+
+    /// Login to slack and get the websocket url (needed for calling `run`)
+    fn login(self) -> Box<Future<Item = Self, Error = Error>> {
+        let (tx, rx) = oneshot::channel();
+        thread::spawn(move || tx.send(self.login_blocking().into_future()));
+        Box::new(rx.map_err(Error::from).and_then(|client| client))
     }
 
     /// Run a non-blocking slack client
     // XXX: once `impl Trait` is stabilized we can get rid of all of these `Box`es
-    pub fn run<'a, T: EventHandler>(&'a mut self,
-                                    handler: &'a mut T,
-                                    wss_url: reqwest::Url,
-                                    handle: &tokio_core::reactor::Handle)
-                                    -> Box<Future<Item = (), Error = Error> + 'a> {
+    fn run<'a, T: EventHandler + 'a>(mut self,
+                                     mut handler: T,
+                                     handle: &tokio_core::reactor::Handle)
+                                     -> Box<Future<Item = (), Error = Error> + 'a> {
+        let wss_url = match self.wss_url {
+            Some(_) => mem::replace(&mut self.wss_url, None).unwrap(),
+            None => unreachable!("login was not called"),
+        };
+
         let addr = match try_fut!(wss_url.to_socket_addrs()).next() {
             None => return Box::new(err(Error::Internal("Websocket addr not found".into()))),
             Some(a) => a,
         };
 
         let rx = match self.rx {
-            None => return Box::new(err(Error::Internal("Receiver missing. You must call `login` before `run`.".into()))),
             Some(_) => mem::replace(&mut self.rx, None).unwrap(),
+            None => unreachable!("Receiver missing. login was not called"),
         };
 
         let domain = match wss_url.origin() {
@@ -178,7 +207,8 @@ impl Client {
         let client = stream
             .and_then(move |ws_stream| {
                 handler
-                    .on_connect(self)
+                    .on_connect(&mut self)
+                    .into_future()
                     .map_err(Error::from)
                     .and_then(move |_| {
                         let (mut sink, stream) = ws_stream.split();
@@ -189,17 +219,19 @@ impl Client {
                                               match Event::from_json(&text[..]) {
                                                   Ok(event) => {
                                                       Box::new(handler
-                                                                   .on_event(self,
+                                                                   .on_event(&mut self,
                                                                              Ok(event),
                                                                              &text)
+                                                                   .into_future()
                                                                    .map_err(|_| Error::Unit)) as
                                                       Box<Future<Item = (), Error = Error>>
                                                   }
                                                   Err(err) => {
                                                       Box::new(handler
-                                                                   .on_event(self,
+                                                                   .on_event(&mut self,
                                                                              Err(err),
                                                                              &text)
+                                                                   .into_future()
                                                                    .map_err(|_| Error::Unit)) as
                                                       Box<Future<Item = (), Error = Error>>
                                                   }
@@ -239,6 +271,18 @@ impl Client {
             })
             .map_err(Error::from);
         Box::new(client)
+    }
+
+    /// Connect to slack using the provided slack `token`, `EventHandler`, and `reactor::Handle`
+    pub fn connect<'a, T: EventHandler + 'a>(token: &str,
+                                             handler: T,
+                                             handle: &'a tokio_core::reactor::Handle)
+                                             -> Box<Future<Item = (), Error = Error> + 'a> {
+        let client = Client::new(token);
+
+        Box::new(client
+                     .login()
+                     .and_then(move |client| client.run(handler, &handle)))
     }
 
     /// Send a shutdown message to close the connection to slack

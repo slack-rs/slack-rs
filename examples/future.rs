@@ -7,18 +7,20 @@ fn main() {
     use slack::{Event, Message};
     use slack::api::MessageStandard;
     use slack::future::client::{Client, EventHandler};
-    use std::boxed::Box;
-    use futures::Future;
-    use futures::future::ok;
+    use futures::future::{ok, FutureResult};
 
-    pub struct MyHandler;
+    struct MyHandler;
 
     impl EventHandler for MyHandler {
+        type EventFut = FutureResult<(), ()>;
+        type OnCloseFut = FutureResult<(), ()>;
+        type OnConnectFut = FutureResult<(), ()>;
+
         fn on_event(&mut self,
                     _cli: &mut Client,
                     event: ::std::result::Result<Event, slack::Error>,
                     _raw_json: &str)
-                    -> Box<Future<Item = (), Error = ()>> {
+                    -> Self::EventFut {
             if let Ok(event) = event {
                 println!("event = {:#?}", event);
                 // do something if we get a message event
@@ -34,28 +36,26 @@ fn main() {
                     }
                 }
             }
-            Box::new(ok(()))
+            ok(())
         }
 
-        fn on_close(&mut self, _cli: &mut Client) -> Box<Future<Item = (), Error = ()>> {
+        fn on_close(&mut self, _cli: &mut Client) -> Self::OnCloseFut {
             println!("on_close");
-            Box::new(ok(()))
+            ok(())
         }
 
-        fn on_connect(&mut self, _cli: &mut Client) -> Box<Future<Item = (), Error = ()>> {
+        fn on_connect(&mut self, _cli: &mut Client) -> Self::OnConnectFut {
             println!("on_connect");
-            Box::new(ok(()))
+            ok(())
         }
     }
 
     let token = "REPLACE_ME";
-    let mut client = Client::new(token);
-    let wss_url = client.login().unwrap();
-    let mut my_handler = MyHandler;
     let mut core = tokio_core::reactor::Core::new().unwrap();
-    let fut = client.run(&mut my_handler, wss_url, &core.handle());
+    let handle = core.handle();
 
-    core.run(fut).unwrap();
+    core.run(Client::connect(token, MyHandler, &handle))
+        .unwrap();
 }
 
 #[cfg(not(feature = "future"))]
