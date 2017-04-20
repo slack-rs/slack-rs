@@ -98,7 +98,7 @@ macro_rules! client_common_non_blocking {
         /// use this method, and you will also need to retrieve a unique id for
         /// the message via RtmClient.get_msg_uid()
         /// Only valid after login.
-        pub fn send(&mut self, s: &str) -> Result<(), Error> {
+        pub fn send(&self, s: &str) -> Result<(), Error> {
             let tx = match self.sender {
                 Some(ref sender) => &sender.tx,
                 None => return Err(Error::Internal(String::from("Failed to get tx!"))),
