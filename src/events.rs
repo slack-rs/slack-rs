@@ -58,8 +58,7 @@ pub enum Event {
     /// [`channel_unarchive`](https://api.slack.com/events/channel_unarchive) event.
     ChannelUnArchive { channel: String, user: String },
     /// Represents the slack
-    /// [`channel_history_changed`](https://api.slack.
-    /// com/events/channel_history_changed) event.
+    /// [`channel_history_changed`](https://api.slack.com/events/channel_history_changed) event.
     ChannelHistoryChanged {
         latest: String,
         ts: String,
@@ -110,8 +109,7 @@ pub enum Event {
     /// [`group_marked`](https://api.slack.com/events/group_marked) event.
     GroupMarked { channel: String, ts: String },
     /// Represents the slack
-    /// [`group_history_changed`](https://api.slack.
-    /// com/events/group_history_changed) event.
+    /// [`group_history_changed`](https://api.slack.com/events/group_history_changed) event.
     GroupHistoryChanged {
         latest: String,
         ts: String,
@@ -177,8 +175,7 @@ pub enum Event {
     /// [`presence_change`](https://api.slack.com/events/presence_change) event.
     PresenceChange { user: String, presence: String },
     /// Represents the slack
-    /// [`manual_presence_change`](https://api.slack.
-    /// com/events/manual_presence_change) event.
+    /// [`manual_presence_change`](https://api.slack.com/events/manual_presence_change) event.
     ManualPresenceChange { presence: String },
     /// Represents the slack
     /// [`pref_change`](https://api.slack.com/events/pref_change) event.
@@ -222,46 +219,44 @@ pub enum Event {
         event_ts: String,
     },
     /// Represents the slack
-    /// [`emoji_changed`](https://api.slack.com/event/emoji_changed) event.
+    /// [`emoji_changed`](https://api.slack.com/events/emoji_changed) event.
     EmojiChanged { event_ts: String },
     /// Represents the slack
-    /// [`commands_changed`](https://api.slack.com/event/commands_changed) event.
+    /// [`commands_changed`](https://api.slack.com/events/commands_changed) event.
     CommandsChanged { event_ts: String },
     /// Represents the slack
-    /// [`team_plan_change`](https://api.slack.com/event/team_plan_change) event.
+    /// [`team_plan_change`](https://api.slack.com/events/team_plan_change) event.
     TeamPlanChange { plan: String },
     /// Represents the slack
-    /// [`team_pref_change`](https://api.slack.com/event/team_pref_change) event.
+    /// [`team_pref_change`](https://api.slack.com/events/team_pref_change) event.
     TeamPrefChange { name: String, value: bool },
     /// Represents the slack
-    /// [`team_rename`](https://api.slack.com/event/team_rename) event.
+    /// [`team_rename`](https://api.slack.com/events/team_rename) event.
     TeamRename { name: String },
     /// Represents the slack
-    /// [`team_domain_change`](https://api.slack.com/event/team_domain_change)
+    /// [`team_domain_change`](https://api.slack.com/events/team_domain_change)
     /// event.
     TeamDomainChange { url: String, domain: String },
     /// Represents the slack
-    /// [`email_domain_changeed`](https://api.slack.
-    /// com/event/email_domain_changeed) event.
+    /// [`email_domain_changed`](https://api.slack.com/events/email_domain_changed) event.
     EmailDomainChanged {
         email_domain: String,
         event_ts: String,
     },
-    /// Represents the slack [`bot_added`](https://api.slack.com/event/bot_added)
+    /// Represents the slack [`bot_added`](https://api.slack.com/events/bot_added)
     /// event.
     BotAdded { bot: Bot },
     /// Represents the slack
-    /// [`bot_changed`](https://api.slack.com/event/bot_changed) event.
+    /// [`bot_changed`](https://api.slack.com/events/bot_changed) event.
     BotChanged { bot: Bot },
     /// Represents the slack
-    /// [`accounts_changed`](https://api.slack.com/event/accounts_changed) event.
+    /// [`accounts_changed`](https://api.slack.com/events/accounts_changed) event.
     AccountsChanged,
     /// Represents the slack
-    /// [`team_migration_started`](https://api.slack.
-    /// com/event/team_migration_started) event.
+    /// [`team_migration_started`](https://api.slack.com/events/team_migration_started) event.
     TeamMigrationStarted,
     /// Represents the slack
-    /// [`reconnect_url`](https://api.slack.com/event/reconnect_url)
+    /// [`reconnect_url`](https://api.slack.com/events/reconnect_url)
     /// event.
     ReconnectUrl,
     /// Represents a confirmation of a message sent
