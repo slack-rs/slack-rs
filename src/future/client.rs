@@ -67,8 +67,7 @@ pub trait EventHandler {
     /// and the result of parsing the event received, as well as the raw json string.
     fn on_event(&mut self,
                 cli: &mut Client,
-                event: Result<Event, Error>,
-                raw_json: &str)
+                event: Result<Event, Error>)
                 -> Self::EventFut;
 
     /// Called when the connection is closed for any reason.
@@ -220,8 +219,7 @@ impl Client {
                                                   Ok(event) => {
                                                       Box::new(handler
                                                                    .on_event(&mut self,
-                                                                             Ok(event),
-                                                                             &text)
+                                                                             Ok(event))
                                                                    .into_future()
                                                                    .map_err(|_| Error::Unit)) as
                                                       Box<Future<Item = (), Error = Error>>
@@ -229,8 +227,7 @@ impl Client {
                                                   Err(err) => {
                                                       Box::new(handler
                                                                    .on_event(&mut self,
-                                                                             Err(err),
-                                                                             &text)
+                                                                             Err(err))
                                                                    .into_future()
                                                                    .map_err(|_| Error::Unit)) as
                                                       Box<Future<Item = (), Error = Error>>

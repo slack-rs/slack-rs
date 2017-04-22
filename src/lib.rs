@@ -64,7 +64,7 @@ pub type SlackWebsocket = tungstenite::WebSocket<tungstenite::stream::Stream<Tcp
 pub trait EventHandler {
     /// When a message is received this will be called with self, the slack client,
     /// and the result of parsing the event received, as well as the raw json string.
-    fn on_event(&mut self, cli: &mut RtmClient, event: Result<Event, Error>, raw_json: &str);
+    fn on_event(&mut self, cli: &mut RtmClient, event: Result<Event, Error>);
 
     /// Called when the connection is closed for any reason.
     fn on_close(&mut self, cli: &mut RtmClient);
@@ -207,8 +207,8 @@ impl RtmClient {
             match message {
                 tungstenite::Message::Text(text) => {
                     match Event::from_json(&text[..]) {
-                        Ok(event) => handler.on_event(self, Ok(event), &text),
-                        Err(err) => handler.on_event(self, Err(err), &text),
+                        Ok(event) => handler.on_event(self, Ok(event)),
+                        Err(err) => handler.on_event(self, Err(err)),
                     }
                 }
                 tungstenite::Message::Binary(_) => {}
