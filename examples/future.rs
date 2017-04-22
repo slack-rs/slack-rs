@@ -18,7 +18,7 @@ fn main() {
 
         fn on_event(&mut self,
                     _cli: &mut Client,
-                    event: ::std::result::Result<Event, slack::Error>)
+                    event: Result<Event, slack::Error>)
                     -> Self::EventFut {
             if let Ok(event) = event {
                 println!("event = {:#?}", event);
