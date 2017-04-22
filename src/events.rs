@@ -14,10 +14,8 @@
 // limitations under the License.
 //
 
-use serde_json;
 use api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
           stars, reactions};
-use error::Error;
 use std::boxed::Box;
 
 /// Represents Slack [rtm event](https://api.slack.com/rtm) types.
@@ -263,25 +261,6 @@ pub enum Event {
     MessageSent(MessageSent),
     /// Represents an error sending a message
     MessageError(MessageError),
-}
-
-impl Event {
-    /// Try to deserialize an `Event` from a json-encoded `&str`
-    pub fn from_json(s: &str) -> Result<Event, Error> {
-        match serde_json::from_str::<Event>(s) {
-            Ok(ev) => Ok(ev),
-            Err(e) => {
-                // try for the MessageSent / MessageError variants that don't expose type
-                if let Ok(ev) = serde_json::from_str::<MessageSent>(s) {
-                    Ok(Event::MessageSent(ev))
-                } else if let Ok(ev) = serde_json::from_str::<MessageError>(s) {
-                    Ok(Event::MessageError(ev))
-                } else {
-                    Err(e.into())
-                }
-            }
-        }
-    }
 }
 
 /// Represents a confirmation of a message sent

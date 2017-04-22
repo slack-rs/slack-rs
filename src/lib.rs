@@ -56,6 +56,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc::{self, channel};
 use native_tls::TlsStream;
 use std::net::TcpStream;
+use events::{MessageSent, MessageError};
 
 pub type SlackWebsocket = tungstenite::WebSocket<tungstenite::stream::Stream<TcpStream,
                                                                              TlsStream<TcpStream>>>;
@@ -440,5 +441,24 @@ impl RtmClient {
     pub fn im_mark(&self, req: &api::im::MarkRequest) -> Result<api::im::MarkResponse, Error> {
         let client = reqwest::Client::new()?;
         api::im::mark(&client, &self.token, req).map_err(|e| e.into())
+    }
+}
+
+impl Event {
+    /// Try to deserialize an `Event` from a json-encoded `&str`
+    fn from_json(s: &str) -> Result<Event, Error> {
+        match serde_json::from_str::<Event>(s) {
+            Ok(ev) => Ok(ev),
+            Err(e) => {
+                // try for the MessageSent / MessageError variants that don't expose type
+                if let Ok(ev) = serde_json::from_str::<MessageSent>(s) {
+                    Ok(Event::MessageSent(ev))
+                } else if let Ok(ev) = serde_json::from_str::<MessageError>(s) {
+                    Ok(Event::MessageError(ev))
+                } else {
+                    Err(e.into())
+                }
+            }
+        }
     }
 }
