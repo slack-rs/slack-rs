@@ -256,7 +256,7 @@ pub enum Event {
     /// Represents the slack
     /// [`reconnect_url`](https://api.slack.com/events/reconnect_url)
     /// event.
-    ReconnectUrl,
+    ReconnectUrl { url: String },
     /// Represents a confirmation of a message sent
     MessageSent(MessageSent),
     /// Represents an error sending a message
