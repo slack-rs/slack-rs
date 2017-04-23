@@ -245,13 +245,14 @@ impl RtmClient {
     /// This method also handles getting a unique id and formatting the actual json
     /// sent.
     /// Only valid after login.
-    pub fn send_message(&self, chan: &api::Channel, msg: &str) -> Result<usize, Error> {
+    ///
+    /// `channel_id` is the slack channel id, e.g. `UXYZ1234`, not `#general`.
+    pub fn send_message(&self, channel_id: &str, msg: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
-        let chan_id = get_chan_id(chan)?;
         let msg_json = serde_json::to_string(&msg)?;
         let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
                            n,
-                           chan_id,
+                           channel_id,
                            &msg_json[1..msg_json.len() - 1]);
         self.sender
             .tx
@@ -265,12 +266,13 @@ impl RtmClient {
     /// is being typed. Will have the server send a "user_typing" message to all the
     /// peers.
     /// Slack doc can be found at https://api.slack.com/rtm under "Typing Indicators"
-    pub fn send_typing(&self, chan: &api::Channel) -> Result<usize, Error> {
+    ///
+    /// `channel_id` is the slack channel id, e.g. `UXYZ1234`, not `#general`.
+    pub fn send_typing(&self, channel_id: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
-        let chan_id = get_chan_id(chan)?;
         let mstr = format!(r#"{{"id": {}, "type": "typing", "channel": "{}"}}"#,
                            n,
-                           chan_id);
+                           channel_id);
 
         self.sender
             .tx
@@ -282,14 +284,6 @@ impl RtmClient {
     /// Returns a reference to the `StartResponse`.
     pub fn start_response(&self) -> &api::rtm::StartResponse {
         &self.start_response
-    }
-}
-
-/// Attempt to get a `channel_id` from a `Channel`
-fn get_chan_id(chan: &api::Channel) -> Result<&String, Error> {
-    match chan.id {
-        Some(ref id) => Ok(id),
-        None => Err(Error::Internal(String::from("Failed to get channel id"))),
     }
 }
 

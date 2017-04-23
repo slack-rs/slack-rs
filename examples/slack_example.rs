@@ -41,7 +41,7 @@ impl slack::EventHandler for MyHandler {
         // Send a message over the real time api websocket
 
         // find the general channel from the `StartResponse`
-        let general = cli.start_response()
+        let general_channel_id = cli.start_response()
             .channels
             .as_ref()
             .and_then(|channels| {
@@ -52,8 +52,9 @@ impl slack::EventHandler for MyHandler {
                                         Some(ref name) => name == "general",
                                     })
                       })
+            .and_then(|chan| chan.id.as_ref())
             .expect("general channel not found");
-        let _ = cli.send_message(general, "Hello world! (rtm)");
+        let _ = cli.send_message(&general_channel_id, "Hello world! (rtm)");
     }
 }
 
