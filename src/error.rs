@@ -38,13 +38,6 @@ pub enum Error {
     Api(String),
     /// Errors that do not fit under the other types, Internal is for EG channel errors.
     Internal(String),
-    /// `NativeTls` error
-    NativeTls(::native_tls::Error),
-    /// Unit `()` error, used for futures
-    Unit,
-    /// Futures Receiver canceled
-    #[cfg(feature = "future")]
-    RxCanceled,
 }
 
 impl From<::reqwest::Error> for Error {
@@ -83,55 +76,11 @@ impl From<FromUtf8Error> for Error {
     }
 }
 
-impl From<::native_tls::Error> for Error {
-    fn from(err: ::native_tls::Error) -> Error {
-        Error::NativeTls(err)
+impl From<api::rtm::StartError<::reqwest::Error>> for Error {
+    fn from(err: api::rtm::StartError<::reqwest::Error>) -> Error {
+        Error::Api(format!("rtm::StartError: {}", err))
     }
 }
-
-impl From<()> for Error {
-    fn from(_: ()) -> Error {
-        Error::Unit
-    }
-}
-
-#[cfg(feature = "future")]
-impl From<::futures::sync::oneshot::Canceled> for Error {
-    fn from(_: ::futures::sync::oneshot::Canceled) -> Error {
-        Error::RxCanceled
-    }
-}
-
-/// helper macro to make `impl From<>` for api errors.
-macro_rules! impl_api_from {
-    {
-        $name:ty
-    } => {
-        impl From<$name> for Error {
-            fn from(err: $name) -> Error {
-                Error::Api(format!("{}: {:?}", stringify!($name), err))
-            }
-        }
-    }
-}
-
-impl_api_from!(api::rtm::StartError<::reqwest::Error>);
-impl_api_from!(api::users::ListError<::reqwest::Error>);
-impl_api_from!(api::channels::ListError<::reqwest::Error>);
-impl_api_from!(api::channels::MarkError<::reqwest::Error>);
-impl_api_from!(api::channels::SetTopicError<::reqwest::Error>);
-impl_api_from!(api::channels::SetPurposeError<::reqwest::Error>);
-impl_api_from!(api::channels::HistoryError<::reqwest::Error>);
-impl_api_from!(api::reactions::AddError<::reqwest::Error>);
-impl_api_from!(api::groups::ListError<::reqwest::Error>);
-impl_api_from!(api::chat::PostMessageError<::reqwest::Error>);
-impl_api_from!(api::chat::UpdateError<::reqwest::Error>);
-impl_api_from!(api::chat::DeleteError<::reqwest::Error>);
-impl_api_from!(api::im::ListError<::reqwest::Error>);
-impl_api_from!(api::im::OpenError<::reqwest::Error>);
-impl_api_from!(api::im::CloseError<::reqwest::Error>);
-impl_api_from!(api::im::HistoryError<::reqwest::Error>);
-impl_api_from!(api::im::MarkError<::reqwest::Error>);
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -143,10 +92,6 @@ impl fmt::Display for Error {
             Error::Json(ref e) => write!(f, "Json Error: {:?}", e),
             Error::Api(ref st) => write!(f, "Slack Api Error: {:?}", st),
             Error::Internal(ref st) => write!(f, "Internal Error: {:?}", st),
-            Error::NativeTls(ref e) => write!(f, "Native TLS error: {:?}", e),
-            Error::Unit => write!(f, "Error unit"),
-            #[cfg(feature = "future")]
-            Error::RxCanceled => write!(f, "Rx Canceled"),
         }
     }
 }
@@ -159,12 +104,8 @@ impl error::Error for Error {
             Error::Utf8(ref e) => e.description(),
             Error::Url(ref e) => e.description(),
             Error::Json(ref e) => e.description(),
-            Error::NativeTls(ref e) => e.description(),
             Error::Api(ref st) |
             Error::Internal(ref st) => st,
-            Error::Unit => "Unit",
-            #[cfg(feature = "future")]
-            Error::RxCanceled => "Receiver canceled",
         }
     }
 
@@ -175,12 +116,8 @@ impl error::Error for Error {
             Error::Utf8(ref e) => Some(e),
             Error::Url(ref e) => Some(e),
             Error::Json(ref e) => Some(e),
-            Error::NativeTls(ref e) => Some(e),
             Error::Api(_) |
-            Error::Internal(_) |
-            Error::Unit => None,
-            #[cfg(feature = "future")]
-            Error::RxCanceled => None,
+            Error::Internal(_) => None,
         }
     }
 }

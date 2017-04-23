@@ -24,20 +24,6 @@ pub extern crate slack_api as api;
 extern crate serde_derive;
 extern crate serde_json;
 extern crate tungstenite;
-extern crate native_tls;
-#[macro_use]
-extern crate cfg_if;
-
-cfg_if! {
-    if #[cfg(feature = "future")] {
-        extern crate tokio_tungstenite;
-        extern crate futures;
-        extern crate tokio_core;
-        extern crate tokio_tls;
-        extern crate url;
-        pub mod future;
-    } else {}
-}
 
 pub mod error;
 pub use error::Error;
@@ -50,12 +36,8 @@ pub use events::Event;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc::{self, channel};
-use native_tls::TlsStream;
-use std::net::TcpStream;
 use events::{MessageSent, MessageError};
 
-pub type SlackWebsocket = tungstenite::WebSocket<tungstenite::stream::Stream<TcpStream,
-                                                                             TlsStream<TcpStream>>>;
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
     /// When a message is received this will be called with self, the slack client,
