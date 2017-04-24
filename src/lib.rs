@@ -167,10 +167,10 @@ impl RtmClient {
 
     /// Runs the message receive loop
     pub fn run<T: EventHandler>(&self, handler: &mut T) -> Result<(), Error> {
-        let start_url = match self.start_response.url {
-            Some(ref url) => url,
-            None => return Err(Error::Api("Slack did not provide a URL".into())),
-        };
+        let start_url = self.start_response
+            .url
+            .as_ref()
+            .ok_or(Error::Api("Slack did not provide a URL".into()))?;
 
         let wss_url = reqwest::Url::parse(&start_url)?;
         let mut websocket = tungstenite::connect(wss_url)?;
