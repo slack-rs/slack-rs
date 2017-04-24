@@ -22,7 +22,7 @@
 //
 
 extern crate slack;
-use slack::{Event, Error, RtmClient};
+use slack::{Event, RtmClient};
 
 struct MyHandler;
 
@@ -38,9 +38,7 @@ impl slack::EventHandler for MyHandler {
 
     fn on_connect(&mut self, cli: &RtmClient) {
         println!("on_connect");
-        // Send a message over the real time api websocket
-
-        // find the general channel from the `StartResponse`
+        // find the general channel id from the `StartResponse`
         let general_channel_id = cli.start_response()
             .channels
             .as_ref()
@@ -55,6 +53,7 @@ impl slack::EventHandler for MyHandler {
             .and_then(|chan| chan.id.as_ref())
             .expect("general channel not found");
         let _ = cli.sender().send_message(&general_channel_id, "Hello world! (rtm)");
+        // Send a message over the real time api websocket
     }
 }
 
