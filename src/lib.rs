@@ -43,7 +43,7 @@ use events::{MessageSent, MessageError};
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
     /// When a message is received this will be called with self, the slack client,
-    /// and the result of parsing the event received, as well as the raw json string.
+    /// and the `Event` received.
     fn on_event(&mut self, cli: &RtmClient, event: Event);
 
     /// Called when the connection is closed for any reason.
