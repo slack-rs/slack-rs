@@ -24,6 +24,8 @@ pub extern crate slack_api as api;
 extern crate serde_derive;
 extern crate serde_json;
 extern crate tungstenite;
+#[macro_use]
+extern crate log;
 
 pub mod error;
 pub use error::Error;
@@ -42,7 +44,7 @@ use events::{MessageSent, MessageError};
 pub trait EventHandler {
     /// When a message is received this will be called with self, the slack client,
     /// and the result of parsing the event received, as well as the raw json string.
-    fn on_event(&mut self, cli: &RtmClient, event: Result<Event, Error>);
+    fn on_event(&mut self, cli: &RtmClient, event: Event);
 
     /// Called when the connection is closed for any reason.
     fn on_close(&mut self, cli: &RtmClient);
@@ -53,7 +55,7 @@ pub trait EventHandler {
 
 /// Used for passing websocket messages in channels
 #[derive(Debug)]
-pub enum WsMessage {
+enum WsMessage {
     Close,
     Text(String),
 }
@@ -175,10 +177,11 @@ impl RtmClient {
             match message {
                 tungstenite::Message::Text(text) => {
                     match Event::from_json(&text[..]) {
-                        Ok(event) => handler.on_event(self, Ok(event)),
+                        Ok(event) => handler.on_event(self, event),
                         Err(err) => {
-                            println!("raw = {}", text);
-                            handler.on_event(self, Err(err))
+                            info!("Unable to deserialize slack message, error: {}: json: {}",
+                                  err,
+                                  text);
                         }
                     }
                 }

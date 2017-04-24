@@ -28,7 +28,7 @@ struct MyHandler;
 
 #[allow(unused_variables)]
 impl slack::EventHandler for MyHandler {
-    fn on_event(&mut self, cli: &RtmClient, event: Result<Event, Error>) {
+    fn on_event(&mut self, cli: &RtmClient, event: Event) {
         println!("on_event(event: {:?})", event);
     }
 
