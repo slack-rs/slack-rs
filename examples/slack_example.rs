@@ -54,7 +54,7 @@ impl slack::EventHandler for MyHandler {
                       })
             .and_then(|chan| chan.id.as_ref())
             .expect("general channel not found");
-        let _ = cli.send_message(&general_channel_id, "Hello world! (rtm)");
+        let _ = cli.sender().send_message(&general_channel_id, "Hello world! (rtm)");
     }
 }
 

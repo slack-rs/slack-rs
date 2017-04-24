@@ -100,16 +100,47 @@ impl Sender {
     ///
     /// Success from this API does not guarantee the message is delivered
     /// successfully since that runs on a separate task.
-    pub fn send_message_chid(&self, chan_id: &str, msg: &str) -> Result<usize, Error> {
+    ///
+    /// `channel_id` is the slack channel id, e.g. `UXYZ1234`, *not* `#general`.
+    ///
+    /// Only valid after `RtmClient::run`.
+    pub fn send_message(&self, channel_id: &str, msg: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
         let msg_json = serde_json::to_string(&msg)?;
         let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
                            n,
-                           chan_id,
+                           channel_id,
                            &msg_json[1..msg_json.len() - 1]);
 
-        self.send(&mstr[..])?;
+        self.send(&mstr[..])
+            .map_err(|err| Error::Internal(format!("{}", err)))?;
+
         Ok(n)
+    }
+
+    /// Marks connected client as being typing to a channel
+    /// This is mostly used to signal to other peers that a message
+    /// is being typed. Will have the server send a "user_typing" message to all the
+    /// peers.
+    /// Slack doc can be found at https://api.slack.com/rtm under "Typing Indicators"
+    ///
+    /// `channel_id` is the slack channel id, e.g. `UXYZ1234`, not `#general`.
+    pub fn send_typing(&self, channel_id: &str) -> Result<usize, Error> {
+        let n = self.get_msg_uid();
+        let mstr = format!(r#"{{"id": {}, "type": "typing", "channel": "{}"}}"#,
+                           n,
+                           channel_id);
+
+        self.send(&mstr)
+            .map_err(|err| Error::Internal(format!("{:?}", err)))?;
+        Ok(n)
+    }
+
+    /// Shutdown `RtmClient`
+    pub fn shutdown(&self) -> Result<(), Error> {
+        self.tx
+            .send(WsMessage::Close)
+            .map_err(|_| Error::Internal("Error sending shutdown message".into()))
     }
 }
 
@@ -205,84 +236,11 @@ impl RtmClient {
         client.run(handler)
     }
 
-    /// Shutdown `RtmClient`
-    pub fn shutdown(&self) -> Result<(), Error> {
-        self.sender
-            .tx
-            .send(WsMessage::Close)
-            .map_err(|_| Error::Internal("Error sending shutdown message".into()))
+    /// Get a reference thread-safe cloneable message `Sender`
+    pub fn sender(&self) -> &Sender {
+        &self.sender
     }
 
-    ///Returns a unique identifier to be used in the 'id' field of a message
-    ///sent to slack.
-    pub fn get_msg_uid(&self) -> usize {
-        self.sender.msg_num.fetch_add(1, Ordering::SeqCst)
-    }
-
-    /// Get a thread-safe message sender
-    pub fn sender(&self) -> Sender {
-        self.sender.clone()
-    }
-
-    /// Allows sending a json string message over the websocket connection.
-    /// Note that this only passes the message over a channel to the
-    /// Messaging task, and therefore a successful return value does not
-    /// mean the message has been actually put on the wire yet.
-    /// Note that you will need to form a valid json reply yourself if you
-    /// use this method, and you will also need to retrieve a unique id for
-    /// the message via RtmClient.get_msg_uid()
-    /// Only valid after login.
-    pub fn send(&self, s: &str) -> Result<(), Error> {
-        self.sender
-            .tx
-            .send(WsMessage::Text(s.to_string()))
-            .map_err(|err| Error::Internal(format!("{}", err)))
-    }
-
-    /// Allows sending a textual string message over the websocket connection,
-    /// to the requested channel id. Ideal usage would be EG:
-    /// extract the channel in on_receive and then send back a message to the channel.
-    /// Note that this only passes the message over a channel to the
-    /// Messaging task, and therefore a successful return value does not
-    /// mean the message has been actually put on the wire yet.
-    /// This method also handles getting a unique id and formatting the actual json
-    /// sent.
-    /// Only valid after login.
-    ///
-    /// `channel_id` is the slack channel id, e.g. `UXYZ1234`, not `#general`.
-    pub fn send_message(&self, channel_id: &str, msg: &str) -> Result<usize, Error> {
-        let n = self.get_msg_uid();
-        let msg_json = serde_json::to_string(&msg)?;
-        let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
-                           n,
-                           channel_id,
-                           &msg_json[1..msg_json.len() - 1]);
-        self.sender
-            .tx
-            .send(WsMessage::Text(mstr))
-            .map_err(|err| Error::Internal(format!("{:?}", err)))?;
-        Ok(n)
-    }
-
-    /// Marks connected client as being typing to a channel
-    /// This is mostly used to signal to other peers that a message
-    /// is being typed. Will have the server send a "user_typing" message to all the
-    /// peers.
-    /// Slack doc can be found at https://api.slack.com/rtm under "Typing Indicators"
-    ///
-    /// `channel_id` is the slack channel id, e.g. `UXYZ1234`, not `#general`.
-    pub fn send_typing(&self, channel_id: &str) -> Result<usize, Error> {
-        let n = self.get_msg_uid();
-        let mstr = format!(r#"{{"id": {}, "type": "typing", "channel": "{}"}}"#,
-                           n,
-                           channel_id);
-
-        self.sender
-            .tx
-            .send(WsMessage::Text(mstr))
-            .map_err(|err| Error::Internal(format!("{:?}", err)))?;
-        Ok(n)
-    }
 
     /// Returns a reference to the `StartResponse`.
     pub fn start_response(&self) -> &api::rtm::StartResponse {
