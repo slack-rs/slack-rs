@@ -9,8 +9,10 @@
 
     <title>slack_api::files - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,68 +45,155 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>slack_api</a>::<wbr><a class='mod' href=''>files</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-3585' class='srclink' href='../../src/slack_api/files.rs.html#15-345' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/slack_api/mods/files.rs.html#1-877' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Get info on files uploaded to Slack, upload new files to Slack.</p>
-
-<p>For more information, see <a href="https://api.slack.com/methods">Slack&#39;s API
-documentation</a>.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.DeleteResponse.html'
-                               title='slack_api::files::DeleteResponse'>DeleteResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.InfoResponse.html'
-                               title='slack_api::files::InfoResponse'>InfoResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.ListResponse.html'
-                               title='slack_api::files::ListResponse'>ListResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.DeleteRequest.html'
+                                  title='slack_api::files::DeleteRequest'>DeleteRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.DeleteResponse.html'
+                                  title='slack_api::files::DeleteResponse'>DeleteResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InfoRequest.html'
+                                  title='slack_api::files::InfoRequest'>InfoRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InfoResponse.html'
+                                  title='slack_api::files::InfoResponse'>InfoResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ListRequest.html'
+                                  title='slack_api::files::ListRequest'>ListRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ListResponse.html'
+                                  title='slack_api::files::ListResponse'>ListResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RevokePublicURLRequest.html'
+                                  title='slack_api::files::RevokePublicURLRequest'>RevokePublicURLRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RevokePublicURLResponse.html'
+                                  title='slack_api::files::RevokePublicURLResponse'>RevokePublicURLResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SharedPublicURLRequest.html'
+                                  title='slack_api::files::SharedPublicURLRequest'>SharedPublicURLRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SharedPublicURLResponse.html'
+                                  title='slack_api::files::SharedPublicURLResponse'>SharedPublicURLResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.delete.html'
-                               title='slack_api::files::delete'>delete</a></td>
-                        <td class='docblock short'>
-                             <p>Deletes a file.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.info.html'
-                               title='slack_api::files::info'>info</a></td>
-                        <td class='docblock short'>
-                             <p>Gets information about a team file.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.list.html'
-                               title='slack_api::files::list'>list</a></td>
-                        <td class='docblock short'>
-                             <p>Lists &amp; filters team files.</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.DeleteError.html'
+                                  title='slack_api::files::DeleteError'>DeleteError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.InfoError.html'
+                                  title='slack_api::files::InfoError'>InfoError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.ListError.html'
+                                  title='slack_api::files::ListError'>ListError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.RevokePublicURLError.html'
+                                  title='slack_api::files::RevokePublicURLError'>RevokePublicURLError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.SharedPublicURLError.html'
+                                  title='slack_api::files::SharedPublicURLError'>SharedPublicURLError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.delete.html'
+                                  title='slack_api::files::delete'>delete</a></td>
+                           <td class='docblock-short'>
+                                <p>Deletes a file.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.info.html'
+                                  title='slack_api::files::info'>info</a></td>
+                           <td class='docblock-short'>
+                                <p>Gets information about a team file.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.list.html'
+                                  title='slack_api::files::list'>list</a></td>
+                           <td class='docblock-short'>
+                                <p>Lists &amp; filters team files.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.revoke_public_url.html'
+                                  title='slack_api::files::revoke_public_url'>revoke_public_url</a></td>
+                           <td class='docblock-short'>
+                                <p>Revokes public/external sharing access for a file</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.shared_public_url.html'
+                                  title='slack_api::files::shared_public_url'>shared_public_url</a></td>
+                           <td class='docblock-short'>
+                                <p>Enables a file for public/external sharing.</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -127,6 +216,8 @@ documentation</a>.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -147,7 +238,7 @@ documentation</a>.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -158,11 +249,9 @@ documentation</a>.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack_api";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

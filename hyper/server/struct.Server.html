@@ -9,8 +9,10 @@
 
     <title>hyper::server::Server - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,19 +45,18 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>hyper</a>::<wbr><a href='index.html'>server</a>::<wbr><a class='struct' href=''>Server</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-7050' class='srclink' href='../../src/hyper/server/mod.rs.html#145-148' title='goto source code'>[src]</a></span></h1>
-<pre class='rust struct'>pub struct Server&lt;L = <a class='struct' href='../../hyper/net/struct.HttpListener.html' title='hyper::net::HttpListener'>HttpListener</a>&gt; {
-    // some fields omitted
-}</pre><div class='docblock'><p>A server can listen on a TCP socket.</p>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/hyper/server/mod.rs.html#145-148' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Server&lt;L&nbsp;=&nbsp;<a class='struct' href='../../hyper/net/struct.HttpListener.html' title='hyper::net::HttpListener'>HttpListener</a>&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A server can listen on a TCP socket.</p>
 
 <p>Once listening, it will create a <code>Request</code>/<code>Response</code> pair for each
 incoming connection, and hand them to the provided handler.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;L: <a class='trait' href='../../hyper/net/trait.NetworkListener.html' title='hyper::net::NetworkListener'>NetworkListener</a>&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(listener: L) -&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></h4>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;L:&nbsp;<a class='trait' href='../../hyper/net/trait.NetworkListener.html' title='hyper::net::NetworkListener'>NetworkListener</a>&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/server/mod.rs.html#174-212' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>(listener: L) -&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></span></h4>
 <div class='docblock'><p>Creates a new server with the provided handler.</p>
-</div><h4 id='method.keep_alive' class='method'><code>fn <a href='#method.keep_alive' class='fnname'>keep_alive</a>(&amp;mut self, timeout: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/time/duration/struct.Duration.html' title='std::time::duration::Duration'>Duration</a>&gt;)</code></h4>
+</div><h4 id='method.keep_alive' class='method'><span id='keep_alive.v' class='invisible'><code>fn <a href='#method.keep_alive' class='fnname'>keep_alive</a>(&amp;mut self, timeout: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/time/duration/struct.Duration.html' title='std::time::duration::Duration'>Duration</a>&gt;)</code></span></h4>
 <div class='docblock'><p>Controls keep-alive for this server.</p>
 
 <p>The timeout duration passed will be used to determine how long
@@ -64,23 +65,30 @@ to keep the connection alive before dropping it.</p>
 <p>Passing <code>None</code> will disable keep-alive.</p>
 
 <p>Default is enabled with a 5 second timeout.</p>
-</div><h4 id='method.set_read_timeout' class='method'><code>fn <a href='#method.set_read_timeout' class='fnname'>set_read_timeout</a>(&amp;mut self, dur: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/time/duration/struct.Duration.html' title='std::time::duration::Duration'>Duration</a>&gt;)</code></h4>
+</div><h4 id='method.set_read_timeout' class='method'><span id='set_read_timeout.v' class='invisible'><code>fn <a href='#method.set_read_timeout' class='fnname'>set_read_timeout</a>(&amp;mut self, dur: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/time/duration/struct.Duration.html' title='std::time::duration::Duration'>Duration</a>&gt;)</code></span></h4>
 <div class='docblock'><p>Sets the read timeout for all Request reads.</p>
-</div><h4 id='method.set_write_timeout' class='method'><code>fn <a href='#method.set_write_timeout' class='fnname'>set_write_timeout</a>(&amp;mut self, dur: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/time/duration/struct.Duration.html' title='std::time::duration::Duration'>Duration</a>&gt;)</code></h4>
+</div><h4 id='method.set_write_timeout' class='method'><span id='set_write_timeout.v' class='invisible'><code>fn <a href='#method.set_write_timeout' class='fnname'>set_write_timeout</a>(&amp;mut self, dur: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/time/duration/struct.Duration.html' title='std::time::duration::Duration'>Duration</a>&gt;)</code></span></h4>
 <div class='docblock'><p>Sets the write timeout for all Response writes.</p>
-</div></div><h3 class='impl'><code>impl <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpListener.html' title='hyper::net::HttpListener'>HttpListener</a>&gt;</code></h3><div class='impl-items'><h4 id='method.http' class='method'><code>fn <a href='#method.http' class='fnname'>http</a>&lt;To: <a class='trait' href='https://doc.rust-lang.org/nightly/std/net/addr/trait.ToSocketAddrs.html' title='std::net::addr::ToSocketAddrs'>ToSocketAddrs</a>&gt;(addr: To) -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpListener.html' title='hyper::net::HttpListener'>HttpListener</a>&gt;&gt;</code></h4>
+</div><h4 id='method.local_addr' class='method'><span id='local_addr.v' class='invisible'><code>fn <a href='#method.local_addr' class='fnname'>local_addr</a>(&amp;mut self) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/std/io/error/type.Result.html' title='std::io::error::Result'>Result</a>&lt;<a class='enum' href='https://doc.rust-lang.org/nightly/std/net/addr/enum.SocketAddr.html' title='std::net::addr::SocketAddr'>SocketAddr</a>&gt;</code></span></h4>
+<div class='docblock'><p>Get the address that the server is listening on.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpListener.html' title='hyper::net::HttpListener'>HttpListener</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/server/mod.rs.html#214-219' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.http' class='method'><span id='http.v' class='invisible'><code>fn <a href='#method.http' class='fnname'>http</a>&lt;To:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/std/net/addr/trait.ToSocketAddrs.html' title='std::net::addr::ToSocketAddrs'>ToSocketAddrs</a>&gt;(addr: To) -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpListener.html' title='hyper::net::HttpListener'>HttpListener</a>&gt;&gt;</code></span></h4>
 <div class='docblock'><p>Creates a new server that will handle <code>HttpStream</code>s.</p>
-</div></div><h3 class='impl'><code>impl&lt;S: <a class='trait' href='../../hyper/net/trait.Ssl.html' title='hyper::net::Ssl'>Ssl</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpsListener.html' title='hyper::net::HttpsListener'>HttpsListener</a>&lt;S&gt;&gt;</code></h3><div class='impl-items'><h4 id='method.https' class='method'><code>fn <a href='#method.https' class='fnname'>https</a>&lt;A: <a class='trait' href='https://doc.rust-lang.org/nightly/std/net/addr/trait.ToSocketAddrs.html' title='std::net::addr::ToSocketAddrs'>ToSocketAddrs</a>&gt;(addr: A, ssl: S) -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpsListener.html' title='hyper::net::HttpsListener'>HttpsListener</a>&lt;S&gt;&gt;&gt;</code></h4>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;S:&nbsp;<a class='trait' href='../../hyper/net/trait.SslServer.html' title='hyper::net::SslServer'>SslServer</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpsListener.html' title='hyper::net::HttpsListener'>HttpsListener</a>&lt;S&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/server/mod.rs.html#221-228' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.https' class='method'><span id='https.v' class='invisible'><code>fn <a href='#method.https' class='fnname'>https</a>&lt;A:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/std/net/addr/trait.ToSocketAddrs.html' title='std::net::addr::ToSocketAddrs'>ToSocketAddrs</a>&gt;(addr: A, ssl: S) -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;<a class='struct' href='../../hyper/net/struct.HttpsListener.html' title='hyper::net::HttpsListener'>HttpsListener</a>&lt;S&gt;&gt;&gt;</code></span></h4>
 <div class='docblock'><p>Creates a new server that will handle <code>HttpStream</code>s over SSL.</p>
 
 <p>You can use any SSL implementation, as long as implements <code>hyper::net::Ssl</code>.</p>
-</div></div><h3 class='impl'><code>impl&lt;L: <a class='trait' href='../../hyper/net/trait.NetworkListener.html' title='hyper::net::NetworkListener'>NetworkListener</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + 'static&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></h3><div class='impl-items'><h4 id='method.handle' class='method'><code>fn <a href='#method.handle' class='fnname'>handle</a>&lt;H: <a class='trait' href='../../hyper/server/trait.Handler.html' title='hyper::server::Handler'>Handler</a> + 'static&gt;(self, handler: H) -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Listening.html' title='hyper::server::Listening'>Listening</a>&gt;</code></h4>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;L:&nbsp;<a class='trait' href='../../hyper/net/trait.NetworkListener.html' title='hyper::net::NetworkListener'>NetworkListener</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + 'static&gt; <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/server/mod.rs.html#230-242' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.handle' class='method'><span id='handle.v' class='invisible'><code>fn <a href='#method.handle' class='fnname'>handle</a>&lt;H:&nbsp;<a class='trait' href='../../hyper/server/trait.Handler.html' title='hyper::server::Handler'>Handler</a> + 'static&gt;(self, handler: H) -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Listening.html' title='hyper::server::Listening'>Listening</a>&gt;</code></span></h4>
 <div class='docblock'><p>Binds to a socket and starts handling connections.</p>
-</div><h4 id='method.handle_threads' class='method'><code>fn <a href='#method.handle_threads' class='fnname'>handle_threads</a>&lt;H: <a class='trait' href='../../hyper/server/trait.Handler.html' title='hyper::server::Handler'>Handler</a> + 'static&gt;(self, handler: H, threads: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Listening.html' title='hyper::server::Listening'>Listening</a>&gt;</code></h4>
+</div><h4 id='method.handle_threads' class='method'><span id='handle_threads.v' class='invisible'><code>fn <a href='#method.handle_threads' class='fnname'>handle_threads</a>&lt;H:&nbsp;<a class='trait' href='../../hyper/server/trait.Handler.html' title='hyper::server::Handler'>Handler</a> + 'static&gt;(self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; handler: H,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; threads: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class='type' href='../../hyper/error/type.Result.html' title='hyper::error::Result'>Result</a>&lt;<a class='struct' href='../../hyper/server/struct.Listening.html' title='hyper::server::Listening'>Listening</a>&gt;</code></span></h4>
 <div class='docblock'><p>Binds to a socket and starts handling connections with the provided
 number of threads.</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;L: <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
-</div></section>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;L:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../hyper/server/struct.Server.html' title='hyper::server::Server'>Server</a>&lt;L&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/server/mod.rs.html#144' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -103,6 +111,8 @@ number of threads.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -123,7 +133,7 @@ number of threads.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -134,11 +144,9 @@ number of threads.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

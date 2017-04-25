@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["list","Lists custom emoji for a team."]],"struct":[["ListResponse",""]]});
+initSidebarItems({"enum":[["ListError",""]],"fn":[["list","Lists custom emoji for a team."]],"struct":[["ListResponse",""]]});

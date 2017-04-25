@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["REPLACEMENT_CHARACTER","The replacement character, U+FFFD. In lossy decoding, insert it for every decoding error."]],"enum":[["DecodeError",""]],"fn":[["decode",""]],"struct":[["Incomplete",""],["LossyDecoder","A push-based, lossy decoder for UTF-8. Errors are replaced with the U+FFFD replacement character."]]});

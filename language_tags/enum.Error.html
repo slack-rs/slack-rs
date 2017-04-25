@@ -9,8 +9,10 @@
 
     <title>language_tags::Error - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,10 +45,10 @@
 
     <section id='main' class="content enum">
 <h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>language_tags</a>::<wbr><a class='enum' href=''>Error</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-22' class='srclink' href='../src/language_tags/lib.rs.html#79-96' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/language_tags/lib.rs.html#79-96' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum Error {
     DuplicateExtension,
     EmptyExtension,
@@ -60,21 +62,32 @@
 
 <p>Errors occur mainly during parsing of language tags.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.DuplicateExtension'><code>DuplicateExtension</code></td><td><div class='docblock'><p>The same extension subtag is only allowed once in a tag before the private use part.</p>
-</div></td></tr><tr><td id='variant.EmptyExtension'><code>EmptyExtension</code></td><td><div class='docblock'><p>If an extension subtag is present, it must not be empty.</p>
-</div></td></tr><tr><td id='variant.EmptyPrivateUse'><code>EmptyPrivateUse</code></td><td><div class='docblock'><p>If the <code>x</code> subtag is present, it must not be empty.</p>
-</div></td></tr><tr><td id='variant.ForbiddenChar'><code>ForbiddenChar</code></td><td><div class='docblock'><p>The langtag contains a char that is not A-Z, a-z, 0-9 or the dash.</p>
-</div></td></tr><tr><td id='variant.InvalidSubtag'><code>InvalidSubtag</code></td><td><div class='docblock'><p>A subtag fails to parse, it does not match any other subtags.</p>
-</div></td></tr><tr><td id='variant.InvalidLanguage'><code>InvalidLanguage</code></td><td><div class='docblock'><p>The given language subtag is invalid.</p>
-</div></td></tr><tr><td id='variant.SubtagTooLong'><code>SubtagTooLong</code></td><td><div class='docblock'><p>A subtag may be eight characters in length at maximum.</p>
-</div></td></tr><tr><td id='variant.TooManyExtlangs'><code>TooManyExtlangs</code></td><td><div class='docblock'><p>At maximum three extlangs are allowed, but zero to one extlangs are preferred.</p>
-</div></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html' title='std::error::Error'>ErrorTrait</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></h3><div class='impl-items'><h4 id='method.description' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html#method.description' class='fnname'>description</a>(&amp;self) -&gt; &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></h4>
-<h4 id='method.cause' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html#method.cause' class='fnname'>cause</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='trait' href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html' title='std::error::Error'>Error</a>&gt;</code></h4>
-</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#method.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
-</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></h3><div class='impl-items'><h4 id='method.eq' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
-<h4 id='method.ne' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
-</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html' title='core::cmp::Eq'>Eq</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></h3><div class='impl-items'></div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></h3><div class='impl-items'><h4 id='method.fmt-1' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
-</div></section>
+<span id='variant.DuplicateExtension' class='variant'><span id='DuplicateExtension.v' class='invisible'><code>DuplicateExtension</code></span></span><div class='docblock'><p>The same extension subtag is only allowed once in a tag before the private use part.</p>
+</div><span id='variant.EmptyExtension' class='variant'><span id='EmptyExtension.v' class='invisible'><code>EmptyExtension</code></span></span><div class='docblock'><p>If an extension subtag is present, it must not be empty.</p>
+</div><span id='variant.EmptyPrivateUse' class='variant'><span id='EmptyPrivateUse.v' class='invisible'><code>EmptyPrivateUse</code></span></span><div class='docblock'><p>If the <code>x</code> subtag is present, it must not be empty.</p>
+</div><span id='variant.ForbiddenChar' class='variant'><span id='ForbiddenChar.v' class='invisible'><code>ForbiddenChar</code></span></span><div class='docblock'><p>The langtag contains a char that is not A-Z, a-z, 0-9 or the dash.</p>
+</div><span id='variant.InvalidSubtag' class='variant'><span id='InvalidSubtag.v' class='invisible'><code>InvalidSubtag</code></span></span><div class='docblock'><p>A subtag fails to parse, it does not match any other subtags.</p>
+</div><span id='variant.InvalidLanguage' class='variant'><span id='InvalidLanguage.v' class='invisible'><code>InvalidLanguage</code></span></span><div class='docblock'><p>The given language subtag is invalid.</p>
+</div><span id='variant.SubtagTooLong' class='variant'><span id='SubtagTooLong.v' class='invisible'><code>SubtagTooLong</code></span></span><div class='docblock'><p>A subtag may be eight characters in length at maximum.</p>
+</div><span id='variant.TooManyExtlangs' class='variant'><span id='TooManyExtlangs.v' class='invisible'><code>TooManyExtlangs</code></span></span><div class='docblock'><p>At maximum three extlangs are allowed, but zero to one extlangs are preferred.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/language_tags/lib.rs.html#78' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html' title='core::cmp::Eq'>Eq</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/language_tags/lib.rs.html#78' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/language_tags/lib.rs.html#78' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.eq' class='method'><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class='method'><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, other: &amp;Rhs) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html' title='std::error::Error'>ErrorTrait</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/language_tags/lib.rs.html#98-111' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.description' class='method'><span id='description.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html#tymethod.description' class='fnname'>description</a>(&amp;self) -&gt; &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></span></h4>
+<div class='docblock'><p>A short description of the error. <a href="https://doc.rust-lang.org/nightly/std/error/trait.Error.html#tymethod.description">Read more</a></p>
+</div><h4 id='method.cause' class='method'><span id='cause.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html#method.cause' class='fnname'>cause</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='trait' href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html' title='std::error::Error'>Error</a>&gt;</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>The lower-level cause of this error, if any. <a href="https://doc.rust-lang.org/nightly/std/error/trait.Error.html#method.cause">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a> for <a class='enum' href='../language_tags/enum.Error.html' title='language_tags::Error'>Error</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/language_tags/lib.rs.html#113-117' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt-1' class='method'><span id='fmt.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -97,6 +110,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -117,7 +132,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -128,11 +143,9 @@
     <script>
         window.rootPath = "../";
         window.currentCrate = "language_tags";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

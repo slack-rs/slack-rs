@@ -9,8 +9,10 @@
 
     <title>slack_api::channels::set_topic - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,11 +45,11 @@
 
     <section id='main' class="content fn">
 <h1 class='fqn'><span class='in-band'>Function <a href='../index.html'>slack_api</a>::<wbr><a href='index.html'>channels</a>::<wbr><a class='fn' href=''>set_topic</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-3375' class='srclink' href='../../src/slack_api/channels.rs.html#241-246' title='goto source code'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn set_topic(client: &amp;<a class='struct' href='../../hyper/client/struct.Client.html' title='hyper::client::Client'>Client</a>, token: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, topic: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='type' href='../../slack_api/type.ApiResult.html' title='slack_api::ApiResult'>ApiResult</a>&lt;<a class='struct' href='../../slack_api/channels/struct.SetTopicResponse.html' title='slack_api::channels::SetTopicResponse'>SetTopicResponse</a>&gt;</pre><div class='docblock'><p>Sets the topic for a channel.</p>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/slack_api/mods/channels.rs.html#2268-2284' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub fn set_topic&lt;R&gt;(client: &amp;R,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; token: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request: &amp;<a class='struct' href='../../slack_api/channels/struct.SetTopicRequest.html' title='slack_api::channels::SetTopicRequest'>SetTopicRequest</a>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../../slack_api/channels/struct.SetTopicResponse.html' title='slack_api::channels::SetTopicResponse'>SetTopicResponse</a>, <a class='enum' href='../../slack_api/channels/enum.SetTopicError.html' title='slack_api::channels::SetTopicError'>SetTopicError</a>&lt;R::<a class='trait' href='../../slack_api/requests/trait.SlackWebRequestSender.html' title='slack_api::requests::SlackWebRequestSender'>Error</a>&gt;&gt; <span class='where fmt-newline'>where R: <a class='trait' href='../../slack_api/requests/trait.SlackWebRequestSender.html' title='slack_api::requests::SlackWebRequestSender'>SlackWebRequestSender</a></span></pre><div class='docblock'><p>Sets the topic for a channel.</p>
 
 <p>Wraps <a href="https://api.slack.com/methods/channels.setTopic">https://api.slack.com/methods/channels.setTopic</a></p>
 </div></section>
@@ -73,6 +75,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -93,7 +97,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -104,11 +108,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack_api";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

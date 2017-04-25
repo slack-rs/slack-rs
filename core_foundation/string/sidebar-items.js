@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CFString","An immutable string in one of a variety of encodings."]]});

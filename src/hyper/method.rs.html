@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/hyper-0.8.0/src/method.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.9/src/method.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>method.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -224,23 +226,6 @@
 <span id="181">181</span>
 <span id="182">182</span>
 <span id="183">183</span>
-<span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
-<span id="187">187</span>
-<span id="188">188</span>
-<span id="189">189</span>
-<span id="190">190</span>
-<span id="191">191</span>
-<span id="192">192</span>
-<span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
-<span id="196">196</span>
-<span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! The HTTP request method</span>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
@@ -251,8 +236,6 @@
 <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>Method</span>::{<span class='ident'>Options</span>, <span class='ident'>Get</span>, <span class='ident'>Post</span>, <span class='ident'>Put</span>, <span class='ident'>Delete</span>, <span class='ident'>Head</span>, <span class='ident'>Trace</span>, <span class='ident'>Connect</span>, <span class='ident'>Patch</span>,
                    <span class='ident'>Extension</span>};
 
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde-serialization&quot;</span>)]</span>
-<span class='kw'>use</span> <span class='ident'>serde</span>::{<span class='ident'>Deserialize</span>, <span class='ident'>Deserializer</span>, <span class='ident'>Serialize</span>, <span class='ident'>Serializer</span>};
 
 <span class='doccomment'>/// The Request Method (VERB)</span>
 <span class='doccomment'>///</span>
@@ -288,7 +271,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>AsRef</span><span class='op'>&lt;</span><span class='ident'>str</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Method</span> {
     <span class='kw'>fn</span> <span class='ident'>as_ref</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>Options</span> <span class='op'>=&gt;</span> <span class='string'>&quot;OPTIONS&quot;</span>,
             <span class='ident'>Get</span> <span class='op'>=&gt;</span> <span class='string'>&quot;GET&quot;</span>,
             <span class='ident'>Post</span> <span class='op'>=&gt;</span> <span class='string'>&quot;POST&quot;</span>,
@@ -310,9 +293,9 @@
     <span class='doccomment'>/// See [the spec](https://tools.ietf.org/html/rfc7231#section-4.2.1)</span>
     <span class='doccomment'>/// for more words.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>safe</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-            <span class='ident'>Get</span> <span class='op'>|</span> <span class='ident'>Head</span> <span class='op'>|</span> <span class='ident'>Options</span> <span class='op'>|</span> <span class='ident'>Trace</span> <span class='op'>=&gt;</span> <span class='boolval'>true</span>,
-            _ <span class='op'>=&gt;</span> <span class='boolval'>false</span>
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
+            <span class='ident'>Get</span> <span class='op'>|</span> <span class='ident'>Head</span> <span class='op'>|</span> <span class='ident'>Options</span> <span class='op'>|</span> <span class='ident'>Trace</span> <span class='op'>=&gt;</span> <span class='bool-val'>true</span>,
+            _ <span class='op'>=&gt;</span> <span class='bool-val'>false</span>
         }
     }
 
@@ -323,11 +306,11 @@
     <span class='doccomment'>/// more words.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>idempotent</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>safe</span>() {
-            <span class='boolval'>true</span>
+            <span class='bool-val'>true</span>
         } <span class='kw'>else</span> {
-            <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-                <span class='ident'>Put</span> <span class='op'>|</span> <span class='ident'>Delete</span> <span class='op'>=&gt;</span> <span class='boolval'>true</span>,
-                _ <span class='op'>=&gt;</span> <span class='boolval'>false</span>
+            <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
+                <span class='ident'>Put</span> <span class='op'>|</span> <span class='ident'>Delete</span> <span class='op'>=&gt;</span> <span class='bool-val'>true</span>,
+                _ <span class='op'>=&gt;</span> <span class='bool-val'>false</span>
             }
         }
     }
@@ -357,7 +340,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>Method</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>fmt</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='ident'>fmt</span>.<span class='ident'>write_str</span>(<span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='ident'>fmt</span>.<span class='ident'>write_str</span>(<span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>Options</span> <span class='op'>=&gt;</span> <span class='string'>&quot;OPTIONS&quot;</span>,
             <span class='ident'>Get</span> <span class='op'>=&gt;</span> <span class='string'>&quot;GET&quot;</span>,
             <span class='ident'>Post</span> <span class='op'>=&gt;</span> <span class='string'>&quot;POST&quot;</span>,
@@ -372,40 +355,25 @@
     }
 }
 
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde-serialization&quot;</span>)]</span>
-<span class='kw'>impl</span> <span class='ident'>Serialize</span> <span class='kw'>for</span> <span class='ident'>Method</span> {
-    <span class='kw'>fn</span> <span class='ident'>serialize</span><span class='op'>&lt;</span><span class='ident'>S</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>serializer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>S</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>S</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>S</span>: <span class='ident'>Serializer</span> {
-        <span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&quot;</span>, <span class='self'>self</span>).<span class='ident'>serialize</span>(<span class='ident'>serializer</span>)
-    }
-}
-
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;serde-serialization&quot;</span>)]</span>
-<span class='kw'>impl</span> <span class='ident'>Deserialize</span> <span class='kw'>for</span> <span class='ident'>Method</span> {
-    <span class='kw'>fn</span> <span class='ident'>deserialize</span><span class='op'>&lt;</span><span class='ident'>D</span><span class='op'>&gt;</span>(<span class='ident'>deserializer</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>D</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Method</span>, <span class='ident'>D</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>where</span> <span class='ident'>D</span>: <span class='ident'>Deserializer</span> {
-        <span class='kw'>let</span> <span class='ident'>string_representation</span>: <span class='ident'>String</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>Deserialize</span>::<span class='ident'>deserialize</span>(<span class='ident'>deserializer</span>));
-        <span class='prelude-val'>Ok</span>(<span class='ident'>FromStr</span>::<span class='ident'>from_str</span>(<span class='kw-2'>&amp;</span><span class='ident'>string_representation</span>[..]).<span class='ident'>unwrap</span>())
-    }
-} 
-
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>HashMap</span>;
     <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>str</span>::<span class='ident'>FromStr</span>;
     <span class='kw'>use</span> <span class='ident'>error</span>::<span class='ident'>Error</span>;
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>Method</span>;
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>Method</span>::{<span class='ident'>Get</span>, <span class='ident'>Post</span>, <span class='ident'>Put</span>, <span class='ident'>Extension</span>};
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>Method</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>Method</span>::{<span class='ident'>Get</span>, <span class='ident'>Post</span>, <span class='ident'>Put</span>, <span class='ident'>Extension</span>};
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_safe</span>() {
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='boolval'>true</span>, <span class='ident'>Get</span>.<span class='ident'>safe</span>());
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='boolval'>false</span>, <span class='ident'>Post</span>.<span class='ident'>safe</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='bool-val'>true</span>, <span class='ident'>Get</span>.<span class='ident'>safe</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='bool-val'>false</span>, <span class='ident'>Post</span>.<span class='ident'>safe</span>());
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_idempotent</span>() {
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='boolval'>true</span>, <span class='ident'>Get</span>.<span class='ident'>idempotent</span>());
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='boolval'>true</span>, <span class='ident'>Put</span>.<span class='ident'>idempotent</span>());
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='boolval'>false</span>, <span class='ident'>Post</span>.<span class='ident'>idempotent</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='bool-val'>true</span>, <span class='ident'>Get</span>.<span class='ident'>idempotent</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='bool-val'>true</span>, <span class='ident'>Put</span>.<span class='ident'>idempotent</span>());
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='bool-val'>false</span>, <span class='ident'>Post</span>.<span class='ident'>idempotent</span>());
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -466,6 +434,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -486,7 +456,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -497,11 +467,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

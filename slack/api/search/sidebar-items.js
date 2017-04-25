@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["all","Searches for messages and files matching a query."],["files","Searches for files matching a query."],["messages","Searches for messages matching a query."]],"struct":[["AllResponse",""],["FilesResponse",""],["MessageLink",""],["MessagesResponse",""],["SearchMatches",""],["SearchMessage",""],["SearchMessageChannel",""]]});

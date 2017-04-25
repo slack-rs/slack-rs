@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["GetError",""]],"fn":[["get","Retrieve a team's profile."]],"struct":[["GetRequest",""],["GetResponse",""],["GetResponseProfile",""],["GetResponseProfileField",""]]});

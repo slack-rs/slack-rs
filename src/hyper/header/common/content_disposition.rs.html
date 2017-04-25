@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/hyper-0.8.0/src/header/common/content_disposition.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.9/src/header/common/content_disposition.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>content_disposition.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
 
     
     
@@ -306,7 +308,6 @@
 <span id="263">263</span>
 <span id="264">264</span>
 <span id="265">265</span>
-<span id="266">266</span>
 </pre><pre class='rust '>
 <span class='comment'>// # References</span>
 <span class='comment'>//</span>
@@ -322,7 +323,7 @@
 <span class='kw'>use</span> <span class='ident'>url</span>::<span class='ident'>percent_encoding</span>;
 
 <span class='kw'>use</span> <span class='ident'>header</span>::{<span class='ident'>Header</span>, <span class='ident'>HeaderFormat</span>, <span class='ident'>parsing</span>};
-<span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>parsing</span>::<span class='ident'>parse_extended_value</span>;
+<span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>parsing</span>::{<span class='ident'>parse_extended_value</span>, <span class='ident'>HTTP_VALUE</span>};
 <span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>shared</span>::<span class='ident'>Charset</span>;
 
 <span class='doccomment'>/// The implied disposition of the content of the HTTP body</span>
@@ -412,9 +413,9 @@
             };
 
             <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>cd</span> <span class='op'>=</span> <span class='ident'>ContentDisposition</span> {
-                <span class='ident'>disposition</span>: <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>disposition</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;inline&quot;</span>) {
+                <span class='ident'>disposition</span>: <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='ident'>disposition</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;inline&quot;</span>) {
                     <span class='ident'>DispositionType</span>::<span class='ident'>Inline</span>
-                } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>disposition</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;attachment&quot;</span>) {
+                } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='ident'>disposition</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;attachment&quot;</span>) {
                     <span class='ident'>DispositionType</span>::<span class='ident'>Attachment</span>
                 } <span class='kw'>else</span> {
                     <span class='ident'>DispositionType</span>::<span class='ident'>Ext</span>(<span class='ident'>disposition</span>.<span class='ident'>to_owned</span>())
@@ -438,11 +439,11 @@
                 };
 
                 <span class='ident'>cd</span>.<span class='ident'>parameters</span>.<span class='ident'>push</span>(
-                    <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>key</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;filename&quot;</span>) {
+                    <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='ident'>key</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;filename&quot;</span>) {
                         <span class='ident'>DispositionParam</span>::<span class='ident'>Filename</span>(
                             <span class='ident'>Charset</span>::<span class='ident'>Ext</span>(<span class='string'>&quot;UTF-8&quot;</span>.<span class='ident'>to_owned</span>()), <span class='prelude-val'>None</span>,
                             <span class='ident'>val</span>.<span class='ident'>trim_matches</span>(<span class='string'>&#39;&quot;&#39;</span>).<span class='ident'>as_bytes</span>().<span class='ident'>to_owned</span>())
-                    } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>key</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;filename*&quot;</span>) {
+                    } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='ident'>key</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;filename*&quot;</span>) {
                         <span class='kw'>let</span> <span class='ident'>extended_value</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>parse_extended_value</span>(<span class='ident'>val</span>));
                         <span class='ident'>DispositionParam</span>::<span class='ident'>Filename</span>(<span class='ident'>extended_value</span>.<span class='ident'>charset</span>, <span class='ident'>extended_value</span>.<span class='ident'>language_tag</span>, <span class='ident'>extended_value</span>.<span class='ident'>value</span>)
                     } <span class='kw'>else</span> {
@@ -471,13 +472,13 @@
             <span class='ident'>DispositionType</span>::<span class='ident'>Ext</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='ident'>s</span>)),
         }
         <span class='kw'>for</span> <span class='ident'>param</span> <span class='kw'>in</span> <span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>parameters</span> {
-            <span class='kw'>match</span> <span class='op'>*</span><span class='ident'>param</span> {
+            <span class='kw'>match</span> <span class='kw-2'>*</span><span class='ident'>param</span> {
                 <span class='ident'>DispositionParam</span>::<span class='ident'>Filename</span>(<span class='kw-2'>ref</span> <span class='ident'>charset</span>, <span class='kw-2'>ref</span> <span class='ident'>opt_lang</span>, <span class='kw-2'>ref</span> <span class='ident'>bytes</span>) <span class='op'>=&gt;</span> {
-                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>use_simple_format</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='boolval'>false</span>;
+                    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>use_simple_format</span>: <span class='ident'>bool</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
                     <span class='kw'>if</span> <span class='ident'>opt_lang</span>.<span class='ident'>is_none</span>() {
-                        <span class='kw'>if</span> <span class='kw'>let</span> <span class='ident'>Charset</span>::<span class='ident'>Ext</span>(<span class='kw-2'>ref</span> <span class='ident'>ext</span>) <span class='op'>=</span> <span class='op'>*</span><span class='ident'>charset</span> {
-                            <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='op'>*</span><span class='op'>*</span><span class='ident'>ext</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;utf-8&quot;</span>) {
-                                <span class='ident'>use_simple_format</span> <span class='op'>=</span> <span class='boolval'>true</span>;
+                        <span class='kw'>if</span> <span class='kw'>let</span> <span class='ident'>Charset</span>::<span class='ident'>Ext</span>(<span class='kw-2'>ref</span> <span class='ident'>ext</span>) <span class='op'>=</span> <span class='kw-2'>*</span><span class='ident'>charset</span> {
+                            <span class='kw'>if</span> <span class='ident'>UniCase</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='kw-2'>*</span><span class='ident'>ext</span>) <span class='op'>==</span> <span class='ident'>UniCase</span>(<span class='string'>&quot;utf-8&quot;</span>) {
+                                <span class='ident'>use_simple_format</span> <span class='op'>=</span> <span class='bool-val'>true</span>;
                             }
                         }
                     }
@@ -489,13 +490,12 @@
                                     }));
                     } <span class='kw'>else</span> {
                         <span class='macro'>try</span><span class='macro'>!</span>(<span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;; filename*={}&#39;&quot;</span>, <span class='ident'>charset</span>));
-                        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='ident'>lang</span>) <span class='op'>=</span> <span class='op'>*</span><span class='ident'>opt_lang</span> {
+                        <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='ident'>lang</span>) <span class='op'>=</span> <span class='kw-2'>*</span><span class='ident'>opt_lang</span> {
                             <span class='macro'>try</span><span class='macro'>!</span>(<span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='ident'>lang</span>));
                         };
                         <span class='macro'>try</span><span class='macro'>!</span>(<span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;&#39;&quot;</span>));
                         <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>f</span>.<span class='ident'>write_str</span>(
-                            <span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>percent_encoding</span>::<span class='ident'>percent_encode</span>(
-                                <span class='ident'>bytes</span>, <span class='ident'>percent_encoding</span>::<span class='ident'>HTTP_VALUE_ENCODE_SET</span>)))
+                            <span class='kw-2'>&amp;</span><span class='ident'>percent_encoding</span>::<span class='ident'>percent_encode</span>(<span class='ident'>bytes</span>, <span class='ident'>HTTP_VALUE</span>).<span class='ident'>to_string</span>()))
                     }
                 },
                 <span class='ident'>DispositionParam</span>::<span class='ident'>Ext</span>(<span class='kw-2'>ref</span> <span class='ident'>k</span>, <span class='kw-2'>ref</span> <span class='ident'>v</span>) <span class='op'>=&gt;</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;; {}=\&quot;{}\&quot;&quot;</span>, <span class='ident'>k</span>, <span class='ident'>v</span>)),
@@ -507,7 +507,7 @@
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
-    <span class='kw'>use</span> <span class='ident'>super</span>::{<span class='ident'>ContentDisposition</span>,<span class='ident'>DispositionType</span>,<span class='ident'>DispositionParam</span>};
+    <span class='kw'>use</span> <span class='kw'>super</span>::{<span class='ident'>ContentDisposition</span>,<span class='ident'>DispositionType</span>,<span class='ident'>DispositionParam</span>};
     <span class='kw'>use</span> ::<span class='ident'>header</span>::<span class='ident'>Header</span>;
     <span class='kw'>use</span> ::<span class='ident'>header</span>::<span class='ident'>shared</span>::<span class='ident'>Charset</span>;
 
@@ -598,6 +598,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -618,7 +620,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -629,11 +631,9 @@
     <script>
         window.rootPath = "../../../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../../jquery.js"></script>
     <script src="../../../../main.js"></script>
-    
     <script defer src="../../../../search-index.js"></script>
 </body>
 </html>

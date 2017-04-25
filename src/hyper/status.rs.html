@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/hyper-0.8.0/src/status.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.9/src/status.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>status.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -1090,7 +1092,7 @@
 
     <span class='attribute'>#[<span class='ident'>doc</span>(<span class='ident'>hidden</span>)]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>to_u16</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>u16</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>StatusCode</span>::<span class='ident'>Continue</span> <span class='op'>=&gt;</span> <span class='number'>100</span>,
             <span class='ident'>StatusCode</span>::<span class='ident'>SwitchingProtocols</span> <span class='op'>=&gt;</span> <span class='number'>101</span>,
             <span class='ident'>StatusCode</span>::<span class='ident'>Processing</span> <span class='op'>=&gt;</span> <span class='number'>102</span>,
@@ -1166,7 +1168,7 @@
     <span class='doccomment'>/// Bear in mind also that in HTTP/2.0 the reason phrase is abolished from transmission, and so</span>
     <span class='doccomment'>/// this canonical reason phrase really is the only reason phrase you’ll find.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>canonical_reason</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;static</span> <span class='ident'>str</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>StatusCode</span>::<span class='ident'>Continue</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='string'>&quot;Continue&quot;</span>),
             <span class='ident'>StatusCode</span>::<span class='ident'>SwitchingProtocols</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='string'>&quot;Switching Protocols&quot;</span>),
             <span class='ident'>StatusCode</span>::<span class='ident'>Processing</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='string'>&quot;Processing&quot;</span>),
@@ -1315,7 +1317,7 @@
 <span class='kw'>impl</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>StatusCode</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>StatusCode</span> {
-        <span class='op'>*</span><span class='self'>self</span>
+        <span class='kw-2'>*</span><span class='self'>self</span>
     }
 }
 
@@ -1329,9 +1331,9 @@
 <span class='kw'>impl</span> <span class='ident'>Ord</span> <span class='kw'>for</span> <span class='ident'>StatusCode</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>StatusCode</span>) <span class='op'>-&gt;</span> <span class='ident'>Ordering</span> {
-        <span class='kw'>if</span> <span class='op'>*</span><span class='self'>self</span> <span class='op'>&lt;</span> <span class='op'>*</span><span class='ident'>other</span> {
+        <span class='kw'>if</span> <span class='kw-2'>*</span><span class='self'>self</span> <span class='op'>&lt;</span> <span class='kw-2'>*</span><span class='ident'>other</span> {
             <span class='ident'>Ordering</span>::<span class='ident'>Less</span>
-        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='op'>*</span><span class='self'>self</span> <span class='op'>&gt;</span> <span class='op'>*</span><span class='ident'>other</span> {
+        } <span class='kw'>else</span> <span class='kw'>if</span> <span class='kw-2'>*</span><span class='self'>self</span> <span class='op'>&gt;</span> <span class='kw-2'>*</span><span class='ident'>other</span> {
             <span class='ident'>Ordering</span>::<span class='ident'>Greater</span>
         } <span class='kw'>else</span> {
             <span class='ident'>Ordering</span>::<span class='ident'>Equal</span>
@@ -1434,7 +1436,7 @@
     <span class='doccomment'>/// by a `NoClass`, variant that resolves to 200 (Ok) as default code.</span>
     <span class='doccomment'>/// This is a common handling for unknown status codes in major browsers.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>default_code</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>StatusCode</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>StatusClass</span>::<span class='ident'>Informational</span> <span class='op'>=&gt;</span> <span class='ident'>StatusCode</span>::<span class='ident'>Continue</span>,
             <span class='ident'>StatusClass</span>::<span class='ident'>Success</span> <span class='op'>=&gt;</span> <span class='ident'>StatusCode</span>::<span class='prelude-val'>Ok</span>,
             <span class='ident'>StatusClass</span>::<span class='ident'>Redirection</span> <span class='op'>=&gt;</span> <span class='ident'>StatusCode</span>::<span class='ident'>MultipleChoices</span>,
@@ -1447,8 +1449,8 @@
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>StatusCode</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw-2'>*</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>StatusCode</span>::<span class='kw-2'>*</span>;
 
     <span class='comment'>// Check that the following entities are properly inter-connected:</span>
     <span class='comment'>//   - numerical code</span>
@@ -1562,6 +1564,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -1582,7 +1586,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -1593,11 +1597,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

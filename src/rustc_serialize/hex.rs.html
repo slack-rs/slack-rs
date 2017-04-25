@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/rustc-serialize-0.3.18/src/hex.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/rustc-serialize-0.3.24/src/hex.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>hex.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     <link rel="shortcut icon" href="https://www.rust-lang.org/favicon.ico">
     
@@ -26,7 +28,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../rustc_serialize/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='' width='100'></a>
+        <a href='../../rustc_serialize/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='logo' width='100'></a>
         
     </nav>
 
@@ -250,6 +252,18 @@
 <span id="207">207</span>
 <span id="208">208</span>
 <span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2013-2014 The Rust Project Developers. See the COPYRIGHT</span>
 <span class='comment'>// file at the top-level directory of this distribution and at</span>
@@ -265,7 +279,7 @@
 
 <span class='doccomment'>//! Hex binary-to-text encoding</span>
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>FromHexError</span>::<span class='op'>*</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>FromHexError</span>::<span class='kw-2'>*</span>;
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>error</span>;
@@ -297,12 +311,18 @@
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>with_capacity</span>(<span class='self'>self</span>.<span class='ident'>len</span>() <span class='op'>*</span> <span class='number'>2</span>);
         <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='ident'>byte</span> <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>iter</span>() {
             <span class='ident'>v</span>.<span class='ident'>push</span>(<span class='ident'>CHARS</span>[(<span class='ident'>byte</span> <span class='op'>&gt;&gt;</span> <span class='number'>4</span>) <span class='kw'>as</span> <span class='ident'>usize</span>]);
-            <span class='ident'>v</span>.<span class='ident'>push</span>(<span class='ident'>CHARS</span>[(<span class='ident'>byte</span> <span class='kw-2'>&amp;</span> <span class='number'>0xf</span>) <span class='kw'>as</span> <span class='ident'>usize</span>]);
+            <span class='ident'>v</span>.<span class='ident'>push</span>(<span class='ident'>CHARS</span>[(<span class='ident'>byte</span> <span class='op'>&amp;</span> <span class='number'>0xf</span>) <span class='kw'>as</span> <span class='ident'>usize</span>]);
         }
 
         <span class='kw'>unsafe</span> {
             <span class='ident'>String</span>::<span class='ident'>from_utf8_unchecked</span>(<span class='ident'>v</span>)
         }
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='question-mark'>?</span><span class='ident'>Sized</span> <span class='op'>+</span> <span class='ident'>ToHex</span><span class='op'>&gt;</span> <span class='ident'>ToHex</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>T</span> {
+    <span class='kw'>fn</span> <span class='ident'>to_hex</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
+        (<span class='kw-2'>*</span><span class='kw-2'>*</span><span class='self'>self</span>).<span class='ident'>to_hex</span>()
     }
 }
 
@@ -324,7 +344,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>FromHexError</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>InvalidHexCharacter</span>(<span class='ident'>ch</span>, <span class='ident'>idx</span>) <span class='op'>=&gt;</span>
                 <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Invalid character &#39;{}&#39; at position {}&quot;</span>, <span class='ident'>ch</span>, <span class='ident'>idx</span>),
             <span class='ident'>InvalidHexLength</span> <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Invalid input length&quot;</span>),
@@ -334,7 +354,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>error</span>::<span class='ident'>Error</span> <span class='kw'>for</span> <span class='ident'>FromHexError</span> {
     <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>InvalidHexCharacter</span>(_, _) <span class='op'>=&gt;</span> <span class='string'>&quot;invalid character&quot;</span>,
             <span class='ident'>InvalidHexLength</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid length&quot;</span>,
         }
@@ -375,7 +395,7 @@
         <span class='comment'>// This may be an overestimate if there is any whitespace</span>
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>b</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>with_capacity</span>(<span class='self'>self</span>.<span class='ident'>len</span>() <span class='op'>/</span> <span class='number'>2</span>);
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>modulus</span> <span class='op'>=</span> <span class='number'>0</span>;
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>buf</span> <span class='op'>=</span> <span class='number'>08</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>buf</span> <span class='op'>=</span> <span class='number'>0</span>;
 
         <span class='kw'>for</span> (<span class='ident'>idx</span>, <span class='ident'>byte</span>) <span class='kw'>in</span> <span class='self'>self</span>.<span class='ident'>bytes</span>().<span class='ident'>enumerate</span>() {
             <span class='ident'>buf</span> <span class='op'>&lt;&lt;=</span> <span class='number'>4</span>;
@@ -405,6 +425,12 @@
             <span class='number'>0</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>b</span>.<span class='ident'>into_iter</span>().<span class='ident'>collect</span>()),
             _ <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>InvalidHexLength</span>),
         }
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='question-mark'>?</span><span class='ident'>Sized</span> <span class='op'>+</span> <span class='ident'>FromHex</span><span class='op'>&gt;</span> <span class='ident'>FromHex</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>T</span> {
+    <span class='kw'>fn</span> <span class='ident'>from_hex</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>, <span class='ident'>FromHexError</span><span class='op'>&gt;</span> {
+        (<span class='kw-2'>*</span><span class='kw-2'>*</span><span class='self'>self</span>).<span class='ident'>from_hex</span>()
     }
 }
 
@@ -484,6 +510,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -504,7 +532,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -515,11 +543,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "rustc_serialize";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

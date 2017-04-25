@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["SlackWebRequestSender","Functionality for sending authenticated and unauthenticated requests to Slack via HTTP."]]});

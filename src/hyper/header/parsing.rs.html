@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/hyper-0.8.0/src/header/parsing.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.9/src/header/parsing.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>parsing.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -263,6 +265,8 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Utility functions for Header implementations.</span>
 
@@ -278,7 +282,7 @@
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_one_raw_str</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>str</span>::<span class='ident'>FromStr</span><span class='op'>&gt;</span>(<span class='ident'>raw</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> ::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> {
     <span class='kw'>if</span> <span class='ident'>raw</span>.<span class='ident'>len</span>() <span class='op'>!=</span> <span class='number'>1</span> <span class='op'>||</span> <span class='kw'>unsafe</span> { <span class='ident'>raw</span>.<span class='ident'>get_unchecked</span>(<span class='number'>0</span>) } <span class='op'>==</span> <span class='string'>b&quot;&quot;</span> { <span class='kw'>return</span> <span class='prelude-val'>Err</span>(::<span class='ident'>Error</span>::<span class='ident'>Header</span>) }
     <span class='comment'>// we JUST checked that raw.len() == 1, so raw[0] WILL exist.</span>
-    <span class='ident'>from_raw_str</span>(<span class='kw-2'>&amp;</span> <span class='kw'>unsafe</span> { <span class='ident'>raw</span>.<span class='ident'>get_unchecked</span>(<span class='number'>0</span>) })
+    <span class='ident'>from_raw_str</span>(<span class='op'>&amp;</span> <span class='kw'>unsafe</span> { <span class='ident'>raw</span>.<span class='ident'>get_unchecked</span>(<span class='number'>0</span>) })
 }
 
 <span class='doccomment'>/// Reads a raw string into a value.</span>
@@ -289,24 +293,18 @@
 
 <span class='doccomment'>/// Reads a comma-delimited raw header into a Vec.</span>
 <span class='attribute'>#[<span class='ident'>inline</span>]</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_comma_delimited</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>str</span>::<span class='ident'>FromStr</span><span class='op'>&gt;</span>(<span class='ident'>raw</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> ::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> {
-    <span class='kw'>if</span> <span class='ident'>raw</span>.<span class='ident'>len</span>() <span class='op'>!=</span> <span class='number'>1</span> {
-        <span class='kw'>return</span> <span class='prelude-val'>Err</span>(::<span class='ident'>Error</span>::<span class='ident'>Header</span>);
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_comma_delimited</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>str</span>::<span class='ident'>FromStr</span>, <span class='ident'>S</span>: <span class='ident'>AsRef</span><span class='op'>&lt;</span>[<span class='ident'>u8</span>]<span class='op'>&gt;&gt;</span>(<span class='ident'>raw</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>S</span>]) <span class='op'>-&gt;</span> ::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> {
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>result</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
+    <span class='kw'>for</span> <span class='ident'>s</span> <span class='kw'>in</span> <span class='ident'>raw</span> {
+        <span class='kw'>let</span> <span class='ident'>s</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>str</span>::<span class='ident'>from_utf8</span>(<span class='ident'>s</span>.<span class='ident'>as_ref</span>()));
+        <span class='ident'>result</span>.<span class='ident'>extend</span>(<span class='ident'>s</span>.<span class='ident'>split</span>(<span class='string'>&#39;,&#39;</span>)
+                      .<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw'>match</span> <span class='ident'>x</span>.<span class='ident'>trim</span>() {
+                          <span class='string'>&quot;&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
+                          <span class='ident'>y</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>y</span>)
+                      })
+                      .<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>parse</span>().<span class='ident'>ok</span>()))
     }
-    <span class='comment'>// we JUST checked that raw.len() == 1, so raw[0] WILL exist.</span>
-    <span class='ident'>from_one_comma_delimited</span>(<span class='kw-2'>&amp;</span> <span class='kw'>unsafe</span> { <span class='ident'>raw</span>.<span class='ident'>get_unchecked</span>(<span class='number'>0</span>) }[..])
-}
-
-<span class='doccomment'>/// Reads a comma-delimited raw string into a Vec.</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_one_comma_delimited</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>str</span>::<span class='ident'>FromStr</span><span class='op'>&gt;</span>(<span class='ident'>raw</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>]) <span class='op'>-&gt;</span> ::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;&gt;</span> {
-    <span class='kw'>let</span> <span class='ident'>s</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>str</span>::<span class='ident'>from_utf8</span>(<span class='ident'>raw</span>));
-    <span class='prelude-val'>Ok</span>(<span class='ident'>s</span>.<span class='ident'>split</span>(<span class='string'>&#39;,&#39;</span>)
-        .<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='kw'>match</span> <span class='ident'>x</span>.<span class='ident'>trim</span>() {
-            <span class='string'>&quot;&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
-            <span class='ident'>y</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>y</span>)
-        })
-        .<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>.<span class='ident'>parse</span>().<span class='ident'>ok</span>())
-        .<span class='ident'>collect</span>())
+    <span class='prelude-val'>Ok</span>(<span class='ident'>result</span>)
 }
 
 <span class='doccomment'>/// Format an array into a comma-delimited string.</span>
@@ -390,7 +388,7 @@
     <span class='comment'>// Interpret the third piece as a sequence of value characters</span>
     <span class='kw'>let</span> <span class='ident'>value</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>parts</span>.<span class='ident'>next</span>() {
         <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(::<span class='ident'>Error</span>::<span class='ident'>Header</span>),
-        <span class='prelude-val'>Some</span>(<span class='ident'>v</span>) <span class='op'>=&gt;</span> <span class='ident'>percent_encoding</span>::<span class='ident'>percent_decode</span>(<span class='ident'>v</span>.<span class='ident'>as_bytes</span>()),
+        <span class='prelude-val'>Some</span>(<span class='ident'>v</span>) <span class='op'>=&gt;</span> <span class='ident'>percent_encoding</span>::<span class='ident'>percent_decode</span>(<span class='ident'>v</span>.<span class='ident'>as_bytes</span>()).<span class='ident'>collect</span>(),
     };
 
     <span class='prelude-val'>Ok</span>(<span class='ident'>ExtendedValue</span> {
@@ -400,11 +398,19 @@
     })
 }
 
+<span class='macro'>define_encode_set</span><span class='macro'>!</span> {
+    <span class='doccomment'>/// This encode set is used for HTTP header values and is defined at</span>
+    <span class='doccomment'>/// https://tools.ietf.org/html/rfc5987#section-3.2</span>
+    <span class='kw'>pub</span> <span class='ident'>HTTP_VALUE</span> <span class='op'>=</span> [<span class='ident'>percent_encoding</span>::<span class='ident'>SIMPLE_ENCODE_SET</span>] <span class='op'>|</span> {
+        <span class='string'>&#39; &#39;</span>, <span class='string'>&#39;&quot;&#39;</span>, <span class='string'>&#39;%&#39;</span>, <span class='string'>&#39;\&#39;&#39;</span>, <span class='string'>&#39;(&#39;</span>, <span class='string'>&#39;)&#39;</span>, <span class='string'>&#39;*&#39;</span>, <span class='string'>&#39;,&#39;</span>, <span class='string'>&#39;/&#39;</span>, <span class='string'>&#39;:&#39;</span>, <span class='string'>&#39;;&#39;</span>, <span class='string'>&#39;&lt;&#39;</span>, <span class='string'>&#39;-&#39;</span>, <span class='string'>&#39;&gt;&#39;</span>, <span class='string'>&#39;?&#39;</span>,
+        <span class='string'>&#39;[&#39;</span>, <span class='string'>&#39;\\&#39;</span>, <span class='string'>&#39;]&#39;</span>, <span class='string'>&#39;{&#39;</span>, <span class='string'>&#39;}&#39;</span>
+    }
+}
+
 <span class='kw'>impl</span> <span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>ExtendedValue</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
         <span class='kw'>let</span> <span class='ident'>encoded_value</span> <span class='op'>=</span>
-            <span class='ident'>percent_encoding</span>::<span class='ident'>percent_encode</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>value</span>[..],
-                                             <span class='ident'>percent_encoding</span>::<span class='ident'>HTTP_VALUE_ENCODE_SET</span>);
+            <span class='ident'>percent_encoding</span>::<span class='ident'>percent_encode</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>.<span class='ident'>value</span>[..], <span class='ident'>HTTP_VALUE</span>);
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='kw-2'>ref</span> <span class='ident'>lang</span>) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>language_tag</span> {
             <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&#39;{}&#39;{}&quot;</span>, <span class='self'>self</span>.<span class='ident'>charset</span>, <span class='ident'>lang</span>, <span class='ident'>encoded_value</span>)
         } <span class='kw'>else</span> {
@@ -416,7 +422,7 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
     <span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>shared</span>::<span class='ident'>Charset</span>;
-    <span class='kw'>use</span> <span class='ident'>super</span>::{<span class='ident'>ExtendedValue</span>, <span class='ident'>parse_extended_value</span>};
+    <span class='kw'>use</span> <span class='kw'>super</span>::{<span class='ident'>ExtendedValue</span>, <span class='ident'>parse_extended_value</span>};
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_parse_extended_value_with_encoding_and_language_tag</span>() {
@@ -510,6 +516,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -530,7 +538,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -541,11 +549,9 @@
     <script>
         window.rootPath = "../../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
-    
     <script defer src="../../../search-index.js"></script>
 </body>
 </html>

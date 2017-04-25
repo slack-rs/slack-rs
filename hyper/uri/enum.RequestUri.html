@@ -9,8 +9,10 @@
 
     <title>hyper::uri::RequestUri - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,10 +45,10 @@
 
     <section id='main' class="content enum">
 <h1 class='fqn'><span class='in-band'>Enum <a href='../index.html'>hyper</a>::<wbr><a href='index.html'>uri</a>::<wbr><a class='enum' href=''>RequestUri</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-7548' class='srclink' href='../../src/hyper/uri.rs.html#25-51' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/hyper/uri.rs.html#25-51' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum RequestUri {
     AbsolutePath(<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>),
     AbsoluteUri(<a class='struct' href='../../hyper/struct.Url.html' title='hyper::Url'>Url</a>),
@@ -70,11 +72,11 @@ is to a proxy.</p>
 </code></pre>
 </blockquote>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.AbsolutePath'><code>AbsolutePath</code></td><td><div class='docblock'><p>The most common request target, an absolute path and optional query.</p>
+<span id='variant.AbsolutePath' class='variant'><span id='AbsolutePath.v' class='invisible'><code>AbsolutePath(<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>)</code></span></span><div class='docblock'><p>The most common request target, an absolute path and optional query.</p>
 
 <p>For example, the line <code>GET /where?q=now HTTP/1.1</code> would parse the URI
 as <code>AbsolutePath(&quot;/where?q=now&quot;.to_string())</code>.</p>
-</div></td></tr><tr><td id='variant.AbsoluteUri'><code>AbsoluteUri</code></td><td><div class='docblock'><p>An absolute URI. Used in conjunction with proxies.</p>
+</div><span id='variant.AbsoluteUri' class='variant'><span id='AbsoluteUri.v' class='invisible'><code>AbsoluteUri(<a class='struct' href='../../hyper/struct.Url.html' title='hyper::Url'>Url</a>)</code></span></span><div class='docblock'><p>An absolute URI. Used in conjunction with proxies.</p>
 
 <blockquote>
 <p>When making a request to a proxy, other than a CONNECT or server-wide
@@ -84,21 +86,34 @@ URI in absolute-form as the request-target.</p>
 
 <p>An example StartLine with an <code>AbsoluteUri</code> would be
 <code>GET http://www.example.org/pub/WWW/TheProject.html HTTP/1.1</code>.</p>
-</div></td></tr><tr><td id='variant.Authority'><code>Authority</code></td><td><div class='docblock'><p>The authority form is only for use with <code>CONNECT</code> requests.</p>
+</div><span id='variant.Authority' class='variant'><span id='Authority.v' class='invisible'><code>Authority(<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>)</code></span></span><div class='docblock'><p>The authority form is only for use with <code>CONNECT</code> requests.</p>
 
 <p>An example StartLine: <code>CONNECT www.example.com:80 HTTP/1.1</code>.</p>
-</div></td></tr><tr><td id='variant.Star'><code>Star</code></td><td><div class='docblock'><p>The star is used to target the entire server, instead of a specific resource.</p>
+</div><span id='variant.Star' class='variant'><span id='Star.v' class='invisible'><code>Star</code></span></span><div class='docblock'><p>The star is used to target the entire server, instead of a specific resource.</p>
 
 <p>This is only used for a server-wide <code>OPTIONS</code> request.</p>
-</div></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html' title='core::str::FromStr'>FromStr</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></h3><div class='impl-items'><h4 id='assoc_type.Err' class='type'><code>type Err = <a class='enum' href='../../hyper/error/enum.Error.html' title='hyper::error::Error'>Error</a></code></h4>
-<h4 id='method.from_str' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html#method.from_str' class='fnname'>from_str</a>(s: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a>, <a class='enum' href='../../hyper/error/enum.Error.html' title='hyper::error::Error'>Error</a>&gt;</code></h4>
-</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#method.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
-</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></h4>
-<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
-</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></h3><div class='impl-items'><h4 id='method.eq' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
-<h4 id='method.ne' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
-</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></h3><div class='impl-items'><h4 id='method.fmt-1' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
-</div></section>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/uri.rs.html#24' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/uri.rs.html#24' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.eq' class='method'><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class='method'><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/uri.rs.html#24' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class='method'><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class='method'><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html' title='core::str::FromStr'>FromStr</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/uri.rs.html#53-74' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Err' class='type'><span id='Err.t' class='invisible'><code>type <a href='https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html#associatedtype.Err' class='type'>Err</a> = <a class='enum' href='../../hyper/error/enum.Error.html' title='hyper::error::Error'>Error</a></code></span></h4>
+<div class='docblock'><p>The associated error which can be returned from parsing.</p>
+</div><h4 id='method.from_str' class='method'><span id='from_str.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html#tymethod.from_str' class='fnname'>from_str</a>(s: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a>, <a class='enum' href='../../hyper/error/enum.Error.html' title='hyper::error::Error'>Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Parses a string <code>s</code> to return a value of this type. <a href="https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html#tymethod.from_str">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html' title='core::fmt::Display'>Display</a> for <a class='enum' href='../../hyper/uri/enum.RequestUri.html' title='hyper::uri::RequestUri'>RequestUri</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/hyper/uri.rs.html#76-85' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt-1' class='method'><span id='fmt.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -121,6 +136,8 @@ URI in absolute-form as the request-target.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -141,7 +158,7 @@ URI in absolute-form as the request-target.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -152,11 +169,9 @@ URI in absolute-form as the request-target.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

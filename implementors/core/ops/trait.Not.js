@@ -1,5 +1,15 @@
 (function() {var implementors = {};
-implementors['libc'] = [];implementors['openssl'] = ["impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html' title='core::ops::Not'>Not</a> for <a class='struct' href='openssl/ssl/struct.SslContextOptions.html' title='openssl::ssl::SslContextOptions'>SslContextOptions</a>","impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html' title='core::ops::Not'>Not</a> for <a class='struct' href='openssl/ssl/struct.SslVerifyMode.html' title='openssl::ssl::SslVerifyMode'>SslVerifyMode</a>",];implementors['hyper'] = [];implementors['websocket'] = ["impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html' title='core::ops::Not'>Not</a> for <a class='struct' href='websocket/ws/util/header/struct.DataFrameFlags.html' title='websocket::ws::util::header::DataFrameFlags'>DataFrameFlags</a>",];implementors['slack'] = ["impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Not.html' title='core::ops::Not'>Not</a> for <a class='struct' href='websocket/ws/util/header/struct.DataFrameFlags.html' title='websocket::ws::util::header::DataFrameFlags'>DataFrameFlags</a>",];
+implementors["antidote"] = [];
+implementors["bytes"] = [];
+implementors["core_foundation"] = [];
+implementors["hyper"] = [];
+implementors["libc"] = [];
+implementors["reqwest"] = [];
+implementors["serde"] = [];
+implementors["serde_urlencoded"] = [];
+implementors["slack"] = [];
+implementors["syn"] = [];
+implementors["tungstenite"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);

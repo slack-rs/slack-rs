@@ -1,5 +1,6 @@
 (function() {var implementors = {};
-implementors['hyper'] = [];implementors['websocket'] = [];
+implementors["hyper"] = [];
+implementors["slack"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);

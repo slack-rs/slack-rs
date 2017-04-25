@@ -9,8 +9,10 @@
 
     <title>rand::distributions::exponential - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     <link rel="shortcut icon" href="https://www.rust-lang.org/favicon.ico">
     
@@ -26,7 +28,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../../rand/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk.png' alt='' width='100'></a>
+        <a href='../../../rand/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk.png' alt='logo' width='100'></a>
         <p class='location'><a href='../../index.html'>rand</a>::<wbr><a href='../index.html'>distributions</a></p><script>window.sidebarCurrent = {name: 'exponential', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
     </nav>
 
@@ -43,31 +45,27 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../../index.html'>rand</a>::<wbr><a href='../index.html'>distributions</a>::<wbr><a class='mod' href=''>exponential</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-466' class='srclink' href='../../../src/rand/distributions/exponential.rs.html#11-125' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/rand/distributions/exponential.rs.html#11-124' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>The exponential distribution.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Exp.html'
-                               title='rand::distributions::exponential::Exp'>Exp</a></td>
-                        <td class='docblock short'>
-                             <p>The exponential distribution <code>Exp(lambda)</code>.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Exp1.html'
-                               title='rand::distributions::exponential::Exp1'>Exp1</a></td>
-                        <td class='docblock short'>
-                             <p>A wrapper around an <code>f64</code> to generate Exp(1) random numbers.</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Exp.html'
+                                  title='rand::distributions::exponential::Exp'>Exp</a></td>
+                           <td class='docblock-short'>
+                                <p>The exponential distribution <code>Exp(lambda)</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Exp1.html'
+                                  title='rand::distributions::exponential::Exp1'>Exp1</a></td>
+                           <td class='docblock-short'>
+                                <p>A wrapper around an <code>f64</code> to generate Exp(1) random numbers.</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -90,6 +88,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -110,7 +110,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -121,11 +121,9 @@
     <script>
         window.rootPath = "../../../";
         window.currentCrate = "rand";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
-    
     <script defer src="../../../search-index.js"></script>
 </body>
 </html>

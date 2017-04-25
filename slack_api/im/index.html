@@ -9,8 +9,10 @@
 
     <title>slack_api::im - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,110 +45,176 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>slack_api</a>::<wbr><a class='mod' href=''>im</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-4178' class='srclink' href='../../src/slack_api/im.rs.html#15-299' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/slack_api/mods/im.rs.html#1-976' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Get info on your direct messages.</p>
-
-<p>For more information, see <a href="https://api.slack.com/methods">Slack&#39;s API
-documentation</a>.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.ChannelId.html'
-                               title='slack_api::im::ChannelId'>ChannelId</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.CloseResponse.html'
-                               title='slack_api::im::CloseResponse'>CloseResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.HistoryResponse.html'
-                               title='slack_api::im::HistoryResponse'>HistoryResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.ListResponse.html'
-                               title='slack_api::im::ListResponse'>ListResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.MarkResponse.html'
-                               title='slack_api::im::MarkResponse'>MarkResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.OpenResponse.html'
-                               title='slack_api::im::OpenResponse'>OpenResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CloseRequest.html'
+                                  title='slack_api::im::CloseRequest'>CloseRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CloseResponse.html'
+                                  title='slack_api::im::CloseResponse'>CloseResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.HistoryRequest.html'
+                                  title='slack_api::im::HistoryRequest'>HistoryRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.HistoryResponse.html'
+                                  title='slack_api::im::HistoryResponse'>HistoryResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ListResponse.html'
+                                  title='slack_api::im::ListResponse'>ListResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.MarkRequest.html'
+                                  title='slack_api::im::MarkRequest'>MarkRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.MarkResponse.html'
+                                  title='slack_api::im::MarkResponse'>MarkResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.OpenRequest.html'
+                                  title='slack_api::im::OpenRequest'>OpenRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.OpenResponse.html'
+                                  title='slack_api::im::OpenResponse'>OpenResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RepliesRequest.html'
+                                  title='slack_api::im::RepliesRequest'>RepliesRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RepliesResponse.html'
+                                  title='slack_api::im::RepliesResponse'>RepliesResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.close.html'
-                               title='slack_api::im::close'>close</a></td>
-                        <td class='docblock short'>
-                             <p>Close a direct message channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.history.html'
-                               title='slack_api::im::history'>history</a></td>
-                        <td class='docblock short'>
-                             <p>Fetches history of messages and events from direct message channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.list.html'
-                               title='slack_api::im::list'>list</a></td>
-                        <td class='docblock short'>
-                             <p>Lists direct message channels for the calling user.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.mark.html'
-                               title='slack_api::im::mark'>mark</a></td>
-                        <td class='docblock short'>
-                             <p>Sets the read cursor in a direct message channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.open.html'
-                               title='slack_api::im::open'>open</a></td>
-                        <td class='docblock short'>
-                             <p>Opens a direct message channel.</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.CloseError.html'
+                                  title='slack_api::im::CloseError'>CloseError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.HistoryError.html'
+                                  title='slack_api::im::HistoryError'>HistoryError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.ListError.html'
+                                  title='slack_api::im::ListError'>ListError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.MarkError.html'
+                                  title='slack_api::im::MarkError'>MarkError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.OpenError.html'
+                                  title='slack_api::im::OpenError'>OpenError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.RepliesError.html'
+                                  title='slack_api::im::RepliesError'>RepliesError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.close.html'
+                                  title='slack_api::im::close'>close</a></td>
+                           <td class='docblock-short'>
+                                <p>Close a direct message channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.history.html'
+                                  title='slack_api::im::history'>history</a></td>
+                           <td class='docblock-short'>
+                                <p>Fetches history of messages and events from direct message channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.list.html'
+                                  title='slack_api::im::list'>list</a></td>
+                           <td class='docblock-short'>
+                                <p>Lists direct message channels for the calling user.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.mark.html'
+                                  title='slack_api::im::mark'>mark</a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the read cursor in a direct message channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.open.html'
+                                  title='slack_api::im::open'>open</a></td>
+                           <td class='docblock-short'>
+                                <p>Opens a direct message channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.replies.html'
+                                  title='slack_api::im::replies'>replies</a></td>
+                           <td class='docblock-short'>
+                                <p>Retrieve a thread of messages posted to a direct message conversation</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -169,6 +237,8 @@ documentation</a>.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -189,7 +259,7 @@ documentation</a>.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -200,11 +270,9 @@ documentation</a>.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack_api";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

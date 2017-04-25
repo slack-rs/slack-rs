@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CFDictionary","An immutable dictionary of key-value pairs."]]});

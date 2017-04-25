@@ -9,8 +9,10 @@
 
     <title>slack_api::api::test - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,11 +45,11 @@
 
     <section id='main' class="content fn">
 <h1 class='fqn'><span class='in-band'>Function <a href='../index.html'>slack_api</a>::<wbr><a href='index.html'>api</a>::<wbr><a class='fn' href=''>test</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-2957' class='srclink' href='../../src/slack_api/api.rs.html#29-38' title='goto source code'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn test(client: &amp;<a class='struct' href='../../hyper/client/struct.Client.html' title='hyper::client::Client'>Client</a>, token: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, args: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html' title='std::collections::hash::map::HashMap'>HashMap</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;&gt;, error: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;) -&gt; <a class='type' href='../../slack_api/type.ApiResult.html' title='slack_api::ApiResult'>ApiResult</a>&lt;<a class='struct' href='../../slack_api/api/struct.ApiTestResponse.html' title='slack_api::api::ApiTestResponse'>ApiTestResponse</a>&gt;</pre><div class='docblock'><p>Checks API calling code.</p>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/slack_api/mods/api.rs.html#17-28' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub fn test&lt;R&gt;(client: &amp;R,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request: &amp;<a class='struct' href='../../slack_api/api/struct.TestRequest.html' title='slack_api::api::TestRequest'>TestRequest</a>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../../slack_api/api/struct.TestResponse.html' title='slack_api::api::TestResponse'>TestResponse</a>, <a class='enum' href='../../slack_api/api/enum.TestError.html' title='slack_api::api::TestError'>TestError</a>&lt;R::<a class='trait' href='../../slack_api/requests/trait.SlackWebRequestSender.html' title='slack_api::requests::SlackWebRequestSender'>Error</a>&gt;&gt; <span class='where fmt-newline'>where R: <a class='trait' href='../../slack_api/requests/trait.SlackWebRequestSender.html' title='slack_api::requests::SlackWebRequestSender'>SlackWebRequestSender</a></span></pre><div class='docblock'><p>Checks API calling code.</p>
 
 <p>Wraps <a href="https://api.slack.com/methods/api.test">https://api.slack.com/methods/api.test</a></p>
 </div></section>
@@ -73,6 +75,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -93,7 +97,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -104,11 +108,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack_api";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

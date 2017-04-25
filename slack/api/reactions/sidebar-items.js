@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["add","Adds a reaction to an item."],["get","Gets reactions for an item."],["list","Lists reactions made by a user."],["remove","Removes a reaction from an item."]],"struct":[["AddResponse",""],["ListResponse",""],["RemoveResponse",""]],"type":[["GetResponse",""]]});

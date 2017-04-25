@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Type","Valid types of messages (in the default implementation)"]],"struct":[["Message","Represents a WebSocket message."]],"trait":[["IntoCowBytes","Trait representing the ability to convert self to a `Cow<'a, [u8]>`"]]});

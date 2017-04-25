@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["access","Exchanges a temporary OAuth code for an API token."]],"struct":[["AccessResponse",""]]});
+initSidebarItems({"enum":[["AccessError",""]],"fn":[["access","Exchanges a temporary OAuth code for an API token."]],"struct":[["AccessRequest",""],["AccessResponse",""]]});

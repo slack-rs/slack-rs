@@ -9,8 +9,10 @@
 
     <title>hyper::header::qitem - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,10 +45,10 @@
 
     <section id='main' class="content fn">
 <h1 class='fqn'><span class='in-band'>Function <a href='../index.html'>hyper</a>::<wbr><a href='index.html'>header</a>::<wbr><a class='fn' href=''>qitem</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-4837' class='srclink' href='../../src/hyper/header/shared/quality_item.rs.html#119-121' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/hyper/header/shared/quality_item.rs.html#119-121' title='goto source code'>[src]</a></span></h1>
 <pre class='rust fn'>pub fn qitem&lt;T&gt;(item: T) -&gt; <a class='struct' href='../../hyper/header/struct.QualityItem.html' title='hyper::header::QualityItem'>QualityItem</a>&lt;T&gt;</pre><div class='docblock'><p>Convinience function to wrap a value in a <code>QualityItem</code>
 Sets <code>q</code> to the default 1.0</p>
 </div></section>
@@ -72,6 +74,8 @@ Sets <code>q</code> to the default 1.0</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -92,7 +96,7 @@ Sets <code>q</code> to the default 1.0</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -103,11 +107,9 @@ Sets <code>q</code> to the default 1.0</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

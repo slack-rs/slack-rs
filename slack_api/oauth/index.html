@@ -9,8 +9,10 @@
 
     <title>slack_api::oauth - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,32 +45,42 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>slack_api</a>::<wbr><a class='mod' href=''>oauth</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-4360' class='srclink' href='../../src/slack_api/oauth.rs.html#15-100' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>For more information, see <a href="https://api.slack.com/methods">Slack&#39;s API
-documentation</a>.</p>
-</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/slack_api/mods/oauth.rs.html#3-165' title='goto source code'>[src]</a></span></h1>
+<h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.AccessResponse.html'
-                               title='slack_api::oauth::AccessResponse'>AccessResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.AccessRequest.html'
+                                  title='slack_api::oauth::AccessRequest'>AccessRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.AccessResponse.html'
+                                  title='slack_api::oauth::AccessResponse'>AccessResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.access.html'
-                               title='slack_api::oauth::access'>access</a></td>
-                        <td class='docblock short'>
-                             <p>Exchanges a temporary OAuth code for an API token.</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.AccessError.html'
+                                  title='slack_api::oauth::AccessError'>AccessError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.access.html'
+                                  title='slack_api::oauth::access'>access</a></td>
+                           <td class='docblock-short'>
+                                <p>Exchanges a temporary OAuth code for an API token.</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -91,6 +103,8 @@ documentation</a>.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -111,7 +125,7 @@ documentation</a>.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -122,11 +136,9 @@ documentation</a>.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack_api";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

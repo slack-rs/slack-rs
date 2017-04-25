@@ -9,8 +9,10 @@
 
     <title>matches - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,29 +45,40 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>matches</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-0' class='srclink' href='../src/matches/lib.rs.html#1-28' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/matches/lib.rs.html#1-62' title='goto source code'>[src]</a></span></h1>
 <h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='macro' href='macro._tt_as_expr_hack!.html'
-                               title='matches::_tt_as_expr_hack!'>_tt_as_expr_hack!</a></td>
-                        <td class='docblock short'>
-                             <p>Work around &quot;error: unexpected token: <code>an interpolated tt</code>&quot;, whatever that means.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='macro' href='macro.matches!.html'
-                               title='matches::matches!'>matches!</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='macro' href='macro._matches_tt_as_expr_hack.html'
+                                  title='matches::_matches_tt_as_expr_hack'>_matches_tt_as_expr_hack</a></td>
+                           <td class='docblock-short'>
+                                <p>Work around &quot;error: unexpected token: <code>an interpolated tt</code>&quot;, whatever that means.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='macro' href='macro.assert_matches.html'
+                                  title='matches::assert_matches'>assert_matches</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='macro' href='macro.debug_assert_matches.html'
+                                  title='matches::debug_assert_matches'>debug_assert_matches</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='macro' href='macro.matches.html'
+                                  title='matches::matches'>matches</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -88,6 +101,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -108,7 +123,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -119,11 +134,9 @@
     <script>
         window.rootPath = "../";
         window.currentCrate = "matches";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

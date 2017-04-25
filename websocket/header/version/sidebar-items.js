@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["WebSocketVersion","Represents a Sec-WebSocket-Version header"]]});

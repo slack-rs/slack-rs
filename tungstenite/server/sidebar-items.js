@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["accept","Accept the given Stream as a WebSocket."]]});

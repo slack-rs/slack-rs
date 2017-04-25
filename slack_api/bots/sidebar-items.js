@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["InfoError",""]],"fn":[["info","Gets information about a bot user."]],"struct":[["InfoRequest",""],["InfoResponse",""],["InfoResponseBot",""],["InfoResponseBotIcons",""]]});

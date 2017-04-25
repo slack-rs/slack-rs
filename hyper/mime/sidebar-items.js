@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"macro":[["mime","Easily create a Mime without having to import so many enums."]]});

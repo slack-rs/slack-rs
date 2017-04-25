@@ -9,8 +9,10 @@
 
     <title>slack_api::groups - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,297 +45,498 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>slack_api</a>::<wbr><a class='mod' href=''>groups</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-3704' class='srclink' href='../../src/slack_api/groups.rs.html#15-774' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>Get info on your team&#39;s private groups.</p>
-
-<p>For more information, see <a href="https://api.slack.com/methods">Slack&#39;s API
-documentation</a>.</p>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/slack_api/mods/groups.rs.html#1-2880' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Get info on your team&#39;s private channels.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.AbridgedGroup.html'
-                               title='slack_api::groups::AbridgedGroup'>AbridgedGroup</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.ArchiveResponse.html'
-                               title='slack_api::groups::ArchiveResponse'>ArchiveResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.CloseResponse.html'
-                               title='slack_api::groups::CloseResponse'>CloseResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.CreateChildResponse.html'
-                               title='slack_api::groups::CreateChildResponse'>CreateChildResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.CreateResponse.html'
-                               title='slack_api::groups::CreateResponse'>CreateResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.HistoryResponse.html'
-                               title='slack_api::groups::HistoryResponse'>HistoryResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.InfoResponse.html'
-                               title='slack_api::groups::InfoResponse'>InfoResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.InviteResponse.html'
-                               title='slack_api::groups::InviteResponse'>InviteResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.KickResponse.html'
-                               title='slack_api::groups::KickResponse'>KickResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.LeaveResponse.html'
-                               title='slack_api::groups::LeaveResponse'>LeaveResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.ListResponse.html'
-                               title='slack_api::groups::ListResponse'>ListResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.MarkResponse.html'
-                               title='slack_api::groups::MarkResponse'>MarkResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.OpenResponse.html'
-                               title='slack_api::groups::OpenResponse'>OpenResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.RenameResponse.html'
-                               title='slack_api::groups::RenameResponse'>RenameResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.SetPurposeResponse.html'
-                               title='slack_api::groups::SetPurposeResponse'>SetPurposeResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.SetTopicResponse.html'
-                               title='slack_api::groups::SetTopicResponse'>SetTopicResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.UnarchiveResponse.html'
-                               title='slack_api::groups::UnarchiveResponse'>UnarchiveResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ArchiveRequest.html'
+                                  title='slack_api::groups::ArchiveRequest'>ArchiveRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ArchiveResponse.html'
+                                  title='slack_api::groups::ArchiveResponse'>ArchiveResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CloseRequest.html'
+                                  title='slack_api::groups::CloseRequest'>CloseRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CloseResponse.html'
+                                  title='slack_api::groups::CloseResponse'>CloseResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CreateChildRequest.html'
+                                  title='slack_api::groups::CreateChildRequest'>CreateChildRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CreateChildResponse.html'
+                                  title='slack_api::groups::CreateChildResponse'>CreateChildResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CreateRequest.html'
+                                  title='slack_api::groups::CreateRequest'>CreateRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CreateResponse.html'
+                                  title='slack_api::groups::CreateResponse'>CreateResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.HistoryRequest.html'
+                                  title='slack_api::groups::HistoryRequest'>HistoryRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.HistoryResponse.html'
+                                  title='slack_api::groups::HistoryResponse'>HistoryResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InfoRequest.html'
+                                  title='slack_api::groups::InfoRequest'>InfoRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InfoResponse.html'
+                                  title='slack_api::groups::InfoResponse'>InfoResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InviteRequest.html'
+                                  title='slack_api::groups::InviteRequest'>InviteRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InviteResponse.html'
+                                  title='slack_api::groups::InviteResponse'>InviteResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.KickRequest.html'
+                                  title='slack_api::groups::KickRequest'>KickRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.KickResponse.html'
+                                  title='slack_api::groups::KickResponse'>KickResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.LeaveRequest.html'
+                                  title='slack_api::groups::LeaveRequest'>LeaveRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.LeaveResponse.html'
+                                  title='slack_api::groups::LeaveResponse'>LeaveResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ListRequest.html'
+                                  title='slack_api::groups::ListRequest'>ListRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ListResponse.html'
+                                  title='slack_api::groups::ListResponse'>ListResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.MarkRequest.html'
+                                  title='slack_api::groups::MarkRequest'>MarkRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.MarkResponse.html'
+                                  title='slack_api::groups::MarkResponse'>MarkResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.OpenRequest.html'
+                                  title='slack_api::groups::OpenRequest'>OpenRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.OpenResponse.html'
+                                  title='slack_api::groups::OpenResponse'>OpenResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RenameRequest.html'
+                                  title='slack_api::groups::RenameRequest'>RenameRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RenameResponse.html'
+                                  title='slack_api::groups::RenameResponse'>RenameResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RenameResponseChannel.html'
+                                  title='slack_api::groups::RenameResponseChannel'>RenameResponseChannel</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RepliesRequest.html'
+                                  title='slack_api::groups::RepliesRequest'>RepliesRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RepliesResponse.html'
+                                  title='slack_api::groups::RepliesResponse'>RepliesResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetPurposeRequest.html'
+                                  title='slack_api::groups::SetPurposeRequest'>SetPurposeRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetPurposeResponse.html'
+                                  title='slack_api::groups::SetPurposeResponse'>SetPurposeResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetTopicRequest.html'
+                                  title='slack_api::groups::SetTopicRequest'>SetTopicRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetTopicResponse.html'
+                                  title='slack_api::groups::SetTopicResponse'>SetTopicResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.UnarchiveRequest.html'
+                                  title='slack_api::groups::UnarchiveRequest'>UnarchiveRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.UnarchiveResponse.html'
+                                  title='slack_api::groups::UnarchiveResponse'>UnarchiveResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.archive.html'
-                               title='slack_api::groups::archive'>archive</a></td>
-                        <td class='docblock short'>
-                             <p>Archives a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.close.html'
-                               title='slack_api::groups::close'>close</a></td>
-                        <td class='docblock short'>
-                             <p>Closes a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.create.html'
-                               title='slack_api::groups::create'>create</a></td>
-                        <td class='docblock short'>
-                             <p>Creates a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.create_child.html'
-                               title='slack_api::groups::create_child'>create_child</a></td>
-                        <td class='docblock short'>
-                             <p>Clones and archives a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.history.html'
-                               title='slack_api::groups::history'>history</a></td>
-                        <td class='docblock short'>
-                             <p>Fetches history of messages and events from a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.info.html'
-                               title='slack_api::groups::info'>info</a></td>
-                        <td class='docblock short'>
-                             <p>Gets information about a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.invite.html'
-                               title='slack_api::groups::invite'>invite</a></td>
-                        <td class='docblock short'>
-                             <p>Invites a user to a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.kick.html'
-                               title='slack_api::groups::kick'>kick</a></td>
-                        <td class='docblock short'>
-                             <p>Removes a user from a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.leave.html'
-                               title='slack_api::groups::leave'>leave</a></td>
-                        <td class='docblock short'>
-                             <p>Leaves a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.list.html'
-                               title='slack_api::groups::list'>list</a></td>
-                        <td class='docblock short'>
-                             <p>Lists private groups that the calling user has access to.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.mark.html'
-                               title='slack_api::groups::mark'>mark</a></td>
-                        <td class='docblock short'>
-                             <p>Sets the read cursor in a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.open.html'
-                               title='slack_api::groups::open'>open</a></td>
-                        <td class='docblock short'>
-                             <p>Opens a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.rename.html'
-                               title='slack_api::groups::rename'>rename</a></td>
-                        <td class='docblock short'>
-                             <p>Renames a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.set_purpose.html'
-                               title='slack_api::groups::set_purpose'>set_purpose</a></td>
-                        <td class='docblock short'>
-                             <p>Sets the purpose for a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.set_topic.html'
-                               title='slack_api::groups::set_topic'>set_topic</a></td>
-                        <td class='docblock short'>
-                             <p>Sets the topic for a private group.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.unarchive.html'
-                               title='slack_api::groups::unarchive'>unarchive</a></td>
-                        <td class='docblock short'>
-                             <p>Unarchives a private group.</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.ArchiveError.html'
+                                  title='slack_api::groups::ArchiveError'>ArchiveError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.CloseError.html'
+                                  title='slack_api::groups::CloseError'>CloseError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.CreateChildError.html'
+                                  title='slack_api::groups::CreateChildError'>CreateChildError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.CreateError.html'
+                                  title='slack_api::groups::CreateError'>CreateError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.HistoryError.html'
+                                  title='slack_api::groups::HistoryError'>HistoryError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.InfoError.html'
+                                  title='slack_api::groups::InfoError'>InfoError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.InviteError.html'
+                                  title='slack_api::groups::InviteError'>InviteError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.KickError.html'
+                                  title='slack_api::groups::KickError'>KickError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.LeaveError.html'
+                                  title='slack_api::groups::LeaveError'>LeaveError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.ListError.html'
+                                  title='slack_api::groups::ListError'>ListError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.MarkError.html'
+                                  title='slack_api::groups::MarkError'>MarkError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.OpenError.html'
+                                  title='slack_api::groups::OpenError'>OpenError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.RenameError.html'
+                                  title='slack_api::groups::RenameError'>RenameError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.RepliesError.html'
+                                  title='slack_api::groups::RepliesError'>RepliesError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.SetPurposeError.html'
+                                  title='slack_api::groups::SetPurposeError'>SetPurposeError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.SetTopicError.html'
+                                  title='slack_api::groups::SetTopicError'>SetTopicError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.UnarchiveError.html'
+                                  title='slack_api::groups::UnarchiveError'>UnarchiveError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.archive.html'
+                                  title='slack_api::groups::archive'>archive</a></td>
+                           <td class='docblock-short'>
+                                <p>Archives a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.close.html'
+                                  title='slack_api::groups::close'>close</a></td>
+                           <td class='docblock-short'>
+                                <p>Closes a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.create.html'
+                                  title='slack_api::groups::create'>create</a></td>
+                           <td class='docblock-short'>
+                                <p>Creates a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.create_child.html'
+                                  title='slack_api::groups::create_child'>create_child</a></td>
+                           <td class='docblock-short'>
+                                <p>Clones and archives a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.history.html'
+                                  title='slack_api::groups::history'>history</a></td>
+                           <td class='docblock-short'>
+                                <p>Fetches history of messages and events from a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.info.html'
+                                  title='slack_api::groups::info'>info</a></td>
+                           <td class='docblock-short'>
+                                <p>Gets information about a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.invite.html'
+                                  title='slack_api::groups::invite'>invite</a></td>
+                           <td class='docblock-short'>
+                                <p>Invites a user to a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.kick.html'
+                                  title='slack_api::groups::kick'>kick</a></td>
+                           <td class='docblock-short'>
+                                <p>Removes a user from a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.leave.html'
+                                  title='slack_api::groups::leave'>leave</a></td>
+                           <td class='docblock-short'>
+                                <p>Leaves a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.list.html'
+                                  title='slack_api::groups::list'>list</a></td>
+                           <td class='docblock-short'>
+                                <p>Lists private channels that the calling user has access to.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.mark.html'
+                                  title='slack_api::groups::mark'>mark</a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the read cursor in a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.open.html'
+                                  title='slack_api::groups::open'>open</a></td>
+                           <td class='docblock-short'>
+                                <p>Opens a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.rename.html'
+                                  title='slack_api::groups::rename'>rename</a></td>
+                           <td class='docblock-short'>
+                                <p>Renames a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.replies.html'
+                                  title='slack_api::groups::replies'>replies</a></td>
+                           <td class='docblock-short'>
+                                <p>Retrieve a thread of messages posted to a private channel</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.set_purpose.html'
+                                  title='slack_api::groups::set_purpose'>set_purpose</a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the purpose for a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.set_topic.html'
+                                  title='slack_api::groups::set_topic'>set_topic</a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the topic for a private channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.unarchive.html'
+                                  title='slack_api::groups::unarchive'>unarchive</a></td>
+                           <td class='docblock-short'>
+                                <p>Unarchives a private channel.</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -356,6 +559,8 @@ documentation</a>.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -376,7 +581,7 @@ documentation</a>.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -387,11 +592,9 @@ documentation</a>.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack_api";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

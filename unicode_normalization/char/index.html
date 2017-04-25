@@ -9,8 +9,10 @@
 
     <title>unicode_normalization::char - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     <link rel="shortcut icon" href="https://unicode-rs.github.io/unicode-rs_sm.png">
     
@@ -26,7 +28,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../unicode_normalization/index.html'><img src='https://unicode-rs.github.io/unicode-rs_sm.png' alt='' width='100'></a>
+        <a href='../../unicode_normalization/index.html'><img src='https://unicode-rs.github.io/unicode-rs_sm.png' alt='logo' width='100'></a>
         <p class='location'><a href='../index.html'>unicode_normalization</a></p><script>window.sidebarCurrent = {name: 'char', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
     </nav>
 
@@ -43,63 +45,54 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>unicode_normalization</a>::<wbr><a class='mod' href=''>char</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-231' class='srclink' href='../../src/unicode_normalization/lib.rs.html#60-68' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/unicode_normalization/lib.rs.html#60-68' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Methods for composing and decomposing characters.</p>
 </div><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.canonical_combining_class.html'
-                               title='unicode_normalization::char::canonical_combining_class'>canonical_combining_class</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.compose.html'
-                               title='unicode_normalization::char::compose'>compose</a></td>
-                        <td class='docblock short'>
-                             <p>Compose two characters into a single character, if possible.
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.canonical_combining_class.html'
+                                  title='unicode_normalization::char::canonical_combining_class'>canonical_combining_class</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.compose.html'
+                                  title='unicode_normalization::char::compose'>compose</a></td>
+                           <td class='docblock-short'>
+                                <p>Compose two characters into a single character, if possible.
 See <a href="http://www.unicode.org/reports/tr15/">Unicode Standard Annex #15</a>
 for more information.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.decompose_canonical.html'
-                               title='unicode_normalization::char::decompose_canonical'>decompose_canonical</a></td>
-                        <td class='docblock short'>
-                             <p>Compute canonical Unicode decomposition for character.
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.decompose_canonical.html'
+                                  title='unicode_normalization::char::decompose_canonical'>decompose_canonical</a></td>
+                           <td class='docblock-short'>
+                                <p>Compute canonical Unicode decomposition for character.
 See <a href="http://www.unicode.org/reports/tr15/">Unicode Standard Annex #15</a>
 for more information.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.decompose_compatible.html'
-                               title='unicode_normalization::char::decompose_compatible'>decompose_compatible</a></td>
-                        <td class='docblock short'>
-                             <p>Compute canonical or compatible Unicode decomposition for character.
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.decompose_compatible.html'
+                                  title='unicode_normalization::char::decompose_compatible'>decompose_compatible</a></td>
+                           <td class='docblock-short'>
+                                <p>Compute canonical or compatible Unicode decomposition for character.
 See <a href="http://www.unicode.org/reports/tr15/">Unicode Standard Annex #15</a>
 for more information.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.is_combining_mark.html'
-                               title='unicode_normalization::char::is_combining_mark'>is_combining_mark</a></td>
-                        <td class='docblock short'>
-                             <p>Return whether the given character is a combining mark (<code>General_Category=Mark</code>)</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.is_combining_mark.html'
+                                  title='unicode_normalization::char::is_combining_mark'>is_combining_mark</a></td>
+                           <td class='docblock-short'>
+                                <p>Return whether the given character is a combining mark (<code>General_Category=Mark</code>)</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -122,6 +115,8 @@ for more information.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -142,7 +137,7 @@ for more information.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -153,11 +148,9 @@ for more information.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "unicode_normalization";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

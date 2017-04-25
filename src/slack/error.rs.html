@@ -9,8 +9,10 @@
 
     <title>error.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -164,28 +166,6 @@
 <span id="121">121</span>
 <span id="122">122</span>
 <span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
 </pre><pre class='rust '>
 <span class='comment'>//</span>
 <span class='comment'>// Copyright 2015-2016 the slack-rs authors.</span>
@@ -208,64 +188,48 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>error</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>string</span>::<span class='ident'>FromUtf8Error</span>;
 
-<span class='kw'>use</span> <span class='ident'>hyper</span>;
-<span class='kw'>use</span> <span class='ident'>websocket</span>;
-<span class='kw'>use</span> <span class='ident'>rustc_serialize</span>;
 <span class='kw'>use</span> <span class='ident'>api</span>;
 
-<span class='doccomment'>/// slack::Error represents errors that can happen while using the RtmClient</span>
+<span class='doccomment'>/// `slack::Error` represents errors that can happen while using the `RtmClient`</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>Error</span> {
     <span class='doccomment'>/// Http client error</span>
-    <span class='ident'>Http</span>(<span class='ident'>hyper</span>::<span class='ident'>Error</span>),
+    <span class='ident'>Http</span>(::<span class='ident'>reqwest</span>::<span class='ident'>Error</span>),
     <span class='doccomment'>/// WebSocket connection error</span>
-    <span class='ident'>WebSocket</span>(<span class='ident'>websocket</span>::<span class='ident'>result</span>::<span class='ident'>WebSocketError</span>),
+    <span class='ident'>WebSocket</span>(::<span class='ident'>tungstenite</span>::<span class='ident'>Error</span>),
     <span class='doccomment'>/// Error decoding websocket text frame Utf8</span>
     <span class='ident'>Utf8</span>(<span class='ident'>FromUtf8Error</span>),
     <span class='doccomment'>/// Error parsing url</span>
-    <span class='ident'>Url</span>(<span class='ident'>hyper</span>::<span class='ident'>Error</span>),
+    <span class='ident'>Url</span>(::<span class='ident'>reqwest</span>::<span class='ident'>UrlError</span>),
     <span class='doccomment'>/// Error decoding Json</span>
-    <span class='ident'>JsonDecode</span>(<span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>DecoderError</span>),
-    <span class='doccomment'>/// Error parsing Json</span>
-    <span class='ident'>JsonParse</span>(<span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>ParserError</span>),
-    <span class='doccomment'>/// Error encoding Json</span>
-    <span class='ident'>JsonEncode</span>(<span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>EncoderError</span>),
+    <span class='ident'>Json</span>(::<span class='ident'>serde_json</span>::<span class='ident'>Error</span>),
     <span class='doccomment'>/// Slack Api Error</span>
     <span class='ident'>Api</span>(<span class='ident'>String</span>),
     <span class='doccomment'>/// Errors that do not fit under the other types, Internal is for EG channel errors.</span>
     <span class='ident'>Internal</span>(<span class='ident'>String</span>),
 }
 
-<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>hyper</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>hyper</span>::<span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
-        <span class='kw'>match</span> <span class='ident'>err</span> {
-            <span class='ident'>hyper</span>::<span class='ident'>Error</span>::<span class='ident'>Uri</span>(_) <span class='op'>=&gt;</span> <span class='ident'>Error</span>::<span class='ident'>Url</span>(<span class='ident'>err</span>),
-            _ <span class='op'>=&gt;</span> <span class='ident'>Error</span>::<span class='ident'>Http</span>(<span class='ident'>err</span>)
-        }
+<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span>::<span class='ident'>reqwest</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: ::<span class='ident'>reqwest</span>::<span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
+        <span class='ident'>Error</span>::<span class='ident'>Http</span>(<span class='ident'>err</span>)
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>websocket</span>::<span class='ident'>result</span>::<span class='ident'>WebSocketError</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>websocket</span>::<span class='ident'>result</span>::<span class='ident'>WebSocketError</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
+<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span>::<span class='ident'>reqwest</span>::<span class='ident'>UrlError</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: ::<span class='ident'>reqwest</span>::<span class='ident'>UrlError</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
+        <span class='ident'>Error</span>::<span class='ident'>Url</span>(<span class='ident'>err</span>)
+    }
+}
+
+<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span>::<span class='ident'>tungstenite</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: ::<span class='ident'>tungstenite</span>::<span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
         <span class='ident'>Error</span>::<span class='ident'>WebSocket</span>(<span class='ident'>err</span>)
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>DecoderError</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>DecoderError</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
-        <span class='ident'>Error</span>::<span class='ident'>JsonDecode</span>(<span class='ident'>err</span>)
-    }
-}
-
-<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>ParserError</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>ParserError</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
-        <span class='ident'>Error</span>::<span class='ident'>JsonParse</span>(<span class='ident'>err</span>)
-    }
-}
-
-<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>EncoderError</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>rustc_serialize</span>::<span class='ident'>json</span>::<span class='ident'>EncoderError</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
-        <span class='ident'>Error</span>::<span class='ident'>JsonEncode</span>(<span class='ident'>err</span>)
+<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span>::<span class='ident'>serde_json</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: ::<span class='ident'>serde_json</span>::<span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
+        <span class='ident'>Error</span>::<span class='ident'>Json</span>(<span class='ident'>err</span>)
     }
 }
 
@@ -281,54 +245,48 @@
     }
 }
 
-<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>api</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>api</span>::<span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
-        <span class='ident'>Error</span>::<span class='ident'>Api</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;{}&quot;</span>, <span class='ident'>err</span>))
+<span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>api</span>::<span class='ident'>rtm</span>::<span class='ident'>StartError</span><span class='op'>&lt;</span>::<span class='ident'>reqwest</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>api</span>::<span class='ident'>rtm</span>::<span class='ident'>StartError</span><span class='op'>&lt;</span>::<span class='ident'>reqwest</span>::<span class='ident'>Error</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
+        <span class='ident'>Error</span>::<span class='ident'>Api</span>(<span class='macro'>format</span><span class='macro'>!</span>(<span class='string'>&quot;rtm::StartError: {}&quot;</span>, <span class='ident'>err</span>))
     }
 }
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
-            <span class='ident'>Error</span>::<span class='ident'>Http</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Http (hyper) Error: {:?}&quot;</span>, <span class='ident'>e</span>),
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
+            <span class='ident'>Error</span>::<span class='ident'>Http</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Http (reqwest) Error: {:?}&quot;</span>, <span class='ident'>e</span>),
             <span class='ident'>Error</span>::<span class='ident'>WebSocket</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Websocket Error: {:?}&quot;</span>, <span class='ident'>e</span>),
             <span class='ident'>Error</span>::<span class='ident'>Utf8</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Utf8 decode Error: {:?}&quot;</span>, <span class='ident'>e</span>),
             <span class='ident'>Error</span>::<span class='ident'>Url</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Url Error: {:?}&quot;</span>, <span class='ident'>e</span>),
-            <span class='ident'>Error</span>::<span class='ident'>JsonDecode</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Json Decode Error: {:?}&quot;</span>, <span class='ident'>e</span>),
-            <span class='ident'>Error</span>::<span class='ident'>JsonParse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Json Parse Error: {:?}&quot;</span>, <span class='ident'>e</span>),
-            <span class='ident'>Error</span>::<span class='ident'>JsonEncode</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Json Encode Error: {:?}&quot;</span>, <span class='ident'>e</span>),
+            <span class='ident'>Error</span>::<span class='ident'>Json</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Json Error: {:?}&quot;</span>, <span class='ident'>e</span>),
             <span class='ident'>Error</span>::<span class='ident'>Api</span>(<span class='kw-2'>ref</span> <span class='ident'>st</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Slack Api Error: {:?}&quot;</span>, <span class='ident'>st</span>),
-            <span class='ident'>Error</span>::<span class='ident'>Internal</span>(<span class='kw-2'>ref</span> <span class='ident'>st</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Internal Error: {:?}&quot;</span>, <span class='ident'>st</span>)
+            <span class='ident'>Error</span>::<span class='ident'>Internal</span>(<span class='kw-2'>ref</span> <span class='ident'>st</span>) <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Internal Error: {:?}&quot;</span>, <span class='ident'>st</span>),
         }
     }
 }
 
 <span class='kw'>impl</span> <span class='ident'>error</span>::<span class='ident'>Error</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
     <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>Error</span>::<span class='ident'>Http</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='ident'>Error</span>::<span class='ident'>WebSocket</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='ident'>Error</span>::<span class='ident'>Utf8</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='ident'>Error</span>::<span class='ident'>Url</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
-            <span class='ident'>Error</span>::<span class='ident'>JsonDecode</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
-            <span class='ident'>Error</span>::<span class='ident'>JsonParse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
-            <span class='ident'>Error</span>::<span class='ident'>JsonEncode</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
-            <span class='ident'>Error</span>::<span class='ident'>Api</span>(<span class='kw-2'>ref</span> <span class='ident'>st</span>) <span class='op'>=&gt;</span> <span class='ident'>st</span>,
-            <span class='ident'>Error</span>::<span class='ident'>Internal</span>(<span class='kw-2'>ref</span> <span class='ident'>st</span>) <span class='op'>=&gt;</span> <span class='ident'>st</span>
+            <span class='ident'>Error</span>::<span class='ident'>Json</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
+            <span class='ident'>Error</span>::<span class='ident'>Api</span>(<span class='kw-2'>ref</span> <span class='ident'>st</span>) <span class='op'>|</span>
+            <span class='ident'>Error</span>::<span class='ident'>Internal</span>(<span class='kw-2'>ref</span> <span class='ident'>st</span>) <span class='op'>=&gt;</span> <span class='ident'>st</span>,
         }
     }
 
     <span class='kw'>fn</span> <span class='ident'>cause</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>error</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>Error</span>::<span class='ident'>Http</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
             <span class='ident'>Error</span>::<span class='ident'>WebSocket</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
             <span class='ident'>Error</span>::<span class='ident'>Utf8</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
             <span class='ident'>Error</span>::<span class='ident'>Url</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
-            <span class='ident'>Error</span>::<span class='ident'>JsonDecode</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
-            <span class='ident'>Error</span>::<span class='ident'>JsonParse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
-            <span class='ident'>Error</span>::<span class='ident'>JsonEncode</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
-            <span class='ident'>Error</span>::<span class='ident'>Api</span>(_) <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
-            <span class='ident'>Error</span>::<span class='ident'>Internal</span>(_) <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>
+            <span class='ident'>Error</span>::<span class='ident'>Json</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
+            <span class='ident'>Error</span>::<span class='ident'>Api</span>(_) <span class='op'>|</span>
+            <span class='ident'>Error</span>::<span class='ident'>Internal</span>(_) <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
         }
     }
 }
@@ -356,6 +314,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -376,7 +336,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -387,11 +347,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

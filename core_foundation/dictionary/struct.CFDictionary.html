@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `CFDictionary` struct in crate `core_foundation`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, CFDictionary">
+
+    <title>core_foundation::dictionary::CFDictionary - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>core_foundation</a>::<wbr><a href='index.html'>dictionary</a></p><script>window.sidebarCurrent = {name: 'CFDictionary', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>core_foundation</a>::<wbr><a href='index.html'>dictionary</a>::<wbr><a class='struct' href=''>CFDictionary</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/core_foundation/dictionary.rs.html#22' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct CFDictionary(_);</pre><div class='docblock'><p>An immutable dictionary of key-value pairs.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../core_foundation/dictionary/struct.CFDictionary.html' title='core_foundation::dictionary::CFDictionary'>CFDictionary</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/core_foundation/dictionary.rs.html#34-118' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from_CFType_pairs' class='method'><span id='from_CFType_pairs.v' class='invisible'><code>fn <a href='#method.from_CFType_pairs' class='fnname'>from_CFType_pairs</a>&lt;R1, R2, K, V&gt;(pairs: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a>K, V<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='struct' href='../../core_foundation/dictionary/struct.CFDictionary.html' title='core_foundation::dictionary::CFDictionary'>CFDictionary</a> <span class='where fmt-newline'>where K: <a class='trait' href='../../core_foundation/base/trait.TCFType.html' title='core_foundation::base::TCFType'>TCFType</a>&lt;R1&gt;, V: <a class='trait' href='../../core_foundation/base/trait.TCFType.html' title='core_foundation::base::TCFType'>TCFType</a>&lt;R2&gt;</span></code></span></h4>
+<h4 id='method.len' class='method'><span id='len.v' class='invisible'><code>fn <a href='#method.len' class='fnname'>len</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></span></h4>
+<h4 id='method.is_empty' class='method'><span id='is_empty.v' class='invisible'><code>fn <a href='#method.is_empty' class='fnname'>is_empty</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+<h4 id='method.contains_key' class='method'><span id='contains_key.v' class='invisible'><code>fn <a href='#method.contains_key' class='fnname'>contains_key</a>(&amp;self, key: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+<h4 id='method.find' class='method'><span id='find.v' class='invisible'><code>fn <a href='#method.find' class='fnname'>find</a>(&amp;self, key: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>&gt;</code></span></h4>
+<h4 id='method.get' class='method'><span id='get.v' class='invisible'><code>fn <a href='#method.get' class='fnname'>get</a>(&amp;self, key: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a></code></span></h4>
+<h4 id='method.get_CFType' class='method'><span id='get_CFType.v' class='invisible'><code>unsafe fn <a href='#method.get_CFType' class='fnname'>get_CFType</a>(&amp;self, key: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>) -&gt; <a class='struct' href='../../core_foundation/base/struct.CFType.html' title='core_foundation::base::CFType'>CFType</a></code></span></h4>
+<div class='docblock'><p>A convenience function to retrieve <code>CFType</code> instances.</p>
+</div><h4 id='method.set_value' class='method'><span id='set_value.v' class='invisible'><code>unsafe fn <a href='#method.set_value' class='fnname'>set_value</a>(&amp;self, key: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>, value: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>)</code></span></h4>
+<h4 id='method.get_keys_and_values' class='method'><span id='get_keys_and_values.v' class='invisible'><code>fn <a href='#method.get_keys_and_values' class='fnname'>get_keys_and_values</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>&gt;, <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const </a><a class='enum' href='../../libc/enum.c_void.html' title='libc::c_void'>c_void</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a></code></span></h4>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../../core_foundation/dictionary/struct.CFDictionary.html' title='core_foundation::dictionary::CFDictionary'>CFDictionary</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/core_foundation/dictionary.rs.html#24-30' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class='method'><span id='drop.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></span></h4>
+<div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='../../core_foundation/base/trait.TCFType.html' title='core_foundation::base::TCFType'>TCFType</a>&lt;<a class='type' href='../../core_foundation_sys/dictionary/type.CFDictionaryRef.html' title='core_foundation_sys::dictionary::CFDictionaryRef'>CFDictionaryRef</a>&gt; for <a class='struct' href='../../core_foundation/dictionary/struct.CFDictionary.html' title='core_foundation::dictionary::CFDictionary'>CFDictionary</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/core_foundation/lib.rs.html#17-47' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.as_concrete_TypeRef' class='method'><span id='as_concrete_TypeRef.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#tymethod.as_concrete_TypeRef' class='fnname'>as_concrete_TypeRef</a>(&amp;self) -&gt; <a class='type' href='../../core_foundation_sys/dictionary/type.CFDictionaryRef.html' title='core_foundation_sys::dictionary::CFDictionaryRef'>CFDictionaryRef</a></code></span></h4>
+<div class='docblock'><p>Returns the object as its concrete TypeRef.</p>
+</div><h4 id='method.wrap_under_get_rule' class='method'><span id='wrap_under_get_rule.v' class='invisible'><code>unsafe fn <a href='../../core_foundation/base/trait.TCFType.html#tymethod.wrap_under_get_rule' class='fnname'>wrap_under_get_rule</a>(reference: <a class='type' href='../../core_foundation_sys/dictionary/type.CFDictionaryRef.html' title='core_foundation_sys::dictionary::CFDictionaryRef'>CFDictionaryRef</a>) -&gt; <a class='struct' href='../../core_foundation/dictionary/struct.CFDictionary.html' title='core_foundation::dictionary::CFDictionary'>CFDictionary</a></code></span></h4>
+<div class='docblock'><p>Returns an instance of the object, wrapping the underlying <code>CFTypeRef</code> subclass. Use this when following Core Foundation&#39;s &quot;Get Rule&quot;. The reference count <em>is</em> bumped. <a href="../../core_foundation/base/trait.TCFType.html#tymethod.wrap_under_get_rule">Read more</a></p>
+</div><h4 id='method.as_CFTypeRef' class='method'><span id='as_CFTypeRef.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#tymethod.as_CFTypeRef' class='fnname'>as_CFTypeRef</a>(&amp;self) -&gt; <a class='type' href='../../core_foundation_sys/base/type.CFTypeRef.html' title='core_foundation_sys::base::CFTypeRef'>CFTypeRef</a></code></span></h4>
+<div class='docblock'><p>Returns the object as a raw <code>CFTypeRef</code>. The reference count is not adjusted.</p>
+</div><h4 id='method.wrap_under_create_rule' class='method'><span id='wrap_under_create_rule.v' class='invisible'><code>unsafe fn <a href='../../core_foundation/base/trait.TCFType.html#tymethod.wrap_under_create_rule' class='fnname'>wrap_under_create_rule</a>(obj: <a class='type' href='../../core_foundation_sys/dictionary/type.CFDictionaryRef.html' title='core_foundation_sys::dictionary::CFDictionaryRef'>CFDictionaryRef</a>) -&gt; <a class='struct' href='../../core_foundation/dictionary/struct.CFDictionary.html' title='core_foundation::dictionary::CFDictionary'>CFDictionary</a></code></span></h4>
+<div class='docblock'><p>Returns an instance of the object, wrapping the underlying <code>CFTypeRef</code> subclass. Use this when following Core Foundation&#39;s &quot;Create Rule&quot;. The reference count is <em>not</em> bumped. <a href="../../core_foundation/base/trait.TCFType.html#tymethod.wrap_under_create_rule">Read more</a></p>
+</div><h4 id='method.type_id' class='method'><span id='type_id.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#tymethod.type_id' class='fnname'>type_id</a>() -&gt; <a class='type' href='../../core_foundation_sys/base/type.CFTypeID.html' title='core_foundation_sys::base::CFTypeID'>CFTypeID</a></code></span></h4>
+<div class='docblock'><p>Returns the type ID for this class.</p>
+</div><h4 id='method.as_CFType' class='method'><span id='as_CFType.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#method.as_CFType' class='fnname'>as_CFType</a>(&amp;self) -&gt; <a class='struct' href='../../core_foundation/base/struct.CFType.html' title='core_foundation::base::CFType'>CFType</a></code></span></h4>
+<div class='docblock'><p>Returns the object as a wrapped <code>CFType</code>. The reference count is incremented by one.</p>
+</div><h4 id='method.retain_count' class='method'><span id='retain_count.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#method.retain_count' class='fnname'>retain_count</a>(&amp;self) -&gt; <a class='type' href='../../core_foundation/array/type.CFIndex.html' title='core_foundation::array::CFIndex'>CFIndex</a></code></span></h4>
+<div class='docblock'><p>Returns the reference count of the object. It is unwise to do anything other than test whether the return value of this method is greater than zero. <a href="../../core_foundation/base/trait.TCFType.html#method.retain_count">Read more</a></p>
+</div><h4 id='method.type_of' class='method'><span id='type_of.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#method.type_of' class='fnname'>type_of</a>(&amp;self) -&gt; <a class='type' href='../../core_foundation_sys/base/type.CFTypeID.html' title='core_foundation_sys::base::CFTypeID'>CFTypeID</a></code></span></h4>
+<div class='docblock'><p>Returns the type ID of this object.</p>
+</div><h4 id='method.show' class='method'><span id='show.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#method.show' class='fnname'>show</a>(&amp;self)</code></span></h4>
+<div class='docblock'><p>Writes a debugging version of this object on standard error.</p>
+</div><h4 id='method.instance_of' class='method'><span id='instance_of.v' class='invisible'><code>fn <a href='../../core_foundation/base/trait.TCFType.html#method.instance_of' class='fnname'>instance_of</a>&lt;OtherConcreteTypeRef, OtherCFType:&nbsp;<a class='trait' href='../../core_foundation/base/trait.TCFType.html' title='core_foundation::base::TCFType'>TCFType</a>&lt;OtherConcreteTypeRef&gt;&gt;(&amp;self)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></h4>
+<div class='docblock'><p>Returns true if this value is an instance of another type.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "core_foundation";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

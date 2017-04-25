@@ -9,8 +9,10 @@
 
     <title>slack::RtmClient - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,140 +45,29 @@
 
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>slack</a>::<wbr><a class='struct' href=''>RtmClient</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-1057' class='srclink' href='../src/slack/lib.rs.html#80-91' title='goto source code'>[src]</a></span></h1>
-<pre class='rust struct'>pub struct RtmClient {
-    // some fields omitted
-}</pre><div class='docblock'><p>The actual messaging client.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../slack/struct.RtmClient.html' title='slack::RtmClient'>RtmClient</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(token: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../slack/struct.RtmClient.html' title='slack::RtmClient'>RtmClient</a></code></h4>
-<div class='docblock'><p>Creates a new client from a token</p>
-</div><h4 id='method.get_name' class='method'><code>fn <a href='#method.get_name' class='fnname'>get_name</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
-<div class='docblock'><p>Returns the name of the bot/user connected to the client.
-Only valid after login, otherwise None.</p>
-</div><h4 id='method.get_id' class='method'><code>fn <a href='#method.get_id' class='fnname'>get_id</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
-<div class='docblock'><p>Returns the id of the bot/user connected to the client.
-Only valid after login, otherwise None.</p>
-</div><h4 id='method.get_team' class='method'><code>fn <a href='#method.get_team' class='fnname'>get_team</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../slack/struct.Team.html' title='slack::Team'>Team</a>&gt;</code></h4>
-<div class='docblock'><p>Returns the Team struct of the bot/user connected to the client.
-/ Only valid after login, otherwise None.</p>
-</div><h4 id='method.get_user_id' class='method'><code>fn <a href='#method.get_user_id' class='fnname'>get_user_id</a>(&amp;self, username: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
-<div class='docblock'><p>Get a user id from a username
-Only valid after login.</p>
-</div><h4 id='method.get_channel_id' class='method'><code>fn <a href='#method.get_channel_id' class='fnname'>get_channel_id</a>(&amp;self, channel_name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
-<div class='docblock'><p>Get a channel id from a channel name, note that channel_name does not begin with a &#39;#&#39;
-Only valid after login.</p>
-</div><h4 id='method.get_group_id' class='method'><code>fn <a href='#method.get_group_id' class='fnname'>get_group_id</a>(&amp;self, group_name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
-<div class='docblock'><p>Get a group id from a group name
-Only valid after login.</p>
-</div><h4 id='method.get_users' class='method'><code>fn <a href='#method.get_users' class='fnname'>get_users</a>(&amp;self) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>&gt;</code></h4>
-<div class='docblock'><p>Returns a vector of Users from the team the bot/client is connected to.
-Only valid after login.</p>
-</div><h4 id='method.get_channels' class='method'><code>fn <a href='#method.get_channels' class='fnname'>get_channels</a>(&amp;self) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></h4>
-<div class='docblock'><p>Returns a vector of Channels from the team the bot/client is connected to.
-Only valid after login.</p>
-</div><h4 id='method.get_groups' class='method'><code>fn <a href='#method.get_groups' class='fnname'>get_groups</a>(&amp;self) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.Group.html' title='slack::Group'>Group</a>&gt;</code></h4>
-<div class='docblock'><p>Returns a vector of Groups from the team the bot/client is connected to.
-Only valid after login.</p>
-</div><h4 id='method.get_start_ims' class='method'><code>fn <a href='#method.get_start_ims' class='fnname'>get_start_ims</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.Im.html' title='slack::Im'>Im</a>&gt;&gt;</code></h4>
-<div class='docblock'><p>Returns a vector of Ims received on login the bot/client is connected to.
-Only valid after login, otherwise None.</p>
-</div><h4 id='method.get_msg_uid' class='method'><code>fn <a href='#method.get_msg_uid' class='fnname'>get_msg_uid</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.isize.html'>isize</a></code></h4>
-<div class='docblock'><p>Returns a unique identifier to be used in the &#39;id&#39; field of a message
-sent to slack.</p>
-</div><h4 id='method.send' class='method'><code>fn <a href='#method.send' class='fnname'>send</a>(&amp;mut self, s: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Allows sending a json string message over the websocket connection.
-Note that this only passes the message over a channel to the
-Messaging task, and therfore a succesful return value does not
-mean the message has been actually put on the wire yet.
-Note that you will need to form a valid json reply yourself if you
-use this method, and you will also need to retrieve a unique id for
-the message via RtmClient.get_msg_uid()
-Only valid after login.</p>
-</div><h4 id='method.send_message' class='method'><code>fn <a href='#method.send_message' class='fnname'>send_message</a>(&amp;self, chan: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, msg: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.isize.html'>isize</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Allows sending a textual string message over the websocket connection,
-to the requested channel id. Ideal usage would be EG:
-extract the channel in on_receive and then send back a message to the channel.
-Note that this only passes the message over a channel to the
-Messaging task, and therfore a succesful return value does not
-mean the message has been actually put on the wire yet.
-This method also handles getting a unique id and formatting the actual json
-sent.
-Only valid after login.</p>
-</div><h4 id='method.login' class='method'><code>fn <a href='#method.login' class='fnname'>login</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='type' href='../slack/type.WsClient.html' title='slack::WsClient'>WsClient</a>, <a class='struct' href='https://doc.rust-lang.org/nightly/std/sync/mpsc/struct.Receiver.html' title='std::sync::mpsc::Receiver'>Receiver</a>&lt;<a class='enum' href='../slack/enum.WsMessage.html' title='slack::WsMessage'>WsMessage</a>&gt;)</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Logs in to slack. Call this before calling run.
-Alternatively use login_and_run</p>
-</div><h4 id='method.run' class='method'><code>fn <a href='#method.run' class='fnname'>run</a>&lt;T: <a class='trait' href='../slack/trait.EventHandler.html' title='slack::EventHandler'>EventHandler</a>&gt;(&amp;mut self, handler: &amp;mut T, client: <a class='type' href='../slack/type.WsClient.html' title='slack::WsClient'>WsClient</a>, rx: <a class='struct' href='https://doc.rust-lang.org/nightly/std/sync/mpsc/struct.Receiver.html' title='std::sync::mpsc::Receiver'>Receiver</a>&lt;<a class='enum' href='../slack/enum.WsMessage.html' title='slack::WsMessage'>WsMessage</a>&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/slack/lib.rs.html#64-68' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct RtmClient { /* fields omitted */ }</pre><div class='docblock'><p>The actual messaging client.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../slack/struct.RtmClient.html' title='slack::RtmClient'>RtmClient</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slack/lib.rs.html#147-245' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.login' class='method'><span id='login.v' class='invisible'><code>fn <a href='#method.login' class='fnname'>login</a>(token: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/struct.RtmClient.html' title='slack::RtmClient'>RtmClient</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Logs in to slack. Call this before calling <code>run</code>.
+Alternatively use <code>login_and_run</code>.</p>
+</div><h4 id='method.run' class='method'><span id='run.v' class='invisible'><code>fn <a href='#method.run' class='fnname'>run</a>&lt;T:&nbsp;<a class='trait' href='../slack/trait.EventHandler.html' title='slack::EventHandler'>EventHandler</a>&gt;(&amp;self, handler: &amp;mut T) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></span></h4>
 <div class='docblock'><p>Runs the message receive loop</p>
-</div><h4 id='method.login_and_run' class='method'><code>fn <a href='#method.login_and_run' class='fnname'>login_and_run</a>&lt;T: <a class='trait' href='../slack/trait.EventHandler.html' title='slack::EventHandler'>EventHandler</a>&gt;(&amp;mut self, handler: &amp;mut T) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Runs the main loop for the client after logging in to slack,
-returns an error if the process fails at an point, or an Ok(()) on succesful
-close.
-Takes a EventHandler (implemented by the user) to call events handlers on.
-once the first on_receive() or on_ping is called on the EventHandler, you
-can soon the &#39;Only valid after login&#39; methods are safe to use.
-Sending is run in a thread in parallel while the receive loop runs on the main thread.
-Both loops should end on return.
-Sending should be thread safe as the messages are passed in via a channel in
-RtmClient.send and RtmClient.send_message</p>
-</div><h4 id='method.list_users' class='method'><code>fn <a href='#method.list_users' class='fnname'>list_users</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>&gt;, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Uses <a href="https://api.slack.com/methods/users.list">https://api.slack.com/methods/users.list</a> to get a list of users</p>
-</div><h4 id='method.list_channels' class='method'><code>fn <a href='#method.list_channels' class='fnname'>list_channels</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Uses <a href="https://api.slack.com/methods/channels.list">https://api.slack.com/methods/channels.list</a> to get a list of channels</p>
-</div><h4 id='method.list_groups' class='method'><code>fn <a href='#method.list_groups' class='fnname'>list_groups</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.Group.html' title='slack::Group'>Group</a>&gt;, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Uses <a href="https://api.slack.com/methods/groups.list">https://api.slack.com/methods/groups.list</a> to get a list of groups</p>
-</div><h4 id='method.update_users' class='method'><code>fn <a href='#method.update_users' class='fnname'>update_users</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>&gt;, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Uses <a href="https://api.slack.com/methods/users.list">https://api.slack.com/methods/users.list</a> to update users</p>
-</div><h4 id='method.update_channels' class='method'><code>fn <a href='#method.update_channels' class='fnname'>update_channels</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Uses <a href="https://api.slack.com/methods/channels.list">https://api.slack.com/methods/channels.list</a> to update channels</p>
-</div><h4 id='method.update_groups' class='method'><code>fn <a href='#method.update_groups' class='fnname'>update_groups</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../slack/struct.Group.html' title='slack::Group'>Group</a>&gt;, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Uses <a href="https://api.slack.com/methods/groups.list">https://api.slack.com/methods/groups.list</a> to update groups</p>
-</div><h4 id='method.post_message' class='method'><code>fn <a href='#method.post_message' class='fnname'>post_message</a>(&amp;self, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, json_payload: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, attachments: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/chat/struct.PostMessageResponse.html' title='slack::api::chat::PostMessageResponse'>PostMessageResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/chat.postMessage">https://api.slack.com/methods/chat.postMessage</a>
-json_payload can be a json formatted action or simple text that will be posted as a message.
-See <a href="https://api.slack.com/docs/formatting">https://api.slack.com/docs/formatting</a></p>
-</div><h4 id='method.delete_message' class='method'><code>fn <a href='#method.delete_message' class='fnname'>delete_message</a>(&amp;self, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, timestamp: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/chat/struct.DeleteResponse.html' title='slack::api::chat::DeleteResponse'>DeleteResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/chat.delete">https://api.slack.com/methods/chat.delete</a> to delete a message
-See the slack api docs for timestamp formatting.</p>
-</div><h4 id='method.mark' class='method'><code>fn <a href='#method.mark' class='fnname'>mark</a>(&amp;self, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, timestamp: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/channels/struct.MarkResponse.html' title='slack::api::channels::MarkResponse'>MarkResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/channels.mark">https://api.slack.com/methods/channels.mark</a> to set the read cursor in a channel
-See the slack api docs for timestamp formatting.</p>
-</div><h4 id='method.set_topic' class='method'><code>fn <a href='#method.set_topic' class='fnname'>set_topic</a>(&amp;self, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, topic: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/channels/struct.SetTopicResponse.html' title='slack::api::channels::SetTopicResponse'>SetTopicResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/channels.setTopic">https://api.slack.com/methods/channels.setTopic</a>
-if channel starts with a # then it will be looked up with get_channel_id
-topic will be json escaped.</p>
-</div><h4 id='method.set_purpose' class='method'><code>fn <a href='#method.set_purpose' class='fnname'>set_purpose</a>(&amp;self, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, purpose: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/channels/struct.SetPurposeResponse.html' title='slack::api::channels::SetPurposeResponse'>SetPurposeResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/channels.setPurpose">https://api.slack.com/methods/channels.setPurpose</a>
-if channel starts with a # then it will be looked up with get_channel_id
-purpose will be json escaped.</p>
-</div><h4 id='method.add_reaction_timestamp' class='method'><code>fn <a href='#method.add_reaction_timestamp' class='fnname'>add_reaction_timestamp</a>(&amp;self, emoji_name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, timestamp: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/reactions/struct.AddResponse.html' title='slack::api::reactions::AddResponse'>AddResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/reactions.add">https://api.slack.com/methods/reactions.add</a> to add an emoji reaction to a message
-if channel starts with a # then it will be looked up with get_channel_id</p>
-</div><h4 id='method.add_reaction_file' class='method'><code>fn <a href='#method.add_reaction_file' class='fnname'>add_reaction_file</a>(&amp;self, emoji_name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, file: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/reactions/struct.AddResponse.html' title='slack::api::reactions::AddResponse'>AddResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/reactions.add">https://api.slack.com/methods/reactions.add</a> to add an emoji reaction to a file</p>
-</div><h4 id='method.add_reaction_file_comment' class='method'><code>fn <a href='#method.add_reaction_file_comment' class='fnname'>add_reaction_file_comment</a>(&amp;self, emoji_name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, file_comment: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/reactions/struct.AddResponse.html' title='slack::api::reactions::AddResponse'>AddResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/reactions.add">https://api.slack.com/methods/reactions.add</a> to add an emoji reaction to a file comment</p>
-</div><h4 id='method.update_message' class='method'><code>fn <a href='#method.update_message' class='fnname'>update_message</a>(&amp;self, channel: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, timestamp: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, json_payload: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, attachments: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/chat/struct.UpdateResponse.html' title='slack::api::chat::UpdateResponse'>UpdateResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/chat.update">https://api.slack.com/methods/chat.update</a>
-json_payload can be a json formatted action or simple text that will be posted as a message.
-See <a href="https://api.slack.com/docs/formatting">https://api.slack.com/docs/formatting</a></p>
-</div><h4 id='method.im_open' class='method'><code>fn <a href='#method.im_open' class='fnname'>im_open</a>(&amp;self, user_id: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/im/struct.OpenResponse.html' title='slack::api::im::OpenResponse'>OpenResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/im.open">https://api.slack.com/methods/im.open</a> to open a direct message channel with a user.</p>
-</div><h4 id='method.channels_history' class='method'><code>fn <a href='#method.channels_history' class='fnname'>channels_history</a>(&amp;self, channel_id: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, latest: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;, oldest: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;, inclusive: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;, count: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/channels/struct.HistoryResponse.html' title='slack::api::channels::HistoryResponse'>HistoryResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/channels.history">https://api.slack.com/methods/channels.history</a> to retrieve the history of messages and
-events from a channel.</p>
-</div><h4 id='method.im_close' class='method'><code>fn <a href='#method.im_close' class='fnname'>im_close</a>(&amp;self, channel_id: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/im/struct.CloseResponse.html' title='slack::api::im::CloseResponse'>CloseResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/im.close">https://api.slack.com/methods/im.close</a> to close a direct message channel.</p>
-</div><h4 id='method.im_history' class='method'><code>fn <a href='#method.im_history' class='fnname'>im_history</a>(&amp;self, channel_id: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, latest: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;, oldest: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;, inclusive: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;, count: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>&gt;) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/im/struct.HistoryResponse.html' title='slack::api::im::HistoryResponse'>HistoryResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/im.history">https://api.slack.com/methods/im.history</a> to retrieve the history of messages and
-events from a direct message channel.</p>
-</div><h4 id='method.im_list' class='method'><code>fn <a href='#method.im_list' class='fnname'>im_list</a>(&amp;self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/im/struct.ListResponse.html' title='slack::api::im::ListResponse'>ListResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/im.list">https://api.slack.com/methods/im.list</a> to get the list of all open direct message
-channels the user has open.</p>
-</div><h4 id='method.im_mark' class='method'><code>fn <a href='#method.im_mark' class='fnname'>im_mark</a>(&amp;self, channel_id: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, timestamp: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../slack/api/im/struct.MarkResponse.html' title='slack::api::im::MarkResponse'>MarkResponse</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></h4>
-<div class='docblock'><p>Wraps <a href="https://api.slack.com/methods/im.mark">https://api.slack.com/methods/im.mark</a> to move the read cursor in a direct message
-channel.</p>
+</div><h4 id='method.login_and_run' class='method'><span id='login_and_run.v' class='invisible'><code>fn <a href='#method.login_and_run' class='fnname'>login_and_run</a>&lt;T:&nbsp;<a class='trait' href='../slack/trait.EventHandler.html' title='slack::EventHandler'>EventHandler</a>&gt;(token: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; handler: &amp;mut T)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, <a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Runs the main loop for the client after logging in to slack.</p>
+
+<p>Returns an error if the process fails at any point, or an Ok(()) on successful
+close.</p>
+
+<p>Takes an <code>EventHandler</code> implemented by the user which will be called when <code>Event</code>s are
+received.</p>
+</div><h4 id='method.sender' class='method'><span id='sender.v' class='invisible'><code>fn <a href='#method.sender' class='fnname'>sender</a>(&amp;self) -&gt; &amp;<a class='struct' href='../slack/struct.Sender.html' title='slack::Sender'>Sender</a></code></span></h4>
+<div class='docblock'><p>Get a reference thread-safe cloneable message <code>Sender</code></p>
+</div><h4 id='method.start_response' class='method'><span id='start_response.v' class='invisible'><code>fn <a href='#method.start_response' class='fnname'>start_response</a>(&amp;self) -&gt; &amp;<a class='struct' href='../slack_api/mods/rtm/struct.StartResponse.html' title='slack_api::mods::rtm::StartResponse'>StartResponse</a></code></span></h4>
+<div class='docblock'><p>Returns a reference to the <code>StartResponse</code>.</p>
 </div></div></section>
     <section id='search' class="content hidden"></section>
 
@@ -200,6 +91,8 @@ channel.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -220,7 +113,7 @@ channel.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -231,11 +124,9 @@ channel.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "slack";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

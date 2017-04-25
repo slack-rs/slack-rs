@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/hyper-0.8.0/src/http/message.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.9/src/http/message.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>message.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -169,6 +171,11 @@
 <span id="126">126</span>
 <span id="127">127</span>
 <span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Defines the `HttpMessage` trait that serves to encapsulate the operations of a single</span>
 <span class='doccomment'>//! request-response cycle on any HTTP connection.</span>
@@ -242,6 +249,11 @@
     <span class='kw'>fn</span> <span class='ident'>close_connection</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> ::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span>()<span class='op'>&gt;</span>;
     <span class='doccomment'>/// Returns whether the incoming message has a body.</span>
     <span class='kw'>fn</span> <span class='ident'>has_body</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span>;
+    <span class='doccomment'>/// Called when the Client wishes to use a Proxy.</span>
+    <span class='kw'>fn</span> <span class='ident'>set_proxied</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>val</span>: <span class='ident'>bool</span>) {
+        <span class='comment'>// default implementation so as to not be a breaking change.</span>
+        <span class='macro'>warn</span><span class='macro'>!</span>(<span class='string'>&quot;default set_proxied({:?})&quot;</span>, <span class='ident'>val</span>);
+    }
 }
 
 <span class='kw'>impl</span> <span class='ident'>HttpMessage</span> {
@@ -254,7 +266,7 @@
     }
 
     <span class='kw'>unsafe</span> <span class='kw'>fn</span> <span class='ident'>downcast_unchecked</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='lifetime'>&#39;static</span><span class='op'>&gt;</span>(<span class='self'>self</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>HttpMessage</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>  {
-        <span class='kw'>let</span> <span class='ident'>raw</span>: <span class='op'>*</span><span class='kw-2'>mut</span> <span class='ident'>HttpMessage</span> <span class='op'>=</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='self'>self</span>);
+        <span class='kw'>let</span> <span class='ident'>raw</span>: <span class='kw-2'>*</span><span class='kw-2'>mut</span> <span class='ident'>HttpMessage</span> <span class='op'>=</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='self'>self</span>);
         <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>traitobject</span>::<span class='ident'>data_mut</span>(<span class='ident'>raw</span>))
     }
 }
@@ -263,7 +275,7 @@
     <span class='doccomment'>/// Is the underlying type in this trait object a T?</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>is</span><span class='op'>&lt;</span><span class='ident'>T</span>: <span class='ident'>Any</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        (<span class='op'>*</span><span class='self'>self</span>).<span class='ident'>get_type</span>() <span class='op'>==</span> <span class='ident'>TypeId</span>::<span class='ident'>of</span>::<span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>()
+        (<span class='kw-2'>*</span><span class='self'>self</span>).<span class='ident'>get_type</span>() <span class='op'>==</span> <span class='ident'>TypeId</span>::<span class='ident'>of</span>::<span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>()
     }
 
     <span class='doccomment'>/// If the underlying type is T, get a reference to the contained data.</span>
@@ -322,6 +334,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -342,7 +356,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -353,11 +367,9 @@
     <script>
         window.rootPath = "../../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
-    
     <script defer src="../../../search-index.js"></script>
 </body>
 </html>

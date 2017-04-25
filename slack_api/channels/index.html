@@ -9,8 +9,10 @@
 
     <title>slack_api::channels - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     
     
@@ -43,264 +45,442 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>slack_api</a>::<wbr><a class='mod' href=''>channels</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-3009' class='srclink' href='../../src/slack_api/channels.rs.html#15-682' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>Get info on your team&#39;s Slack channels, create or archive channels, invite
-users, set the topic and purpose, and mark a channel as read.</p>
-
-<p>For more information, see <a href="https://api.slack.com/methods">Slack&#39;s API
-documentation</a>.</p>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/slack_api/mods/channels.rs.html#1-2607' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Get info on your team&#39;s Slack channels, create or archive channels, invite users, set the topic and purpose, and mark a channel as read.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.AbridgedChannel.html'
-                               title='slack_api::channels::AbridgedChannel'>AbridgedChannel</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.ArchiveResponse.html'
-                               title='slack_api::channels::ArchiveResponse'>ArchiveResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.CreateResponse.html'
-                               title='slack_api::channels::CreateResponse'>CreateResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.HistoryResponse.html'
-                               title='slack_api::channels::HistoryResponse'>HistoryResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.InfoResponse.html'
-                               title='slack_api::channels::InfoResponse'>InfoResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.InviteResponse.html'
-                               title='slack_api::channels::InviteResponse'>InviteResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.JoinResponse.html'
-                               title='slack_api::channels::JoinResponse'>JoinResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.KickResponse.html'
-                               title='slack_api::channels::KickResponse'>KickResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.LeaveResponse.html'
-                               title='slack_api::channels::LeaveResponse'>LeaveResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.ListResponse.html'
-                               title='slack_api::channels::ListResponse'>ListResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.MarkResponse.html'
-                               title='slack_api::channels::MarkResponse'>MarkResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.RenameResponse.html'
-                               title='slack_api::channels::RenameResponse'>RenameResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.SetPurposeResponse.html'
-                               title='slack_api::channels::SetPurposeResponse'>SetPurposeResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.SetTopicResponse.html'
-                               title='slack_api::channels::SetTopicResponse'>SetTopicResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.UnarchiveResponse.html'
-                               title='slack_api::channels::UnarchiveResponse'>UnarchiveResponse</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ArchiveRequest.html'
+                                  title='slack_api::channels::ArchiveRequest'>ArchiveRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ArchiveResponse.html'
+                                  title='slack_api::channels::ArchiveResponse'>ArchiveResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CreateRequest.html'
+                                  title='slack_api::channels::CreateRequest'>CreateRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.CreateResponse.html'
+                                  title='slack_api::channels::CreateResponse'>CreateResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.HistoryRequest.html'
+                                  title='slack_api::channels::HistoryRequest'>HistoryRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.HistoryResponse.html'
+                                  title='slack_api::channels::HistoryResponse'>HistoryResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InfoRequest.html'
+                                  title='slack_api::channels::InfoRequest'>InfoRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InfoResponse.html'
+                                  title='slack_api::channels::InfoResponse'>InfoResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InviteRequest.html'
+                                  title='slack_api::channels::InviteRequest'>InviteRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.InviteResponse.html'
+                                  title='slack_api::channels::InviteResponse'>InviteResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.JoinRequest.html'
+                                  title='slack_api::channels::JoinRequest'>JoinRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.JoinResponse.html'
+                                  title='slack_api::channels::JoinResponse'>JoinResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.KickRequest.html'
+                                  title='slack_api::channels::KickRequest'>KickRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.KickResponse.html'
+                                  title='slack_api::channels::KickResponse'>KickResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.LeaveRequest.html'
+                                  title='slack_api::channels::LeaveRequest'>LeaveRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.LeaveResponse.html'
+                                  title='slack_api::channels::LeaveResponse'>LeaveResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ListRequest.html'
+                                  title='slack_api::channels::ListRequest'>ListRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.ListResponse.html'
+                                  title='slack_api::channels::ListResponse'>ListResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.MarkRequest.html'
+                                  title='slack_api::channels::MarkRequest'>MarkRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.MarkResponse.html'
+                                  title='slack_api::channels::MarkResponse'>MarkResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RenameRequest.html'
+                                  title='slack_api::channels::RenameRequest'>RenameRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RenameResponse.html'
+                                  title='slack_api::channels::RenameResponse'>RenameResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RenameResponseChannel.html'
+                                  title='slack_api::channels::RenameResponseChannel'>RenameResponseChannel</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RepliesRequest.html'
+                                  title='slack_api::channels::RepliesRequest'>RepliesRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RepliesResponse.html'
+                                  title='slack_api::channels::RepliesResponse'>RepliesResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetPurposeRequest.html'
+                                  title='slack_api::channels::SetPurposeRequest'>SetPurposeRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetPurposeResponse.html'
+                                  title='slack_api::channels::SetPurposeResponse'>SetPurposeResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetTopicRequest.html'
+                                  title='slack_api::channels::SetTopicRequest'>SetTopicRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.SetTopicResponse.html'
+                                  title='slack_api::channels::SetTopicResponse'>SetTopicResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.UnarchiveRequest.html'
+                                  title='slack_api::channels::UnarchiveRequest'>UnarchiveRequest</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.UnarchiveResponse.html'
+                                  title='slack_api::channels::UnarchiveResponse'>UnarchiveResponse</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.archive.html'
-                               title='slack_api::channels::archive'>archive</a></td>
-                        <td class='docblock short'>
-                             <p>Archives a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.create.html'
-                               title='slack_api::channels::create'>create</a></td>
-                        <td class='docblock short'>
-                             <p>Creates a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.history.html'
-                               title='slack_api::channels::history'>history</a></td>
-                        <td class='docblock short'>
-                             <p>Fetches history of messages and events from a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.info.html'
-                               title='slack_api::channels::info'>info</a></td>
-                        <td class='docblock short'>
-                             <p>Gets information about a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.invite.html'
-                               title='slack_api::channels::invite'>invite</a></td>
-                        <td class='docblock short'>
-                             <p>Invites a user to a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.join.html'
-                               title='slack_api::channels::join'>join</a></td>
-                        <td class='docblock short'>
-                             <p>Joins a channel, creating it if needed.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.kick.html'
-                               title='slack_api::channels::kick'>kick</a></td>
-                        <td class='docblock short'>
-                             <p>Removes a user from a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.leave.html'
-                               title='slack_api::channels::leave'>leave</a></td>
-                        <td class='docblock short'>
-                             <p>Leaves a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.list.html'
-                               title='slack_api::channels::list'>list</a></td>
-                        <td class='docblock short'>
-                             <p>Lists all channels in a Slack team.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.mark.html'
-                               title='slack_api::channels::mark'>mark</a></td>
-                        <td class='docblock short'>
-                             <p>Sets the read cursor in a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.rename.html'
-                               title='slack_api::channels::rename'>rename</a></td>
-                        <td class='docblock short'>
-                             <p>Renames a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.set_purpose.html'
-                               title='slack_api::channels::set_purpose'>set_purpose</a></td>
-                        <td class='docblock short'>
-                             <p>Sets the purpose for a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.set_topic.html'
-                               title='slack_api::channels::set_topic'>set_topic</a></td>
-                        <td class='docblock short'>
-                             <p>Sets the topic for a channel.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='fn' href='fn.unarchive.html'
-                               title='slack_api::channels::unarchive'>unarchive</a></td>
-                        <td class='docblock short'>
-                             <p>Unarchives a channel.</p>
-
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.ArchiveError.html'
+                                  title='slack_api::channels::ArchiveError'>ArchiveError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.CreateError.html'
+                                  title='slack_api::channels::CreateError'>CreateError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.HistoryError.html'
+                                  title='slack_api::channels::HistoryError'>HistoryError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.InfoError.html'
+                                  title='slack_api::channels::InfoError'>InfoError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.InviteError.html'
+                                  title='slack_api::channels::InviteError'>InviteError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.JoinError.html'
+                                  title='slack_api::channels::JoinError'>JoinError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.KickError.html'
+                                  title='slack_api::channels::KickError'>KickError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.LeaveError.html'
+                                  title='slack_api::channels::LeaveError'>LeaveError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.ListError.html'
+                                  title='slack_api::channels::ListError'>ListError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.MarkError.html'
+                                  title='slack_api::channels::MarkError'>MarkError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.RenameError.html'
+                                  title='slack_api::channels::RenameError'>RenameError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.RepliesError.html'
+                                  title='slack_api::channels::RepliesError'>RepliesError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.SetPurposeError.html'
+                                  title='slack_api::channels::SetPurposeError'>SetPurposeError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.SetTopicError.html'
+                                  title='slack_api::channels::SetTopicError'>SetTopicError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.UnarchiveError.html'
+                                  title='slack_api::channels::UnarchiveError'>UnarchiveError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.archive.html'
+                                  title='slack_api::channels::archive'>archive</a></td>
+                           <td class='docblock-short'>
+                                <p>Archives a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.create.html'
+                                  title='slack_api::channels::create'>create</a></td>
+                           <td class='docblock-short'>
+                                <p>Creates a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.history.html'
+                                  title='slack_api::channels::history'>history</a></td>
+                           <td class='docblock-short'>
+                                <p>Fetches history of messages and events from a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.info.html'
+                                  title='slack_api::channels::info'>info</a></td>
+                           <td class='docblock-short'>
+                                <p>Gets information about a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.invite.html'
+                                  title='slack_api::channels::invite'>invite</a></td>
+                           <td class='docblock-short'>
+                                <p>Invites a user to a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.join.html'
+                                  title='slack_api::channels::join'>join</a></td>
+                           <td class='docblock-short'>
+                                <p>Joins a channel, creating it if needed.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.kick.html'
+                                  title='slack_api::channels::kick'>kick</a></td>
+                           <td class='docblock-short'>
+                                <p>Removes a user from a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.leave.html'
+                                  title='slack_api::channels::leave'>leave</a></td>
+                           <td class='docblock-short'>
+                                <p>Leaves a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.list.html'
+                                  title='slack_api::channels::list'>list</a></td>
+                           <td class='docblock-short'>
+                                <p>Lists all channels in a Slack team.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.mark.html'
+                                  title='slack_api::channels::mark'>mark</a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the read cursor in a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.rename.html'
+                                  title='slack_api::channels::rename'>rename</a></td>
+                           <td class='docblock-short'>
+                                <p>Renames a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.replies.html'
+                                  title='slack_api::channels::replies'>replies</a></td>
+                           <td class='docblock-short'>
+                                <p>Retrieve a thread of messages posted to a channel</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.set_purpose.html'
+                                  title='slack_api::channels::set_purpose'>set_purpose</a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the purpose for a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.set_topic.html'
+                                  title='slack_api::channels::set_topic'>set_topic</a></td>
+                           <td class='docblock-short'>
+                                <p>Sets the topic for a channel.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.unarchive.html'
+                                  title='slack_api::channels::unarchive'>unarchive</a></td>
+                           <td class='docblock-short'>
+                                <p>Unarchives a channel.</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -323,6 +503,8 @@ documentation</a>.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -343,7 +525,7 @@ documentation</a>.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -354,11 +536,9 @@ documentation</a>.</p>
     <script>
         window.rootPath = "../../";
         window.currentCrate = "slack_api";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

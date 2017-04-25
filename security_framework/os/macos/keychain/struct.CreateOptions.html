@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `CreateOptions` struct in crate `security_framework`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, CreateOptions">
+
+    <title>security_framework::os::macos::keychain::CreateOptions - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../../index.html'>security_framework</a>::<wbr><a href='../../index.html'>os</a>::<wbr><a href='../index.html'>macos</a>::<wbr><a href='index.html'>keychain</a></p><script>window.sidebarCurrent = {name: 'CreateOptions', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../../index.html'>security_framework</a>::<wbr><a href='../../index.html'>os</a>::<wbr><a href='../index.html'>macos</a>::<wbr><a href='index.html'>keychain</a>::<wbr><a class='struct' href=''>CreateOptions</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../../src/security_framework/os/macos/keychain.rs.html#101-105' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct CreateOptions { /* fields omitted */ }</pre><div class='docblock'><p>A builder type to create new keychains.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../../../security_framework/os/macos/keychain/struct.CreateOptions.html' title='security_framework::os::macos::keychain::CreateOptions'>CreateOptions</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../../src/security_framework/os/macos/keychain.rs.html#107-160' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class='struct' href='../../../../security_framework/os/macos/keychain/struct.CreateOptions.html' title='security_framework::os::macos::keychain::CreateOptions'>CreateOptions</a></code></span></h4>
+<div class='docblock'><p>Creates a new builder with default options.</p>
+</div><h4 id='method.password' class='method'><span id='password.v' class='invisible'><code>fn <a href='#method.password' class='fnname'>password</a>(&amp;mut self, password: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; &amp;mut <a class='struct' href='../../../../security_framework/os/macos/keychain/struct.CreateOptions.html' title='security_framework::os::macos::keychain::CreateOptions'>CreateOptions</a></code></span></h4>
+<div class='docblock'><p>Sets the password to be used to protect the keychain.</p>
+</div><h4 id='method.prompt_user' class='method'><span id='prompt_user.v' class='invisible'><code>fn <a href='#method.prompt_user' class='fnname'>prompt_user</a>(&amp;mut self, prompt_user: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) -&gt; &amp;mut <a class='struct' href='../../../../security_framework/os/macos/keychain/struct.CreateOptions.html' title='security_framework::os::macos::keychain::CreateOptions'>CreateOptions</a></code></span></h4>
+<div class='docblock'><p>If set, the user will be prompted to provide a password used to
+protect the keychain.</p>
+</div><h4 id='method.access' class='method'><span id='access.v' class='invisible'><code>fn <a href='#method.access' class='fnname'>access</a>(&amp;mut self, access: <a class='struct' href='../../../../security_framework/os/macos/access/struct.SecAccess.html' title='security_framework::os::macos::access::SecAccess'>SecAccess</a>) -&gt; &amp;mut <a class='struct' href='../../../../security_framework/os/macos/keychain/struct.CreateOptions.html' title='security_framework::os::macos::keychain::CreateOptions'>CreateOptions</a></code></span></h4>
+<div class='docblock'><p>Sets the access control applied to the keychain.</p>
+</div><h4 id='method.create' class='method'><span id='create.v' class='invisible'><code>fn <a href='#method.create' class='fnname'>create</a>&lt;P:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/path/struct.Path.html' title='std::path::Path'>Path</a>&gt;&gt;(&amp;self, path: P) -&gt; <a class='type' href='../../../../security_framework/base/type.Result.html' title='security_framework::base::Result'>Result</a>&lt;<a class='struct' href='../../../../security_framework/os/macos/keychain/struct.SecKeychain.html' title='security_framework::os::macos::keychain::SecKeychain'>SecKeychain</a>&gt;</code></span></h4>
+<div class='docblock'><p>Creates a new keychain at the specified location on the filesystem.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html' title='core::default::Default'>Default</a> for <a class='struct' href='../../../../security_framework/os/macos/keychain/struct.CreateOptions.html' title='security_framework::os::macos::keychain::CreateOptions'>CreateOptions</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../../src/security_framework/os/macos/keychain.rs.html#100' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class='method'><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; <a class='struct' href='../../../../security_framework/os/macos/keychain/struct.CreateOptions.html' title='security_framework::os::macos::keychain::CreateOptions'>CreateOptions</a></code></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../../";
+        window.currentCrate = "security_framework";
+    </script>
+    <script src="../../../../jquery.js"></script>
+    <script src="../../../../main.js"></script>
+    <script defer src="../../../../search-index.js"></script>
+</body>
+</html>

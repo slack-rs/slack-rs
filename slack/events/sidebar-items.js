@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Event","Represents Slack rtm event types."]]});

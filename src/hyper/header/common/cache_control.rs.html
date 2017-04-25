@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/hyper-0.8.0/src/header/common/cache_control.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.9/src/header/common/cache_control.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>cache_control.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
 
     
     
@@ -249,11 +251,14 @@
 <span id="206">206</span>
 <span id="207">207</span>
 <span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>str</span>::<span class='ident'>FromStr</span>;
 <span class='kw'>use</span> <span class='ident'>header</span>::{<span class='ident'>Header</span>, <span class='ident'>HeaderFormat</span>};
-<span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>parsing</span>::{<span class='ident'>from_one_comma_delimited</span>, <span class='ident'>fmt_comma_delimited</span>};
+<span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>parsing</span>::{<span class='ident'>from_comma_delimited</span>, <span class='ident'>fmt_comma_delimited</span>};
 
 <span class='doccomment'>/// `Cache-Control` header, defined in [RFC7234](https://tools.ietf.org/html/rfc7234#section-5.2)</span>
 <span class='doccomment'>///</span>
@@ -307,10 +312,7 @@
     }
 
     <span class='kw'>fn</span> <span class='ident'>parse_header</span>(<span class='ident'>raw</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>]) <span class='op'>-&gt;</span> ::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>CacheControl</span><span class='op'>&gt;</span> {
-        <span class='kw'>let</span> <span class='ident'>directives</span> <span class='op'>=</span> <span class='ident'>raw</span>.<span class='ident'>iter</span>()
-            .<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>line</span><span class='op'>|</span> <span class='ident'>from_one_comma_delimited</span>(<span class='kw-2'>&amp;</span><span class='ident'>line</span>[..]).<span class='ident'>ok</span>())
-            .<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>CacheDirective</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>()
-            .<span class='ident'>concat</span>();
+        <span class='kw'>let</span> <span class='ident'>directives</span> <span class='op'>=</span> <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>from_comma_delimited</span>(<span class='ident'>raw</span>));
         <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>directives</span>.<span class='ident'>is_empty</span>() {
             <span class='prelude-val'>Ok</span>(<span class='ident'>CacheControl</span>(<span class='ident'>directives</span>))
         } <span class='kw'>else</span> {
@@ -321,11 +323,17 @@
 
 <span class='kw'>impl</span> <span class='ident'>HeaderFormat</span> <span class='kw'>for</span> <span class='ident'>CacheControl</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt_header</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
+        <span class='ident'>fmt</span>::<span class='ident'>Display</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>, <span class='ident'>f</span>)
+    }
+}
+
+<span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>CacheControl</span> {
+    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
         <span class='ident'>fmt_comma_delimited</span>(<span class='ident'>f</span>, <span class='kw-2'>&amp;</span><span class='self'>self</span>[..])
     }
 }
 
-<span class='doccomment'>/// CacheControl contains a list of these directives.</span>
+<span class='doccomment'>/// `CacheControl` contains a list of these directives.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>PartialEq</span>, <span class='ident'>Clone</span>, <span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>CacheDirective</span> {
     <span class='doccomment'>/// &quot;no-cache&quot;</span>
@@ -363,8 +371,8 @@
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>CacheDirective</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>CacheDirective</span>::<span class='op'>*</span>;
-        <span class='ident'>fmt</span>::<span class='ident'>Display</span>::<span class='ident'>fmt</span>(<span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>CacheDirective</span>::<span class='kw-2'>*</span>;
+        <span class='ident'>fmt</span>::<span class='ident'>Display</span>::<span class='ident'>fmt</span>(<span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>NoCache</span> <span class='op'>=&gt;</span> <span class='string'>&quot;no-cache&quot;</span>,
             <span class='ident'>NoStore</span> <span class='op'>=&gt;</span> <span class='string'>&quot;no-store&quot;</span>,
             <span class='ident'>NoTransform</span> <span class='op'>=&gt;</span> <span class='string'>&quot;no-transform&quot;</span>,
@@ -390,7 +398,7 @@
 <span class='kw'>impl</span> <span class='ident'>FromStr</span> <span class='kw'>for</span> <span class='ident'>CacheDirective</span> {
     <span class='kw'>type</span> <span class='prelude-val'>Err</span> <span class='op'>=</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;&lt;</span><span class='ident'>u32</span> <span class='kw'>as</span> <span class='ident'>FromStr</span><span class='op'>&gt;</span>::<span class='prelude-val'>Err</span><span class='op'>&gt;</span>;
     <span class='kw'>fn</span> <span class='ident'>from_str</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>CacheDirective</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;&lt;</span><span class='ident'>u32</span> <span class='kw'>as</span> <span class='ident'>FromStr</span><span class='op'>&gt;</span>::<span class='prelude-val'>Err</span><span class='op'>&gt;&gt;</span> {
-        <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>CacheDirective</span>::<span class='op'>*</span>;
+        <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>CacheDirective</span>::<span class='kw-2'>*</span>;
         <span class='kw'>match</span> <span class='ident'>s</span> {
             <span class='string'>&quot;no-cache&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>NoCache</span>),
             <span class='string'>&quot;no-store&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='ident'>NoStore</span>),
@@ -419,7 +427,7 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
     <span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>Header</span>;
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='op'>*</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='kw-2'>*</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_parse_multiple_headers</span>() {
@@ -482,6 +490,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -502,7 +512,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -513,11 +523,9 @@
     <script>
         window.rootPath = "../../../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../../jquery.js"></script>
     <script src="../../../../main.js"></script>
-    
     <script defer src="../../../../search-index.js"></script>
 </body>
 </html>

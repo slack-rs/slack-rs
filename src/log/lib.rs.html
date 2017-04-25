@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/log-0.3.5/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.3.7/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     <link rel="shortcut icon" href="https://www.rust-lang.org/favicon.ico">
     
@@ -26,7 +28,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../log/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='' width='100'></a>
+        <a href='../../log/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='logo' width='100'></a>
         
     </nav>
 
@@ -1056,10 +1058,6 @@
 <span id="1013">1013</span>
 <span id="1014">1014</span>
 <span id="1015">1015</span>
-<span id="1016">1016</span>
-<span id="1017">1017</span>
-<span id="1018">1018</span>
-<span id="1019">1019</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 The Rust Project Developers. See the COPYRIGHT</span>
 <span class='comment'>// file at the top-level directory of this distribution and at</span>
@@ -1255,11 +1253,13 @@
 
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>), <span class='ident'>no_std</span>)]</span>
 
+<span class='comment'>// When compiled for the rustc compiler itself we want to make sure that this is</span>
+<span class='comment'>// an unstable crate</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>rustbuild</span>, <span class='ident'>feature</span>(<span class='ident'>staged_api</span>, <span class='ident'>rustc_private</span>))]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>rustbuild</span>, <span class='ident'>unstable</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;rustc_private&quot;</span>, <span class='ident'>issue</span> <span class='op'>=</span> <span class='string'>&quot;27812&quot;</span>))]</span>
+
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>not</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>))]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>core</span> <span class='kw'>as</span> <span class='ident'>std</span>;
-
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>)]</span>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>libc</span>;
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>cmp</span>;
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>)]</span>
@@ -1292,7 +1292,7 @@
 <span class='comment'>// log calls still increment and decrement it, but the interval in between is</span>
 <span class='comment'>// small enough that the wait is really just for the active log calls to finish.</span>
 
-<span class='kw'>static</span> <span class='kw-2'>mut</span> <span class='ident'>LOGGER</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>Log</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='ident'>NopLogger</span>;
+<span class='kw'>static</span> <span class='kw-2'>mut</span> <span class='ident'>LOGGER</span>: <span class='kw-2'>*</span><span class='kw'>const</span> <span class='ident'>Log</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='ident'>NopLogger</span>;
 <span class='kw'>static</span> <span class='ident'>STATE</span>: <span class='ident'>AtomicUsize</span> <span class='op'>=</span> <span class='ident'>ATOMIC_USIZE_INIT</span>;
 <span class='kw'>static</span> <span class='ident'>REFCOUNT</span>: <span class='ident'>AtomicUsize</span> <span class='op'>=</span> <span class='ident'>ATOMIC_USIZE_INIT</span>;
 
@@ -1336,21 +1336,21 @@
 <span class='kw'>impl</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>LogLevel</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>LogLevel</span> {
-        <span class='op'>*</span><span class='self'>self</span>
+        <span class='kw-2'>*</span><span class='self'>self</span>
     }
 }
 
 <span class='kw'>impl</span> <span class='ident'>PartialEq</span> <span class='kw'>for</span> <span class='ident'>LogLevel</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>eq</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>LogLevel</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span> <span class='op'>==</span> <span class='op'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>
+        <span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span> <span class='op'>==</span> <span class='kw-2'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>
     }
 }
 
 <span class='kw'>impl</span> <span class='ident'>PartialEq</span><span class='op'>&lt;</span><span class='ident'>LogLevelFilter</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>LogLevel</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>eq</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>LogLevelFilter</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span> <span class='op'>==</span> <span class='op'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>
+        <span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span> <span class='op'>==</span> <span class='kw-2'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>
     }
 }
 
@@ -1364,14 +1364,14 @@
 <span class='kw'>impl</span> <span class='ident'>PartialOrd</span><span class='op'>&lt;</span><span class='ident'>LogLevelFilter</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>LogLevel</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>partial_cmp</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>LogLevelFilter</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>cmp</span>::<span class='ident'>Ordering</span><span class='op'>&gt;</span> {
-        <span class='prelude-val'>Some</span>((<span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span>(<span class='op'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>)))
+        <span class='prelude-val'>Some</span>((<span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span>(<span class='kw-2'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>)))
     }
 }
 
 <span class='kw'>impl</span> <span class='ident'>Ord</span> <span class='kw'>for</span> <span class='ident'>LogLevel</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>LogLevel</span>) <span class='op'>-&gt;</span> <span class='ident'>cmp</span>::<span class='ident'>Ordering</span> {
-        (<span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span>(<span class='op'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>))
+        (<span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span>(<span class='kw-2'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>))
     }
 }
 
@@ -1397,7 +1397,7 @@
          .<span class='ident'>zip</span>(<span class='ident'>b</span>.<span class='ident'>bytes</span>())
          .<span class='ident'>all</span>(<span class='op'>|</span>(<span class='ident'>a</span>, <span class='ident'>b</span>)<span class='op'>|</span> <span class='ident'>to_ascii_uppercase</span>(<span class='ident'>a</span>) <span class='op'>==</span> <span class='ident'>to_ascii_uppercase</span>(<span class='ident'>b</span>))
     } <span class='kw'>else</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 }
 
@@ -1415,7 +1415,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>LogLevel</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>fmt</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='ident'>fmt</span>.<span class='ident'>pad</span>(<span class='ident'>LOG_LEVEL_NAMES</span>[<span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>])
+        <span class='ident'>fmt</span>.<span class='ident'>pad</span>(<span class='ident'>LOG_LEVEL_NAMES</span>[<span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>])
     }
 }
 
@@ -1440,7 +1440,7 @@
     <span class='doccomment'>/// Converts the `LogLevel` to the equivalent `LogLevelFilter`.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>to_log_level_filter</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>LogLevelFilter</span> {
-        <span class='ident'>LogLevelFilter</span>::<span class='ident'>from_usize</span>(<span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>unwrap</span>()
+        <span class='ident'>LogLevelFilter</span>::<span class='ident'>from_usize</span>(<span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>unwrap</span>()
     }
 }
 
@@ -1470,14 +1470,14 @@
 <span class='kw'>impl</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>LogLevelFilter</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>LogLevelFilter</span> {
-        <span class='op'>*</span><span class='self'>self</span>
+        <span class='kw-2'>*</span><span class='self'>self</span>
     }
 }
 
 <span class='kw'>impl</span> <span class='ident'>PartialEq</span> <span class='kw'>for</span> <span class='ident'>LogLevelFilter</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>eq</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>LogLevelFilter</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
-        <span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span> <span class='op'>==</span> <span class='op'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>
+        <span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span> <span class='op'>==</span> <span class='kw-2'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>
     }
 }
 
@@ -1505,7 +1505,7 @@
 <span class='kw'>impl</span> <span class='ident'>Ord</span> <span class='kw'>for</span> <span class='ident'>LogLevelFilter</span> {
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>other</span>: <span class='kw-2'>&amp;</span><span class='ident'>LogLevelFilter</span>) <span class='op'>-&gt;</span> <span class='ident'>cmp</span>::<span class='ident'>Ordering</span> {
-        (<span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span>(<span class='op'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>))
+        (<span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>).<span class='ident'>cmp</span>(<span class='kw-2'>&amp;</span>(<span class='kw-2'>*</span><span class='ident'>other</span> <span class='kw'>as</span> <span class='ident'>usize</span>))
     }
 }
 
@@ -1520,7 +1520,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>LogLevelFilter</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>fmt</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>fmt</span>, <span class='string'>&quot;{}&quot;</span>, <span class='ident'>LOG_LEVEL_NAMES</span>[<span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>])
+        <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>fmt</span>, <span class='string'>&quot;{}&quot;</span>, <span class='ident'>LOG_LEVEL_NAMES</span>[<span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>])
     }
 }
 
@@ -1547,7 +1547,7 @@
     <span class='doccomment'>/// Returns `None` if `self` is `LogLevelFilter::Off`.</span>
     <span class='attribute'>#[<span class='ident'>inline</span>]</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>to_log_level</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>LogLevel</span><span class='op'>&gt;</span> {
-        <span class='ident'>LogLevel</span>::<span class='ident'>from_usize</span>(<span class='op'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>)
+        <span class='ident'>LogLevel</span>::<span class='ident'>from_usize</span>(<span class='kw-2'>*</span><span class='self'>self</span> <span class='kw'>as</span> <span class='ident'>usize</span>)
     }
 }
 
@@ -1625,7 +1625,7 @@
 <span class='kw'>struct</span> <span class='ident'>NopLogger</span>;
 
 <span class='kw'>impl</span> <span class='ident'>Log</span> <span class='kw'>for</span> <span class='ident'>NopLogger</span> {
-    <span class='kw'>fn</span> <span class='ident'>enabled</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, _: <span class='kw-2'>&amp;</span><span class='ident'>LogMetadata</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> { <span class='boolval'>false</span> }
+    <span class='kw'>fn</span> <span class='ident'>enabled</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, _: <span class='kw-2'>&amp;</span><span class='ident'>LogMetadata</span>) <span class='op'>-&gt;</span> <span class='ident'>bool</span> { <span class='bool-val'>false</span> }
 
     <span class='kw'>fn</span> <span class='ident'>log</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, _: <span class='kw-2'>&amp;</span><span class='ident'>LogRecord</span>) {}
 }
@@ -1721,31 +1721,13 @@
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>set_logger</span><span class='op'>&lt;</span><span class='ident'>M</span><span class='op'>&gt;</span>(<span class='ident'>make_logger</span>: <span class='ident'>M</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>SetLoggerError</span><span class='op'>&gt;</span>
         <span class='kw'>where</span> <span class='ident'>M</span>: <span class='ident'>FnOnce</span>(<span class='ident'>MaxLogLevelFilter</span>) <span class='op'>-&gt;</span> <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Log</span><span class='op'>&gt;</span> {
-    <span class='kw'>let</span> <span class='ident'>result</span> <span class='op'>=</span> <span class='kw'>unsafe</span> {
-        <span class='ident'>set_logger_raw</span>(<span class='op'>|</span><span class='ident'>max_level</span><span class='op'>|</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>make_logger</span>(<span class='ident'>max_level</span>)))
-    };
-
-    <span class='kw'>return</span> <span class='kw'>match</span> <span class='ident'>result</span> {
-        <span class='prelude-val'>Ok</span>(()) <span class='op'>=&gt;</span> {
-            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='kw'>unsafe</span> { <span class='ident'>libc</span>::<span class='ident'>atexit</span>(<span class='ident'>shutdown</span>) }, <span class='number'>0</span>);
-            <span class='prelude-val'>Ok</span>(())
-        }
-        <span class='prelude-val'>Err</span>(_) <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>SetLoggerError</span>(())),
-    };
-
-    <span class='kw'>extern</span> <span class='kw'>fn</span> <span class='ident'>shutdown</span>() {
-        <span class='ident'>shutdown_logger_raw</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>logger</span><span class='op'>|</span> <span class='kw'>unsafe</span> {
-            <span class='ident'>mem</span>::<span class='ident'>transmute</span>::<span class='op'>&lt;</span>_, <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Log</span><span class='op'>&gt;&gt;</span>(<span class='ident'>logger</span>);
-        }).<span class='ident'>ok</span>();
-    }
+    <span class='kw'>unsafe</span> { <span class='ident'>set_logger_raw</span>(<span class='op'>|</span><span class='ident'>max_level</span><span class='op'>|</span> <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>make_logger</span>(<span class='ident'>max_level</span>))) }
 }
 
 <span class='doccomment'>/// Sets the global logger from a raw pointer.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// This function is similar to `set_logger` except that it is usable in</span>
-<span class='doccomment'>/// `no_std` code. Another difference is that the logger is not automatically</span>
-<span class='doccomment'>/// shut down on program exit, and `shutdown_logger_raw` must be called to</span>
-<span class='doccomment'>/// manually shut it down.</span>
+<span class='doccomment'>/// `no_std` code.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// The `make_logger` closure is passed a `MaxLogLevel` object, which the</span>
 <span class='doccomment'>/// logger should use to keep the global maximum log level in sync with the</span>
@@ -1762,9 +1744,10 @@
 <span class='doccomment'>/// # Safety</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// The pointer returned by `make_logger` must remain valid for the entire</span>
-<span class='doccomment'>/// duration of the program or until `shutdown_logger_raw` is called.</span>
+<span class='doccomment'>/// duration of the program or until `shutdown_logger_raw` is called. In</span>
+<span class='doccomment'>/// addition, `shutdown_logger` *must not* be called after this function.</span>
 <span class='kw'>pub</span> <span class='kw'>unsafe</span> <span class='kw'>fn</span> <span class='ident'>set_logger_raw</span><span class='op'>&lt;</span><span class='ident'>M</span><span class='op'>&gt;</span>(<span class='ident'>make_logger</span>: <span class='ident'>M</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(), <span class='ident'>SetLoggerError</span><span class='op'>&gt;</span>
-        <span class='kw'>where</span> <span class='ident'>M</span>: <span class='ident'>FnOnce</span>(<span class='ident'>MaxLogLevelFilter</span>) <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>Log</span> {
+        <span class='kw'>where</span> <span class='ident'>M</span>: <span class='ident'>FnOnce</span>(<span class='ident'>MaxLogLevelFilter</span>) <span class='op'>-&gt;</span> <span class='kw-2'>*</span><span class='kw'>const</span> <span class='ident'>Log</span> {
     <span class='kw'>if</span> <span class='ident'>STATE</span>.<span class='ident'>compare_and_swap</span>(<span class='ident'>UNINITIALIZED</span>, <span class='ident'>INITIALIZING</span>,
                               <span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>) <span class='op'>!=</span> <span class='ident'>UNINITIALIZED</span> {
         <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>SetLoggerError</span>(()));
@@ -1778,6 +1761,24 @@
 <span class='doccomment'>/// Shuts down the global logger.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// This function may only be called once in the lifetime of a program, and may</span>
+<span class='doccomment'>/// not be called before `set_logger`. Once the global logger has been shut</span>
+<span class='doccomment'>/// down, it can no longer be re-initialized by `set_logger`. Any log events</span>
+<span class='doccomment'>/// that occur after the call to `shutdown_logger` completes will be ignored.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// The logger that was originally created by the call to to `set_logger` is</span>
+<span class='doccomment'>/// returned on success. At that point it is guaranteed that no other threads</span>
+<span class='doccomment'>/// are concurrently accessing the logger object.</span>
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>shutdown_logger</span>() <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Log</span><span class='op'>&gt;</span>, <span class='ident'>ShutdownLoggerError</span><span class='op'>&gt;</span> {
+    <span class='ident'>shutdown_logger_raw</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>l</span><span class='op'>|</span> <span class='kw'>unsafe</span> { <span class='ident'>mem</span>::<span class='ident'>transmute</span>(<span class='ident'>l</span>) })
+}
+
+<span class='doccomment'>/// Shuts down the global logger.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// This function is similar to `shutdown_logger` except that it is usable in</span>
+<span class='doccomment'>/// `no_std` code.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// This function may only be called once in the lifetime of a program, and may</span>
 <span class='doccomment'>/// not be called before `set_logger_raw`. Once the global logger has been shut</span>
 <span class='doccomment'>/// down, it can no longer be re-initialized by `set_logger_raw`. Any log</span>
 <span class='doccomment'>/// events that occur after the call to `shutdown_logger_raw` completes will be</span>
@@ -1786,11 +1787,7 @@
 <span class='doccomment'>/// The pointer that was originally passed to `set_logger_raw` is returned on</span>
 <span class='doccomment'>/// success. At that point it is guaranteed that no other threads are</span>
 <span class='doccomment'>/// concurrently accessing the logger object.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// This function should not be called when the global logger was registered</span>
-<span class='doccomment'>/// using `set_logger`, since in that case the logger will automatically be shut</span>
-<span class='doccomment'>/// down when the program exits</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>shutdown_logger_raw</span>() <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='op'>*</span><span class='kw'>const</span> <span class='ident'>Log</span>, <span class='ident'>ShutdownLoggerError</span><span class='op'>&gt;</span> {
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>shutdown_logger_raw</span>() <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='kw-2'>*</span><span class='kw'>const</span> <span class='ident'>Log</span>, <span class='ident'>ShutdownLoggerError</span><span class='op'>&gt;</span> {
     <span class='comment'>// Set the global log level to stop other thread from logging</span>
     <span class='ident'>MAX_LOG_LEVEL_FILTER</span>.<span class='ident'>store</span>(<span class='number'>0</span>, <span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>);
 
@@ -1837,25 +1834,22 @@
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>ShutdownLoggerError</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>fmt</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>fmt</span>, <span class='string'>&quot;attempted to shut down a logger without an active logger&quot;</span>)
+        <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>fmt</span>, <span class='string'>&quot;attempted to shut down the logger without an active logger&quot;</span>)
     }
 }
 
 <span class='comment'>// The Error trait is not available in libcore</span>
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>)]</span>
 <span class='kw'>impl</span> <span class='ident'>error</span>::<span class='ident'>Error</span> <span class='kw'>for</span> <span class='ident'>ShutdownLoggerError</span> {
-    <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> { <span class='string'>&quot;shutdown_logger_raw() called without an active logger&quot;</span> }
+    <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> { <span class='string'>&quot;shutdown_logger() called without an active logger&quot;</span> }
 }
 
-<span class='doccomment'>/// Registers a panic handler which logs at the error level.</span>
+<span class='doccomment'>/// Deprecated</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// The format is the same as the default panic handler. The reporting module is</span>
-<span class='doccomment'>/// `log::panic`.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Requires the `use_std` (enabled by default) and `nightly` features.</span>
+<span class='doccomment'>/// Use https://crates.io/crates/log-panics instead.</span>
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>all</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;nightly&quot;</span>, <span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>))]</span>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>log_panics</span>() {
-    <span class='ident'>std</span>::<span class='ident'>panic</span>::<span class='ident'>set_handler</span>(<span class='ident'>panic</span>::<span class='ident'>log</span>);
+    <span class='ident'>std</span>::<span class='ident'>panic</span>::<span class='ident'>set_hook</span>(<span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>panic</span>::<span class='ident'>log</span>));
 }
 
 <span class='comment'>// inner module so that the reporting module is log::panic instead of log</span>
@@ -1869,7 +1863,7 @@
         <span class='kw'>let</span> <span class='ident'>thread</span> <span class='op'>=</span> <span class='ident'>thread</span>.<span class='ident'>name</span>().<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&lt;unnamed&gt;&quot;</span>);
 
         <span class='kw'>let</span> <span class='ident'>msg</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>info</span>.<span class='ident'>payload</span>().<span class='ident'>downcast_ref</span>::<span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;static</span> <span class='ident'>str</span><span class='op'>&gt;</span>() {
-            <span class='prelude-val'>Some</span>(<span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='op'>*</span><span class='ident'>s</span>,
+            <span class='prelude-val'>Some</span>(<span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='kw-2'>*</span><span class='ident'>s</span>,
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='kw'>match</span> <span class='ident'>info</span>.<span class='ident'>payload</span>().<span class='ident'>downcast_ref</span>::<span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>() {
                 <span class='prelude-val'>Some</span>(<span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>s</span>[..],
                 <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Box&lt;Any&gt;&quot;</span>,
@@ -1911,7 +1905,7 @@
         <span class='ident'>REFCOUNT</span>.<span class='ident'>fetch_sub</span>(<span class='number'>1</span>, <span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>);
         <span class='prelude-val'>None</span>
     } <span class='kw'>else</span> {
-        <span class='prelude-val'>Some</span>(<span class='ident'>LoggerGuard</span>(<span class='kw'>unsafe</span> { <span class='kw-2'>&amp;</span><span class='op'>*</span><span class='ident'>LOGGER</span> }))
+        <span class='prelude-val'>Some</span>(<span class='ident'>LoggerGuard</span>(<span class='kw'>unsafe</span> { <span class='kw-2'>&amp;</span><span class='kw-2'>*</span><span class='ident'>LOGGER</span> }))
     }
 }
 
@@ -1923,7 +1917,7 @@
     <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>logger</span>) <span class='op'>=</span> <span class='ident'>logger</span>() {
         <span class='ident'>logger</span>.<span class='ident'>enabled</span>(<span class='kw-2'>&amp;</span><span class='ident'>LogMetadata</span> { <span class='ident'>level</span>: <span class='ident'>level</span>, <span class='ident'>target</span>: <span class='ident'>target</span> })
     } <span class='kw'>else</span> {
-        <span class='boolval'>false</span>
+        <span class='bool-val'>false</span>
     }
 }
 
@@ -1987,7 +1981,7 @@
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
      <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>std</span>;
      <span class='kw'>use</span> <span class='ident'>tests</span>::<span class='ident'>std</span>::<span class='ident'>string</span>::<span class='ident'>ToString</span>;
-     <span class='kw'>use</span> <span class='ident'>super</span>::{<span class='ident'>LogLevel</span>, <span class='ident'>LogLevelFilter</span>};
+     <span class='kw'>use</span> <span class='kw'>super</span>::{<span class='ident'>LogLevel</span>, <span class='ident'>LogLevelFilter</span>};
 
      <span class='attribute'>#[<span class='ident'>test</span>]</span>
      <span class='kw'>fn</span> <span class='ident'>test_loglevelfilter_from_str</span>() {
@@ -2075,7 +2069,7 @@
      <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;use_std&quot;</span>)]</span>
      <span class='kw'>fn</span> <span class='ident'>test_error_trait</span>() {
          <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>error</span>::<span class='ident'>Error</span>;
-         <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>SetLoggerError</span>;
+         <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>SetLoggerError</span>;
          <span class='kw'>let</span> <span class='ident'>e</span> <span class='op'>=</span> <span class='ident'>SetLoggerError</span>(());
          <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>e</span>.<span class='ident'>description</span>(), <span class='string'>&quot;set_logger() called multiple times&quot;</span>);
      }
@@ -2104,6 +2098,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -2124,7 +2120,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -2135,11 +2131,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "log";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

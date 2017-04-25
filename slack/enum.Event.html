@@ -9,8 +9,10 @@
 
     <title>slack::Event - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,13 +45,13 @@
 
     <section id='main' class="content enum">
 <h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>slack</a>::<wbr><a class='enum' href=''>Event</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-147' class='srclink' href='../src/slack/events.rs.html#23-374' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/slack/events.rs.html#25-264' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum Event {
     Hello,
-    Message(<a class='enum' href='../slack/enum.Message.html' title='slack::Message'>Message</a>),
+    Message(<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack/enum.Message.html' title='slack::Message'>Message</a>&gt;),
     UserTyping {
         channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
@@ -59,10 +61,10 @@
         ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     ChannelCreated {
-        channel: <a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>,
+        channel: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;,
     },
     ChannelJoined {
-        channel: <a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>,
+        channel: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;,
     },
     ChannelLeft {
         channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
@@ -71,7 +73,7 @@
         channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     ChannelRename {
-        channel: <a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>,
+        channel: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;,
     },
     ChannelArchive {
         channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
@@ -88,7 +90,7 @@
     },
     ImCreated {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        channel: <a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>,
+        channel: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;,
     },
     ImOpen {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
@@ -108,10 +110,10 @@
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     GroupJoined {
-        channel: <a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>,
+        channel: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;,
     },
     GroupLeft {
-        channel: <a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>,
+        channel: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;,
     },
     GroupOpen {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
@@ -128,7 +130,7 @@
         channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     GroupRename {
-        channel: <a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>,
+        channel: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;,
     },
     GroupMarked {
         channel: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
@@ -140,49 +142,49 @@
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     FileCreated {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
     },
     FileShared {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
     },
     FileUnShared {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
     },
     FilePublic {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
     },
     FilePrivate {
         file: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     FileChange {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
     },
     FileDeleted {
         file_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     FileCommentAdded {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
-        comment: <a class='struct' href='../slack/api/struct.Comment.html' title='slack::api::Comment'>Comment</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
+        comment: <a class='struct' href='../slack_api/types/struct.FileComment.html' title='slack_api::types::FileComment'>FileComment</a>,
     },
     FileCommentEdited {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
-        comment: <a class='struct' href='../slack/api/struct.Comment.html' title='slack::api::Comment'>Comment</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
+        comment: <a class='struct' href='../slack_api/types/struct.FileComment.html' title='slack_api::types::FileComment'>FileComment</a>,
     },
     FileCommentDeleted {
-        file: <a class='struct' href='../slack/api/struct.File.html' title='slack::api::File'>File</a>,
+        file: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;,
         comment: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     PinAdded {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
         channel_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        item: <a class='enum' href='../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>,
+        item: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.MessagePinnedItem.html' title='slack_api::types::MessagePinnedItem'>MessagePinnedItem</a>&gt;,
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     PinRemoved {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
         channel_id: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        item: <a class='enum' href='../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>,
+        item: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.MessageUnpinnedItem.html' title='slack_api::types::MessageUnpinnedItem'>MessageUnpinnedItem</a>&gt;,
         has_pins: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>,
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
@@ -198,31 +200,33 @@
         value: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     UserChange {
-        user: <a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>,
+        user: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>&gt;,
     },
     TeamJoin {
-        user: <a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>,
+        user: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>&gt;,
     },
     StarAdded {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        item: <a class='enum' href='../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>,
+        item: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/stars/enum.ListResponseItem.html' title='slack_api::mods::stars::ListResponseItem'>ListResponseItem</a>&gt;,
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     StarRemoved {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        item: <a class='enum' href='../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>,
+        item: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/stars/enum.ListResponseItem.html' title='slack_api::mods::stars::ListResponseItem'>ListResponseItem</a>&gt;,
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     ReactionAdded {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        item: <a class='enum' href='../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>,
+        reaction: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        item: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/reactions/enum.ListResponseItem.html' title='slack_api::mods::reactions::ListResponseItem'>ListResponseItem</a>&gt;,
+        item_user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     ReactionRemoved {
         user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        item: <a class='enum' href='../slack/api/enum.Item.html' title='slack::api::Item'>Item</a>,
+        reaction: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+        item: <a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/reactions/enum.ListResponseItem.html' title='slack_api::mods::reactions::ListResponseItem'>ListResponseItem</a>&gt;,
+        item_user: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     EmojiChanged {
@@ -250,268 +254,264 @@
         event_ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
     BotAdded {
-        bot: <a class='struct' href='../slack/api/rtm/struct.Bot.html' title='slack::api::rtm::Bot'>Bot</a>,
+        bot: <a class='struct' href='../slack_api/types/struct.Bot.html' title='slack_api::types::Bot'>Bot</a>,
     },
     BotChanged {
-        bot: <a class='struct' href='../slack/api/rtm/struct.Bot.html' title='slack::api::rtm::Bot'>Bot</a>,
+        bot: <a class='struct' href='../slack_api/types/struct.Bot.html' title='slack_api::types::Bot'>Bot</a>,
     },
     AccountsChanged,
     TeamMigrationStarted,
-    ReconnectUrl,
-    MessageSent {
-        reply_to: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.isize.html'>isize</a>,
-        ts: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-        text: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    ReconnectUrl {
+        url: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
     },
-    MessageError {
-        reply_to: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.isize.html'>isize</a>,
-        code: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.isize.html'>isize</a>,
-        message: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
-    },
+    MessageSent(MessageSent),
+    MessageError(MessageError),
 }</pre><div class='docblock'><p>Represents Slack <a href="https://api.slack.com/rtm">rtm event</a> types.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.Hello'><code>Hello</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/hello"><code>hello</code></a> event.</p>
-</div></td></tr><tr><td id='variant.Message'><code>Message</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/message"><code>message</code></a>
+<span id='variant.Hello' class='variant'><span id='Hello.v' class='invisible'><code>Hello</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/hello"><code>hello</code></a> event.</p>
+</div><span id='variant.Message' class='variant'><span id='Message.v' class='invisible'><code>Message(<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack/enum.Message.html' title='slack::Message'>Message</a>&gt;)</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/message"><code>message</code></a>
 event.</p>
-</div></td></tr><tr><td id='variant.UserTyping'><code>UserTyping</code></td><td><div class='docblock'><p>Represents the slack
+</div><span id='variant.UserTyping' class='variant'><span id='UserTyping.v' class='invisible'><code>UserTyping</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/user_typing"><code>user_typing</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.UserTyping.fields'><h3 class='fields'>Fields of <code>UserTyping</code></h3>
 
-                                              <table><tr><td id='variant.UserTyping.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.UserTyping.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelMarked'><code>ChannelMarked</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.UserTyping.field.channel'><span id='UserTyping.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.UserTyping.field.user'><span id='UserTyping.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ChannelMarked' class='variant'><span id='ChannelMarked.v' class='invisible'><code>ChannelMarked</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_marked"><code>channel_marked</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelMarked.fields'><h3 class='fields'>Fields of <code>ChannelMarked</code></h3>
 
-                                              <table><tr><td id='variant.ChannelMarked.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.ChannelMarked.field.ts'><code>ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelCreated'><code>ChannelCreated</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelMarked.field.channel'><span id='ChannelMarked.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ChannelMarked.field.ts'><span id='ChannelMarked.v.ts.v' class='invisible'><code>ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ChannelCreated' class='variant'><span id='ChannelCreated.v' class='invisible'><code>ChannelCreated</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_created"><code>channel_created</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelCreated.fields'><h3 class='fields'>Fields of <code>ChannelCreated</code></h3>
 
-                                              <table><tr><td id='variant.ChannelCreated.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelJoined'><code>ChannelJoined</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelCreated.field.channel'><span id='ChannelCreated.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.ChannelJoined' class='variant'><span id='ChannelJoined.v' class='invisible'><code>ChannelJoined</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_joined"><code>channel_joined</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelJoined.fields'><h3 class='fields'>Fields of <code>ChannelJoined</code></h3>
 
-                                              <table><tr><td id='variant.ChannelJoined.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelLeft'><code>ChannelLeft</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelJoined.field.channel'><span id='ChannelJoined.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.ChannelLeft' class='variant'><span id='ChannelLeft.v' class='invisible'><code>ChannelLeft</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_left"><code>channel_left</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelLeft.fields'><h3 class='fields'>Fields of <code>ChannelLeft</code></h3>
 
-                                              <table><tr><td id='variant.ChannelLeft.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelDeleted'><code>ChannelDeleted</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelLeft.field.channel'><span id='ChannelLeft.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ChannelDeleted' class='variant'><span id='ChannelDeleted.v' class='invisible'><code>ChannelDeleted</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_deleted"><code>channel_deleted</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelDeleted.fields'><h3 class='fields'>Fields of <code>ChannelDeleted</code></h3>
 
-                                              <table><tr><td id='variant.ChannelDeleted.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelRename'><code>ChannelRename</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelDeleted.field.channel'><span id='ChannelDeleted.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ChannelRename' class='variant'><span id='ChannelRename.v' class='invisible'><code>ChannelRename</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_rename"><code>channel_rename</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelRename.fields'><h3 class='fields'>Fields of <code>ChannelRename</code></h3>
 
-                                              <table><tr><td id='variant.ChannelRename.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelArchive'><code>ChannelArchive</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelRename.field.channel'><span id='ChannelRename.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.ChannelArchive' class='variant'><span id='ChannelArchive.v' class='invisible'><code>ChannelArchive</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_archive"><code>channel_archive</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelArchive.fields'><h3 class='fields'>Fields of <code>ChannelArchive</code></h3>
 
-                                              <table><tr><td id='variant.ChannelArchive.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.ChannelArchive.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelUnArchive'><code>ChannelUnArchive</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelArchive.field.channel'><span id='ChannelArchive.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ChannelArchive.field.user'><span id='ChannelArchive.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ChannelUnArchive' class='variant'><span id='ChannelUnArchive.v' class='invisible'><code>ChannelUnArchive</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/channel_unarchive"><code>channel_unarchive</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelUnArchive.fields'><h3 class='fields'>Fields of <code>ChannelUnArchive</code></h3>
 
-                                              <table><tr><td id='variant.ChannelUnArchive.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.ChannelUnArchive.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.ChannelHistoryChanged'><code>ChannelHistoryChanged</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.%0Acom/events/channel_history_changed"><code>channel_history_changed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.ChannelUnArchive.field.channel'><span id='ChannelUnArchive.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ChannelUnArchive.field.user'><span id='ChannelUnArchive.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ChannelHistoryChanged' class='variant'><span id='ChannelHistoryChanged.v' class='invisible'><code>ChannelHistoryChanged</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/channel_history_changed"><code>channel_history_changed</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.ChannelHistoryChanged.fields'><h3 class='fields'>Fields of <code>ChannelHistoryChanged</code></h3>
 
-                                              <table><tr><td id='variant.ChannelHistoryChanged.field.latest'><code>latest</code></td><td></td></tr><tr><td id='variant.ChannelHistoryChanged.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ChannelHistoryChanged.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.ImCreated'><code>ImCreated</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ChannelHistoryChanged.field.latest'><span id='ChannelHistoryChanged.v.latest.v' class='invisible'><code>latest:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ChannelHistoryChanged.field.ts'><span id='ChannelHistoryChanged.v.ts.v' class='invisible'><code>ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ChannelHistoryChanged.field.event_ts'><span id='ChannelHistoryChanged.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ImCreated' class='variant'><span id='ImCreated.v' class='invisible'><code>ImCreated</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/im_created"><code>im_created</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ImCreated.fields'><h3 class='fields'>Fields of <code>ImCreated</code></h3>
 
-                                              <table><tr><td id='variant.ImCreated.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ImCreated.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ImOpen'><code>ImOpen</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/im_open"><code>im_open</code></a>
+                           <table><tr><td id='variant.ImCreated.field.user'><span id='ImCreated.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ImCreated.field.channel'><span id='ImCreated.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.ImOpen' class='variant'><span id='ImOpen.v' class='invisible'><code>ImOpen</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/im_open"><code>im_open</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ImOpen.fields'><h3 class='fields'>Fields of <code>ImOpen</code></h3>
 
-                                              <table><tr><td id='variant.ImOpen.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ImOpen.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ImClose'><code>ImClose</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/im_close"><code>im_close</code></a>
+                           <table><tr><td id='variant.ImOpen.field.user'><span id='ImOpen.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ImOpen.field.channel'><span id='ImOpen.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ImClose' class='variant'><span id='ImClose.v' class='invisible'><code>ImClose</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/im_close"><code>im_close</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ImClose.fields'><h3 class='fields'>Fields of <code>ImClose</code></h3>
 
-                                              <table><tr><td id='variant.ImClose.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ImClose.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.ImMarked'><code>ImMarked</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/im_marked"><code>im_marked</code></a>
+                           <table><tr><td id='variant.ImClose.field.user'><span id='ImClose.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ImClose.field.channel'><span id='ImClose.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ImMarked' class='variant'><span id='ImMarked.v' class='invisible'><code>ImMarked</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/im_marked"><code>im_marked</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ImMarked.fields'><h3 class='fields'>Fields of <code>ImMarked</code></h3>
 
-                                              <table><tr><td id='variant.ImMarked.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.ImMarked.field.ts'><code>ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.ImHistoryChanged'><code>ImHistoryChanged</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ImMarked.field.channel'><span id='ImMarked.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ImMarked.field.ts'><span id='ImMarked.v.ts.v' class='invisible'><code>ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ImHistoryChanged' class='variant'><span id='ImHistoryChanged.v' class='invisible'><code>ImHistoryChanged</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/im_history_changed"><code>im_history_changed</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ImHistoryChanged.fields'><h3 class='fields'>Fields of <code>ImHistoryChanged</code></h3>
 
-                                              <table><tr><td id='variant.ImHistoryChanged.field.latest'><code>latest</code></td><td></td></tr><tr><td id='variant.ImHistoryChanged.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.ImHistoryChanged.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupJoined'><code>GroupJoined</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ImHistoryChanged.field.latest'><span id='ImHistoryChanged.v.latest.v' class='invisible'><code>latest:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ImHistoryChanged.field.ts'><span id='ImHistoryChanged.v.ts.v' class='invisible'><code>ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ImHistoryChanged.field.event_ts'><span id='ImHistoryChanged.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.GroupJoined' class='variant'><span id='GroupJoined.v' class='invisible'><code>GroupJoined</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_joined"><code>group_joined</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupJoined.fields'><h3 class='fields'>Fields of <code>GroupJoined</code></h3>
 
-                                              <table><tr><td id='variant.GroupJoined.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupLeft'><code>GroupLeft</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupJoined.field.channel'><span id='GroupJoined.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.GroupLeft' class='variant'><span id='GroupLeft.v' class='invisible'><code>GroupLeft</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_left"><code>group_left</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupLeft.fields'><h3 class='fields'>Fields of <code>GroupLeft</code></h3>
 
-                                              <table><tr><td id='variant.GroupLeft.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupOpen'><code>GroupOpen</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupLeft.field.channel'><span id='GroupLeft.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.GroupOpen' class='variant'><span id='GroupOpen.v' class='invisible'><code>GroupOpen</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_open"><code>group_open</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupOpen.fields'><h3 class='fields'>Fields of <code>GroupOpen</code></h3>
 
-                                              <table><tr><td id='variant.GroupOpen.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupOpen.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupClose'><code>GroupClose</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupOpen.field.user'><span id='GroupOpen.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.GroupOpen.field.channel'><span id='GroupOpen.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.GroupClose' class='variant'><span id='GroupClose.v' class='invisible'><code>GroupClose</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_close"><code>group_close</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupClose.fields'><h3 class='fields'>Fields of <code>GroupClose</code></h3>
 
-                                              <table><tr><td id='variant.GroupClose.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.GroupClose.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupArchive'><code>GroupArchive</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupClose.field.user'><span id='GroupClose.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.GroupClose.field.channel'><span id='GroupClose.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.GroupArchive' class='variant'><span id='GroupArchive.v' class='invisible'><code>GroupArchive</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_archive"><code>group_archive</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupArchive.fields'><h3 class='fields'>Fields of <code>GroupArchive</code></h3>
 
-                                              <table><tr><td id='variant.GroupArchive.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupUnArchive'><code>GroupUnArchive</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupArchive.field.channel'><span id='GroupArchive.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.GroupUnArchive' class='variant'><span id='GroupUnArchive.v' class='invisible'><code>GroupUnArchive</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_unarchive"><code>group_unarchive</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupUnArchive.fields'><h3 class='fields'>Fields of <code>GroupUnArchive</code></h3>
 
-                                              <table><tr><td id='variant.GroupUnArchive.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupRename'><code>GroupRename</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupUnArchive.field.channel'><span id='GroupUnArchive.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.GroupRename' class='variant'><span id='GroupRename.v' class='invisible'><code>GroupRename</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_rename"><code>group_rename</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupRename.fields'><h3 class='fields'>Fields of <code>GroupRename</code></h3>
 
-                                              <table><tr><td id='variant.GroupRename.field.channel'><code>channel</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupMarked'><code>GroupMarked</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupRename.field.channel'><span id='GroupRename.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.Channel.html' title='slack::Channel'>Channel</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.GroupMarked' class='variant'><span id='GroupMarked.v' class='invisible'><code>GroupMarked</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/group_marked"><code>group_marked</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.GroupMarked.fields'><h3 class='fields'>Fields of <code>GroupMarked</code></h3>
 
-                                              <table><tr><td id='variant.GroupMarked.field.channel'><code>channel</code></td><td></td></tr><tr><td id='variant.GroupMarked.field.ts'><code>ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.GroupHistoryChanged'><code>GroupHistoryChanged</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.%0Acom/events/group_history_changed"><code>group_history_changed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.GroupMarked.field.channel'><span id='GroupMarked.v.channel.v' class='invisible'><code>channel:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.GroupMarked.field.ts'><span id='GroupMarked.v.ts.v' class='invisible'><code>ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.GroupHistoryChanged' class='variant'><span id='GroupHistoryChanged.v' class='invisible'><code>GroupHistoryChanged</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/group_history_changed"><code>group_history_changed</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.GroupHistoryChanged.fields'><h3 class='fields'>Fields of <code>GroupHistoryChanged</code></h3>
 
-                                              <table><tr><td id='variant.GroupHistoryChanged.field.latest'><code>latest</code></td><td></td></tr><tr><td id='variant.GroupHistoryChanged.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.GroupHistoryChanged.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileCreated'><code>FileCreated</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.GroupHistoryChanged.field.latest'><span id='GroupHistoryChanged.v.latest.v' class='invisible'><code>latest:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.GroupHistoryChanged.field.ts'><span id='GroupHistoryChanged.v.ts.v' class='invisible'><code>ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.GroupHistoryChanged.field.event_ts'><span id='GroupHistoryChanged.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.FileCreated' class='variant'><span id='FileCreated.v' class='invisible'><code>FileCreated</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_created"><code>file_created</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileCreated.fields'><h3 class='fields'>Fields of <code>FileCreated</code></h3>
 
-                                              <table><tr><td id='variant.FileCreated.field.file'><code>file</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileShared'><code>FileShared</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FileCreated.field.file'><span id='FileCreated.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.FileShared' class='variant'><span id='FileShared.v' class='invisible'><code>FileShared</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_shared"><code>file_shared</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileShared.fields'><h3 class='fields'>Fields of <code>FileShared</code></h3>
 
-                                              <table><tr><td id='variant.FileShared.field.file'><code>file</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileUnShared'><code>FileUnShared</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FileShared.field.file'><span id='FileShared.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.FileUnShared' class='variant'><span id='FileUnShared.v' class='invisible'><code>FileUnShared</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_unshared"><code>file_unshared</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileUnShared.fields'><h3 class='fields'>Fields of <code>FileUnShared</code></h3>
 
-                                              <table><tr><td id='variant.FileUnShared.field.file'><code>file</code></td><td></td></tr></table></td></tr><tr><td id='variant.FilePublic'><code>FilePublic</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FileUnShared.field.file'><span id='FileUnShared.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.FilePublic' class='variant'><span id='FilePublic.v' class='invisible'><code>FilePublic</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_public"><code>file_public</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FilePublic.fields'><h3 class='fields'>Fields of <code>FilePublic</code></h3>
 
-                                              <table><tr><td id='variant.FilePublic.field.file'><code>file</code></td><td></td></tr></table></td></tr><tr><td id='variant.FilePrivate'><code>FilePrivate</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FilePublic.field.file'><span id='FilePublic.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.FilePrivate' class='variant'><span id='FilePrivate.v' class='invisible'><code>FilePrivate</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_private"><code>file_private</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FilePrivate.fields'><h3 class='fields'>Fields of <code>FilePrivate</code></h3>
 
-                                              <table><tr><td id='variant.FilePrivate.field.file'><code>file</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileChange'><code>FileChange</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FilePrivate.field.file'><span id='FilePrivate.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.FileChange' class='variant'><span id='FileChange.v' class='invisible'><code>FileChange</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_change"><code>file_change</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileChange.fields'><h3 class='fields'>Fields of <code>FileChange</code></h3>
 
-                                              <table><tr><td id='variant.FileChange.field.file'><code>file</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileDeleted'><code>FileDeleted</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FileChange.field.file'><span id='FileChange.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.FileDeleted' class='variant'><span id='FileDeleted.v' class='invisible'><code>FileDeleted</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_deleted"><code>file_deleted</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileDeleted.fields'><h3 class='fields'>Fields of <code>FileDeleted</code></h3>
 
-                                              <table><tr><td id='variant.FileDeleted.field.file_id'><code>file_id</code></td><td></td></tr><tr><td id='variant.FileDeleted.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileCommentAdded'><code>FileCommentAdded</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FileDeleted.field.file_id'><span id='FileDeleted.v.file_id.v' class='invisible'><code>file_id:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.FileDeleted.field.event_ts'><span id='FileDeleted.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.FileCommentAdded' class='variant'><span id='FileCommentAdded.v' class='invisible'><code>FileCommentAdded</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_comment_added"><code>file_comment_added</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileCommentAdded.fields'><h3 class='fields'>Fields of <code>FileCommentAdded</code></h3>
 
-                                              <table><tr><td id='variant.FileCommentAdded.field.file'><code>file</code></td><td></td></tr><tr><td id='variant.FileCommentAdded.field.comment'><code>comment</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileCommentEdited'><code>FileCommentEdited</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FileCommentAdded.field.file'><span id='FileCommentAdded.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.FileCommentAdded.field.comment'><span id='FileCommentAdded.v.comment.v' class='invisible'><code>comment:&nbsp;<a class='struct' href='../slack_api/types/struct.FileComment.html' title='slack_api::types::FileComment'>FileComment</a></code></span></td><td></td></tr></table></span><span id='variant.FileCommentEdited' class='variant'><span id='FileCommentEdited.v' class='invisible'><code>FileCommentEdited</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_comment_edited"><code>file_comment_edited</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileCommentEdited.fields'><h3 class='fields'>Fields of <code>FileCommentEdited</code></h3>
 
-                                              <table><tr><td id='variant.FileCommentEdited.field.file'><code>file</code></td><td></td></tr><tr><td id='variant.FileCommentEdited.field.comment'><code>comment</code></td><td></td></tr></table></td></tr><tr><td id='variant.FileCommentDeleted'><code>FileCommentDeleted</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.FileCommentEdited.field.file'><span id='FileCommentEdited.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.FileCommentEdited.field.comment'><span id='FileCommentEdited.v.comment.v' class='invisible'><code>comment:&nbsp;<a class='struct' href='../slack_api/types/struct.FileComment.html' title='slack_api::types::FileComment'>FileComment</a></code></span></td><td></td></tr></table></span><span id='variant.FileCommentDeleted' class='variant'><span id='FileCommentDeleted.v' class='invisible'><code>FileCommentDeleted</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/file_comment_deleted"><code>file_comment_deleted</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.FileCommentDeleted.fields'><h3 class='fields'>Fields of <code>FileCommentDeleted</code></h3>
 
-                                              <table><tr><td id='variant.FileCommentDeleted.field.file'><code>file</code></td><td></td></tr><tr><td id='variant.FileCommentDeleted.field.comment'><code>comment</code></td><td></td></tr></table></td></tr><tr><td id='variant.PinAdded'><code>PinAdded</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/pin_added"><code>pin_added</code></a>
+                           <table><tr><td id='variant.FileCommentDeleted.field.file'><span id='FileCommentDeleted.v.file.v' class='invisible'><code>file:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.File.html' title='slack_api::types::File'>File</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.FileCommentDeleted.field.comment'><span id='FileCommentDeleted.v.comment.v' class='invisible'><code>comment:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.PinAdded' class='variant'><span id='PinAdded.v' class='invisible'><code>PinAdded</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/pin_added"><code>pin_added</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.PinAdded.fields'><h3 class='fields'>Fields of <code>PinAdded</code></h3>
 
-                                              <table><tr><td id='variant.PinAdded.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.PinAdded.field.channel_id'><code>channel_id</code></td><td></td></tr><tr><td id='variant.PinAdded.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.PinAdded.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.PinRemoved'><code>PinRemoved</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.PinAdded.field.user'><span id='PinAdded.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.PinAdded.field.channel_id'><span id='PinAdded.v.channel_id.v' class='invisible'><code>channel_id:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.PinAdded.field.item'><span id='PinAdded.v.item.v' class='invisible'><code>item:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.MessagePinnedItem.html' title='slack_api::types::MessagePinnedItem'>MessagePinnedItem</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.PinAdded.field.event_ts'><span id='PinAdded.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.PinRemoved' class='variant'><span id='PinRemoved.v' class='invisible'><code>PinRemoved</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/pin_removed"><code>pin_removed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.PinRemoved.fields'><h3 class='fields'>Fields of <code>PinRemoved</code></h3>
 
-                                              <table><tr><td id='variant.PinRemoved.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.PinRemoved.field.channel_id'><code>channel_id</code></td><td></td></tr><tr><td id='variant.PinRemoved.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.PinRemoved.field.has_pins'><code>has_pins</code></td><td></td></tr><tr><td id='variant.PinRemoved.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.PresenceChange'><code>PresenceChange</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.PinRemoved.field.user'><span id='PinRemoved.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.PinRemoved.field.channel_id'><span id='PinRemoved.v.channel_id.v' class='invisible'><code>channel_id:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.PinRemoved.field.item'><span id='PinRemoved.v.item.v' class='invisible'><code>item:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack_api/types/struct.MessageUnpinnedItem.html' title='slack_api::types::MessageUnpinnedItem'>MessageUnpinnedItem</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.PinRemoved.field.has_pins'><span id='PinRemoved.v.has_pins.v' class='invisible'><code>has_pins:&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></td><td></td></tr><tr><td id='variant.PinRemoved.field.event_ts'><span id='PinRemoved.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.PresenceChange' class='variant'><span id='PresenceChange.v' class='invisible'><code>PresenceChange</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/presence_change"><code>presence_change</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.PresenceChange.fields'><h3 class='fields'>Fields of <code>PresenceChange</code></h3>
 
-                                              <table><tr><td id='variant.PresenceChange.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.PresenceChange.field.presence'><code>presence</code></td><td></td></tr></table></td></tr><tr><td id='variant.ManualPresenceChange'><code>ManualPresenceChange</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.%0Acom/events/manual_presence_change"><code>manual_presence_change</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.PresenceChange.field.user'><span id='PresenceChange.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.PresenceChange.field.presence'><span id='PresenceChange.v.presence.v' class='invisible'><code>presence:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ManualPresenceChange' class='variant'><span id='ManualPresenceChange.v' class='invisible'><code>ManualPresenceChange</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/manual_presence_change"><code>manual_presence_change</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.ManualPresenceChange.fields'><h3 class='fields'>Fields of <code>ManualPresenceChange</code></h3>
 
-                                              <table><tr><td id='variant.ManualPresenceChange.field.presence'><code>presence</code></td><td></td></tr></table></td></tr><tr><td id='variant.PrefChange'><code>PrefChange</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ManualPresenceChange.field.presence'><span id='ManualPresenceChange.v.presence.v' class='invisible'><code>presence:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.PrefChange' class='variant'><span id='PrefChange.v' class='invisible'><code>PrefChange</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/pref_change"><code>pref_change</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.PrefChange.fields'><h3 class='fields'>Fields of <code>PrefChange</code></h3>
 
-                                              <table><tr><td id='variant.PrefChange.field.name'><code>name</code></td><td></td></tr><tr><td id='variant.PrefChange.field.value'><code>value</code></td><td></td></tr></table></td></tr><tr><td id='variant.UserChange'><code>UserChange</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.PrefChange.field.name'><span id='PrefChange.v.name.v' class='invisible'><code>name:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.PrefChange.field.value'><span id='PrefChange.v.value.v' class='invisible'><code>value:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.UserChange' class='variant'><span id='UserChange.v' class='invisible'><code>UserChange</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/user_change"><code>user_change</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.UserChange.fields'><h3 class='fields'>Fields of <code>UserChange</code></h3>
 
-                                              <table><tr><td id='variant.UserChange.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.TeamJoin'><code>TeamJoin</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/team_join"><code>team_join</code></a>
+                           <table><tr><td id='variant.UserChange.field.user'><span id='UserChange.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.TeamJoin' class='variant'><span id='TeamJoin.v' class='invisible'><code>TeamJoin</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/team_join"><code>team_join</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.TeamJoin.fields'><h3 class='fields'>Fields of <code>TeamJoin</code></h3>
 
-                                              <table><tr><td id='variant.TeamJoin.field.user'><code>user</code></td><td></td></tr></table></td></tr><tr><td id='variant.StarAdded'><code>StarAdded</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.TeamJoin.field.user'><span id='TeamJoin.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='struct' href='../slack/struct.User.html' title='slack::User'>User</a>&gt;</code></span></td><td></td></tr></table></span><span id='variant.StarAdded' class='variant'><span id='StarAdded.v' class='invisible'><code>StarAdded</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/star_added"><code>star_added</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.StarAdded.fields'><h3 class='fields'>Fields of <code>StarAdded</code></h3>
 
-                                              <table><tr><td id='variant.StarAdded.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.StarAdded.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.StarAdded.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.StarRemoved'><code>StarRemoved</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.StarAdded.field.user'><span id='StarAdded.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.StarAdded.field.item'><span id='StarAdded.v.item.v' class='invisible'><code>item:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/stars/enum.ListResponseItem.html' title='slack_api::mods::stars::ListResponseItem'>ListResponseItem</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.StarAdded.field.event_ts'><span id='StarAdded.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.StarRemoved' class='variant'><span id='StarRemoved.v' class='invisible'><code>StarRemoved</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/star_removed"><code>star_removed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.StarRemoved.fields'><h3 class='fields'>Fields of <code>StarRemoved</code></h3>
 
-                                              <table><tr><td id='variant.StarRemoved.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.StarRemoved.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.StarRemoved.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.ReactionAdded'><code>ReactionAdded</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.StarRemoved.field.user'><span id='StarRemoved.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.StarRemoved.field.item'><span id='StarRemoved.v.item.v' class='invisible'><code>item:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/stars/enum.ListResponseItem.html' title='slack_api::mods::stars::ListResponseItem'>ListResponseItem</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.StarRemoved.field.event_ts'><span id='StarRemoved.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ReactionAdded' class='variant'><span id='ReactionAdded.v' class='invisible'><code>ReactionAdded</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/reaction_added"><code>reaction_added</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ReactionAdded.fields'><h3 class='fields'>Fields of <code>ReactionAdded</code></h3>
 
-                                              <table><tr><td id='variant.ReactionAdded.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ReactionAdded.field.name'><code>name</code></td><td></td></tr><tr><td id='variant.ReactionAdded.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.ReactionAdded.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.ReactionRemoved'><code>ReactionRemoved</code></td><td><div class='docblock'><p>Represents the slack
+                           <table><tr><td id='variant.ReactionAdded.field.user'><span id='ReactionAdded.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ReactionAdded.field.reaction'><span id='ReactionAdded.v.reaction.v' class='invisible'><code>reaction:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ReactionAdded.field.item'><span id='ReactionAdded.v.item.v' class='invisible'><code>item:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/reactions/enum.ListResponseItem.html' title='slack_api::mods::reactions::ListResponseItem'>ListResponseItem</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.ReactionAdded.field.item_user'><span id='ReactionAdded.v.item_user.v' class='invisible'><code>item_user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ReactionAdded.field.event_ts'><span id='ReactionAdded.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.ReactionRemoved' class='variant'><span id='ReactionRemoved.v' class='invisible'><code>ReactionRemoved</code></span></span><div class='docblock'><p>Represents the slack
 <a href="https://api.slack.com/events/reaction_removed"><code>reaction_removed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ReactionRemoved.fields'><h3 class='fields'>Fields of <code>ReactionRemoved</code></h3>
 
-                                              <table><tr><td id='variant.ReactionRemoved.field.user'><code>user</code></td><td></td></tr><tr><td id='variant.ReactionRemoved.field.name'><code>name</code></td><td></td></tr><tr><td id='variant.ReactionRemoved.field.item'><code>item</code></td><td></td></tr><tr><td id='variant.ReactionRemoved.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.EmojiChanged'><code>EmojiChanged</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/emoji_changed"><code>emoji_changed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.ReactionRemoved.field.user'><span id='ReactionRemoved.v.user.v' class='invisible'><code>user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ReactionRemoved.field.reaction'><span id='ReactionRemoved.v.reaction.v' class='invisible'><code>reaction:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ReactionRemoved.field.item'><span id='ReactionRemoved.v.item.v' class='invisible'><code>item:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='enum' href='../slack_api/mods/reactions/enum.ListResponseItem.html' title='slack_api::mods::reactions::ListResponseItem'>ListResponseItem</a>&gt;</code></span></td><td></td></tr><tr><td id='variant.ReactionRemoved.field.item_user'><span id='ReactionRemoved.v.item_user.v' class='invisible'><code>item_user:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.ReactionRemoved.field.event_ts'><span id='ReactionRemoved.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.EmojiChanged' class='variant'><span id='EmojiChanged.v' class='invisible'><code>EmojiChanged</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/emoji_changed"><code>emoji_changed</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.EmojiChanged.fields'><h3 class='fields'>Fields of <code>EmojiChanged</code></h3>
 
-                                              <table><tr><td id='variant.EmojiChanged.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.CommandsChanged'><code>CommandsChanged</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/commands_changed"><code>commands_changed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.EmojiChanged.field.event_ts'><span id='EmojiChanged.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.CommandsChanged' class='variant'><span id='CommandsChanged.v' class='invisible'><code>CommandsChanged</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/commands_changed"><code>commands_changed</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.CommandsChanged.fields'><h3 class='fields'>Fields of <code>CommandsChanged</code></h3>
 
-                                              <table><tr><td id='variant.CommandsChanged.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.TeamPlanChange'><code>TeamPlanChange</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/team_plan_change"><code>team_plan_change</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.CommandsChanged.field.event_ts'><span id='CommandsChanged.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.TeamPlanChange' class='variant'><span id='TeamPlanChange.v' class='invisible'><code>TeamPlanChange</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/team_plan_change"><code>team_plan_change</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.TeamPlanChange.fields'><h3 class='fields'>Fields of <code>TeamPlanChange</code></h3>
 
-                                              <table><tr><td id='variant.TeamPlanChange.field.plan'><code>plan</code></td><td></td></tr></table></td></tr><tr><td id='variant.TeamPrefChange'><code>TeamPrefChange</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/team_pref_change"><code>team_pref_change</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.TeamPlanChange.field.plan'><span id='TeamPlanChange.v.plan.v' class='invisible'><code>plan:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.TeamPrefChange' class='variant'><span id='TeamPrefChange.v' class='invisible'><code>TeamPrefChange</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/team_pref_change"><code>team_pref_change</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.TeamPrefChange.fields'><h3 class='fields'>Fields of <code>TeamPrefChange</code></h3>
 
-                                              <table><tr><td id='variant.TeamPrefChange.field.name'><code>name</code></td><td></td></tr><tr><td id='variant.TeamPrefChange.field.value'><code>value</code></td><td></td></tr></table></td></tr><tr><td id='variant.TeamRename'><code>TeamRename</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/team_rename"><code>team_rename</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.TeamPrefChange.field.name'><span id='TeamPrefChange.v.name.v' class='invisible'><code>name:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.TeamPrefChange.field.value'><span id='TeamPrefChange.v.value.v' class='invisible'><code>value:&nbsp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></span></td><td></td></tr></table></span><span id='variant.TeamRename' class='variant'><span id='TeamRename.v' class='invisible'><code>TeamRename</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/team_rename"><code>team_rename</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.TeamRename.fields'><h3 class='fields'>Fields of <code>TeamRename</code></h3>
 
-                                              <table><tr><td id='variant.TeamRename.field.name'><code>name</code></td><td></td></tr></table></td></tr><tr><td id='variant.TeamDomainChange'><code>TeamDomainChange</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/team_domain_change"><code>team_domain_change</code></a>
+                           <table><tr><td id='variant.TeamRename.field.name'><span id='TeamRename.v.name.v' class='invisible'><code>name:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.TeamDomainChange' class='variant'><span id='TeamDomainChange.v' class='invisible'><code>TeamDomainChange</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/team_domain_change"><code>team_domain_change</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.TeamDomainChange.fields'><h3 class='fields'>Fields of <code>TeamDomainChange</code></h3>
 
-                                              <table><tr><td id='variant.TeamDomainChange.field.url'><code>url</code></td><td></td></tr><tr><td id='variant.TeamDomainChange.field.domain'><code>domain</code></td><td></td></tr></table></td></tr><tr><td id='variant.EmailDomainChanged'><code>EmailDomainChanged</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.%0Acom/event/email_domain_changeed"><code>email_domain_changeed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.TeamDomainChange.field.url'><span id='TeamDomainChange.v.url.v' class='invisible'><code>url:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.TeamDomainChange.field.domain'><span id='TeamDomainChange.v.domain.v' class='invisible'><code>domain:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.EmailDomainChanged' class='variant'><span id='EmailDomainChanged.v' class='invisible'><code>EmailDomainChanged</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/email_domain_changed"><code>email_domain_changed</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.EmailDomainChanged.fields'><h3 class='fields'>Fields of <code>EmailDomainChanged</code></h3>
 
-                                              <table><tr><td id='variant.EmailDomainChanged.field.email_domain'><code>email_domain</code></td><td></td></tr><tr><td id='variant.EmailDomainChanged.field.event_ts'><code>event_ts</code></td><td></td></tr></table></td></tr><tr><td id='variant.BotAdded'><code>BotAdded</code></td><td><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/event/bot_added"><code>bot_added</code></a>
+                           <table><tr><td id='variant.EmailDomainChanged.field.email_domain'><span id='EmailDomainChanged.v.email_domain.v' class='invisible'><code>email_domain:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr><tr><td id='variant.EmailDomainChanged.field.event_ts'><span id='EmailDomainChanged.v.event_ts.v' class='invisible'><code>event_ts:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.BotAdded' class='variant'><span id='BotAdded.v' class='invisible'><code>BotAdded</code></span></span><div class='docblock'><p>Represents the slack <a href="https://api.slack.com/events/bot_added"><code>bot_added</code></a>
 event.</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.BotAdded.fields'><h3 class='fields'>Fields of <code>BotAdded</code></h3>
 
-                                              <table><tr><td id='variant.BotAdded.field.bot'><code>bot</code></td><td></td></tr></table></td></tr><tr><td id='variant.BotChanged'><code>BotChanged</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/bot_changed"><code>bot_changed</code></a> event.</p>
-</div><h3 class='fields'>Fields</h3>
+                           <table><tr><td id='variant.BotAdded.field.bot'><span id='BotAdded.v.bot.v' class='invisible'><code>bot:&nbsp;<a class='struct' href='../slack_api/types/struct.Bot.html' title='slack_api::types::Bot'>Bot</a></code></span></td><td></td></tr></table></span><span id='variant.BotChanged' class='variant'><span id='BotChanged.v' class='invisible'><code>BotChanged</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/bot_changed"><code>bot_changed</code></a> event.</p>
+</div><span class='docblock autohide sub-variant' id='variant.BotChanged.fields'><h3 class='fields'>Fields of <code>BotChanged</code></h3>
 
-                                              <table><tr><td id='variant.BotChanged.field.bot'><code>bot</code></td><td></td></tr></table></td></tr><tr><td id='variant.AccountsChanged'><code>AccountsChanged</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/accounts_changed"><code>accounts_changed</code></a> event.</p>
-</div></td></tr><tr><td id='variant.TeamMigrationStarted'><code>TeamMigrationStarted</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.%0Acom/event/team_migration_started"><code>team_migration_started</code></a> event.</p>
-</div></td></tr><tr><td id='variant.ReconnectUrl'><code>ReconnectUrl</code></td><td><div class='docblock'><p>Represents the slack
-<a href="https://api.slack.com/event/reconnect_url"><code>reconnect_url</code></a>
+                           <table><tr><td id='variant.BotChanged.field.bot'><span id='BotChanged.v.bot.v' class='invisible'><code>bot:&nbsp;<a class='struct' href='../slack_api/types/struct.Bot.html' title='slack_api::types::Bot'>Bot</a></code></span></td><td></td></tr></table></span><span id='variant.AccountsChanged' class='variant'><span id='AccountsChanged.v' class='invisible'><code>AccountsChanged</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/accounts_changed"><code>accounts_changed</code></a> event.</p>
+</div><span id='variant.TeamMigrationStarted' class='variant'><span id='TeamMigrationStarted.v' class='invisible'><code>TeamMigrationStarted</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/team_migration_started"><code>team_migration_started</code></a> event.</p>
+</div><span id='variant.ReconnectUrl' class='variant'><span id='ReconnectUrl.v' class='invisible'><code>ReconnectUrl</code></span></span><div class='docblock'><p>Represents the slack
+<a href="https://api.slack.com/events/reconnect_url"><code>reconnect_url</code></a>
 event.</p>
-</div></td></tr><tr><td id='variant.MessageSent'><code>MessageSent</code></td><td><div class='docblock'><p>Represents a confirmation of a message sent</p>
-</div><h3 class='fields'>Fields</h3>
+</div><span class='docblock autohide sub-variant' id='variant.ReconnectUrl.fields'><h3 class='fields'>Fields of <code>ReconnectUrl</code></h3>
 
-                                              <table><tr><td id='variant.MessageSent.field.reply_to'><code>reply_to</code></td><td></td></tr><tr><td id='variant.MessageSent.field.ts'><code>ts</code></td><td></td></tr><tr><td id='variant.MessageSent.field.text'><code>text</code></td><td></td></tr></table></td></tr><tr><td id='variant.MessageError'><code>MessageError</code></td><td><div class='docblock'><p>Represents an error sending a message</p>
-</div><h3 class='fields'>Fields</h3>
-
-                                              <table><tr><td id='variant.MessageError.field.reply_to'><code>reply_to</code></td><td></td></tr><tr><td id='variant.MessageError.field.code'><code>code</code></td><td></td></tr><tr><td id='variant.MessageError.field.message'><code>message</code></td><td></td></tr></table></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='../rustc_serialize/serialize/trait.Decodable.html' title='rustc_serialize::serialize::Decodable'>Decodable</a> for <a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a></code></h3><div class='impl-items'><h4 id='method.decode' class='method'><code>fn <a href='../rustc_serialize/serialize/trait.Decodable.html#method.decode' class='fnname'>decode</a>&lt;D: <a class='trait' href='../rustc_serialize/serialize/trait.Decoder.html' title='rustc_serialize::serialize::Decoder'>Decoder</a>&gt;(d: &amp;mut D) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a>, D::Error&gt;</code></h4>
-</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
-</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a></code></h4>
-<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
-</div></section>
+                           <table><tr><td id='variant.ReconnectUrl.field.url'><span id='ReconnectUrl.v.url.v' class='invisible'><code>url:&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code></span></td><td></td></tr></table></span><span id='variant.MessageSent' class='variant'><span id='MessageSent.v' class='invisible'><code>MessageSent(MessageSent)</code></span></span><div class='docblock'><p>Represents a confirmation of a message sent</p>
+</div><span id='variant.MessageError' class='variant'><span id='MessageError.v' class='invisible'><code>MessageError(MessageError)</code></span></span><div class='docblock'><p>Represents an error sending a message</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slack/events.rs.html#22' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class='method'><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class='method'><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../slack/enum.Event.html' title='slack::Event'>Event</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slack/events.rs.html#22' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -534,6 +534,8 @@ event.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -554,7 +556,7 @@ event.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -565,11 +567,9 @@ event.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "slack";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

@@ -1,5 +1,16 @@
 (function() {var implementors = {};
-implementors['bitflags'] = ["impl <a class='trait' href='https://doc.rust-lang.org/nightly/rand/reseeding/trait.Reseeder.html' title='rand::reseeding::Reseeder'>Reseeder</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/rand/struct.StdRng.html' title='std::rand::StdRng'>StdRng</a>&gt; for <a class='struct' href='https://doc.rust-lang.org/nightly/std/rand/struct.ThreadRngReseeder.html' title='std::rand::ThreadRngReseeder'>ThreadRngReseeder</a>",];implementors['openssl'] = ["impl <a class='trait' href='https://doc.rust-lang.org/nightly/rand/reseeding/trait.Reseeder.html' title='rand::reseeding::Reseeder'>Reseeder</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/rand/struct.StdRng.html' title='std::rand::StdRng'>StdRng</a>&gt; for <a class='struct' href='https://doc.rust-lang.org/nightly/std/rand/struct.ThreadRngReseeder.html' title='std::rand::ThreadRngReseeder'>ThreadRngReseeder</a>",];implementors['rand'] = [];implementors['websocket'] = ["impl <a class='trait' href='rand/reseeding/trait.Reseeder.html' title='rand::reseeding::Reseeder'>Reseeder</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/rand/struct.StdRng.html' title='std::rand::StdRng'>StdRng</a>&gt; for <a class='struct' href='https://doc.rust-lang.org/nightly/std/rand/struct.ThreadRngReseeder.html' title='std::rand::ThreadRngReseeder'>ThreadRngReseeder</a>",];
+implementors["antidote"] = [];
+implementors["bytes"] = [];
+implementors["core_foundation"] = [];
+implementors["hyper"] = [];
+implementors["libc"] = [];
+implementors["rand"] = [];
+implementors["reqwest"] = [];
+implementors["serde"] = [];
+implementors["serde_urlencoded"] = [];
+implementors["slack"] = [];
+implementors["syn"] = [];
+implementors["tungstenite"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);

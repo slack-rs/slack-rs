@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/hyper-0.8.0/src/header/common/strict_transport_security.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.9/src/header/common/strict_transport_security.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>strict_transport_security.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
 
     
     
@@ -236,6 +238,12 @@
 <span id="193">193</span>
 <span id="194">194</span>
 <span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>str</span>::{<span class='self'>self</span>, <span class='ident'>FromStr</span>};
@@ -299,7 +307,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>including_subdomains</span>(<span class='ident'>max_age</span>: <span class='ident'>u64</span>) <span class='op'>-&gt;</span> <span class='ident'>StrictTransportSecurity</span> {
         <span class='ident'>StrictTransportSecurity</span> {
             <span class='ident'>max_age</span>: <span class='ident'>max_age</span>,
-            <span class='ident'>include_subdomains</span>: <span class='boolval'>true</span>
+            <span class='ident'>include_subdomains</span>: <span class='bool-val'>true</span>
         }
     }
 
@@ -307,7 +315,7 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>excluding_subdomains</span>(<span class='ident'>max_age</span>: <span class='ident'>u64</span>) <span class='op'>-&gt;</span> <span class='ident'>StrictTransportSecurity</span> {
         <span class='ident'>StrictTransportSecurity</span> {
             <span class='ident'>max_age</span>: <span class='ident'>max_age</span>,
-            <span class='ident'>include_subdomains</span>: <span class='boolval'>false</span>
+            <span class='ident'>include_subdomains</span>: <span class='bool-val'>false</span>
         }
     }
 }
@@ -370,6 +378,12 @@
 
 <span class='kw'>impl</span> <span class='ident'>HeaderFormat</span> <span class='kw'>for</span> <span class='ident'>StrictTransportSecurity</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt_header</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
+        <span class='ident'>fmt</span>::<span class='ident'>Display</span>::<span class='ident'>fmt</span>(<span class='self'>self</span>, <span class='ident'>f</span>)
+    }
+}
+
+<span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>StrictTransportSecurity</span> {
+    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>include_subdomains</span> {
             <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;max-age={}; includeSubdomains&quot;</span>, <span class='self'>self</span>.<span class='ident'>max_age</span>)
         } <span class='kw'>else</span> {
@@ -380,13 +394,13 @@
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>tests</span> {
-    <span class='kw'>use</span> <span class='ident'>super</span>::<span class='ident'>StrictTransportSecurity</span>;
+    <span class='kw'>use</span> <span class='kw'>super</span>::<span class='ident'>StrictTransportSecurity</span>;
     <span class='kw'>use</span> <span class='ident'>header</span>::<span class='ident'>Header</span>;
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_parse_max_age</span>() {
         <span class='kw'>let</span> <span class='ident'>h</span> <span class='op'>=</span> <span class='ident'>Header</span>::<span class='ident'>parse_header</span>(<span class='kw-2'>&amp;</span>[<span class='string'>b&quot;max-age=31536000&quot;</span>.<span class='ident'>to_vec</span>()][..]);
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='boolval'>false</span>, <span class='ident'>max_age</span>: <span class='number'>31536000u64</span> }));
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='bool-val'>false</span>, <span class='ident'>max_age</span>: <span class='number'>31536000u64</span> }));
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -398,19 +412,19 @@
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_parse_quoted_max_age</span>() {
         <span class='kw'>let</span> <span class='ident'>h</span> <span class='op'>=</span> <span class='ident'>Header</span>::<span class='ident'>parse_header</span>(<span class='kw-2'>&amp;</span>[<span class='string'>b&quot;max-age=\&quot;31536000\&quot;&quot;</span>.<span class='ident'>to_vec</span>()][..]);
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='boolval'>false</span>, <span class='ident'>max_age</span>: <span class='number'>31536000u64</span> }));
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='bool-val'>false</span>, <span class='ident'>max_age</span>: <span class='number'>31536000u64</span> }));
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_parse_spaces_max_age</span>() {
         <span class='kw'>let</span> <span class='ident'>h</span> <span class='op'>=</span> <span class='ident'>Header</span>::<span class='ident'>parse_header</span>(<span class='kw-2'>&amp;</span>[<span class='string'>b&quot;max-age = 31536000&quot;</span>.<span class='ident'>to_vec</span>()][..]);
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='boolval'>false</span>, <span class='ident'>max_age</span>: <span class='number'>31536000u64</span> }));
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='bool-val'>false</span>, <span class='ident'>max_age</span>: <span class='number'>31536000u64</span> }));
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_parse_include_subdomains</span>() {
         <span class='kw'>let</span> <span class='ident'>h</span> <span class='op'>=</span> <span class='ident'>Header</span>::<span class='ident'>parse_header</span>(<span class='kw-2'>&amp;</span>[<span class='string'>b&quot;max-age=15768000 ; includeSubDomains&quot;</span>.<span class='ident'>to_vec</span>()][..]);
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='boolval'>true</span>, <span class='ident'>max_age</span>: <span class='number'>15768000u64</span> }));
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>h</span>.<span class='ident'>ok</span>(), <span class='prelude-val'>Some</span>(<span class='ident'>StrictTransportSecurity</span> { <span class='ident'>include_subdomains</span>: <span class='bool-val'>true</span>, <span class='ident'>max_age</span>: <span class='number'>15768000u64</span> }));
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -456,6 +470,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -476,7 +492,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -487,11 +503,9 @@
     <script>
         window.rootPath = "../../../../";
         window.currentCrate = "hyper";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../../jquery.js"></script>
     <script src="../../../../main.js"></script>
-    
     <script defer src="../../../../search-index.js"></script>
 </body>
 </html>

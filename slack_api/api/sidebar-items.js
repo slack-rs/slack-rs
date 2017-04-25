@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["test","Checks API calling code."]],"struct":[["ApiTestResponse",""]]});
+initSidebarItems({"enum":[["TestError",""]],"fn":[["test","Checks API calling code."]],"struct":[["TestRequest",""],["TestResponse",""]]});

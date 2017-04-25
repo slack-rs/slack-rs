@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CFBundle","A Bundle type."]]});

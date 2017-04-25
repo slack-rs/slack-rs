@@ -1,5 +1,15 @@
 (function() {var implementors = {};
-implementors['openssl'] = [];implementors['websocket'] = [];
+implementors["antidote"] = [];
+implementors["bytes"] = [];
+implementors["core_foundation"] = [];
+implementors["hyper"] = [];
+implementors["libc"] = [];
+implementors["reqwest"] = [];
+implementors["serde"] = [];
+implementors["serde_urlencoded"] = [];
+implementors["slack"] = [];
+implementors["syn"] = [];
+implementors["tungstenite"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);

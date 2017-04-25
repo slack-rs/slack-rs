@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Header` trait in crate `reqwest`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Header">
+
+    <title>reqwest::header::Header - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>reqwest</a>::<wbr><a href='index.html'>header</a></p><script>window.sidebarCurrent = {name: 'Header', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>reqwest</a>::<wbr><a href='index.html'>header</a>::<wbr><a class='trait' href=''>Header</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/hyper/header/mod.rs.html#109-123' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait Header: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/any/trait.Any.html' title='core::any::Any'>Any</a> {
+    fn <a href='#tymethod.header_name' class='fnname'>header_name</a>() -&gt; &amp;'static <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>;
+    fn <a href='#tymethod.parse_header' class='fnname'>parse_header</a>(raw: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;Self, <a class='enum' href='../../reqwest/enum.HyperError.html' title='reqwest::HyperError'>Error</a>&gt;;
+}</pre><div class='docblock'><p>A trait for any object that will represent a header field and value.</p>
+
+<p>This trait represents the construction and identification of headers,
+and contains trait-object unsafe methods.</p>
+</div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.header_name' class='method'><span id='header_name.v' class='invisible'><code>fn <a href='#tymethod.header_name' class='fnname'>header_name</a>() -&gt; &amp;'static <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a></code></span></h3><div class='docblock'><p>Returns the name of the header field this belongs to.</p>
+
+<p>This will become an associated constant once available.</p>
+</div><h3 id='tymethod.parse_header' class='method'><span id='parse_header.v' class='invisible'><code>fn <a href='#tymethod.parse_header' class='fnname'>parse_header</a>(raw: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;Self, <a class='enum' href='../../reqwest/enum.HyperError.html' title='reqwest::HyperError'>Error</a>&gt;</code></span></h3><div class='docblock'><p>Parse a header from a raw stream of bytes.</p>
+
+<p>It&#39;s possible that a request can include a header field more than once,
+and in that case, the slice will have a length greater than 1. However,
+it&#39;s not necessarily the case that a Header is <em>allowed</em> to have more
+than one field value. If that&#39;s the case, you <strong>should</strong> return <code>None</code>
+if <code>raw.len() &gt; 1</code>.</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AccessControlAllowCredentials.html' title='reqwest::header::AccessControlAllowCredentials'>AccessControlAllowCredentials</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.AccessControlAllowOrigin.html' title='reqwest::header::AccessControlAllowOrigin'>AccessControlAllowOrigin</a></code></li>
+<li><code>impl&lt;S&gt; Header for <a class='struct' href='../../reqwest/header/struct.Authorization.html' title='reqwest::header::Authorization'>Authorization</a>&lt;S&gt; <span class='where fmt-newline'>where S: <a class='trait' href='../../reqwest/header/trait.Scheme.html' title='reqwest::header::Scheme'>Scheme</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/any/trait.Any.html' title='core::any::Any'>Any</a>, S::<a class='trait' href='https://doc.rust-lang.org/nightly/core/str/trait.FromStr.html' title='core::str::FromStr'>Err</a>: 'static</span></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.CacheControl.html' title='reqwest::header::CacheControl'>CacheControl</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Cookie.html' title='reqwest::header::Cookie'>Cookie</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.ContentDisposition.html' title='reqwest::header::ContentDisposition'>ContentDisposition</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.ContentLength.html' title='reqwest::header::ContentLength'>ContentLength</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.Expect.html' title='reqwest::header::Expect'>Expect</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Host.html' title='reqwest::header::Host'>Host</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.IfRange.html' title='reqwest::header::IfRange'>IfRange</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Origin.html' title='reqwest::header::Origin'>Origin</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.Pragma.html' title='reqwest::header::Pragma'>Pragma</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Prefer.html' title='reqwest::header::Prefer'>Prefer</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.PreferenceApplied.html' title='reqwest::header::PreferenceApplied'>PreferenceApplied</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.Range.html' title='reqwest::header::Range'>Range</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.ReferrerPolicy.html' title='reqwest::header::ReferrerPolicy'>ReferrerPolicy</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.SetCookie.html' title='reqwest::header::SetCookie'>SetCookie</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.StrictTransportSecurity.html' title='reqwest::header::StrictTransportSecurity'>StrictTransportSecurity</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Accept.html' title='reqwest::header::Accept'>Accept</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AccessControlAllowHeaders.html' title='reqwest::header::AccessControlAllowHeaders'>AccessControlAllowHeaders</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AccessControlAllowMethods.html' title='reqwest::header::AccessControlAllowMethods'>AccessControlAllowMethods</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AccessControlExposeHeaders.html' title='reqwest::header::AccessControlExposeHeaders'>AccessControlExposeHeaders</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AccessControlMaxAge.html' title='reqwest::header::AccessControlMaxAge'>AccessControlMaxAge</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AccessControlRequestHeaders.html' title='reqwest::header::AccessControlRequestHeaders'>AccessControlRequestHeaders</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AccessControlRequestMethod.html' title='reqwest::header::AccessControlRequestMethod'>AccessControlRequestMethod</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AcceptCharset.html' title='reqwest::header::AcceptCharset'>AcceptCharset</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AcceptEncoding.html' title='reqwest::header::AcceptEncoding'>AcceptEncoding</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AcceptLanguage.html' title='reqwest::header::AcceptLanguage'>AcceptLanguage</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.AcceptRanges.html' title='reqwest::header::AcceptRanges'>AcceptRanges</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Allow.html' title='reqwest::header::Allow'>Allow</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Connection.html' title='reqwest::header::Connection'>Connection</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.ContentEncoding.html' title='reqwest::header::ContentEncoding'>ContentEncoding</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.ContentLanguage.html' title='reqwest::header::ContentLanguage'>ContentLanguage</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.ContentRange.html' title='reqwest::header::ContentRange'>ContentRange</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.ContentType.html' title='reqwest::header::ContentType'>ContentType</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Date.html' title='reqwest::header::Date'>Date</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.ETag.html' title='reqwest::header::ETag'>ETag</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Expires.html' title='reqwest::header::Expires'>Expires</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.From.html' title='reqwest::header::From'>From</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.IfMatch.html' title='reqwest::header::IfMatch'>IfMatch</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.IfModifiedSince.html' title='reqwest::header::IfModifiedSince'>IfModifiedSince</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.IfNoneMatch.html' title='reqwest::header::IfNoneMatch'>IfNoneMatch</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.IfUnmodifiedSince.html' title='reqwest::header::IfUnmodifiedSince'>IfUnmodifiedSince</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.LastModified.html' title='reqwest::header::LastModified'>LastModified</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Location.html' title='reqwest::header::Location'>Location</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Referer.html' title='reqwest::header::Referer'>Referer</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Server.html' title='reqwest::header::Server'>Server</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.TransferEncoding.html' title='reqwest::header::TransferEncoding'>TransferEncoding</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.Upgrade.html' title='reqwest::header::Upgrade'>Upgrade</a></code></li>
+<li><code>impl Header for <a class='struct' href='../../reqwest/header/struct.UserAgent.html' title='reqwest::header::UserAgent'>UserAgent</a></code></li>
+<li><code>impl Header for <a class='enum' href='../../reqwest/header/enum.Vary.html' title='reqwest::header::Vary'>Vary</a></code></li>
+</ul><script type="text/javascript" async
+                         src="../../implementors/hyper/header/trait.Header.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "reqwest";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

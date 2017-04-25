@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `FrameSocket` struct in crate `tungstenite`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, FrameSocket">
+
+    <title>tungstenite::protocol::frame::FrameSocket - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>tungstenite</a>::<wbr><a href='../index.html'>protocol</a>::<wbr><a href='index.html'>frame</a></p><script>window.sidebarCurrent = {name: 'FrameSocket', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>tungstenite</a>::<wbr><a href='../index.html'>protocol</a>::<wbr><a href='index.html'>frame</a>::<wbr><a class='struct' href=''>FrameSocket</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/tungstenite/protocol/frame/mod.rs.html#17-21' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct FrameSocket&lt;Stream&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A reader and writer for WebSocket frames.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;Stream&gt; <a class='struct' href='../../../tungstenite/protocol/frame/struct.FrameSocket.html' title='tungstenite::protocol::frame::FrameSocket'>FrameSocket</a>&lt;Stream&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/tungstenite/protocol/frame/mod.rs.html#23-52' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>(stream: Stream) -&gt; Self</code></span></h4>
+<div class='docblock'><p>Create a new frame socket.</p>
+</div><h4 id='method.from_partially_read' class='method'><span id='from_partially_read.v' class='invisible'><code>fn <a href='#method.from_partially_read' class='fnname'>from_partially_read</a>(stream: Stream, part: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;) -&gt; Self</code></span></h4>
+<div class='docblock'><p>Create a new frame socket from partially read data.</p>
+</div><h4 id='method.into_inner' class='method'><span id='into_inner.v' class='invisible'><code>fn <a href='#method.into_inner' class='fnname'>into_inner</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a>Stream, <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a></code></span></h4>
+<div class='docblock'><p>Extract a stream from the socket.</p>
+</div><h4 id='method.get_ref' class='method'><span id='get_ref.v' class='invisible'><code>fn <a href='#method.get_ref' class='fnname'>get_ref</a>(&amp;self) -&gt; &amp;Stream</code></span></h4>
+<div class='docblock'><p>Returns a shared reference to the inner stream.</p>
+</div><h4 id='method.get_mut' class='method'><span id='get_mut.v' class='invisible'><code>fn <a href='#method.get_mut' class='fnname'>get_mut</a>(&amp;mut self) -&gt; &amp;mut Stream</code></span></h4>
+<div class='docblock'><p>Returns a mutable reference to the inner stream.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;Stream&gt; <a class='struct' href='../../../tungstenite/protocol/frame/struct.FrameSocket.html' title='tungstenite::protocol::frame::FrameSocket'>FrameSocket</a>&lt;Stream&gt; <span class='where fmt-newline'>where Stream: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Read.html' title='std::io::Read'>Read</a></span></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/tungstenite/protocol/frame/mod.rs.html#54-75' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.read_frame' class='method'><span id='read_frame.v' class='invisible'><code>fn <a href='#method.read_frame' class='fnname'>read_frame</a>(&amp;mut self) -&gt; <a class='type' href='../../../tungstenite/error/type.Result.html' title='tungstenite::error::Result'>Result</a>&lt;<a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../../../tungstenite/protocol/frame/struct.Frame.html' title='tungstenite::protocol::frame::Frame'>Frame</a>&gt;&gt;</code></span></h4>
+<div class='docblock'><p>Read a frame from stream.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;Stream&gt; <a class='struct' href='../../../tungstenite/protocol/frame/struct.FrameSocket.html' title='tungstenite::protocol::frame::FrameSocket'>FrameSocket</a>&lt;Stream&gt; <span class='where fmt-newline'>where Stream: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a></span></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/tungstenite/protocol/frame/mod.rs.html#77-100' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.write_frame' class='method'><span id='write_frame.v' class='invisible'><code>fn <a href='#method.write_frame' class='fnname'>write_frame</a>(&amp;mut self, frame: <a class='struct' href='../../../tungstenite/protocol/frame/struct.Frame.html' title='tungstenite::protocol::frame::Frame'>Frame</a>) -&gt; <a class='type' href='../../../tungstenite/error/type.Result.html' title='tungstenite::error::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></span></h4>
+<div class='docblock'><p>Write a frame to stream.</p>
+
+<p>This function guarantees that the frame is queued regardless of any errors.
+There is no need to resend the frame. In order to handle WouldBlock or Incomplete,
+call write_pending() afterwards.</p>
+</div><h4 id='method.write_pending' class='method'><span id='write_pending.v' class='invisible'><code>fn <a href='#method.write_pending' class='fnname'>write_pending</a>(&amp;mut self) -&gt; <a class='type' href='../../../tungstenite/error/type.Result.html' title='tungstenite::error::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></span></h4>
+<div class='docblock'><p>Complete pending write, if any.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "tungstenite";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

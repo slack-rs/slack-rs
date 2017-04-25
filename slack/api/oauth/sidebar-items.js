@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["access","Exchanges a temporary OAuth code for an API token."]],"struct":[["AccessResponse",""]]});

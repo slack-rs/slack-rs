@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AddError",""],["DeleteError",""],["EditError",""]],"fn":[["add","Add a comment to an existing file."],["delete","Deletes an existing comment on a file."],["edit","Edit an existing file comment."]],"struct":[["AddRequest",""],["AddResponse",""],["DeleteRequest",""],["DeleteResponse",""],["EditRequest",""],["EditResponse",""]]});

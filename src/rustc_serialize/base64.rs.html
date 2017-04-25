@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-88ac128001ac3a9a/rustc-serialize-0.3.18/src/base64.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/rustc-serialize-0.3.24/src/base64.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>base64.rs.html -- source</title>
 
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
     <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../main.css">
+    
 
     <link rel="shortcut icon" href="https://www.rust-lang.org/favicon.ico">
     
@@ -26,7 +28,7 @@
     
 
     <nav class="sidebar">
-        <a href='../../rustc_serialize/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='' width='100'></a>
+        <a href='../../rustc_serialize/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='logo' width='100'></a>
         
     </nav>
 
@@ -509,6 +511,27 @@
 <span id="466">466</span>
 <span id="467">467</span>
 <span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2012-2014 The Rust Project Developers. See the COPYRIGHT</span>
 <span class='comment'>// file at the top-level directory of this distribution and at</span>
@@ -524,8 +547,8 @@
 
 <span class='doccomment'>//! Base64 binary-to-text encoding</span>
 
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>FromBase64Error</span>::<span class='op'>*</span>;
-<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>CharacterSet</span>::<span class='op'>*</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>FromBase64Error</span>::<span class='kw-2'>*</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>CharacterSet</span>::<span class='kw-2'>*</span>;
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>error</span>;
@@ -563,15 +586,15 @@
 
 <span class='doccomment'>/// Configuration for RFC 4648 standard base64 encoding</span>
 <span class='kw'>pub</span> <span class='kw'>static</span> <span class='ident'>STANDARD</span>: <span class='ident'>Config</span> <span class='op'>=</span>
-    <span class='ident'>Config</span> {<span class='ident'>char_set</span>: <span class='ident'>Standard</span>, <span class='ident'>newline</span>: <span class='ident'>Newline</span>::<span class='ident'>CRLF</span>, <span class='ident'>pad</span>: <span class='boolval'>true</span>, <span class='ident'>line_length</span>: <span class='prelude-val'>None</span>};
+    <span class='ident'>Config</span> {<span class='ident'>char_set</span>: <span class='ident'>Standard</span>, <span class='ident'>newline</span>: <span class='ident'>Newline</span>::<span class='ident'>CRLF</span>, <span class='ident'>pad</span>: <span class='bool-val'>true</span>, <span class='ident'>line_length</span>: <span class='prelude-val'>None</span>};
 
 <span class='doccomment'>/// Configuration for RFC 4648 base64url encoding</span>
 <span class='kw'>pub</span> <span class='kw'>static</span> <span class='ident'>URL_SAFE</span>: <span class='ident'>Config</span> <span class='op'>=</span>
-    <span class='ident'>Config</span> {<span class='ident'>char_set</span>: <span class='ident'>UrlSafe</span>, <span class='ident'>newline</span>: <span class='ident'>Newline</span>::<span class='ident'>CRLF</span>, <span class='ident'>pad</span>: <span class='boolval'>false</span>, <span class='ident'>line_length</span>: <span class='prelude-val'>None</span>};
+    <span class='ident'>Config</span> {<span class='ident'>char_set</span>: <span class='ident'>UrlSafe</span>, <span class='ident'>newline</span>: <span class='ident'>Newline</span>::<span class='ident'>CRLF</span>, <span class='ident'>pad</span>: <span class='bool-val'>false</span>, <span class='ident'>line_length</span>: <span class='prelude-val'>None</span>};
 
 <span class='doccomment'>/// Configuration for RFC 2045 MIME base64 encoding</span>
 <span class='kw'>pub</span> <span class='kw'>static</span> <span class='ident'>MIME</span>: <span class='ident'>Config</span> <span class='op'>=</span>
-    <span class='ident'>Config</span> {<span class='ident'>char_set</span>: <span class='ident'>Standard</span>, <span class='ident'>newline</span>: <span class='ident'>Newline</span>::<span class='ident'>CRLF</span>, <span class='ident'>pad</span>: <span class='boolval'>true</span>, <span class='ident'>line_length</span>: <span class='prelude-val'>Some</span>(<span class='number'>76</span>)};
+    <span class='ident'>Config</span> {<span class='ident'>char_set</span>: <span class='ident'>Standard</span>, <span class='ident'>newline</span>: <span class='ident'>Newline</span>::<span class='ident'>CRLF</span>, <span class='ident'>pad</span>: <span class='bool-val'>true</span>, <span class='ident'>line_length</span>: <span class='prelude-val'>Some</span>(<span class='number'>76</span>)};
 
 <span class='kw'>static</span> <span class='ident'>STANDARD_CHARS</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;static</span>[<span class='ident'>u8</span>] <span class='op'>=</span> <span class='string'>b&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ\
                                         abcdefghijklmnopqrstuvwxyz\
@@ -617,7 +640,10 @@
         <span class='comment'>// Preallocate memory.</span>
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>prealloc_len</span> <span class='op'>=</span> (<span class='ident'>len</span> <span class='op'>+</span> <span class='number'>2</span>) <span class='op'>/</span> <span class='number'>3</span> <span class='op'>*</span> <span class='number'>4</span>;
         <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>line_length</span>) <span class='op'>=</span> <span class='ident'>config</span>.<span class='ident'>line_length</span> {
-            <span class='kw'>let</span> <span class='ident'>num_lines</span> <span class='op'>=</span> (<span class='ident'>prealloc_len</span> <span class='op'>-</span> <span class='number'>1</span>) <span class='op'>/</span> <span class='ident'>line_length</span>;
+            <span class='kw'>let</span> <span class='ident'>num_lines</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>prealloc_len</span> {
+                <span class='number'>0</span> <span class='op'>=&gt;</span> <span class='number'>0</span>,
+                <span class='ident'>n</span> <span class='op'>=&gt;</span> (<span class='ident'>n</span> <span class='op'>-</span> <span class='number'>1</span>) <span class='op'>/</span> <span class='ident'>line_length</span>
+            };
             <span class='ident'>prealloc_len</span> <span class='op'>+=</span> <span class='ident'>num_lines</span> <span class='op'>*</span> <span class='ident'>newline</span>.<span class='ident'>bytes</span>().<span class='ident'>count</span>();
         }
 
@@ -635,7 +661,7 @@
 
             <span class='comment'>// Convenient shorthand</span>
             <span class='kw'>let</span> <span class='ident'>enc</span> <span class='op'>=</span> <span class='op'>|</span><span class='ident'>val</span><span class='op'>|</span> <span class='ident'>bytes</span>[<span class='ident'>val</span> <span class='kw'>as</span> <span class='ident'>usize</span>];
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>write</span> <span class='op'>=</span> <span class='op'>|</span><span class='ident'>val</span><span class='op'>|</span> <span class='op'>*</span><span class='ident'>s_out</span>.<span class='ident'>next</span>().<span class='ident'>unwrap</span>() <span class='op'>=</span> <span class='ident'>val</span>;
+            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>write</span> <span class='op'>=</span> <span class='op'>|</span><span class='ident'>val</span><span class='op'>|</span> <span class='kw-2'>*</span><span class='ident'>s_out</span>.<span class='ident'>next</span>().<span class='ident'>unwrap</span>() <span class='op'>=</span> <span class='ident'>val</span>;
 
             <span class='comment'>// Iterate though blocks of 4</span>
             <span class='kw'>while</span> <span class='kw'>let</span> (<span class='prelude-val'>Some</span>(<span class='ident'>first</span>), <span class='prelude-val'>Some</span>(<span class='ident'>second</span>), <span class='prelude-val'>Some</span>(<span class='ident'>third</span>)) <span class='op'>=</span>
@@ -652,10 +678,10 @@
                 <span class='kw'>let</span> <span class='ident'>n</span> <span class='op'>=</span> <span class='ident'>first</span> <span class='op'>&lt;&lt;</span> <span class='number'>16</span> <span class='op'>|</span> <span class='ident'>second</span> <span class='op'>&lt;&lt;</span> <span class='number'>8</span> <span class='op'>|</span> <span class='ident'>third</span>;
 
                 <span class='comment'>// This 24-bit number gets separated into four 6-bit numbers.</span>
-                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>18</span>) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
-                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>12</span>) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
-                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>6</span> ) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
-                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>0</span> ) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
+                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>18</span>) <span class='op'>&amp;</span> <span class='number'>63</span>));
+                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>12</span>) <span class='op'>&amp;</span> <span class='number'>63</span>));
+                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>6</span> ) <span class='op'>&amp;</span> <span class='number'>63</span>));
+                <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>0</span> ) <span class='op'>&amp;</span> <span class='number'>63</span>));
 
                 <span class='ident'>cur_length</span> <span class='op'>+=</span> <span class='number'>4</span>;
             }
@@ -675,15 +701,15 @@
                 <span class='number'>0</span> <span class='op'>=&gt;</span> (),
                 <span class='number'>1</span> <span class='op'>=&gt;</span> {
                     <span class='kw'>let</span> <span class='ident'>n</span> <span class='op'>=</span> (<span class='self'>self</span>[<span class='ident'>len</span><span class='op'>-</span><span class='number'>1</span>] <span class='kw'>as</span> <span class='ident'>u32</span>) <span class='op'>&lt;&lt;</span> <span class='number'>16</span>;
-                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>18</span>) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
-                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>12</span>) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
+                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>18</span>) <span class='op'>&amp;</span> <span class='number'>63</span>));
+                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>12</span>) <span class='op'>&amp;</span> <span class='number'>63</span>));
                 }
                 <span class='number'>2</span> <span class='op'>=&gt;</span> {
                     <span class='kw'>let</span> <span class='ident'>n</span> <span class='op'>=</span> (<span class='self'>self</span>[<span class='ident'>len</span><span class='op'>-</span><span class='number'>2</span>] <span class='kw'>as</span> <span class='ident'>u32</span>) <span class='op'>&lt;&lt;</span> <span class='number'>16</span> <span class='op'>|</span>
                             (<span class='self'>self</span>[<span class='ident'>len</span><span class='op'>-</span><span class='number'>1</span>] <span class='kw'>as</span> <span class='ident'>u32</span>) <span class='op'>&lt;&lt;</span> <span class='number'>8</span>;
-                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>18</span>) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
-                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>12</span>) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
-                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>6</span> ) <span class='kw-2'>&amp;</span> <span class='number'>63</span>));
+                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>18</span>) <span class='op'>&amp;</span> <span class='number'>63</span>));
+                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>12</span>) <span class='op'>&amp;</span> <span class='number'>63</span>));
+                    <span class='ident'>write</span>(<span class='ident'>enc</span>((<span class='ident'>n</span> <span class='op'>&gt;&gt;</span> <span class='number'>6</span> ) <span class='op'>&amp;</span> <span class='number'>63</span>));
                 }
                 _ <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;Algebra is broken, please alert the math police&quot;</span>)
             }
@@ -697,6 +723,12 @@
         }
 
         <span class='kw'>unsafe</span> { <span class='ident'>String</span>::<span class='ident'>from_utf8_unchecked</span>(<span class='ident'>out_bytes</span>) }
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='question-mark'>?</span><span class='ident'>Sized</span> <span class='op'>+</span> <span class='ident'>ToBase64</span><span class='op'>&gt;</span> <span class='ident'>ToBase64</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>T</span> {
+    <span class='kw'>fn</span> <span class='ident'>to_base64</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>config</span>: <span class='ident'>Config</span>) <span class='op'>-&gt;</span> <span class='ident'>String</span> {
+        (<span class='kw-2'>*</span><span class='kw-2'>*</span><span class='self'>self</span>).<span class='ident'>to_base64</span>(<span class='ident'>config</span>)
     }
 }
 
@@ -718,7 +750,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>FromBase64Error</span> {
     <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>InvalidBase64Byte</span>(<span class='ident'>ch</span>, <span class='ident'>idx</span>) <span class='op'>=&gt;</span>
                 <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Invalid character &#39;{}&#39; at position {}&quot;</span>, <span class='ident'>ch</span>, <span class='ident'>idx</span>),
             <span class='ident'>InvalidBase64Length</span> <span class='op'>=&gt;</span> <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;Invalid length&quot;</span>),
@@ -728,7 +760,7 @@
 
 <span class='kw'>impl</span> <span class='ident'>error</span>::<span class='ident'>Error</span> <span class='kw'>for</span> <span class='ident'>FromBase64Error</span> {
     <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
-        <span class='kw'>match</span> <span class='op'>*</span><span class='self'>self</span> {
+        <span class='kw'>match</span> <span class='kw-2'>*</span><span class='self'>self</span> {
             <span class='ident'>InvalidBase64Byte</span>(_, _) <span class='op'>=&gt;</span> <span class='string'>&quot;invalid character&quot;</span>,
             <span class='ident'>InvalidBase64Length</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid length&quot;</span>,
         }
@@ -782,13 +814,13 @@
 
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>it</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>iter</span>();
         <span class='kw'>for</span> <span class='ident'>byte</span> <span class='kw'>in</span> <span class='ident'>it</span>.<span class='ident'>by_ref</span>() {
-            <span class='kw'>let</span> <span class='ident'>code</span> <span class='op'>=</span> <span class='ident'>DECODE_TABLE</span>[<span class='op'>*</span><span class='ident'>byte</span> <span class='kw'>as</span> <span class='ident'>usize</span>];
+            <span class='kw'>let</span> <span class='ident'>code</span> <span class='op'>=</span> <span class='ident'>DECODE_TABLE</span>[<span class='kw-2'>*</span><span class='ident'>byte</span> <span class='kw'>as</span> <span class='ident'>usize</span>];
             <span class='kw'>if</span> <span class='ident'>code</span> <span class='op'>&gt;=</span> <span class='ident'>SPECIAL_CODES_START</span> {
                 <span class='kw'>match</span> <span class='ident'>code</span> {
                     <span class='ident'>NEWLINE_CODE</span> <span class='op'>=&gt;</span> <span class='kw'>continue</span>,
                     <span class='ident'>EQUALS_CODE</span> <span class='op'>=&gt;</span> <span class='kw'>break</span>,
                     <span class='ident'>INVALID_CODE</span> <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>InvalidBase64Byte</span>(
-                            <span class='op'>*</span><span class='ident'>byte</span>, (<span class='ident'>byte</span> <span class='kw'>as</span> <span class='op'>*</span><span class='kw'>const</span> _ <span class='kw'>as</span> <span class='ident'>usize</span>) <span class='op'>-</span> <span class='self'>self</span>.<span class='ident'>as_ptr</span>() <span class='kw'>as</span> <span class='ident'>usize</span>)),
+                            <span class='kw-2'>*</span><span class='ident'>byte</span>, (<span class='ident'>byte</span> <span class='kw'>as</span> <span class='kw-2'>*</span><span class='kw'>const</span> _ <span class='kw'>as</span> <span class='ident'>usize</span>) <span class='op'>-</span> <span class='self'>self</span>.<span class='ident'>as_ptr</span>() <span class='kw'>as</span> <span class='ident'>usize</span>)),
                     _ <span class='op'>=&gt;</span> <span class='macro'>unreachable</span><span class='macro'>!</span>(),
                 }
             }
@@ -803,10 +835,10 @@
         }
 
         <span class='kw'>for</span> <span class='ident'>byte</span> <span class='kw'>in</span> <span class='ident'>it</span> {
-            <span class='kw'>match</span> <span class='op'>*</span><span class='ident'>byte</span> {
+            <span class='kw'>match</span> <span class='kw-2'>*</span><span class='ident'>byte</span> {
                 <span class='string'>b&#39;=&#39;</span> <span class='op'>|</span> <span class='string'>b&#39;\r&#39;</span> <span class='op'>|</span> <span class='string'>b&#39;\n&#39;</span> <span class='op'>=&gt;</span> <span class='kw'>continue</span>,
                 _ <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>InvalidBase64Byte</span>(
-                        <span class='op'>*</span><span class='ident'>byte</span>, (<span class='ident'>byte</span> <span class='kw'>as</span> <span class='op'>*</span><span class='kw'>const</span> _ <span class='kw'>as</span> <span class='ident'>usize</span>) <span class='op'>-</span> <span class='self'>self</span>.<span class='ident'>as_ptr</span>() <span class='kw'>as</span> <span class='ident'>usize</span>)),
+                        <span class='kw-2'>*</span><span class='ident'>byte</span>, (<span class='ident'>byte</span> <span class='kw'>as</span> <span class='kw-2'>*</span><span class='kw'>const</span> _ <span class='kw'>as</span> <span class='ident'>usize</span>) <span class='op'>-</span> <span class='self'>self</span>.<span class='ident'>as_ptr</span>() <span class='kw'>as</span> <span class='ident'>usize</span>)),
             }
         }
 
@@ -826,27 +858,34 @@
     }
 }
 
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>T</span>: <span class='question-mark'>?</span><span class='ident'>Sized</span> <span class='op'>+</span> <span class='ident'>FromBase64</span><span class='op'>&gt;</span> <span class='ident'>FromBase64</span> <span class='kw'>for</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>T</span> {
+    <span class='kw'>fn</span> <span class='ident'>from_base64</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>, <span class='ident'>FromBase64Error</span><span class='op'>&gt;</span> {
+        (<span class='kw-2'>*</span><span class='kw-2'>*</span><span class='self'>self</span>).<span class='ident'>from_base64</span>()
+    }
+}
+
 <span class='doccomment'>/// Base64 decoding lookup table, generated using:</span>
-<span class='doccomment'>/// ```rust</span>
-<span class='doccomment'>///     let mut ch = 0u8;</span>
-<span class='doccomment'>///     loop {</span>
-<span class='doccomment'>///         let code = match ch {</span>
-<span class='doccomment'>///             b&#39;A&#39;...b&#39;Z&#39; =&gt; ch - 0x41,</span>
-<span class='doccomment'>///             b&#39;a&#39;...b&#39;z&#39; =&gt; ch - 0x47,</span>
-<span class='doccomment'>///             b&#39;0&#39;...b&#39;9&#39; =&gt; ch + 0x04,</span>
-<span class='doccomment'>///             b&#39;+&#39; | b&#39;-&#39; =&gt; 0x3E,</span>
-<span class='doccomment'>///             b&#39;/&#39; | b&#39;_&#39; =&gt; 0x3F,</span>
-<span class='doccomment'>///             b&#39;=&#39; =&gt; 0xFE,</span>
-<span class='doccomment'>///             b&#39;\r&#39; | b&#39;\n&#39; =&gt; 0xFD,</span>
-<span class='doccomment'>///             _ =&gt; 0xFF,</span>
-<span class='doccomment'>///         };</span>
-<span class='doccomment'>///         print!(&quot;0x{:02X}, &quot;, code);</span>
-<span class='doccomment'>///         if ch % 16  == 15 { println!(&quot;&quot;); }</span>
-<span class='doccomment'>///         else if ch == 0xFF { break; }</span>
-<span class='doccomment'>///         ch += 1;</span>
-<span class='doccomment'>///     }</span>
-<span class='doccomment'>///     println!(&quot;&quot;);</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// ```</span>
+<span class='doccomment'>/// let mut ch = 0u8;</span>
+<span class='doccomment'>/// for ch in 0..255 {</span>
+<span class='doccomment'>///     let mut ch = ch as u8;</span>
+<span class='doccomment'>///     let code = match ch {</span>
+<span class='doccomment'>///         b&#39;A&#39;...b&#39;Z&#39; =&gt; ch - 0x41,</span>
+<span class='doccomment'>///         b&#39;a&#39;...b&#39;z&#39; =&gt; ch - 0x47,</span>
+<span class='doccomment'>///         b&#39;0&#39;...b&#39;9&#39; =&gt; ch + 0x04,</span>
+<span class='doccomment'>///         b&#39;+&#39; | b&#39;-&#39; =&gt; 0x3E,</span>
+<span class='doccomment'>///         b&#39;/&#39; | b&#39;_&#39; =&gt; 0x3F,</span>
+<span class='doccomment'>///         b&#39;=&#39; =&gt; 0xFE,</span>
+<span class='doccomment'>///         b&#39;\r&#39; | b&#39;\n&#39; =&gt; 0xFD,</span>
+<span class='doccomment'>///         _ =&gt; 0xFF,</span>
+<span class='doccomment'>///     };</span>
+<span class='doccomment'>///     print!(&quot;0x{:02X}, &quot;, code);</span>
+<span class='doccomment'>///     if ch % 16  == 15 { println!(&quot;&quot;); }</span>
+<span class='doccomment'>///     else if ch == 0xFF { break; }</span>
+<span class='doccomment'>///     ch += 1;</span>
 <span class='doccomment'>/// }</span>
+<span class='doccomment'>/// println!(&quot;&quot;);</span>
 <span class='doccomment'>/// ```</span>
 <span class='kw'>const</span> <span class='ident'>DECODE_TABLE</span>: [<span class='ident'>u8</span>; <span class='number'>256</span>] <span class='op'>=</span> [
     <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFD</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>, <span class='number'>0xFD</span>, <span class='number'>0xFF</span>, <span class='number'>0xFF</span>,
@@ -888,7 +927,7 @@
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_to_base64_crlf_line_break</span>() {
-        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span>[<span class='number'>08</span>; <span class='number'>1000</span>].<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>line_length</span>: <span class='prelude-val'>None</span>, ..<span class='ident'>STANDARD</span>})
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span>[<span class='number'>0</span>; <span class='number'>1000</span>].<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>line_length</span>: <span class='prelude-val'>None</span>, ..<span class='ident'>STANDARD</span>})
                               .<span class='ident'>contains</span>(<span class='string'>&quot;\r\n&quot;</span>));
         <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>b&quot;foobar&quot;</span>.<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>line_length</span>: <span class='prelude-val'>Some</span>(<span class='number'>4</span>),
                                                ..<span class='ident'>STANDARD</span>}),
@@ -897,7 +936,7 @@
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_to_base64_lf_line_break</span>() {
-        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span>[<span class='number'>08</span>; <span class='number'>1000</span>].<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>line_length</span>: <span class='prelude-val'>None</span>,
+        <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span>[<span class='number'>0</span>; <span class='number'>1000</span>].<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>line_length</span>: <span class='prelude-val'>None</span>,
                                                  <span class='ident'>newline</span>: <span class='ident'>Newline</span>::<span class='ident'>LF</span>,
                                                  ..<span class='ident'>STANDARD</span>})
                               .<span class='ident'>contains</span>(<span class='string'>&quot;\n&quot;</span>));
@@ -909,14 +948,19 @@
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_to_base64_padding</span>() {
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;f&quot;</span>.<span class='ident'>as_bytes</span>().<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>pad</span>: <span class='boolval'>false</span>, ..<span class='ident'>STANDARD</span>}), <span class='string'>&quot;Zg&quot;</span>);
-        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;fo&quot;</span>.<span class='ident'>as_bytes</span>().<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>pad</span>: <span class='boolval'>false</span>, ..<span class='ident'>STANDARD</span>}), <span class='string'>&quot;Zm8&quot;</span>);
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;f&quot;</span>.<span class='ident'>as_bytes</span>().<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>pad</span>: <span class='bool-val'>false</span>, ..<span class='ident'>STANDARD</span>}), <span class='string'>&quot;Zg&quot;</span>);
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='string'>&quot;fo&quot;</span>.<span class='ident'>as_bytes</span>().<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>pad</span>: <span class='bool-val'>false</span>, ..<span class='ident'>STANDARD</span>}), <span class='string'>&quot;Zm8&quot;</span>);
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
     <span class='kw'>fn</span> <span class='ident'>test_to_base64_url_safe</span>() {
         <span class='macro'>assert_eq</span><span class='macro'>!</span>([<span class='number'>251</span>, <span class='number'>255</span>].<span class='ident'>to_base64</span>(<span class='ident'>URL_SAFE</span>), <span class='string'>&quot;-_8&quot;</span>);
         <span class='macro'>assert_eq</span><span class='macro'>!</span>([<span class='number'>251</span>, <span class='number'>255</span>].<span class='ident'>to_base64</span>(<span class='ident'>STANDARD</span>), <span class='string'>&quot;+/8=&quot;</span>);
+    }
+
+    <span class='attribute'>#[<span class='ident'>test</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>test_to_base64_empty_line_length</span>() {
+        [].<span class='ident'>to_base64</span>(<span class='ident'>Config</span> {<span class='ident'>line_length</span>: <span class='prelude-val'>Some</span>(<span class='number'>72</span>), ..<span class='ident'>STANDARD</span>});
     }
 
     <span class='attribute'>#[<span class='ident'>test</span>]</span>
@@ -1002,6 +1046,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -1022,7 +1068,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -1033,11 +1079,9 @@
     <script>
         window.rootPath = "../../";
         window.currentCrate = "rustc_serialize";
-        window.playgroundUrl = "";
     </script>
     <script src="../../jquery.js"></script>
     <script src="../../main.js"></script>
-    
     <script defer src="../../search-index.js"></script>
 </body>
 </html>

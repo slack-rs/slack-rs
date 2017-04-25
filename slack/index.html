@@ -9,8 +9,10 @@
 
     <title>slack - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,154 +45,97 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>slack</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-0' class='srclink' href='../src/slack/lib.rs.html#16-757' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/slack/lib.rs.html#16-264' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Slack realtime messaging client: <a href="https://api.slack.com/bot-users">https://api.slack.com/bot-users</a></p>
 
-<p>See <a href="https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md">CHANGELOG.md</a> for latest release notes.</p>
+<p>See <a href="https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md">CHANGELOG.md</a> for latest
+release notes.</p>
 </div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
-<table><tr><td><code>pub use error::<a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table><tr><td><code>pub extern crate <a class='mod' href='../slack_api/index.html' title='slack_api'>slack_api</a> as api;</code></td></tr><tr><td><code>pub use error::<a class='enum' href='../slack/error/enum.Error.html' title='slack::error::Error'>Error</a>;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='api/index.html'
-                               title='slack::api'>api</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='error/index.html'
-                               title='slack::error'>error</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='error/index.html'
+                                  title='slack::error'>error</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Attachment.html'
-                               title='slack::Attachment'>Attachment</a></td>
-                        <td class='docblock short'>
-                             <p>The Slack <a href="https://api.slack.com/docs/attachments"><code>Attachment</code></a> object as found in
-richly-formatted messages.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Channel.html'
-                               title='slack::Channel'>Channel</a></td>
-                        <td class='docblock short'>
-                             <p>The Slack <a href="https://api.slack.com/types/channel"><code>Channel</code></a> type.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Group.html'
-                               title='slack::Group'>Group</a></td>
-                        <td class='docblock short'>
-                             <p>The Slack <a href="https://api.slack.com/types/group"><code>Group</code></a> type.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Im.html'
-                               title='slack::Im'>Im</a></td>
-                        <td class='docblock short'>
-                             <p>The Slack <a href="https://api.slack.com/types/im"><code>Im</code></a> type.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.RtmClient.html'
-                               title='slack::RtmClient'>RtmClient</a></td>
-                        <td class='docblock short'>
-                             <p>The actual messaging client.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Team.html'
-                               title='slack::Team'>Team</a></td>
-                        <td class='docblock short'>
-                             <p>The <code>Team</code> object as found in the <a href="https://api.slack.com/methods/rtm.start"><code>rtm.start</code></a>
-response.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.User.html'
-                               title='slack::User'>User</a></td>
-                        <td class='docblock short'>
-                             <p>The Slack <a href="https://api.slack.com/types/user"><code>User</code></a> type.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='struct' href='struct.WebSocketMessage.html'
-                               title='slack::WebSocketMessage'>WebSocketMessage</a></td>
-                        <td class='docblock short'>
-                             <p>Represents a WebSocket message.</p>
-
-                        </td>
-                    </tr>
-                </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Channel.html'
+                                  title='slack::Channel'>Channel</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Group.html'
+                                  title='slack::Group'>Group</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Im.html'
+                                  title='slack::Im'>Im</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.RtmClient.html'
+                                  title='slack::RtmClient'>RtmClient</a></td>
+                           <td class='docblock-short'>
+                                <p>The actual messaging client.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Sender.html'
+                                  title='slack::Sender'>Sender</a></td>
+                           <td class='docblock-short'>
+                                <p>Thread-safe API for sending messages asynchronously</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Team.html'
+                                  title='slack::Team'>Team</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.User.html'
+                                  title='slack::User'>User</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Event.html'
-                               title='slack::Event'>Event</a></td>
-                        <td class='docblock short'>
-                             <p>Represents Slack <a href="https://api.slack.com/rtm">rtm event</a> types.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.Message.html'
-                               title='slack::Message'>Message</a></td>
-                        <td class='docblock short'>
-                             <p>Represents Slack <a href="https://api.slack.com/events/message">message event</a> types.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.WsMessage.html'
-                               title='slack::WsMessage'>WsMessage</a></td>
-                        <td class='docblock short'>
-                             <p>Used for passing websocket messages in channels</p>
-
-                        </td>
-                    </tr>
-                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Event.html'
+                                  title='slack::Event'>Event</a></td>
+                           <td class='docblock-short'>
+                                <p>Represents Slack <a href="https://api.slack.com/rtm">rtm event</a> types.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Message.html'
+                                  title='slack::Message'>Message</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.EventHandler.html'
-                               title='slack::EventHandler'>EventHandler</a></td>
-                        <td class='docblock short'>
-                             <p>Implement this trait in your code to handle message events</p>
-
-                        </td>
-                    </tr>
-                </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
-<table>
-                    <tr class=' module-item'>
-                        <td><a class='type' href='type.WsClient.html'
-                               title='slack::WsClient'>WsClient</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.EventHandler.html'
+                                  title='slack::EventHandler'>EventHandler</a></td>
+                           <td class='docblock-short'>
+                                <p>Implement this trait in your code to handle message events</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -213,6 +158,8 @@ response.</p>
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -233,7 +180,7 @@ response.</p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -244,11 +191,9 @@ response.</p>
     <script>
         window.rootPath = "../";
         window.currentCrate = "slack";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

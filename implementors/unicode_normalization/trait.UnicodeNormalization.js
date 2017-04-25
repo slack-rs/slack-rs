@@ -1,5 +1,10 @@
 (function() {var implementors = {};
-implementors['unicode_normalization'] = [];
+implementors["hyper"] = [];
+implementors["reqwest"] = [];
+implementors["serde_urlencoded"] = [];
+implementors["slack"] = [];
+implementors["tungstenite"] = [];
+implementors["unicode_normalization"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);

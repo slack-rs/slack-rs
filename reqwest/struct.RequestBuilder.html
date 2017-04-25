@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `RequestBuilder` struct in crate `reqwest`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, RequestBuilder">
+
+    <title>reqwest::RequestBuilder - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>reqwest</a></p><script>window.sidebarCurrent = {name: 'RequestBuilder', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>reqwest</a>::<wbr><a class='struct' href=''>RequestBuilder</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/reqwest/client.rs.html#110-119' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct RequestBuilder { /* fields omitted */ }</pre><div class='docblock'><p>A builder to construct the properties of a <code>Request</code>.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../reqwest/struct.RequestBuilder.html' title='reqwest::RequestBuilder'>RequestBuilder</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/reqwest/client.rs.html#121-297' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.header' class='method'><span id='header.v' class='invisible'><code>fn <a href='#method.header' class='fnname'>header</a>&lt;H:&nbsp;<a class='trait' href='../reqwest/header/trait.Header.html' title='reqwest::header::Header'>Header</a> + <a class='trait' href='../reqwest/header/trait.HeaderFormat.html' title='reqwest::header::HeaderFormat'>HeaderFormat</a>&gt;(self, header: H) -&gt; <a class='struct' href='../reqwest/struct.RequestBuilder.html' title='reqwest::RequestBuilder'>RequestBuilder</a></code></span></h4>
+<div class='docblock'><p>Add a <code>Header</code> to this Request.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>reqwest</span>::<span class='ident'>header</span>::<span class='ident'>UserAgent</span>;
+<span class='kw'>let</span> <span class='ident'>client</span> <span class='op'>=</span> <span class='ident'>reqwest</span>::<span class='ident'>Client</span>::<span class='ident'>new</span>().<span class='ident'>expect</span>(<span class='string'>&quot;client failed to construct&quot;</span>);
+
+<span class='kw'>let</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>get</span>(<span class='string'>&quot;https://www.rust-lang.org&quot;</span>)
+    .<span class='ident'>header</span>(<span class='ident'>UserAgent</span>(<span class='string'>&quot;foo&quot;</span>.<span class='ident'>to_string</span>()))
+    .<span class='ident'>send</span>();</pre>
+</div><h4 id='method.headers' class='method'><span id='headers.v' class='invisible'><code>fn <a href='#method.headers' class='fnname'>headers</a>(self, headers: <a class='struct' href='../reqwest/header/struct.Headers.html' title='reqwest::header::Headers'>Headers</a>) -&gt; <a class='struct' href='../reqwest/struct.RequestBuilder.html' title='reqwest::RequestBuilder'>RequestBuilder</a></code></span></h4>
+<div class='docblock'><p>Add a set of Headers to the existing ones on this Request.</p>
+
+<p>The headers will be merged in to any already set.</p>
+</div><h4 id='method.body' class='method'><span id='body.v' class='invisible'><code>fn <a href='#method.body' class='fnname'>body</a>&lt;T:&nbsp;<a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.Into.html' title='core::convert::Into'>Into</a>&lt;<a class='struct' href='../reqwest/struct.Body.html' title='reqwest::Body'>Body</a>&gt;&gt;(self, body: T) -&gt; <a class='struct' href='../reqwest/struct.RequestBuilder.html' title='reqwest::RequestBuilder'>RequestBuilder</a></code></span></h4>
+<div class='docblock'><p>Set the request body.</p>
+</div><h4 id='method.form' class='method'><span id='form.v' class='invisible'><code>fn <a href='#method.form' class='fnname'>form</a>&lt;T:&nbsp;<a class='trait' href='../serde/ser/trait.Serialize.html' title='serde::ser::Serialize'>Serialize</a>&gt;(self, form: &amp;T) -&gt; <a class='struct' href='../reqwest/struct.RequestBuilder.html' title='reqwest::RequestBuilder'>RequestBuilder</a></code></span></h4>
+<div class='docblock'><p>Send a form body.</p>
+
+<p>Sets the body to the url encoded serialization of the passed value,
+and also sets the <code>Content-Type: application/www-form-url-encoded</code>
+header.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='ident'>HashMap</span>::<span class='ident'>new</span>();
+<span class='ident'>params</span>.<span class='ident'>insert</span>(<span class='string'>&quot;lang&quot;</span>, <span class='string'>&quot;rust&quot;</span>);
+
+<span class='kw'>let</span> <span class='ident'>client</span> <span class='op'>=</span> <span class='ident'>reqwest</span>::<span class='ident'>Client</span>::<span class='ident'>new</span>().<span class='ident'>unwrap</span>();
+<span class='kw'>let</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>post</span>(<span class='string'>&quot;http://httpbin.org&quot;</span>)
+    .<span class='ident'>form</span>(<span class='kw-2'>&amp;</span><span class='ident'>params</span>)
+    .<span class='ident'>send</span>();</pre>
+</div><h4 id='method.json' class='method'><span id='json.v' class='invisible'><code>fn <a href='#method.json' class='fnname'>json</a>&lt;T:&nbsp;<a class='trait' href='../serde/ser/trait.Serialize.html' title='serde::ser::Serialize'>Serialize</a>&gt;(self, json: &amp;T) -&gt; <a class='struct' href='../reqwest/struct.RequestBuilder.html' title='reqwest::RequestBuilder'>RequestBuilder</a></code></span></h4>
+<div class='docblock'><p>Send a JSON body.</p>
+
+<p>Sets the body to the JSON serialization of the passed value, and
+also sets the <code>Content-Type: application/json</code> header.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>map</span> <span class='op'>=</span> <span class='ident'>HashMap</span>::<span class='ident'>new</span>();
+<span class='ident'>map</span>.<span class='ident'>insert</span>(<span class='string'>&quot;lang&quot;</span>, <span class='string'>&quot;rust&quot;</span>);
+
+<span class='kw'>let</span> <span class='ident'>client</span> <span class='op'>=</span> <span class='ident'>reqwest</span>::<span class='ident'>Client</span>::<span class='ident'>new</span>().<span class='ident'>unwrap</span>();
+<span class='kw'>let</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='ident'>client</span>.<span class='ident'>post</span>(<span class='string'>&quot;http://httpbin.org&quot;</span>)
+    .<span class='ident'>json</span>(<span class='kw-2'>&amp;</span><span class='ident'>map</span>)
+    .<span class='ident'>send</span>();</pre>
+</div><h4 id='method.send' class='method'><span id='send.v' class='invisible'><code>fn <a href='#method.send' class='fnname'>send</a>(self) -&gt; <a class='type' href='../reqwest/type.Result.html' title='reqwest::Result'>Result</a>&lt;<a class='struct' href='../reqwest/struct.Response.html' title='reqwest::Response'>Response</a>&gt;</code></span></h4>
+<div class='docblock'><p>Constructs the Request and sends it the target URL, returning a Response.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../reqwest/struct.RequestBuilder.html' title='reqwest::RequestBuilder'>RequestBuilder</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/reqwest/client.rs.html#299-307' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "reqwest";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

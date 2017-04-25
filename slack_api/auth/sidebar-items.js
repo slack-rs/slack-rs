@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["test","Checks authentication & identity."]],"struct":[["TestResponse",""]]});
+initSidebarItems({"enum":[["RevokeError",""],["TestError",""]],"fn":[["revoke","Revokes a token."],["test","Checks authentication & identity."]],"struct":[["RevokeRequest",""],["RevokeResponse",""],["TestResponse",""]]});

@@ -9,8 +9,10 @@
 
     <title>rustc_serialize - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     <link rel="shortcut icon" href="https://www.rust-lang.org/favicon.ico">
     
@@ -26,7 +28,7 @@
     
 
     <nav class="sidebar">
-        <a href='../rustc_serialize/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='' width='100'></a>
+        <a href='../rustc_serialize/index.html'><img src='https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png' alt='logo' width='100'></a>
         <p class='location'></p><script>window.sidebarCurrent = {name: 'rustc_serialize', ty: 'mod', relpath: '../'};</script>
     </nav>
 
@@ -43,11 +45,18 @@
 
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>rustc_serialize</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-0' class='srclink' href='../src/rustc_serialize/lib.rs.html#11-55' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/rustc_serialize/lib.rs.html#11-79' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Support code for encoding and decoding types.</p>
+
+<blockquote>
+<p><strong>NOTE</strong>: This crate is deprecated in favor of <a href="https://serde.rs"><code>serde</code></a>. No new feature
+development will happen in this crate, although bug fixes proposed through
+PRs will still be merged. It is very highly recommended by the Rust
+Library Team that you use <a href="https://serde.rs"><code>serde</code></a>, not this crate.</p>
+</blockquote>
 
 <h1 id='usage' class='section-header'><a href='#usage'>Usage</a></h1>
 <p>This crate is <a href="https://crates.io/crates/rustc-serialize">on crates.io</a> and
@@ -59,86 +68,75 @@ rustc-serialize = &quot;0.3&quot;
 </code></pre>
 
 <p>and this to your crate root:</p>
+
 <pre class='rust rust-example-rendered'>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>rustc_serialize</span>;</pre>
 </div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='base64/index.html'
-                               title='rustc_serialize::base64'>base64</a></td>
-                        <td class='docblock short'>
-                             <p>Base64 binary-to-text encoding</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='hex/index.html'
-                               title='rustc_serialize::hex'>hex</a></td>
-                        <td class='docblock short'>
-                             <p>Hex binary-to-text encoding</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='mod' href='json/index.html'
-                               title='rustc_serialize::json'>json</a></td>
-                        <td class='docblock short'>
-                             <p>JSON parsing and serialization</p>
-
-                        </td>
-                    </tr>
-                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='base64/index.html'
+                                  title='rustc_serialize::base64'>base64</a></td>
+                           <td class='docblock-short'>
+                                <p>Base64 binary-to-text encoding</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='hex/index.html'
+                                  title='rustc_serialize::hex'>hex</a></td>
+                           <td class='docblock-short'>
+                                <p>Hex binary-to-text encoding</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='json/index.html'
+                                  title='rustc_serialize::json'>json</a></td>
+                           <td class='docblock-short'>
+                                <p>JSON parsing and serialization</p>
+                           </td>
+                       </tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
 <table>
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.Decodable.html'
-                               title='rustc_serialize::Decodable'>Decodable</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.Decoder.html'
-                               title='rustc_serialize::Decoder'>Decoder</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.DecoderHelpers.html'
-                               title='rustc_serialize::DecoderHelpers'>DecoderHelpers</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.Encodable.html'
-                               title='rustc_serialize::Encodable'>Encodable</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.Encoder.html'
-                               title='rustc_serialize::Encoder'>Encoder</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='trait' href='trait.EncoderHelpers.html'
-                               title='rustc_serialize::EncoderHelpers'>EncoderHelpers</a></td>
-                        <td class='docblock short'>
-                             
-                        </td>
-                    </tr>
-                </table></section>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Decodable.html'
+                                  title='rustc_serialize::Decodable'>Decodable</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait for deserializing a type.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Decoder.html'
+                                  title='rustc_serialize::Decoder'>Decoder</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait for reading in an encoding for deserialization.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.DecoderHelpers.html'
+                                  title='rustc_serialize::DecoderHelpers'>DecoderHelpers</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait with helper functions for implementing <code>Decodable</code>.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Encodable.html'
+                                  title='rustc_serialize::Encodable'>Encodable</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait for serializing a type.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.Encoder.html'
+                                  title='rustc_serialize::Encoder'>Encoder</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait for writing out an encoding when serializing.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='trait' href='trait.EncoderHelpers.html'
+                                  title='rustc_serialize::EncoderHelpers'>EncoderHelpers</a></td>
+                           <td class='docblock-short'>
+                                <p>Trait with helper functions for implementing <code>Encodable</code>.</p>
+                           </td>
+                       </tr></table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -161,6 +159,8 @@ rustc-serialize = &quot;0.3&quot;
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -181,7 +181,7 @@ rustc-serialize = &quot;0.3&quot;
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
@@ -192,11 +192,9 @@ rustc-serialize = &quot;0.3&quot;
     <script>
         window.rootPath = "../";
         window.currentCrate = "rustc_serialize";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

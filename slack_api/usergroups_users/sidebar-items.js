@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ListError",""],["UpdateError",""]],"fn":[["list","List all users in a User Group"],["update","Update the list of users for a User Group"]],"struct":[["ListRequest",""],["ListResponse",""],["UpdateRequest",""],["UpdateResponse",""]]});
