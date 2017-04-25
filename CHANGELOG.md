@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.17.0
+
+Thanks to https://github.com/compressed this release has a large amount of
+important fixes and breaking changes. 
 
 - Updates to support new `slack-api` version and remove dependencies on openssl `0.7.x` and hyper
 `0.9.x`.
