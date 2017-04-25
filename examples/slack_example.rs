@@ -22,32 +22,38 @@
 //
 
 extern crate slack;
+use slack::{Event, RtmClient};
 
 struct MyHandler;
 
 #[allow(unused_variables)]
 impl slack::EventHandler for MyHandler {
-    fn on_event(&mut self, cli: &mut slack::RtmClient, event: Result<slack::Event, slack::Error>, raw_json: &str) {
-        println!("on_event(event: {:?}, raw_json: {:?})", event, raw_json);
+    fn on_event(&mut self, cli: &RtmClient, event: Event) {
+        println!("on_event(event: {:?})", event);
     }
 
-    fn on_ping(&mut self, cli: &mut slack::RtmClient) {
-        println!("on_ping");
-    }
-
-    fn on_close(&mut self, cli: &mut slack::RtmClient) {
+    fn on_close(&mut self, cli: &RtmClient) {
         println!("on_close");
     }
 
-    fn on_connect(&mut self, cli: &mut slack::RtmClient) {
+    fn on_connect(&mut self, cli: &RtmClient) {
         println!("on_connect");
-        // Do a few things using the api:
-        // send a message over the real time api websocket
-        let _ = cli.send_message("#general", "Hello world! (rtm)");
-        // post a message as a user to the web api
-        let _ = cli.post_message("#general", "hello world! (postMessage)", None);
-        // set a channel topic via the web api
-        // let _ = cli.set_topic("#general", "bots rule!");
+        // find the general channel id from the `StartResponse`
+        let general_channel_id = cli.start_response()
+            .channels
+            .as_ref()
+            .and_then(|channels| {
+                          channels
+                              .iter()
+                              .find(|chan| match chan.name {
+                                        None => false,
+                                        Some(ref name) => name == "general",
+                                    })
+                      })
+            .and_then(|chan| chan.id.as_ref())
+            .expect("general channel not found");
+        let _ = cli.sender().send_message(&general_channel_id, "Hello world! (rtm)");
+        // Send a message over the real time api websocket
     }
 }
 
@@ -55,17 +61,12 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let api_key = match args.len() {
         0 | 1 => panic!("No api-key in args! Usage: cargo run --example slack_example -- <api-key>"),
-        x => {
-            args[x - 1].clone()
-        }
+        x => args[x - 1].clone(),
     };
     let mut handler = MyHandler;
-    let mut cli = slack::RtmClient::new(&api_key);
-    let r = cli.login_and_run::<MyHandler>(&mut handler);
+    let r = RtmClient::login_and_run(&api_key, &mut handler);
     match r {
         Ok(_) => {}
         Err(err) => panic!("Error: {}", err),
     }
-    println!("{}", cli.get_name().unwrap());
-    println!("{}", cli.get_team().unwrap().name);
 }

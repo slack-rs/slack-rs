@@ -1,5 +1,40 @@
 # Changelog
 
+## Unreleased
+
+- Updates to support new `slack-api` version and remove dependencies on openssl `0.7.x` and hyper
+`0.9.x`.
+
+### Breaking Changes
+
+- Replaced `websocket` with `tungstenite`. This change moves from `openssl` to `native-tls`.
+- Updated to `slack-api` version `0.16.0`. This changes many of the re-exported types
+from the `slack-api` crate.
+- Replaced `rustc_serialize` with `serde`. This change was needed because the new `slack-api` uses
+`serde`.
+- Replaced `hyper` with `reqwest`.
+- Removed `on_ping` from `EventHander`. Websocket pings are handled internally.
+- `EventHander::on_event` passes in the `Event` directly. Any errors are logged using the `log`
+crate. The raw json string argument has been removed.
+- Removed `WsMessage::Ping` variant.
+- Removed `Error` variants: `Error::JsonDecode` and `Error::JsonEncode`.
+- All `Sender` related functions have been moved directly to `Sender`. `RtmClient::Client::sender()`
+gives a reference to the `Sender`.
+- The following `RtmClient` functions have been **removed**:
+  - `post_message`, `update_message`, `delete_message`
+  - `mark`
+  - `set_topic`
+  - `set_purpose`
+  - `add_reaction` replaces `add_reaction_file` and `add_reaction_file_comment`
+  - `im_open`, `im_close`, `im_history`, `im_list`, `im_mark`
+  - `channels_history`
+  - `get_name`
+  - `get_id`
+- Some `Event` variants are now inside a `Box` for performance reasons (see:
+https://github.com/Manishearth/rust-clippy/wiki#large_enum_variant).
+- `Event::MessageSent` and `Event::MessageError` expose new interior structs: `MessageSent` and
+`MessageError` respectively.
+
 ## 0.16.0
 - Retry receive message on EAGAIN (jwilm) (#61)
 - Change type signatures of handlers to take Event instead of &Event (pinkisemils) (#62)
