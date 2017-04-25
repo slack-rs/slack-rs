@@ -10,26 +10,9 @@ matrix:
 before_deploy:
 - cargo doc --verbose
 - cargo package --verbose
-deploy:
-  provider: releases
-  api_key:
-    secure: GjugkoRWPpkA5U+fDtPIXVN7mz5vd1uI+o/9i/8er/a0yEPxzq1DqKZhQ+X/qjiYZqZpq14TprezQhsI3yIDoBO8ktZF3qUffM0ceV74kIUhjV4t9U/lWkNAVwve3Z7dNOgpAIpRWfGXkpwGEb/8tkr+ugg0yz9oB9m/FHQ6FO7AqHWv8JLvh/riyaQ2hWc4Rzh8/5j9DIE53jJZEVGA4RjJFXDIegsWtp/o+P+LhFYoCHOumcSgzesgyPT/6y2ud4UdogIitsPBk6Q0vfwCRguVLF+6gDTGJUPO94cO20x8PIR+lhPEeCWPbAH7mL7E/Y1MfUTrX45lnkvxeZDlbjrb9xC1TiyKBsFZvENS1QpNhpQNcozs9PctDcyPyGA2pPsEvAmH7Sb8F8NFH67boTRG8JB2STBt465kJJPr5IBBVelrMttX+uy00LngQHjLuA929IPpeAqhcCxJ2grM8t5VBsp0l5cgrPgWNLCG6++kiRyFuSRRnRWEJ2a/fo0kLAOf6xrHO6nS7LqLF6dfC27NG148tE8HZiGugTuenMz0UulAL9pYsrqHbm5CiycH6Uk0xhWIdnP6Pt3DchXebeR1xjLtWRYNqY9QrEgFibVtd/suiVoW8wk/omAZZ6yyNuwBUhJx66OIEUb80TWznJTUO3F48GBtCC0P8r2foMo=
   file: target/package/slack-${TRAVIS_TAG:1}.crate
   skip_cleanup: true
   on:
     repo: slack-rs/slack-rs
     tags: true
-    condition: $TRAVIS_RUST_VERSION = stable
-after_deploy:
-- cargo publish --token "$CRATES_IO_TOKEN"
-- |
-  [ $TRAVIS_RUST_VERSION = stable ] &&
-  [ $TRAVIS_PULL_REQUEST = false ] &&
-  echo '<meta http-equiv=refresh content=0;url=slack/index.html>' > target/doc/index.html &&
-  pip install --user ghp-import &&
-  /home/travis/.local/bin/ghp-import -n target/doc &&
-  git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
-env:
-  global:
-  - secure: LXMIKPwTF5tQApO/FqW3fWAuYjFK2bzU+D5k8wGo1eMhRaZq8vGLVby8HzhF19+CNuEBqgK/fiOMVFWdQhfv6YpDJKLt0aUq8AVRkWQl5BXzHDSdI9aNvBF0VgcEnpJpNhRftOjZhUspmDJjCImOhwZ1aHW4SV2129FoRKp2Vsk=
-  - secure: VCPsi2uYdci9Dml59dm0tFnmreDl0YRWH/KbTH61NHezyMuLIKgZd/ctlwsNo4ouu3vpN4R2Fgbc41IbM2LaDaoQiUB/qTJJmuIkS/NyAVSi0e/MyJbAJugvXHgduLsbfqgAxaJqG3QglyY6+XUrROdbHujFu/ITdYOIzEeRpxE=
+    condition: "$TRAVIS_RUST_VERSION = stable"
