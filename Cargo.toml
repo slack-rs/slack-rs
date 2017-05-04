@@ -1,6 +1,6 @@
 [package]
 name = "slack"
-version = "0.17.0"
+version = "0.17.1"
 authors = ["Benjamin Elder <bentheelder@gmail.com>", "Matt Jones <mthjones@gmail.com>"]
 repository = "https://github.com/slack-rs/slack-rs.git"
 documentation = "http://slack-rs.github.io/slack-rs/slack/index.html"
@@ -9,7 +9,7 @@ license = "Apache-2.0"
 
 [dependencies]
 reqwest = "0.4.0"
-slack_api = { version = "0.16.0", features = ["reqwest"] }
+slack_api = { version = "0.16.1", features = ["reqwest"] }
 serde = "0.9"
 serde_json = "0.9"
 serde_derive = "0.9"

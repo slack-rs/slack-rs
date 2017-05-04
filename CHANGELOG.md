@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.17.1
+Update to `slack_api v0.16.1` 
+
 ## 0.17.0
 
 Thanks to https://github.com/compressed this release has a large amount of
