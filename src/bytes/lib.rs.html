@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/bytes-0.4.2/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/bytes-0.4.3/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -170,12 +170,12 @@
 <span class='doccomment'>//! buf.put(&amp;b&quot;hello world&quot;[..]);</span>
 <span class='doccomment'>//! buf.put_u16::&lt;BigEndian&gt;(1234);</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! let a = buf.drain();</span>
+<span class='doccomment'>//! let a = buf.take();</span>
 <span class='doccomment'>//! assert_eq!(a, b&quot;hello world\x04\xD2&quot;[..]);</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! buf.put(&amp;b&quot;goodbye world&quot;[..]);</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! let b = buf.drain();</span>
+<span class='doccomment'>//! let b = buf.take();</span>
 <span class='doccomment'>//! assert_eq!(b, b&quot;goodbye world&quot;[..]);</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! assert_eq!(buf.capacity(), 998);</span>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/libc-0.2.21/src/unix/bsd/apple/b64.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/libc-0.2.22/src/unix/bsd/apple/b64.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>b64.rs.html -- source</title>
@@ -62,6 +62,8 @@
 <span id="17">17</span>
 <span id="18">18</span>
 <span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! 64-bit specific Apple (ios/darwin) definitions</span>
 
@@ -82,6 +84,8 @@
 
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>TIOCTIMESTAMP</span>: ::<span class='ident'>c_ulong</span> <span class='op'>=</span> <span class='number'>0x40107459</span>;
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>TIOCDCDTIMESTAMP</span>: ::<span class='ident'>c_ulong</span> <span class='op'>=</span> <span class='number'>0x40107458</span>;
+
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>FIONREAD</span>: ::<span class='ident'>c_ulong</span> <span class='op'>=</span> <span class='number'>0x4004667f</span>;
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

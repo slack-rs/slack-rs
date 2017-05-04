@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/slack_api-0.16.0/src/mods/im.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/slack_api-0.16.1/src/mods/im.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>im.rs.html -- source</title>
@@ -939,86 +939,6 @@
 <span id="894">894</span>
 <span id="895">895</span>
 <span id="896">896</span>
-<span id="897">897</span>
-<span id="898">898</span>
-<span id="899">899</span>
-<span id="900">900</span>
-<span id="901">901</span>
-<span id="902">902</span>
-<span id="903">903</span>
-<span id="904">904</span>
-<span id="905">905</span>
-<span id="906">906</span>
-<span id="907">907</span>
-<span id="908">908</span>
-<span id="909">909</span>
-<span id="910">910</span>
-<span id="911">911</span>
-<span id="912">912</span>
-<span id="913">913</span>
-<span id="914">914</span>
-<span id="915">915</span>
-<span id="916">916</span>
-<span id="917">917</span>
-<span id="918">918</span>
-<span id="919">919</span>
-<span id="920">920</span>
-<span id="921">921</span>
-<span id="922">922</span>
-<span id="923">923</span>
-<span id="924">924</span>
-<span id="925">925</span>
-<span id="926">926</span>
-<span id="927">927</span>
-<span id="928">928</span>
-<span id="929">929</span>
-<span id="930">930</span>
-<span id="931">931</span>
-<span id="932">932</span>
-<span id="933">933</span>
-<span id="934">934</span>
-<span id="935">935</span>
-<span id="936">936</span>
-<span id="937">937</span>
-<span id="938">938</span>
-<span id="939">939</span>
-<span id="940">940</span>
-<span id="941">941</span>
-<span id="942">942</span>
-<span id="943">943</span>
-<span id="944">944</span>
-<span id="945">945</span>
-<span id="946">946</span>
-<span id="947">947</span>
-<span id="948">948</span>
-<span id="949">949</span>
-<span id="950">950</span>
-<span id="951">951</span>
-<span id="952">952</span>
-<span id="953">953</span>
-<span id="954">954</span>
-<span id="955">955</span>
-<span id="956">956</span>
-<span id="957">957</span>
-<span id="958">958</span>
-<span id="959">959</span>
-<span id="960">960</span>
-<span id="961">961</span>
-<span id="962">962</span>
-<span id="963">963</span>
-<span id="964">964</span>
-<span id="965">965</span>
-<span id="966">966</span>
-<span id="967">967</span>
-<span id="968">968</span>
-<span id="969">969</span>
-<span id="970">970</span>
-<span id="971">971</span>
-<span id="972">972</span>
-<span id="973">973</span>
-<span id="974">974</span>
-<span id="975">975</span>
-<span id="976">976</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Get info on your direct messages.</span>
 
@@ -1037,16 +957,23 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Wraps https://api.slack.com/methods/im.close</span>
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>close</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>, <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>CloseRequest</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>CloseResponse</span>, <span class='ident'>CloseError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>close</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>,
+                <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
+                <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>CloseRequest</span>)
+                <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>CloseResponse</span>, <span class='ident'>CloseError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
     <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>SlackWebRequestSender</span>
 {
 
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>((<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)), <span class='prelude-val'>Some</span>((<span class='string'>&quot;channel&quot;</span>, <span class='ident'>request</span>.<span class='ident'>channel</span>))];
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>into_iter</span>().<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
     <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> ::<span class='ident'>get_slack_url_for_method</span>(<span class='string'>&quot;im.close&quot;</span>);
-    <span class='ident'>client</span>.<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
+    <span class='ident'>client</span>
+        .<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
         .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>err</span><span class='op'>|</span> <span class='ident'>CloseError</span>::<span class='ident'>Client</span>(<span class='ident'>err</span>))
-        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>CloseResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>).<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>CloseError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>)))
+        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> {
+                      <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>CloseResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>)
+                            .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>CloseError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
+                  })
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>o</span><span class='op'>|</span> <span class='ident'>o</span>.<span class='ident'>into</span>())
 }
 
@@ -1069,7 +996,11 @@
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>ok</span> {
             <span class='prelude-val'>Ok</span>(<span class='self'>self</span>)
         } <span class='kw'>else</span> {
-            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>.<span class='ident'>as_ref</span>().<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>).<span class='ident'>into</span>())
+            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>
+                    .<span class='ident'>as_ref</span>()
+                    .<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>)
+                    .<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>)
+                    .<span class='ident'>into</span>())
         }
     }
 }
@@ -1137,43 +1068,17 @@
     <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
         <span class='kw'>match</span> <span class='self'>self</span> {
             <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>ChannelNotFound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;channel_not_found: Value passed for channel was invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>UserDoesNotOwnChannel</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;user_does_not_own_channel: Calling user does not own this DM channel.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>UserDoesNotOwnChannel</span> <span class='op'>=&gt;</span> <span class='string'>&quot;user_does_not_own_channel: Calling user does not own this DM channel.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>NotAuthed</span> <span class='op'>=&gt;</span> <span class='string'>&quot;not_authed: No authentication token provided.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidAuth</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_auth: Invalid authentication token.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>AccountInactive</span> <span class='op'>=&gt;</span> <span class='string'>&quot;account_inactive: Authentication token is for a deleted user or team.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common \
-                 decency. This includes very long names and names with non-alphanumeric characters other than _. If \
-                 you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). \
-                 These are never valid with the Slack API.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the \
-                 Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type \
-                 application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or \
-                 syntactically invalid.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was \
-                 invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data \
-                 text/plain.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the \
-                 request did not include a Content-Type header.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or \
-                 truncated.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>CloseError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='ident'>inner</span>.<span class='ident'>description</span>(),
@@ -1193,7 +1098,10 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Wraps https://api.slack.com/methods/im.history</span>
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>history</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>, <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>HistoryRequest</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HistoryResponse</span>, <span class='ident'>HistoryError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>history</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>,
+                  <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
+                  <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>HistoryRequest</span>)
+                  <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>HistoryResponse</span>, <span class='ident'>HistoryError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
     <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>SlackWebRequestSender</span>
 {
     <span class='kw'>let</span> <span class='ident'>count</span> <span class='op'>=</span> <span class='ident'>request</span>.<span class='ident'>count</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>count</span><span class='op'>|</span> <span class='ident'>count</span>.<span class='ident'>to_string</span>());
@@ -1201,16 +1109,22 @@
                       <span class='prelude-val'>Some</span>((<span class='string'>&quot;channel&quot;</span>, <span class='ident'>request</span>.<span class='ident'>channel</span>)),
                       <span class='ident'>request</span>.<span class='ident'>latest</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>latest</span><span class='op'>|</span> (<span class='string'>&quot;latest&quot;</span>, <span class='ident'>latest</span>)),
                       <span class='ident'>request</span>.<span class='ident'>oldest</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>oldest</span><span class='op'>|</span> (<span class='string'>&quot;oldest&quot;</span>, <span class='ident'>oldest</span>)),
-                      <span class='ident'>request</span>.<span class='ident'>inclusive</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>inclusive</span><span class='op'>|</span> (<span class='string'>&quot;inclusive&quot;</span>, <span class='kw'>if</span> <span class='ident'>inclusive</span> { <span class='string'>&quot;1&quot;</span> } <span class='kw'>else</span> { <span class='string'>&quot;0&quot;</span> })),
+                      <span class='ident'>request</span>
+                          .<span class='ident'>inclusive</span>
+                          .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>inclusive</span><span class='op'>|</span> (<span class='string'>&quot;inclusive&quot;</span>, <span class='kw'>if</span> <span class='ident'>inclusive</span> { <span class='string'>&quot;1&quot;</span> } <span class='kw'>else</span> { <span class='string'>&quot;0&quot;</span> })),
                       <span class='ident'>count</span>.<span class='ident'>as_ref</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>count</span><span class='op'>|</span> (<span class='string'>&quot;count&quot;</span>, <span class='kw-2'>&amp;</span><span class='ident'>count</span>[..])),
-                      <span class='ident'>request</span>.<span class='ident'>unreads</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>unreads</span><span class='op'>|</span> (<span class='string'>&quot;unreads&quot;</span>, <span class='kw'>if</span> <span class='ident'>unreads</span> { <span class='string'>&quot;1&quot;</span> } <span class='kw'>else</span> { <span class='string'>&quot;0&quot;</span> }))];
+                      <span class='ident'>request</span>
+                          .<span class='ident'>unreads</span>
+                          .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>unreads</span><span class='op'>|</span> (<span class='string'>&quot;unreads&quot;</span>, <span class='kw'>if</span> <span class='ident'>unreads</span> { <span class='string'>&quot;1&quot;</span> } <span class='kw'>else</span> { <span class='string'>&quot;0&quot;</span> }))];
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>into_iter</span>().<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
     <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> ::<span class='ident'>get_slack_url_for_method</span>(<span class='string'>&quot;im.history&quot;</span>);
-    <span class='ident'>client</span>.<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
+    <span class='ident'>client</span>
+        .<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
         .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>err</span><span class='op'>|</span> <span class='ident'>HistoryError</span>::<span class='ident'>Client</span>(<span class='ident'>err</span>))
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> {
-            <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>HistoryResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>).<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>HistoryError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
-        })
+                      <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>HistoryResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>)
+                            .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>HistoryError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
+                  })
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>o</span><span class='op'>|</span> <span class='ident'>o</span>.<span class='ident'>into</span>())
 }
 
@@ -1246,7 +1160,11 @@
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>ok</span> {
             <span class='prelude-val'>Ok</span>(<span class='self'>self</span>)
         } <span class='kw'>else</span> {
-            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>.<span class='ident'>as_ref</span>().<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>).<span class='ident'>into</span>())
+            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>
+                    .<span class='ident'>as_ref</span>()
+                    .<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>)
+                    .<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>)
+                    .<span class='ident'>into</span>())
         }
     }
 }
@@ -1322,37 +1240,13 @@
             <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>NotAuthed</span> <span class='op'>=&gt;</span> <span class='string'>&quot;not_authed: No authentication token provided.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidAuth</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_auth: Invalid authentication token.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>AccountInactive</span> <span class='op'>=&gt;</span> <span class='string'>&quot;account_inactive: Authentication token is for a deleted user or team.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common \
-                 decency. This includes very long names and names with non-alphanumeric characters other than _. If \
-                 you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). \
-                 These are never valid with the Slack API.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the \
-                 Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type \
-                 application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or \
-                 syntactically invalid.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was \
-                 invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data \
-                 text/plain.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the \
-                 request did not include a Content-Type header.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or \
-                 truncated.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>HistoryError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='ident'>inner</span>.<span class='ident'>description</span>(),
@@ -1377,9 +1271,13 @@
 {
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span>[(<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)];
     <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> ::<span class='ident'>get_slack_url_for_method</span>(<span class='string'>&quot;im.list&quot;</span>);
-    <span class='ident'>client</span>.<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
+    <span class='ident'>client</span>
+        .<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
         .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>err</span><span class='op'>|</span> <span class='ident'>ListError</span>::<span class='ident'>Client</span>(<span class='ident'>err</span>))
-        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>ListResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>).<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>ListError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>)))
+        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> {
+                      <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>ListResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>)
+                            .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>ListError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
+                  })
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>o</span><span class='op'>|</span> <span class='ident'>o</span>.<span class='ident'>into</span>())
 }
 
@@ -1397,7 +1295,11 @@
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>ok</span> {
             <span class='prelude-val'>Ok</span>(<span class='self'>self</span>)
         } <span class='kw'>else</span> {
-            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>.<span class='ident'>as_ref</span>().<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>).<span class='ident'>into</span>())
+            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>
+                    .<span class='ident'>as_ref</span>()
+                    .<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>)
+                    .<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>)
+                    .<span class='ident'>into</span>())
         }
     }
 }
@@ -1461,37 +1363,13 @@
             <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>NotAuthed</span> <span class='op'>=&gt;</span> <span class='string'>&quot;not_authed: No authentication token provided.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidAuth</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_auth: Invalid authentication token.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>AccountInactive</span> <span class='op'>=&gt;</span> <span class='string'>&quot;account_inactive: Authentication token is for a deleted user or team.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common \
-                 decency. This includes very long names and names with non-alphanumeric characters other than _. If \
-                 you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). \
-                 These are never valid with the Slack API.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the \
-                 Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type \
-                 application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or \
-                 syntactically invalid.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was \
-                 invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data \
-                 text/plain.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the \
-                 request did not include a Content-Type header.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or \
-                 truncated.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>ListError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='ident'>inner</span>.<span class='ident'>description</span>(),
@@ -1511,16 +1389,25 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Wraps https://api.slack.com/methods/im.mark</span>
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>mark</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>, <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>MarkRequest</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>MarkResponse</span>, <span class='ident'>MarkError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>mark</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>,
+               <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
+               <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>MarkRequest</span>)
+               <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>MarkResponse</span>, <span class='ident'>MarkError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
     <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>SlackWebRequestSender</span>
 {
 
-    <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>((<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)), <span class='prelude-val'>Some</span>((<span class='string'>&quot;channel&quot;</span>, <span class='ident'>request</span>.<span class='ident'>channel</span>)), <span class='prelude-val'>Some</span>((<span class='string'>&quot;ts&quot;</span>, <span class='ident'>request</span>.<span class='ident'>ts</span>))];
+    <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>((<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)),
+                      <span class='prelude-val'>Some</span>((<span class='string'>&quot;channel&quot;</span>, <span class='ident'>request</span>.<span class='ident'>channel</span>)),
+                      <span class='prelude-val'>Some</span>((<span class='string'>&quot;ts&quot;</span>, <span class='ident'>request</span>.<span class='ident'>ts</span>))];
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>into_iter</span>().<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
     <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> ::<span class='ident'>get_slack_url_for_method</span>(<span class='string'>&quot;im.mark&quot;</span>);
-    <span class='ident'>client</span>.<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
+    <span class='ident'>client</span>
+        .<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
         .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>err</span><span class='op'>|</span> <span class='ident'>MarkError</span>::<span class='ident'>Client</span>(<span class='ident'>err</span>))
-        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>MarkResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>).<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>MarkError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>)))
+        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> {
+                      <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>MarkResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>)
+                            .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>MarkError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
+                  })
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>o</span><span class='op'>|</span> <span class='ident'>o</span>.<span class='ident'>into</span>())
 }
 
@@ -1545,7 +1432,11 @@
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>ok</span> {
             <span class='prelude-val'>Ok</span>(<span class='self'>self</span>)
         } <span class='kw'>else</span> {
-            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>.<span class='ident'>as_ref</span>().<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>).<span class='ident'>into</span>())
+            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>
+                    .<span class='ident'>as_ref</span>()
+                    .<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>)
+                    .<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>)
+                    .<span class='ident'>into</span>())
         }
     }
 }
@@ -1621,37 +1512,13 @@
             <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>NotAuthed</span> <span class='op'>=&gt;</span> <span class='string'>&quot;not_authed: No authentication token provided.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidAuth</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_auth: Invalid authentication token.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>AccountInactive</span> <span class='op'>=&gt;</span> <span class='string'>&quot;account_inactive: Authentication token is for a deleted user or team.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common \
-                 decency. This includes very long names and names with non-alphanumeric characters other than _. If \
-                 you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). \
-                 These are never valid with the Slack API.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the \
-                 Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type \
-                 application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or \
-                 syntactically invalid.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was \
-                 invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data \
-                 text/plain.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the \
-                 request did not include a Content-Type header.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or \
-                 truncated.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MarkError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='ident'>inner</span>.<span class='ident'>description</span>(),
@@ -1671,18 +1538,27 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Wraps https://api.slack.com/methods/im.open</span>
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>open</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>, <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>OpenRequest</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>OpenResponse</span>, <span class='ident'>OpenError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>open</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>,
+               <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
+               <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>OpenRequest</span>)
+               <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>OpenResponse</span>, <span class='ident'>OpenError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
     <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>SlackWebRequestSender</span>
 {
 
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>((<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)),
                       <span class='prelude-val'>Some</span>((<span class='string'>&quot;user&quot;</span>, <span class='ident'>request</span>.<span class='ident'>user</span>)),
-                      <span class='ident'>request</span>.<span class='ident'>return_im</span>.<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>return_im</span><span class='op'>|</span> (<span class='string'>&quot;return_im&quot;</span>, <span class='ident'>return_im</span>))];
+                      <span class='ident'>request</span>
+                          .<span class='ident'>return_im</span>
+                          .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>return_im</span><span class='op'>|</span> (<span class='string'>&quot;return_im&quot;</span>, <span class='ident'>return_im</span>))];
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>into_iter</span>().<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
     <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> ::<span class='ident'>get_slack_url_for_method</span>(<span class='string'>&quot;im.open&quot;</span>);
-    <span class='ident'>client</span>.<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
+    <span class='ident'>client</span>
+        .<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
         .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>err</span><span class='op'>|</span> <span class='ident'>OpenError</span>::<span class='ident'>Client</span>(<span class='ident'>err</span>))
-        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>OpenResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>).<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>OpenError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>)))
+        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> {
+                      <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>OpenResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>)
+                            .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>OpenError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
+                  })
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>o</span><span class='op'>|</span> <span class='ident'>o</span>.<span class='ident'>into</span>())
 }
 
@@ -1708,7 +1584,11 @@
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>ok</span> {
             <span class='prelude-val'>Ok</span>(<span class='self'>self</span>)
         } <span class='kw'>else</span> {
-            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>.<span class='ident'>as_ref</span>().<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>).<span class='ident'>into</span>())
+            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>
+                    .<span class='ident'>as_ref</span>()
+                    .<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>)
+                    .<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>)
+                    .<span class='ident'>into</span>())
         }
     }
 }
@@ -1779,44 +1659,18 @@
     <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
         <span class='kw'>match</span> <span class='self'>self</span> {
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>UserNotFound</span> <span class='op'>=&gt;</span> <span class='string'>&quot;user_not_found: Value passed for user was invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>UserNotVisible</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;user_not_visible: The calling user is restricted from seeing the requested user.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>UserNotVisible</span> <span class='op'>=&gt;</span> <span class='string'>&quot;user_not_visible: The calling user is restricted from seeing the requested user.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>UserDisabled</span> <span class='op'>=&gt;</span> <span class='string'>&quot;user_disabled: The user has been disabled.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>NotAuthed</span> <span class='op'>=&gt;</span> <span class='string'>&quot;not_authed: No authentication token provided.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidAuth</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_auth: Invalid authentication token.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>AccountInactive</span> <span class='op'>=&gt;</span> <span class='string'>&quot;account_inactive: Authentication token is for a deleted user or team.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common \
-                 decency. This includes very long names and names with non-alphanumeric characters other than _. If \
-                 you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). \
-                 These are never valid with the Slack API.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the \
-                 Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type \
-                 application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or \
-                 syntactically invalid.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was \
-                 invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data \
-                 text/plain.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the \
-                 request did not include a Content-Type header.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or \
-                 truncated.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>OpenError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='ident'>inner</span>.<span class='ident'>description</span>(),
@@ -1836,19 +1690,25 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Wraps https://api.slack.com/methods/im.replies</span>
 
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>replies</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>, <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>, <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>RepliesRequest</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>RepliesResponse</span>, <span class='ident'>RepliesError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>replies</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>,
+                  <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
+                  <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>RepliesRequest</span>)
+                  <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>RepliesResponse</span>, <span class='ident'>RepliesError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
     <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>SlackWebRequestSender</span>
 {
 
-    <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span>
-        <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>((<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)), <span class='prelude-val'>Some</span>((<span class='string'>&quot;channel&quot;</span>, <span class='ident'>request</span>.<span class='ident'>channel</span>)), <span class='prelude-val'>Some</span>((<span class='string'>&quot;thread_ts&quot;</span>, <span class='ident'>request</span>.<span class='ident'>thread_ts</span>))];
+    <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>((<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)),
+                      <span class='prelude-val'>Some</span>((<span class='string'>&quot;channel&quot;</span>, <span class='ident'>request</span>.<span class='ident'>channel</span>)),
+                      <span class='prelude-val'>Some</span>((<span class='string'>&quot;thread_ts&quot;</span>, <span class='ident'>request</span>.<span class='ident'>thread_ts</span>))];
     <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>into_iter</span>().<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
     <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> ::<span class='ident'>get_slack_url_for_method</span>(<span class='string'>&quot;im.replies&quot;</span>);
-    <span class='ident'>client</span>.<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
+    <span class='ident'>client</span>
+        .<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
         .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>err</span><span class='op'>|</span> <span class='ident'>RepliesError</span>::<span class='ident'>Client</span>(<span class='ident'>err</span>))
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> {
-            <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>RepliesResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>).<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>RepliesError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
-        })
+                      <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>RepliesResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>)
+                            .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>RepliesError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
+                  })
         .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>o</span><span class='op'>|</span> <span class='ident'>o</span>.<span class='ident'>into</span>())
 }
 
@@ -1875,7 +1735,11 @@
         <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>ok</span> {
             <span class='prelude-val'>Ok</span>(<span class='self'>self</span>)
         } <span class='kw'>else</span> {
-            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>.<span class='ident'>as_ref</span>().<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>).<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>).<span class='ident'>into</span>())
+            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>
+                    .<span class='ident'>as_ref</span>()
+                    .<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>)
+                    .<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>)
+                    .<span class='ident'>into</span>())
         }
     }
 }
@@ -1951,37 +1815,13 @@
             <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidAuth</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_auth: Invalid authentication token.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>AccountInactive</span> <span class='op'>=&gt;</span> <span class='string'>&quot;account_inactive: Authentication token is for a deleted user or team.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>UserIsBot</span> <span class='op'>=&gt;</span> <span class='string'>&quot;user_is_bot: This method cannot be called by a bot user.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common \
-                 decency. This includes very long names and names with non-alphanumeric characters other than _. If \
-                 you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). \
-                 These are never valid with the Slack API.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the \
-                 Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type \
-                 application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or \
-                 syntactically invalid.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was \
-                 invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data \
-                 text/plain.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the \
-                 request did not include a Content-Type header.&quot;</span>
-            }
-            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> {
-                <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or \
-                 truncated.&quot;</span>
-            }
+            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RepliesError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='ident'>inner</span>.<span class='ident'>description</span>(),

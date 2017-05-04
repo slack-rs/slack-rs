@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/bytes-0.4.2/src/bytes.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/bytes-0.4.3/src/bytes.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>bytes.rs.html -- source</title>
@@ -2357,6 +2357,35 @@
 <span id="2312">2312</span>
 <span id="2313">2313</span>
 <span id="2314">2314</span>
+<span id="2315">2315</span>
+<span id="2316">2316</span>
+<span id="2317">2317</span>
+<span id="2318">2318</span>
+<span id="2319">2319</span>
+<span id="2320">2320</span>
+<span id="2321">2321</span>
+<span id="2322">2322</span>
+<span id="2323">2323</span>
+<span id="2324">2324</span>
+<span id="2325">2325</span>
+<span id="2326">2326</span>
+<span id="2327">2327</span>
+<span id="2328">2328</span>
+<span id="2329">2329</span>
+<span id="2330">2330</span>
+<span id="2331">2331</span>
+<span id="2332">2332</span>
+<span id="2333">2333</span>
+<span id="2334">2334</span>
+<span id="2335">2335</span>
+<span id="2336">2336</span>
+<span id="2337">2337</span>
+<span id="2338">2338</span>
+<span id="2339">2339</span>
+<span id="2340">2340</span>
+<span id="2341">2341</span>
+<span id="2342">2342</span>
+<span id="2343">2343</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> {<span class='ident'>IntoBuf</span>, <span class='ident'>Buf</span>, <span class='ident'>BufMut</span>};
 <span class='kw'>use</span> <span class='ident'>buf</span>::<span class='ident'>Iter</span>;
@@ -2447,13 +2476,13 @@
 <span class='doccomment'>/// underlying memory slice and may not be mutated, `BytesMut` handles are</span>
 <span class='doccomment'>/// guaranteed to be the only handle able to view that slice of memory. As such,</span>
 <span class='doccomment'>/// `BytesMut` handles are able to mutate the underlying memory. Note that</span>
-<span class='doccomment'>/// holding a unique view to a region of memory does not mean that there are not</span>
+<span class='doccomment'>/// holding a unique view to a region of memory does not mean that there are no</span>
 <span class='doccomment'>/// other `Bytes` and `BytesMut` handles with disjoint views of the underlying</span>
 <span class='doccomment'>/// memory.</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// # Inline bytes.</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// As an opitmization, when the slice referenced by a `Bytes` or `BytesMut`</span>
+<span class='doccomment'>/// As an optimization, when the slice referenced by a `Bytes` or `BytesMut`</span>
 <span class='doccomment'>/// handle is small enough [1], `Bytes` will avoid the allocation by inlining</span>
 <span class='doccomment'>/// the slice directly in the handle. In this case, a clone is no longer</span>
 <span class='doccomment'>/// &quot;shallow&quot; and the data will be copied.</span>
@@ -3471,7 +3500,7 @@
     <span class='doccomment'>/// buf.put(&amp;[0; 64][..]);</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// let ptr = buf.as_ptr();</span>
-    <span class='doccomment'>/// let other = buf.drain();</span>
+    <span class='doccomment'>/// let other = buf.take();</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// assert!(buf.is_empty());</span>
     <span class='doccomment'>/// assert_eq!(buf.capacity(), 64);</span>
@@ -3523,6 +3552,16 @@
             <span class='self'>self</span>.<span class='ident'>bytes_mut</span>()[..<span class='ident'>len</span>].<span class='ident'>copy_from_slice</span>(<span class='ident'>src</span>);
             <span class='self'>self</span>.<span class='ident'>advance_mut</span>(<span class='ident'>len</span>);
         }
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>put_u8</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>u8</span>) {
+        <span class='self'>self</span>.<span class='ident'>inner</span>.<span class='ident'>put_u8</span>(<span class='ident'>n</span>);
+    }
+
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>put_i8</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>i8</span>) {
+        <span class='self'>self</span>.<span class='ident'>put_u8</span>(<span class='ident'>n</span> <span class='kw'>as</span> <span class='ident'>u8</span>);
     }
 }
 
@@ -3820,6 +3859,25 @@
             <span class='ident'>slice</span>::<span class='ident'>from_raw_parts_mut</span>(<span class='self'>self</span>.<span class='ident'>inline_ptr</span>(), <span class='ident'>INLINE_CAP</span>)
         } <span class='kw'>else</span> {
             <span class='ident'>slice</span>::<span class='ident'>from_raw_parts_mut</span>(<span class='self'>self</span>.<span class='ident'>ptr</span>, <span class='self'>self</span>.<span class='ident'>cap</span>)
+        }
+    }
+
+    <span class='doccomment'>/// Insert a byte into the next slot and advance the len by 1.</span>
+    <span class='attribute'>#[<span class='ident'>inline</span>]</span>
+    <span class='kw'>fn</span> <span class='ident'>put_u8</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>n</span>: <span class='ident'>u8</span>) {
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_inline</span>() {
+            <span class='kw'>let</span> <span class='ident'>len</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>inline_len</span>();
+            <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>len</span> <span class='op'>&lt;</span> <span class='ident'>INLINE_CAP</span>);
+            <span class='kw'>unsafe</span> {
+                <span class='kw-2'>*</span><span class='self'>self</span>.<span class='ident'>inline_ptr</span>().<span class='ident'>offset</span>(<span class='ident'>len</span> <span class='kw'>as</span> <span class='ident'>isize</span>) <span class='op'>=</span> <span class='ident'>n</span>;
+            }
+            <span class='self'>self</span>.<span class='ident'>set_inline_len</span>(<span class='ident'>len</span> <span class='op'>+</span> <span class='number'>1</span>);
+        } <span class='kw'>else</span> {
+            <span class='macro'>assert</span><span class='macro'>!</span>(<span class='self'>self</span>.<span class='ident'>len</span> <span class='op'>&lt;</span> <span class='self'>self</span>.<span class='ident'>cap</span>);
+            <span class='kw'>unsafe</span> {
+                <span class='kw-2'>*</span><span class='self'>self</span>.<span class='ident'>ptr</span>.<span class='ident'>offset</span>(<span class='self'>self</span>.<span class='ident'>len</span> <span class='kw'>as</span> <span class='ident'>isize</span>) <span class='op'>=</span> <span class='ident'>n</span>;
+            }
+            <span class='self'>self</span>.<span class='ident'>len</span> <span class='op'>+=</span> <span class='number'>1</span>;
         }
     }
 

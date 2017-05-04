@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/libc-0.2.21/src/unix/bsd/apple/mod.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/libc-0.2.22/src/unix/bsd/apple/mod.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>mod.rs.html -- source</title>
@@ -1730,27 +1730,6 @@
 <span id="1685">1685</span>
 <span id="1686">1686</span>
 <span id="1687">1687</span>
-<span id="1688">1688</span>
-<span id="1689">1689</span>
-<span id="1690">1690</span>
-<span id="1691">1691</span>
-<span id="1692">1692</span>
-<span id="1693">1693</span>
-<span id="1694">1694</span>
-<span id="1695">1695</span>
-<span id="1696">1696</span>
-<span id="1697">1697</span>
-<span id="1698">1698</span>
-<span id="1699">1699</span>
-<span id="1700">1700</span>
-<span id="1701">1701</span>
-<span id="1702">1702</span>
-<span id="1703">1703</span>
-<span id="1704">1704</span>
-<span id="1705">1705</span>
-<span id="1706">1706</span>
-<span id="1707">1707</span>
-<span id="1708">1708</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Apple (ios/darwin)-specific definitions</span>
 <span class='doccomment'>//!</span>
@@ -2418,6 +2397,12 @@
 
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>F_PEOFPOSMODE</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='number'>3</span>;
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>F_VOLPOSMODE</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='number'>4</span>;
+
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>AT_FDCWD</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='op'>-</span><span class='number'>2</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>AT_EACCESS</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='number'>0x0010</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>AT_SYMLINK_NOFOLLOW</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='number'>0x0020</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>AT_SYMLINK_FOLLOW</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='number'>0x0040</span>;
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>AT_REMOVEDIR</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='number'>0x0080</span>;
 
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>O_ACCMODE</span>: ::<span class='ident'>c_int</span> <span class='op'>=</span> <span class='number'>3</span>;
 
@@ -3412,33 +3397,6 @@
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>querylocale</span>(<span class='ident'>mask</span>: ::<span class='ident'>c_int</span>, <span class='ident'>loc</span>: ::<span class='ident'>locale_t</span>) <span class='op'>-&gt;</span> <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>;
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>getpriority</span>(<span class='ident'>which</span>: ::<span class='ident'>c_int</span>, <span class='ident'>who</span>: ::<span class='ident'>id_t</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>setpriority</span>(<span class='ident'>which</span>: ::<span class='ident'>c_int</span>, <span class='ident'>who</span>: ::<span class='ident'>id_t</span>, <span class='ident'>prio</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>openat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                  <span class='ident'>flags</span>: ::<span class='ident'>c_int</span>, ...) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>faccessat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                     <span class='ident'>mode</span>: ::<span class='ident'>c_int</span>, <span class='ident'>flags</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>fchmodat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                    <span class='ident'>mode</span>: ::<span class='ident'>mode_t</span>, <span class='ident'>flags</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>fchownat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                    <span class='ident'>owner</span>: ::<span class='ident'>uid_t</span>, <span class='ident'>group</span>: ::<span class='ident'>gid_t</span>,
-                    <span class='ident'>flags</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-    <span class='attribute'>#[<span class='ident'>cfg_attr</span>(<span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;macos&quot;</span>, <span class='ident'>link_name</span> <span class='op'>=</span> <span class='string'>&quot;fstatat$INODE64&quot;</span>)]</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>fstatat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                   <span class='ident'>buf</span>: <span class='kw-2'>*</span><span class='kw-2'>mut</span> <span class='ident'>stat</span>, <span class='ident'>flags</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>linkat</span>(<span class='ident'>olddirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>oldpath</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                  <span class='ident'>newdirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>newpath</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                  <span class='ident'>flags</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-   <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>mkdirat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                  <span class='ident'>mode</span>: ::<span class='ident'>mode_t</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-   <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>readlinkat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                     <span class='ident'>buf</span>: <span class='kw-2'>*</span><span class='kw-2'>mut</span> ::<span class='ident'>c_char</span>, <span class='ident'>bufsiz</span>: ::<span class='ident'>size_t</span>) <span class='op'>-&gt;</span> ::<span class='ident'>ssize_t</span>;
-   <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>renameat</span>(<span class='ident'>olddirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>oldpath</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                   <span class='ident'>newdirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>newpath</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>)
-                   <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-   <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>symlinkat</span>(<span class='ident'>target</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>, <span class='ident'>newdirfd</span>: ::<span class='ident'>c_int</span>,
-                    <span class='ident'>linkpath</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
-   <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>unlinkat</span>(<span class='ident'>dirfd</span>: ::<span class='ident'>c_int</span>, <span class='ident'>pathname</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>,
-                   <span class='ident'>flags</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
 
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>initgroups</span>(<span class='ident'>user</span>: <span class='kw-2'>*</span><span class='kw'>const</span> ::<span class='ident'>c_char</span>, <span class='ident'>basegroup</span>: ::<span class='ident'>c_int</span>) <span class='op'>-&gt;</span> ::<span class='ident'>c_int</span>;
 

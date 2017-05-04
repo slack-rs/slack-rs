@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/num_cpus-1.3.0/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/num_cpus-1.4.0/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -389,7 +389,7 @@
         <span class='ident'>libc</span>::<span class='ident'>sysconf</span>(<span class='ident'>libc</span>::<span class='ident'>_SC_NPROCESSORS_ONLN</span>) <span class='kw'>as</span> <span class='ident'>usize</span>
     }
 }
-<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>any</span>(<span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;emscripten&quot;</span>, <span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;redox&quot;</span>))]</span>
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>any</span>(<span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;emscripten&quot;</span>, <span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;redox&quot;</span>, <span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;haiku&quot;</span>))]</span>
 <span class='kw'>fn</span> <span class='ident'>get_num_cpus</span>() <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
     <span class='number'>1</span>
 }
