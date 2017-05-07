@@ -59,9 +59,9 @@ impl slack::EventHandler for MyHandler {
         let _ = cli.sender().send_message(&general_channel_id, "Hello world! (rtm)");
 
         // Send a message via the HTTP Web API (supports full formatting options and attachments)
-        // NOTE: Using the reqwest version re-exported by slack::api. Using reqwest directly might fail
-        // if the versions are mismatched (because of the SlackWebRequestSender trait impl)
-        let client = api::requests::reqwest::Client::new().unwrap();
+        // NOTE: You can also use your own reqwest client, but the version of reqwest should match
+        // the one used by slack::api (otherwise the SlackWebRequestSender trait impl won't be found)
+        let client = api::requests::default_client().unwrap();
         let _ = api::chat::post_message(&client, &self.token, &api::chat::PostMessageRequest {
             channel: &general_channel_id,
             text: "Hello world! (<https://slack-rs.github.io/slack-rs/slack_api/chat/fn.post_message.html|Web API>)",
