@@ -422,4 +422,28 @@ mod tests {
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
+
+    #[test]
+    fn decode_reaction_added() {
+        let event: Event = Event::from_json(r#"{
+            "type": "reaction_added",
+            "user": "U0DNB0ASD",
+            "item": {
+                "type": "message",
+                "channel": "D4K0RSVK6",
+                "ts": "14943458503.407078"
+            },
+            "reaction": "x",
+            "item_user": "U4J7CUGTJ",
+            "event_ts": "1494591231.283820",
+            "ts": "1494591231.283820"
+        }"#)
+                .unwrap();
+        match event {
+            Event::ReactionAdded { reaction, ..} => {
+                assert_eq!(reaction, "x");
+            }
+            _ => panic!("Event decoded into incorrect variant."),
+        }
+    }
 }
