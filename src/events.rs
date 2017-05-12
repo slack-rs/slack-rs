@@ -204,7 +204,7 @@ pub enum Event {
         user: String,
         reaction: String,
         item: Box<reactions::ListResponseItem>,
-        item_user: String,
+        item_user: Option<String>,
         event_ts: String,
     },
     /// Represents the slack
@@ -447,6 +447,27 @@ mod tests {
                     assert_eq!(message.channel, "D4K0RSVK6");
                     assert_eq!(message.ts, "14943458503.407078");
                 }
+            }
+            _ => panic!("Event decoded into incorrect variant."),
+        }
+
+        // Bot message posted with `as_user: false` -> no item_user field
+        let event2: Event = Event::from_json(r#"{
+            "type": "reaction_added",
+            "user": "U0GHJ0RDJ",
+            "item": {
+                "type": "message",
+                "channel": "C46CBCETZ",
+                "ts": "1494533405.006999"
+            },
+            "reaction": "x",
+            "event_ts": "1494603225.340558",
+            "ts": "1494603225.340558"
+        }"#)
+                .unwrap();
+        match event2 {
+            Event::ReactionAdded { item_user, ..} => {
+                assert_eq!(item_user, None);
             }
             _ => panic!("Event decoded into incorrect variant."),
         }
