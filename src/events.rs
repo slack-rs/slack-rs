@@ -440,8 +440,13 @@ mod tests {
         }"#)
                 .unwrap();
         match event {
-            Event::ReactionAdded { reaction, ..} => {
+            Event::ReactionAdded { reaction, item, ..} => {
                 assert_eq!(reaction, "x");
+                if let reactions::ListResponseItem::Message(message) = *item {
+                    assert_eq!(message.ty, "message");
+                    assert_eq!(message.channel, "D4K0RSVK6");
+                    assert_eq!(message.ts, "14943458503.407078");
+                }
             }
             _ => panic!("Event decoded into incorrect variant."),
         }
