@@ -1,6 +1,11 @@
 # Changelog
 
+## 0.18.0
+
+Update to `slack_api v0.17.0`
+
 ## 0.17.1
+
 Update to `slack_api v0.16.1` 
 
 ## 0.17.0
