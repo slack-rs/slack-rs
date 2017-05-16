@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["StartError",""]],"fn":[["start","Starts a Real Time Messaging session."]],"struct":[["StartRequest",""],["StartResponse",""]]});
+initSidebarItems({"enum":[["ConnectError",""],["StartError",""]],"fn":[["connect","Starts a Real Time Messaging session."],["start","Starts a Real Time Messaging session."]],"struct":[["ConnectResponse",""],["ConnectResponseSelf",""],["ConnectResponseTeam",""],["StartRequest",""],["StartResponse",""]]});

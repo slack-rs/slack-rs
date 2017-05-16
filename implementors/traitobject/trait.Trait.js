@@ -2,6 +2,7 @@
 implementors["hyper"] = [];
 implementors["reqwest"] = [];
 implementors["slack"] = [];
+implementors["slack_api"] = [];
 implementors["traitobject"] = [];
 
             if (window.register_implementors) {

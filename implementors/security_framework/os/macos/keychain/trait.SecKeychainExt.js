@@ -2,6 +2,7 @@
 implementors["reqwest"] = [];
 implementors["security_framework"] = [];
 implementors["slack"] = [];
+implementors["slack_api"] = [];
 implementors["tungstenite"] = [];
 
             if (window.register_implementors) {

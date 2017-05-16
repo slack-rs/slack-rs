@@ -53,7 +53,6 @@
     ChannelNotFound,
     AlreadyArchived,
     GroupContainsOthers,
-    LastRaChannel,
     RestrictedAction,
     NotAuthed,
     InvalidAuth,
@@ -66,6 +65,7 @@
     InvalidFormData,
     InvalidPostType,
     MissingPostType,
+    TeamAddedToOrg,
     RequestTimeout,
     MalformedResponse(<a class='struct' href='../../serde_json/error/struct.Error.html' title='serde_json::error::Error'>Error</a>),
     Unknown(<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>),
@@ -74,7 +74,6 @@
 <span id='variant.ChannelNotFound' class='variant'><span id='ChannelNotFound.v' class='invisible'><code>ChannelNotFound</code></span></span><div class='docblock'><p>Value passed for channel was invalid.</p>
 </div><span id='variant.AlreadyArchived' class='variant'><span id='AlreadyArchived.v' class='invisible'><code>AlreadyArchived</code></span></span><div class='docblock'><p>Group has already been archived.</p>
 </div><span id='variant.GroupContainsOthers' class='variant'><span id='GroupContainsOthers.v' class='invisible'><code>GroupContainsOthers</code></span></span><div class='docblock'><p>Multi-channel guests cannot archive groups containing others.</p>
-</div><span id='variant.LastRaChannel' class='variant'><span id='LastRaChannel.v' class='invisible'><code>LastRaChannel</code></span></span><div class='docblock'><p>You cannot archive the last channel for a multi-channel guest.</p>
 </div><span id='variant.RestrictedAction' class='variant'><span id='RestrictedAction.v' class='invisible'><code>RestrictedAction</code></span></span><div class='docblock'><p>A team preference prevents the authenticated user from archiving.</p>
 </div><span id='variant.NotAuthed' class='variant'><span id='NotAuthed.v' class='invisible'><code>NotAuthed</code></span></span><div class='docblock'><p>No authentication token provided.</p>
 </div><span id='variant.InvalidAuth' class='variant'><span id='InvalidAuth.v' class='invisible'><code>InvalidAuth</code></span></span><div class='docblock'><p>Invalid authentication token.</p>
@@ -85,8 +84,9 @@
 </div><span id='variant.InvalidArrayArg' class='variant'><span id='InvalidArrayArg.v' class='invisible'><code>InvalidArrayArg</code></span></span><div class='docblock'><p>The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.</p>
 </div><span id='variant.InvalidCharset' class='variant'><span id='InvalidCharset.v' class='invisible'><code>InvalidCharset</code></span></span><div class='docblock'><p>The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.</p>
 </div><span id='variant.InvalidFormData' class='variant'><span id='InvalidFormData.v' class='invisible'><code>InvalidFormData</code></span></span><div class='docblock'><p>The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</p>
-</div><span id='variant.InvalidPostType' class='variant'><span id='InvalidPostType.v' class='invisible'><code>InvalidPostType</code></span></span><div class='docblock'><p>The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.</p>
+</div><span id='variant.InvalidPostType' class='variant'><span id='InvalidPostType.v' class='invisible'><code>InvalidPostType</code></span></span><div class='docblock'><p>The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</p>
 </div><span id='variant.MissingPostType' class='variant'><span id='MissingPostType.v' class='invisible'><code>MissingPostType</code></span></span><div class='docblock'><p>The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</p>
+</div><span id='variant.TeamAddedToOrg' class='variant'><span id='TeamAddedToOrg.v' class='invisible'><code>TeamAddedToOrg</code></span></span><div class='docblock'><p>The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</p>
 </div><span id='variant.RequestTimeout' class='variant'><span id='RequestTimeout.v' class='invisible'><code>RequestTimeout</code></span></span><div class='docblock'><p>The method was called via a POST request, but the POST data was either missing or truncated.</p>
 </div><span id='variant.MalformedResponse' class='variant'><span id='MalformedResponse.v' class='invisible'><code>MalformedResponse(<a class='struct' href='../../serde_json/error/struct.Error.html' title='serde_json::error::Error'>Error</a>)</code></span></span><div class='docblock'><p>The response was not parseable as the expected object</p>
 </div><span id='variant.Unknown' class='variant'><span id='Unknown.v' class='invisible'><code>Unknown(<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>)</code></span></span><div class='docblock'><p>The response returned an error that was unknown to the library</p>

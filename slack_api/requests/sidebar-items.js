@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["SlackWebRequestSender","Functionality for sending authenticated and unauthenticated requests to Slack via HTTP."]]});
+initSidebarItems({"enum":[["Error","The Errors that may occur when processing a `Request`."]],"fn":[["default_client","Provides a default `reqwest` client to give to the API functions to send requests."]],"struct":[["Client","A `Client` to make Requests with."]],"trait":[["SlackWebRequestSender","Functionality for sending authenticated and unauthenticated requests to Slack via HTTP."]]});

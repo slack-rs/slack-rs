@@ -9,6 +9,7 @@ implementors["reqwest"] = [];
 implementors["serde"] = [];
 implementors["serde_urlencoded"] = [];
 implementors["slack"] = [];
+implementors["slack_api"] = [];
 implementors["syn"] = [];
 implementors["tungstenite"] = [];
 

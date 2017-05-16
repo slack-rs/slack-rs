@@ -1,6 +1,7 @@
 (function() {var implementors = {};
 implementors["reqwest"] = [];
 implementors["slack"] = [];
+implementors["slack_api"] = [];
 implementors["tungstenite"] = [];
 
             if (window.register_implementors) {

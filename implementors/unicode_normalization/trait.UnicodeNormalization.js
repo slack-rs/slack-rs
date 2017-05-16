@@ -3,6 +3,7 @@ implementors["hyper"] = [];
 implementors["reqwest"] = [];
 implementors["serde_urlencoded"] = [];
 implementors["slack"] = [];
+implementors["slack_api"] = [];
 implementors["tungstenite"] = [];
 implementors["unicode_normalization"] = [];
 

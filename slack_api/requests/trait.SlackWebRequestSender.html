@@ -48,13 +48,14 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../../src/slack_api/requests.rs.html#6-12' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../../src/slack_api/requests.rs.html#9-15' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait SlackWebRequestSender {
     type <a href='#associatedtype.Error' class='type'>Error</a>: <a class='trait' href='https://doc.rust-lang.org/nightly/std/error/trait.Error.html' title='std::error::Error'>Error</a>;
     fn <a href='#tymethod.send' class='fnname'>send</a>(&amp;self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; method: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; params: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a>&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>, Self::<a class='trait' href='../../slack_api/requests/trait.SlackWebRequestSender.html' title='slack_api::requests::SlackWebRequestSender'>Error</a>&gt;;
 }</pre><div class='docblock'><p>Functionality for sending authenticated and unauthenticated requests to Slack via HTTP.</p>
 
-<p>Should be implemented for clients to send requests to Slack.</p>
+<p>If you do not have a custom client to integrate with and just want to send requests, use
+the [<code>default_client()</code>] function to get a simple request sender.</p>
 </div>
             <h2 id='associated-types'>Associated Types</h2>
             <div class='methods'>
@@ -66,7 +67,7 @@ params.</p>
 </div></div>
         <h2 id='implementors'>Implementors</h2>
         <ul class='item-list' id='implementors-list'>
-    <li><code>impl SlackWebRequestSender for <a class='struct' href='../../reqwest/client/struct.Client.html' title='reqwest::client::Client'>Client</a></code></li>
+    <li><code>impl SlackWebRequestSender for <a class='struct' href='../../slack_api/requests/struct.Client.html' title='slack_api::requests::Client'>Client</a></code></li>
 </ul><script type="text/javascript" async
                          src="../../implementors/slack_api/requests/trait.SlackWebRequestSender.js">
                  </script></section>

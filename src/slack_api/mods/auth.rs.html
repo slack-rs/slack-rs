@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/slack_api-0.16.1/src/mods/auth.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/bentheelder/.cargo/registry/src/github.com-1ecc6299db9ec823/slack_api-0.17.0/src/mods/auth.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>auth.rs.html -- source</title>
@@ -318,6 +318,14 @@
 <span id="273">273</span>
 <span id="274">274</span>
 <span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
 </pre><pre class='rust '>
 
 
@@ -402,10 +410,12 @@
     <span class='ident'>InvalidCharset</span>,
     <span class='doccomment'>/// The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</span>
     <span class='ident'>InvalidFormData</span>,
-    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.</span>
+    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</span>
     <span class='ident'>InvalidPostType</span>,
     <span class='doccomment'>/// The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</span>
     <span class='ident'>MissingPostType</span>,
+    <span class='doccomment'>/// The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</span>
+    <span class='ident'>TeamAddedToOrg</span>,
     <span class='doccomment'>/// The method was called via a POST request, but the POST data was either missing or truncated.</span>
     <span class='ident'>RequestTimeout</span>,
     <span class='doccomment'>/// The response was not parseable as the expected object</span>
@@ -428,6 +438,7 @@
             <span class='string'>&quot;invalid_form_data&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>RevokeError</span>::<span class='ident'>InvalidFormData</span>,
             <span class='string'>&quot;invalid_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>RevokeError</span>::<span class='ident'>InvalidPostType</span>,
             <span class='string'>&quot;missing_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>RevokeError</span>::<span class='ident'>MissingPostType</span>,
+            <span class='string'>&quot;team_added_to_org&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>RevokeError</span>::<span class='ident'>TeamAddedToOrg</span>,
             <span class='string'>&quot;request_timeout&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>RevokeError</span>::<span class='ident'>RequestTimeout</span>,
             _ <span class='op'>=&gt;</span> <span class='ident'>RevokeError</span>::<span class='ident'>Unknown</span>(<span class='ident'>s</span>.<span class='ident'>to_owned</span>()),
         }
@@ -450,8 +461,9 @@
             <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>TeamAddedToOrg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;team_added_to_org: The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>RevokeError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
@@ -529,10 +541,12 @@
     <span class='ident'>InvalidCharset</span>,
     <span class='doccomment'>/// The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</span>
     <span class='ident'>InvalidFormData</span>,
-    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.</span>
+    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</span>
     <span class='ident'>InvalidPostType</span>,
     <span class='doccomment'>/// The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</span>
     <span class='ident'>MissingPostType</span>,
+    <span class='doccomment'>/// The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</span>
+    <span class='ident'>TeamAddedToOrg</span>,
     <span class='doccomment'>/// The method was called via a POST request, but the POST data was either missing or truncated.</span>
     <span class='ident'>RequestTimeout</span>,
     <span class='doccomment'>/// The response was not parseable as the expected object</span>
@@ -555,6 +569,7 @@
             <span class='string'>&quot;invalid_form_data&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>TestError</span>::<span class='ident'>InvalidFormData</span>,
             <span class='string'>&quot;invalid_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>TestError</span>::<span class='ident'>InvalidPostType</span>,
             <span class='string'>&quot;missing_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>TestError</span>::<span class='ident'>MissingPostType</span>,
+            <span class='string'>&quot;team_added_to_org&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>TestError</span>::<span class='ident'>TeamAddedToOrg</span>,
             <span class='string'>&quot;request_timeout&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>TestError</span>::<span class='ident'>RequestTimeout</span>,
             _ <span class='op'>=&gt;</span> <span class='ident'>TestError</span>::<span class='ident'>Unknown</span>(<span class='ident'>s</span>.<span class='ident'>to_owned</span>()),
         }
@@ -577,8 +592,9 @@
             <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>TeamAddedToOrg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;team_added_to_org: The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>TestError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,

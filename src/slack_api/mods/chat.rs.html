@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/Users/benjamin/.cargo/registry/src/github.com-1ecc6299db9ec823/slack_api-0.16.1/src/mods/chat.rs`.">
+    <meta name="description" content="Source to the Rust file `/Users/bentheelder/.cargo/registry/src/github.com-1ecc6299db9ec823/slack_api-0.17.0/src/mods/chat.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>chat.rs.html -- source</title>
@@ -788,6 +788,178 @@
 <span id="743">743</span>
 <span id="744">744</span>
 <span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Post chat messages to Slack.</span>
 
@@ -888,10 +1060,12 @@
     <span class='ident'>InvalidCharset</span>,
     <span class='doccomment'>/// The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</span>
     <span class='ident'>InvalidFormData</span>,
-    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.</span>
+    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</span>
     <span class='ident'>InvalidPostType</span>,
     <span class='doccomment'>/// The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</span>
     <span class='ident'>MissingPostType</span>,
+    <span class='doccomment'>/// The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</span>
+    <span class='ident'>TeamAddedToOrg</span>,
     <span class='doccomment'>/// The method was called via a POST request, but the POST data was either missing or truncated.</span>
     <span class='ident'>RequestTimeout</span>,
     <span class='doccomment'>/// The response was not parseable as the expected object</span>
@@ -918,6 +1092,7 @@
             <span class='string'>&quot;invalid_form_data&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>DeleteError</span>::<span class='ident'>InvalidFormData</span>,
             <span class='string'>&quot;invalid_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>DeleteError</span>::<span class='ident'>InvalidPostType</span>,
             <span class='string'>&quot;missing_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>DeleteError</span>::<span class='ident'>MissingPostType</span>,
+            <span class='string'>&quot;team_added_to_org&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>DeleteError</span>::<span class='ident'>TeamAddedToOrg</span>,
             <span class='string'>&quot;request_timeout&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>DeleteError</span>::<span class='ident'>RequestTimeout</span>,
             _ <span class='op'>=&gt;</span> <span class='ident'>DeleteError</span>::<span class='ident'>Unknown</span>(<span class='ident'>s</span>.<span class='ident'>to_owned</span>()),
         }
@@ -944,8 +1119,9 @@
             <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>TeamAddedToOrg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;team_added_to_org: The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>DeleteError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
@@ -1047,10 +1223,12 @@
     <span class='ident'>InvalidCharset</span>,
     <span class='doccomment'>/// The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</span>
     <span class='ident'>InvalidFormData</span>,
-    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.</span>
+    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</span>
     <span class='ident'>InvalidPostType</span>,
     <span class='doccomment'>/// The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</span>
     <span class='ident'>MissingPostType</span>,
+    <span class='doccomment'>/// The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</span>
+    <span class='ident'>TeamAddedToOrg</span>,
     <span class='doccomment'>/// The method was called via a POST request, but the POST data was either missing or truncated.</span>
     <span class='ident'>RequestTimeout</span>,
     <span class='doccomment'>/// The response was not parseable as the expected object</span>
@@ -1079,6 +1257,7 @@
             <span class='string'>&quot;invalid_form_data&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>MeMessageError</span>::<span class='ident'>InvalidFormData</span>,
             <span class='string'>&quot;invalid_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>MeMessageError</span>::<span class='ident'>InvalidPostType</span>,
             <span class='string'>&quot;missing_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>MeMessageError</span>::<span class='ident'>MissingPostType</span>,
+            <span class='string'>&quot;team_added_to_org&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>MeMessageError</span>::<span class='ident'>TeamAddedToOrg</span>,
             <span class='string'>&quot;request_timeout&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>MeMessageError</span>::<span class='ident'>RequestTimeout</span>,
             _ <span class='op'>=&gt;</span> <span class='ident'>MeMessageError</span>::<span class='ident'>Unknown</span>(<span class='ident'>s</span>.<span class='ident'>to_owned</span>()),
         }
@@ -1107,8 +1286,9 @@
             <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>TeamAddedToOrg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;team_added_to_org: The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>MeMessageError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
@@ -1265,10 +1445,12 @@
     <span class='ident'>InvalidCharset</span>,
     <span class='doccomment'>/// The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</span>
     <span class='ident'>InvalidFormData</span>,
-    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.</span>
+    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</span>
     <span class='ident'>InvalidPostType</span>,
     <span class='doccomment'>/// The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</span>
     <span class='ident'>MissingPostType</span>,
+    <span class='doccomment'>/// The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</span>
+    <span class='ident'>TeamAddedToOrg</span>,
     <span class='doccomment'>/// The method was called via a POST request, but the POST data was either missing or truncated.</span>
     <span class='ident'>RequestTimeout</span>,
     <span class='doccomment'>/// The response was not parseable as the expected object</span>
@@ -1298,6 +1480,7 @@
             <span class='string'>&quot;invalid_form_data&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>PostMessageError</span>::<span class='ident'>InvalidFormData</span>,
             <span class='string'>&quot;invalid_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>PostMessageError</span>::<span class='ident'>InvalidPostType</span>,
             <span class='string'>&quot;missing_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>PostMessageError</span>::<span class='ident'>MissingPostType</span>,
+            <span class='string'>&quot;team_added_to_org&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>PostMessageError</span>::<span class='ident'>TeamAddedToOrg</span>,
             <span class='string'>&quot;request_timeout&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>PostMessageError</span>::<span class='ident'>RequestTimeout</span>,
             _ <span class='op'>=&gt;</span> <span class='ident'>PostMessageError</span>::<span class='ident'>Unknown</span>(<span class='ident'>s</span>.<span class='ident'>to_owned</span>()),
         }
@@ -1327,8 +1510,9 @@
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>TeamAddedToOrg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;team_added_to_org: The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
@@ -1340,6 +1524,162 @@
         <span class='kw'>match</span> <span class='self'>self</span> {
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
             <span class='kw-2'>&amp;</span><span class='ident'>PostMessageError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>inner</span>),
+            _ <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
+        }
+    }
+}
+
+<span class='doccomment'>/// Unfurl a URL that a user posted</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// Wraps https://api.slack.com/methods/chat.unfurl</span>
+
+<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>unfurl</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>(<span class='ident'>client</span>: <span class='kw-2'>&amp;</span><span class='ident'>R</span>,
+                 <span class='ident'>token</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>,
+                 <span class='ident'>request</span>: <span class='kw-2'>&amp;</span><span class='ident'>UnfurlRequest</span>)
+                 <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>UnfurlResponse</span>, <span class='ident'>UnfurlError</span><span class='op'>&lt;</span><span class='ident'>R</span>::<span class='ident'>Error</span><span class='op'>&gt;&gt;</span>
+    <span class='kw'>where</span> <span class='ident'>R</span>: <span class='ident'>SlackWebRequestSender</span>
+{
+
+    <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='prelude-val'>Some</span>((<span class='string'>&quot;token&quot;</span>, <span class='ident'>token</span>)),
+                      <span class='prelude-val'>Some</span>((<span class='string'>&quot;channel&quot;</span>, <span class='ident'>request</span>.<span class='ident'>channel</span>)),
+                      <span class='prelude-val'>Some</span>((<span class='string'>&quot;ts&quot;</span>, <span class='ident'>request</span>.<span class='ident'>ts</span>)),
+                      <span class='prelude-val'>Some</span>((<span class='string'>&quot;unfurls&quot;</span>, <span class='ident'>request</span>.<span class='ident'>unfurls</span>)),
+                      <span class='ident'>request</span>
+                          .<span class='ident'>user_auth_required</span>
+                          .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>user_auth_required</span><span class='op'>|</span> {
+                                   (<span class='string'>&quot;user_auth_required&quot;</span>,
+                                    <span class='kw'>if</span> <span class='ident'>user_auth_required</span> { <span class='string'>&quot;1&quot;</span> } <span class='kw'>else</span> { <span class='string'>&quot;0&quot;</span> })
+                               })];
+    <span class='kw'>let</span> <span class='ident'>params</span> <span class='op'>=</span> <span class='ident'>params</span>.<span class='ident'>into_iter</span>().<span class='ident'>filter_map</span>(<span class='op'>|</span><span class='ident'>x</span><span class='op'>|</span> <span class='ident'>x</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
+    <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> ::<span class='ident'>get_slack_url_for_method</span>(<span class='string'>&quot;chat.unfurl&quot;</span>);
+    <span class='ident'>client</span>
+        .<span class='ident'>send</span>(<span class='kw-2'>&amp;</span><span class='ident'>url</span>, <span class='kw-2'>&amp;</span><span class='ident'>params</span>[..])
+        .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>err</span><span class='op'>|</span> <span class='ident'>UnfurlError</span>::<span class='ident'>Client</span>(<span class='ident'>err</span>))
+        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>result</span><span class='op'>|</span> {
+                      <span class='ident'>serde_json</span>::<span class='ident'>from_str</span>::<span class='op'>&lt;</span><span class='ident'>UnfurlResponse</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='ident'>result</span>)
+                            .<span class='ident'>map_err</span>(<span class='op'>|</span><span class='ident'>e</span><span class='op'>|</span> <span class='ident'>UnfurlError</span>::<span class='ident'>MalformedResponse</span>(<span class='ident'>e</span>))
+                  })
+        .<span class='ident'>and_then</span>(<span class='op'>|</span><span class='ident'>o</span><span class='op'>|</span> <span class='ident'>o</span>.<span class='ident'>into</span>())
+}
+
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Default</span>, <span class='ident'>Debug</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>UnfurlRequest</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// Channel ID of the message</span>
+    <span class='kw'>pub</span> <span class='ident'>channel</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>str</span>,
+    <span class='doccomment'>/// Timestamp of the message to add unfurl behavior to</span>
+    <span class='kw'>pub</span> <span class='ident'>ts</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>str</span>,
+    <span class='doccomment'>/// JSON mapping a set of URLs from the message to their unfurl attachments</span>
+    <span class='kw'>pub</span> <span class='ident'>unfurls</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>str</span>,
+    <span class='doccomment'>/// Set to true or 1 to indicate the user must install your Slack app to trigger unfurls for this domain</span>
+    <span class='kw'>pub</span> <span class='ident'>user_auth_required</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>bool</span><span class='op'>&gt;</span>,
+}
+
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>, <span class='ident'>Debug</span>, <span class='ident'>Deserialize</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>UnfurlResponse</span> {
+    <span class='ident'>error</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>String</span><span class='op'>&gt;</span>,
+    <span class='attribute'>#[<span class='ident'>serde</span>(<span class='ident'>default</span>)]</span>
+    <span class='ident'>ok</span>: <span class='ident'>bool</span>,
+}
+
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Error</span><span class='op'>&gt;</span> <span class='ident'>Into</span><span class='op'>&lt;</span><span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>UnfurlResponse</span>, <span class='ident'>UnfurlError</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>UnfurlResponse</span> {
+    <span class='kw'>fn</span> <span class='ident'>into</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>UnfurlResponse</span>, <span class='ident'>UnfurlError</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;&gt;</span> {
+        <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>ok</span> {
+            <span class='prelude-val'>Ok</span>(<span class='self'>self</span>)
+        } <span class='kw'>else</span> {
+            <span class='prelude-val'>Err</span>(<span class='self'>self</span>.<span class='ident'>error</span>
+                    .<span class='ident'>as_ref</span>()
+                    .<span class='ident'>map</span>(<span class='ident'>String</span>::<span class='ident'>as_ref</span>)
+                    .<span class='ident'>unwrap_or</span>(<span class='string'>&quot;&quot;</span>)
+                    .<span class='ident'>into</span>())
+        }
+    }
+}
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
+<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>UnfurlError</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Error</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// No authentication token provided.</span>
+    <span class='ident'>NotAuthed</span>,
+    <span class='doccomment'>/// Invalid authentication token.</span>
+    <span class='ident'>InvalidAuth</span>,
+    <span class='doccomment'>/// Authentication token is for a deleted user or team.</span>
+    <span class='ident'>AccountInactive</span>,
+    <span class='doccomment'>/// This method cannot be called by a bot user.</span>
+    <span class='ident'>UserIsBot</span>,
+    <span class='doccomment'>/// The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.</span>
+    <span class='ident'>InvalidArgName</span>,
+    <span class='doccomment'>/// The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.</span>
+    <span class='ident'>InvalidArrayArg</span>,
+    <span class='doccomment'>/// The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.</span>
+    <span class='ident'>InvalidCharset</span>,
+    <span class='doccomment'>/// The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</span>
+    <span class='ident'>InvalidFormData</span>,
+    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</span>
+    <span class='ident'>InvalidPostType</span>,
+    <span class='doccomment'>/// The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</span>
+    <span class='ident'>MissingPostType</span>,
+    <span class='doccomment'>/// The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</span>
+    <span class='ident'>TeamAddedToOrg</span>,
+    <span class='doccomment'>/// The method was called via a POST request, but the POST data was either missing or truncated.</span>
+    <span class='ident'>RequestTimeout</span>,
+    <span class='doccomment'>/// The response was not parseable as the expected object</span>
+    <span class='ident'>MalformedResponse</span>(<span class='ident'>serde_json</span>::<span class='ident'>error</span>::<span class='ident'>Error</span>),
+    <span class='doccomment'>/// The response returned an error that was unknown to the library</span>
+    <span class='ident'>Unknown</span>(<span class='ident'>String</span>),
+    <span class='doccomment'>/// The client had an error sending the request to Slack</span>
+    <span class='ident'>Client</span>(<span class='ident'>E</span>),
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='ident'>E</span>: <span class='ident'>Error</span><span class='op'>&gt;</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>str</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>UnfurlError</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>s</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='ident'>str</span>) <span class='op'>-&gt;</span> <span class='self'>Self</span> {
+        <span class='kw'>match</span> <span class='ident'>s</span> {
+            <span class='string'>&quot;not_authed&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>NotAuthed</span>,
+            <span class='string'>&quot;invalid_auth&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>InvalidAuth</span>,
+            <span class='string'>&quot;account_inactive&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>AccountInactive</span>,
+            <span class='string'>&quot;user_is_bot&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>UserIsBot</span>,
+            <span class='string'>&quot;invalid_arg_name&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>InvalidArgName</span>,
+            <span class='string'>&quot;invalid_array_arg&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>InvalidArrayArg</span>,
+            <span class='string'>&quot;invalid_charset&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>InvalidCharset</span>,
+            <span class='string'>&quot;invalid_form_data&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>InvalidFormData</span>,
+            <span class='string'>&quot;invalid_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>InvalidPostType</span>,
+            <span class='string'>&quot;missing_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>MissingPostType</span>,
+            <span class='string'>&quot;team_added_to_org&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>TeamAddedToOrg</span>,
+            <span class='string'>&quot;request_timeout&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>RequestTimeout</span>,
+            _ <span class='op'>=&gt;</span> <span class='ident'>UnfurlError</span>::<span class='ident'>Unknown</span>(<span class='ident'>s</span>.<span class='ident'>to_owned</span>()),
+        }
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Error</span><span class='op'>&gt;</span> <span class='ident'>fmt</span>::<span class='ident'>Display</span> <span class='kw'>for</span> <span class='ident'>UnfurlError</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>fmt</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>f</span>: <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>fmt</span>::<span class='ident'>Formatter</span>) <span class='op'>-&gt;</span> <span class='ident'>fmt</span>::<span class='prelude-ty'>Result</span> {
+        <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='self'>self</span>.<span class='ident'>description</span>())
+    }
+}
+
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>E</span>: <span class='ident'>Error</span><span class='op'>&gt;</span> <span class='ident'>Error</span> <span class='kw'>for</span> <span class='ident'>UnfurlError</span><span class='op'>&lt;</span><span class='ident'>E</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>description</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='ident'>str</span> {
+        <span class='kw'>match</span> <span class='self'>self</span> {
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>NotAuthed</span> <span class='op'>=&gt;</span> <span class='string'>&quot;not_authed: No authentication token provided.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>InvalidAuth</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_auth: Invalid authentication token.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>AccountInactive</span> <span class='op'>=&gt;</span> <span class='string'>&quot;account_inactive: Authentication token is for a deleted user or team.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>UserIsBot</span> <span class='op'>=&gt;</span> <span class='string'>&quot;user_is_bot: This method cannot be called by a bot user.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>InvalidArgName</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_arg_name: The method was passed an argument whose name falls outside the bounds of common decency. This includes very long names and names with non-alphanumeric characters other than _. If you get this error, it is typically an indication that you have made a very malformed API call.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>TeamAddedToOrg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;team_added_to_org: The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='ident'>inner</span>.<span class='ident'>description</span>(),
+        }
+    }
+
+    <span class='kw'>fn</span> <span class='ident'>cause</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Error</span><span class='op'>&gt;</span> {
+        <span class='kw'>match</span> <span class='self'>self</span> {
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>e</span>),
+            <span class='kw-2'>&amp;</span><span class='ident'>UnfurlError</span>::<span class='ident'>Client</span>(<span class='kw-2'>ref</span> <span class='ident'>inner</span>) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='ident'>inner</span>),
             _ <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,
         }
     }
@@ -1455,10 +1795,12 @@
     <span class='ident'>InvalidCharset</span>,
     <span class='doccomment'>/// The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.</span>
     <span class='ident'>InvalidFormData</span>,
-    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.</span>
+    <span class='doccomment'>/// The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.</span>
     <span class='ident'>InvalidPostType</span>,
     <span class='doccomment'>/// The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.</span>
     <span class='ident'>MissingPostType</span>,
+    <span class='doccomment'>/// The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.</span>
+    <span class='ident'>TeamAddedToOrg</span>,
     <span class='doccomment'>/// The method was called via a POST request, but the POST data was either missing or truncated.</span>
     <span class='ident'>RequestTimeout</span>,
     <span class='doccomment'>/// The response was not parseable as the expected object</span>
@@ -1488,6 +1830,7 @@
             <span class='string'>&quot;invalid_form_data&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UpdateError</span>::<span class='ident'>InvalidFormData</span>,
             <span class='string'>&quot;invalid_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UpdateError</span>::<span class='ident'>InvalidPostType</span>,
             <span class='string'>&quot;missing_post_type&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UpdateError</span>::<span class='ident'>MissingPostType</span>,
+            <span class='string'>&quot;team_added_to_org&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UpdateError</span>::<span class='ident'>TeamAddedToOrg</span>,
             <span class='string'>&quot;request_timeout&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>UpdateError</span>::<span class='ident'>RequestTimeout</span>,
             _ <span class='op'>=&gt;</span> <span class='ident'>UpdateError</span>::<span class='ident'>Unknown</span>(<span class='ident'>s</span>.<span class='ident'>to_owned</span>()),
         }
@@ -1517,8 +1860,9 @@
             <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>InvalidArrayArg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_array_arg: The method was passed a PHP-style array argument (e.g. with a name like foo[7]). These are never valid with the Slack API.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>InvalidCharset</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_charset: The method was called via a POST request, but the charset specified in the Content-Type header was invalid. Valid charset names are: utf-8 iso-8859-1.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>InvalidFormData</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_form_data: The method was called via a POST request with Content-Type application/x-www-form-urlencoded or multipart/form-data, but the form data was either missing or syntactically invalid.&quot;</span>,
-            <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/json application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>InvalidPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;invalid_post_type: The method was called via a POST request, but the specified Content-Type was invalid. Valid types are: application/x-www-form-urlencoded multipart/form-data text/plain.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>MissingPostType</span> <span class='op'>=&gt;</span> <span class='string'>&quot;missing_post_type: The method was called via a POST request and included a data payload, but the request did not include a Content-Type header.&quot;</span>,
+            <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>TeamAddedToOrg</span> <span class='op'>=&gt;</span> <span class='string'>&quot;team_added_to_org: The team associated with your request is currently undergoing migration to an Enterprise Organization. Web API and other platform operations will be intermittently unavailable until the transition is complete.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>RequestTimeout</span> <span class='op'>=&gt;</span> <span class='string'>&quot;request_timeout: The method was called via a POST request, but the POST data was either missing or truncated.&quot;</span>,
             <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>MalformedResponse</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='ident'>e</span>.<span class='ident'>description</span>(),
             <span class='kw-2'>&amp;</span><span class='ident'>UpdateError</span>::<span class='ident'>Unknown</span>(<span class='kw-2'>ref</span> <span class='ident'>s</span>) <span class='op'>=&gt;</span> <span class='ident'>s</span>,
