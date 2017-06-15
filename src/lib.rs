@@ -175,6 +175,16 @@ impl RtmClient {
         let wss_url = reqwest::Url::parse(&start_url)?;
         let mut websocket = tungstenite::connect(wss_url)?;
 
+        // Slack can leave us hanging
+        {
+            let socket = match *websocket.get_mut() {
+                tungstenite::stream::Stream::Plain(ref s) => s,
+                tungstenite::stream::Stream::Tls(ref mut t) => t.get_mut()
+            };
+            socket.set_read_timeout(Some(std::time::Duration::from_secs(70)))?;
+            socket.set_write_timeout(Some(std::time::Duration::from_secs(70)))?;
+        }
+
         handler.on_connect(self);
         // receive loop
         loop {
