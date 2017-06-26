@@ -35,10 +35,12 @@ pub use api::{Channel, Group, Im, Team, User, Message};
 mod events;
 pub use events::Event;
 
+use std::io::ErrorKind::WouldBlock;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc::{self, channel};
 use events::{MessageSent, MessageError};
+use tungstenite::Error::Io;
 
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
@@ -181,7 +183,8 @@ impl RtmClient {
                 tungstenite::stream::Stream::Plain(ref s) => s,
                 tungstenite::stream::Stream::Tls(ref mut t) => t.get_mut()
             };
-            socket.set_read_timeout(Some(std::time::Duration::from_secs(70)))?;
+            // Set the read timeout to something small to prevent blocking reads
+            socket.set_read_timeout(Some(std::time::Duration::from_secs(1)))?;
             socket.set_write_timeout(Some(std::time::Duration::from_secs(70)))?;
         }
 
@@ -211,8 +214,24 @@ impl RtmClient {
                 }
             }
 
-            // blocks until a message is received or websocket errors
-            let message = websocket.read_message()?;
+            // blocks until a message is received, websocket errors, or a read timeout occurs
+            let message = match websocket.read_message() {
+                Ok(msg) => msg,
+                Err(Io(x)) => {
+                    // Allow WouldBlock errors to keep the show moving
+                    if x.kind() == WouldBlock {
+                        continue
+                    }
+
+                    // Other IoErrors not acceptable
+                    return Err(x.into());
+                }
+
+                // Any other socket error not acceptable
+                Err(y) => {
+                    return Err(y.into());
+                }
+            };
 
             // handle the message
             match message {
