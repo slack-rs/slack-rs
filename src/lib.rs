@@ -217,19 +217,15 @@ impl RtmClient {
             // blocks until a message is received, websocket errors, or a read timeout occurs
             let message = match websocket.read_message() {
                 Ok(msg) => msg,
-                Err(Io(x)) => {
-                    // Allow WouldBlock errors to keep the show moving
-                    if x.kind() == WouldBlock {
-                        continue
-                    }
 
-                    // Other IoErrors not acceptable
-                    return Err(x.into());
+                // Allow WouldBlock errors to keep the show moving
+                Err(Io(ref x)) if x.kind() == WouldBlock => {
+                    continue
                 }
 
-                // Any other socket error not acceptable
-                Err(y) => {
-                    return Err(y.into());
+                // Any other error not acceptable
+                Err(e) => {
+                    return Err(e.into());
                 }
             };
 
