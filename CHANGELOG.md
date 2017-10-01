@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.19.0
+
+- Update to `slack_api v0.18.0`
+  - Adds message threading fields to api types
+- Update serde to `1.0.0` **breaking change, your serde must be ~1.0.0**
+
 ## 0.18.0
 
 Update to `slack_api v0.17.0`
