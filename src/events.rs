@@ -261,6 +261,25 @@ pub enum Event {
     MessageSent(MessageSent),
     /// Represents an error sending a message
     MessageError(MessageError),
+    /// Represents a request to display a desktop notification
+    DesktopNotification {
+        #[serde(rename = "avatarImage")]
+        avatar_image: Option<String>,
+        channel: Option<String>,
+        content: Option<String>,
+        event_ts: Option<String>,
+        #[serde(rename = "imageUri")]
+        image_uri: Option<String>,
+        is_shared: Option<bool>,
+        #[serde(rename = "launchUri")]
+        launch_uri: Option<String>,
+        msg: Option<String>,
+        #[serde(rename = "ssbFilename")]
+        ssb_filename: Option<String>,
+        subtitle: Option<String>,
+        thread_ts: Option<String>,
+        title: Option<String>,
+    },
 }
 
 /// Represents a confirmation of a message sent
