@@ -9,9 +9,9 @@ license = "Apache-2.0"
 
 [dependencies]
 reqwest = "0.4.0"
-slack_api = { version = "0.17.0", features = ["reqwest"] }
-serde = "0.9"
-serde_json = "0.9"
-serde_derive = "0.9"
+slack_api = { version = "0.18.0", features = ["reqwest"] }
+serde = "1.0.0"
+serde_json = "1.0.0"
+serde_derive = "1.0.0"
 tungstenite = "0.2.0"
 log = "0.3.7"
