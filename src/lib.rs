@@ -181,11 +181,14 @@ impl RtmClient {
                 tungstenite::stream::Stream::Plain(ref s) => s,
                 tungstenite::stream::Stream::Tls(ref mut t) => t.get_mut()
             };
-            socket.set_read_timeout(Some(std::time::Duration::from_secs(70)))?;
-            socket.set_write_timeout(Some(std::time::Duration::from_secs(70)))?;
+            socket.set_read_timeout(Some(std::time::Duration::from_secs(30)))?;
+            socket.set_write_timeout(Some(std::time::Duration::from_secs(25)))?;
         }
 
         handler.on_connect(self);
+
+        let mut prev_ = ::std::time::Instant::now();
+
         // receive loop
         loop {
             // try to write out pending messages (if any)
@@ -212,30 +215,38 @@ impl RtmClient {
             }
 
             // blocks until a message is received or websocket errors
-            let message = websocket.read_message()?;
+            let message = match websocket.read_message() {
+                Err(e) => {
+                    debug!("{:?}", e);
+                    // read failed, try send ping to check still alive
+                    websocket.write_message(tungstenite::Message::Ping(vec![]))?;
+                    continue;
+                }
+                Ok(m) => m
+            };
 
-            // handle the message
-            match message {
-                tungstenite::Message::Text(text) => {
-                    match Event::from_json(&text[..]) {
-                        Ok(event) => handler.on_event(self, event),
-                        Err(err) => {
-                            info!("Unable to deserialize slack message, error: {}: json: {}",
-                                  err,
-                                  text);
+            let received = ::std::time::Instant::now(); {
+                let print_recieved = |var: &str| {
+                    debug!("RTM WS {} recieved {:?} since last msg", var, received - prev_);
+                };
+                // handle the message
+                match message {
+                    tungstenite::Message::Text(text) => {
+                        match Event::from_json(&text[..]) {
+                            Ok(event) => handler.on_event(self, event),
+                            Err(err) => {
+                                info!("Unable to deserialize slack message, error: {}: json: {}",
+                                      err,
+                                      text);
+                            }
                         }
                     }
-                }
-                tungstenite::Message::Binary(_) => {
-                    debug!("RTM WS Binary recieved");
-                }
-                tungstenite::Message::Ping(_) => {
-                    debug!("RTM WS Ping recieved");
-                }
-                tungstenite::Message::Pong(_) => {
-                    debug!("RTM WS Ping recieved");
+                    tungstenite::Message::Binary(_) => print_recieved("Binary"),
+                    tungstenite::Message::Ping(_) => print_recieved("Ping"),
+                    tungstenite::Message::Pong(_) => print_recieved("Pong"),
                 }
             }
+            prev_ = received;
         }
     }
 
