@@ -173,7 +173,7 @@ impl RtmClient {
             .ok_or(Error::Api("Slack did not provide a URL".into()))?;
 
         let wss_url = reqwest::Url::parse(&start_url)?;
-        let mut websocket = tungstenite::connect(wss_url)?;
+        let (mut websocket, _resp) = tungstenite::client::connect(wss_url)?;
 
         // Slack can leave us hanging
         {
@@ -226,7 +226,15 @@ impl RtmClient {
                         }
                     }
                 }
-                tungstenite::Message::Binary(_) => {}
+                tungstenite::Message::Binary(_) => {
+                    debug!("RTM WS Binary recieved");
+                }
+                tungstenite::Message::Ping(_) => {
+                    debug!("RTM WS Ping recieved");
+                }
+                tungstenite::Message::Pong(_) => {
+                    debug!("RTM WS Ping recieved");
+                }
             }
         }
     }
