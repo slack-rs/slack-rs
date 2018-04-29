@@ -13,5 +13,5 @@ slack_api = { version = "0.18.0", features = ["reqwest"] }
 serde = "1.0.0"
 serde_json = "1.0.0"
 serde_derive = "1.0.0"
-tungstenite = "0.2.0"
+tungstenite = "0.5.3"
 log = "0.3.7"
