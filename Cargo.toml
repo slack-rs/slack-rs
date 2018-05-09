@@ -9,7 +9,7 @@ license = "Apache-2.0"
 
 [dependencies]
 reqwest = "0.4.0"
-slack_api = { version = "0.18.0", features = ["reqwest"] }
+slack_api = { version = "0.19.0", features = ["reqwest"] }
 serde = "1.0.0"
 serde_json = "1.0.0"
 serde_derive = "1.0.0"
