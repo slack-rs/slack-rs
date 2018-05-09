@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.20.0
+- Update to `slack_api v0.19.0`
+  - Adds some user/user_profile and channel info
+
 ## 0.19.0
 
 - Update to `slack_api v0.18.0`
