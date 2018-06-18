@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.21.0
+- Update to `slack_api v0.20.0`
+  - channel.priority is a number
+  - Reqwest 0.8.5
+
 ## 0.20.0
 - Update to `slack_api v0.19.0`
   - Adds some user/user_profile and channel info
