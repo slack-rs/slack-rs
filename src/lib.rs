@@ -148,7 +148,7 @@ impl RtmClient {
     /// Logs in to slack. Call this before calling `run`.
     /// Alternatively use `login_and_run`.
     pub fn login(token: &str) -> Result<RtmClient, Error> {
-        let client = reqwest::Client::new()?;
+        let client = reqwest::Client::new();
         let start_response = api::rtm::start(&client, token, &Default::default())?;
 
         // setup channels for passing messages
