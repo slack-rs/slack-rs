@@ -192,7 +192,6 @@ impl RtmClient {
             .ok_or(Error::Api("Slack did not provide a URL".into()))?;
         let mut start_url_qp = start_url.clone();
         start_url_qp.push_str(&("?batch_presence_aware=1".to_string()));
-        println!("start_url returned is \"{:?}\"", start_url_qp);
         let wss_url = reqwest::Url::parse(&start_url_qp)?;
         let (mut websocket, _resp) = tungstenite::client::connect(wss_url)?;
 
