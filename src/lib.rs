@@ -147,7 +147,7 @@ impl Sender {
     /// user presence"
     pub fn subscribe_presence(&self, user_list: &[&str]) -> Result<usize, Error> {
         let n = self.get_msg_uid();
-        let mstr = format!(r#"{{"type": "presence_sub", "ids": "{:?}"}}"#,
+        let mstr = format!(r#"{{"type": "presence_sub", "ids": {:?}}}"#,
                            user_list);
 
         self.send(&mstr)
