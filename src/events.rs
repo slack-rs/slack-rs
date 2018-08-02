@@ -171,7 +171,7 @@ pub enum Event {
     },
     /// Represents the slack
     /// [`presence_change`](https://api.slack.com/events/presence_change) event.
-    PresenceChange { user: Option<String>, users: Option<Box<Vec<String>>>, presence: String },
+    PresenceChange { user: Option<String>, users: Option<Vec<String>>, presence: String },
     /// Represents the slack
     /// [`manual_presence_change`](https://api.slack.com/events/manual_presence_change) event.
     ManualPresenceChange { presence: String },
