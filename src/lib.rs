@@ -136,6 +136,25 @@ impl Sender {
         Ok(n)
     }
 
+    /// Subscribes to presence updates for the given users
+    /// This is due to the update in presence events detailed here:
+    /// https://api.slack.com/changelog/2017-10-making-rtm-presence-subscription-only
+    ///
+    /// `user_list` is a slice of the list of users to subscrib, e.g. `W839208`, not @xyz.
+    /// The full list of users to subscribe to must be sent each time the subscription should
+    /// change
+    /// Slack doc can be found at https://api.slack.com/docs/presence-and-status under "Determining
+    /// user presence"
+    pub fn subscribe_presence(&self, user_list: &[&str]) -> Result<usize, Error> {
+        let n = self.get_msg_uid();
+        let mstr = format!(r#"{{"type": "presence_sub", "ids": {:?}}}"#,
+                           user_list);
+
+        self.send(&mstr)
+            .map_err(|err| Error::Internal(format!("{:?}", err)))?;
+        Ok(n)
+    }
+
     /// Shutdown `RtmClient`
     pub fn shutdown(&self) -> Result<(), Error> {
         self.tx
@@ -171,8 +190,7 @@ impl RtmClient {
             .url
             .as_ref()
             .ok_or(Error::Api("Slack did not provide a URL".into()))?;
-
-        let wss_url = reqwest::Url::parse(&start_url)?;
+        let wss_url = reqwest::Url::parse_with_params(&start_url, &[("batch_presence_aware", "1")])?;
         let (mut websocket, _resp) = tungstenite::client::connect(wss_url)?;
 
         // Slack can leave us hanging

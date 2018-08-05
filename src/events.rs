@@ -171,7 +171,7 @@ pub enum Event {
     },
     /// Represents the slack
     /// [`presence_change`](https://api.slack.com/events/presence_change) event.
-    PresenceChange { user: String, presence: String },
+    PresenceChange { user: Option<String>, users: Option<Vec<String>>, presence: String },
     /// Represents the slack
     /// [`manual_presence_change`](https://api.slack.com/events/manual_presence_change) event.
     ManualPresenceChange { presence: String },
@@ -381,6 +381,52 @@ mod tests {
                 assert_eq!(code, 2);
                 assert_eq!(msg, "message text is missing");
             }
+            _ => panic!("Event decoded into incorrect variant."),
+        }
+    }
+
+    #[test]
+    fn decode_presence_change_event() {
+        let event: Event = Event::from_json(r##"{
+            "type": "presence_change",
+            "users": ["U024BE7LH", "U012EA2U1"],
+            "presence": "away"
+        }"##)
+                .unwrap();
+        match event {
+            Event::PresenceChange{users, presence, ..} => {
+                assert_eq!(presence, "away");
+                match users {
+                    Some(u) => {
+                        assert_eq!(u.len(), 2);
+                        assert_eq!(u[0], "U024BE7LH");
+                        assert_eq!(u[1], "U012EA2U1");
+                    },
+                    _ => panic!("Presence change does not contain users elem"),
+                }
+            },
+            _ => panic!("Event decoded into incorrect variant."),
+        }
+    }
+
+    #[test]
+    fn decode_legacy_presence_change_event() {
+        let event: Event = Event::from_json(r##"{
+            "type": "presence_change",
+            "user": "U024BE7LH",
+            "presence": "away"
+        }"##)
+                .unwrap();
+        match event {
+            Event::PresenceChange{user, presence, ..} => {
+                assert_eq!(presence, "away");
+                match user {
+                    Some(u) => {
+                        assert_eq!(u, "U024BE7LH");
+                    },
+                    _ => panic!("Presence change does not contain users elem"),
+                }
+            },
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
