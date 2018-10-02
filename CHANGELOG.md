@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.22.0
+- Update to `slack_api v0.21.0`
+  - Reqwest 0.9.0
+  - Tungstenite 0.6.0
+
 ## 0.21.0
 - Update to `slack_api v0.20.0`
   - channel.priority is a number
