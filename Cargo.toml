@@ -1,6 +1,6 @@
 [package]
 name = "slack"
-version = "0.21.0"
+version = "0.22.0"
 authors = ["Benjamin Elder <bentheelder@gmail.com>", "Matt Jones <mthjones@gmail.com>"]
 repository = "https://github.com/slack-rs/slack-rs.git"
 documentation = "http://slack-rs.github.io/slack-rs/slack/index.html"
@@ -8,10 +8,10 @@ description = "slack realtime messaging client: https://api.slack.com/bot-users"
 license = "Apache-2.0"
 
 [dependencies]
-reqwest = "0.8.5"
-slack_api = { version = "0.20.0", features = ["reqwest"] }
+reqwest = "^0.9"
+slack_api = { version = "0.21.0", features = ["reqwest"] }
 serde = "1.0.0"
 serde_json = "1.0.0"
 serde_derive = "1.0.0"
-tungstenite = "0.5.3"
+tungstenite = "^0.6"
 log = "0.3.7"
