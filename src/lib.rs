@@ -18,27 +18,27 @@
 //! See [CHANGELOG.md](https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md) for latest
 //! release notes.
 
-extern crate reqwest;
+use reqwest;
 pub extern crate slack_api as api;
 #[macro_use]
 extern crate serde_derive;
-extern crate serde_json;
-extern crate tungstenite;
+use serde_json;
+use tungstenite;
 #[macro_use]
 extern crate log;
 
 pub mod error;
-pub use error::Error;
+pub use crate::error::Error;
 
-pub use api::{Channel, Group, Im, Team, User, Message};
+pub use crate::api::{Channel, Group, Im, Team, User, Message};
 
 mod events;
-pub use events::Event;
+pub use crate::events::Event;
 
 use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc::{self, channel};
-use events::{MessageSent, MessageError};
+use crate::events::{MessageSent, MessageError};
 
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {

@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-use api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
+use crate::api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
           stars, reactions};
 use std::boxed::Box;
 
@@ -309,7 +309,7 @@ pub struct MessageErrorDetail {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use api::{Message, MessageStandard};
+    use crate::api::{Message, MessageStandard};
 
     #[test]
     fn decode_short_standard_message() {
