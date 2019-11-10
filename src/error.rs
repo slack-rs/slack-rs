@@ -19,7 +19,7 @@ use std::io;
 use std::error;
 use std::string::FromUtf8Error;
 
-use api;
+use crate::api;
 
 /// `slack::Error` represents errors that can happen while using the `RtmClient`
 #[derive(Debug)]
@@ -83,7 +83,7 @@ impl From<api::rtm::StartError<::reqwest::Error>> for Error {
 }
 
 impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
             Error::Http(ref e) => write!(f, "Http (reqwest) Error: {:?}", e),
             Error::WebSocket(ref e) => write!(f, "Websocket Error: {:?}", e),
@@ -109,7 +109,7 @@ impl error::Error for Error {
         }
     }
 
-    fn cause(&self) -> Option<&error::Error> {
+    fn cause(&self) -> Option<&dyn error::Error> {
         match *self {
             Error::Http(ref e) => Some(e),
             Error::WebSocket(ref e) => Some(e),

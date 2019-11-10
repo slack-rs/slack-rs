@@ -6,6 +6,7 @@ repository = "https://github.com/slack-rs/slack-rs.git"
 documentation = "http://slack-rs.github.io/slack-rs/slack/index.html"
 description = "slack realtime messaging client: https://api.slack.com/bot-users"
 license = "Apache-2.0"
+edition = "2018"
 
 [dependencies]
 reqwest = "0.9"

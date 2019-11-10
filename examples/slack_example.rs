@@ -21,7 +21,7 @@
 // to.
 //
 
-extern crate slack;
+use slack;
 use slack::{Event, RtmClient};
 
 struct MyHandler;
