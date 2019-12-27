@@ -30,15 +30,15 @@ extern crate log;
 pub mod error;
 pub use crate::error::Error;
 
-pub use crate::api::{Channel, Group, Im, Team, User, Message};
+pub use crate::api::{Channel, Group, Im, Message, Team, User};
 
 mod events;
 pub use crate::events::Event;
 
-use std::sync::Arc;
+use crate::events::{MessageError, MessageSent};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc::{self, channel};
-use crate::events::{MessageSent, MessageError};
+use std::sync::Arc;
 
 /// Implement this trait in your code to handle message events
 pub trait EventHandler {
@@ -107,10 +107,12 @@ impl Sender {
     pub fn send_message(&self, channel_id: &str, msg: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
         let msg_json = serde_json::to_string(&msg)?;
-        let mstr = format!(r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
-                           n,
-                           channel_id,
-                           &msg_json[1..msg_json.len() - 1]);
+        let mstr = format!(
+            r#"{{"id": {},"type": "message", "channel": "{}","text": "{}"}}"#,
+            n,
+            channel_id,
+            &msg_json[1..msg_json.len() - 1]
+        );
 
         self.send(&mstr[..])
             .map_err(|err| Error::Internal(format!("{}", err)))?;
@@ -127,9 +129,10 @@ impl Sender {
     /// `channel_id` is the slack channel id, e.g. `UXYZ1234`, not `#general`.
     pub fn send_typing(&self, channel_id: &str) -> Result<usize, Error> {
         let n = self.get_msg_uid();
-        let mstr = format!(r#"{{"id": {}, "type": "typing", "channel": "{}"}}"#,
-                           n,
-                           channel_id);
+        let mstr = format!(
+            r#"{{"id": {}, "type": "typing", "channel": "{}"}}"#,
+            n, channel_id
+        );
 
         self.send(&mstr)
             .map_err(|err| Error::Internal(format!("{:?}", err)))?;
@@ -147,8 +150,7 @@ impl Sender {
     /// user presence"
     pub fn subscribe_presence(&self, user_list: &[&str]) -> Result<usize, Error> {
         let n = self.get_msg_uid();
-        let mstr = format!(r#"{{"type": "presence_sub", "ids": {:?}}}"#,
-                           user_list);
+        let mstr = format!(r#"{{"type": "presence_sub", "ids": {:?}}}"#, user_list);
 
         self.send(&mstr)
             .map_err(|err| Error::Internal(format!("{:?}", err)))?;
@@ -167,7 +169,7 @@ impl RtmClient {
     /// Logs in to slack. Call this before calling `run`.
     /// Alternatively use `login_and_run`.
     pub fn login(token: &str) -> Result<RtmClient, Error> {
-        let client = reqwest::Client::new();
+        let client = reqwest::blocking::Client::new();
         let start_response = api::rtm::start(&client, token, &Default::default())?;
 
         // setup channels for passing messages
@@ -178,26 +180,28 @@ impl RtmClient {
         };
 
         Ok(RtmClient {
-               start_response: start_response,
-               sender: sender,
-               rx: rx,
-           })
+            start_response: start_response,
+            sender: sender,
+            rx: rx,
+        })
     }
 
     /// Runs the message receive loop
     pub fn run<T: EventHandler>(&self, handler: &mut T) -> Result<(), Error> {
-        let start_url = self.start_response
+        let start_url = self
+            .start_response
             .url
             .as_ref()
             .ok_or(Error::Api("Slack did not provide a URL".into()))?;
-        let wss_url = reqwest::Url::parse_with_params(&start_url, &[("batch_presence_aware", "1")])?;
+        let wss_url =
+            reqwest::Url::parse_with_params(&start_url, &[("batch_presence_aware", "1")])?;
         let (mut websocket, _resp) = tungstenite::client::connect(wss_url)?;
 
         // Slack can leave us hanging
         {
             let socket = match *websocket.get_mut() {
                 tungstenite::stream::Stream::Plain(ref s) => s,
-                tungstenite::stream::Stream::Tls(ref mut t) => t.get_mut()
+                tungstenite::stream::Stream::Tls(ref mut t) => t.get_mut(),
             };
             socket.set_read_timeout(Some(std::time::Duration::from_secs(30)))?;
             socket.set_write_timeout(Some(std::time::Duration::from_secs(25)))?;
@@ -212,18 +216,15 @@ impl RtmClient {
             // try to write out pending messages (if any)
             loop {
                 match self.rx.try_recv() {
-                    Ok(msg) => {
-                        match msg {
-                            WsMessage::Text(text) => {
-                                websocket
-                                    .write_message(tungstenite::Message::Text(text))?
-                            }
-                            WsMessage::Close => {
-                                handler.on_close(self);
-                                return websocket.close(None).map_err(|e| e.into());
-                            }
+                    Ok(msg) => match msg {
+                        WsMessage::Text(text) => {
+                            websocket.write_message(tungstenite::Message::Text(text))?
                         }
-                    }
+                        WsMessage::Close => {
+                            handler.on_close(self);
+                            return websocket.close(None).map_err(|e| e.into());
+                        }
+                    },
                     Err(mpsc::TryRecvError::Disconnected) => {
                         handler.on_close(self);
                         return Err(Error::Internal("rx disconnected".into()));
@@ -240,25 +241,29 @@ impl RtmClient {
                     websocket.write_message(tungstenite::Message::Ping(vec![]))?;
                     continue;
                 }
-                Ok(m) => m
+                Ok(m) => m,
             };
 
-            let received = ::std::time::Instant::now(); {
+            let received = ::std::time::Instant::now();
+            {
                 let print_recieved = |var: &str| {
-                    debug!("RTM WS {} recieved {:?} since last msg", var, received - prev_);
+                    debug!(
+                        "RTM WS {} recieved {:?} since last msg",
+                        var,
+                        received - prev_
+                    );
                 };
                 // handle the message
                 match message {
-                    tungstenite::Message::Text(text) => {
-                        match Event::from_json(&text[..]) {
-                            Ok(event) => handler.on_event(self, event),
-                            Err(err) => {
-                                info!("Unable to deserialize slack message, error: {}: json: {}",
-                                      err,
-                                      text);
-                            }
+                    tungstenite::Message::Text(text) => match Event::from_json(&text[..]) {
+                        Ok(event) => handler.on_event(self, event),
+                        Err(err) => {
+                            info!(
+                                "Unable to deserialize slack message, error: {}: json: {}",
+                                err, text
+                            );
                         }
-                    }
+                    },
                     tungstenite::Message::Binary(_) => print_recieved("Binary"),
                     tungstenite::Message::Ping(_) => print_recieved("Ping"),
                     tungstenite::Message::Pong(_) => print_recieved("Pong"),
