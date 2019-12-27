@@ -31,7 +31,7 @@ pub enum Error {
     /// Error decoding websocket text frame Utf8
     Utf8(FromUtf8Error),
     /// Error parsing url
-    Url(::reqwest::UrlError),
+    Url(::url::ParseError),
     /// Error decoding Json
     Json(::serde_json::Error),
     /// Slack Api Error
@@ -46,8 +46,8 @@ impl From<::reqwest::Error> for Error {
     }
 }
 
-impl From<::reqwest::UrlError> for Error {
-    fn from(err: ::reqwest::UrlError) -> Error {
+impl From<::url::ParseError> for Error {
+    fn from(err: ::url::ParseError) -> Error {
         Error::Url(err)
     }
 }

@@ -267,6 +267,7 @@ impl RtmClient {
                     tungstenite::Message::Binary(_) => print_recieved("Binary"),
                     tungstenite::Message::Ping(_) => print_recieved("Ping"),
                     tungstenite::Message::Pong(_) => print_recieved("Pong"),
+                    tungstenite::Message::Close(_) => print_recieved("Close"),
                 }
             }
             prev_ = received;
