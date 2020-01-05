@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.23.0
+- Update to `slack_api v0.22.0`
+  - Reqwest 0.10.0 (blocking)
+  - Tungstenite 0.9.2
+  - url 2.1.0
+- 2018 edition source
+
 ## 0.22.0
 - Update to `slack_api v0.21.0`
   - Reqwest 0.9.0
