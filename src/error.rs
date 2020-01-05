@@ -14,11 +14,11 @@
 // limitations under the License.
 //
 
+use crate::api;
+use std::error;
 use std::fmt;
 use std::io;
-use std::error;
 use std::string::FromUtf8Error;
-use crate::api;
 
 /// `slack::Error` represents errors that can happen while using the `RtmClient`
 #[derive(Debug)]
@@ -40,9 +40,7 @@ pub enum Error {
 }
 
 impl From<api::requests::Error> for Error {
-
     fn from(err: api::requests::Error) -> Error {
-
         Error::Http(err)
     }
 }
@@ -78,9 +76,7 @@ impl From<FromUtf8Error> for Error {
 }
 
 impl From<api::rtm::StartError<api::requests::Error>> for Error {
-
     fn from(err: api::rtm::StartError<api::requests::Error>) -> Error {
-
         Error::Api(format!("rtm::StartError: {}", err))
     }
 }
@@ -107,8 +103,7 @@ impl error::Error for Error {
             Error::Utf8(ref e) => e.description(),
             Error::Url(ref e) => e.description(),
             Error::Json(ref e) => e.description(),
-            Error::Api(ref st) |
-            Error::Internal(ref st) => st,
+            Error::Api(ref st) | Error::Internal(ref st) => st,
         }
     }
 
@@ -119,8 +114,7 @@ impl error::Error for Error {
             Error::Utf8(ref e) => Some(e),
             Error::Url(ref e) => Some(e),
             Error::Json(ref e) => Some(e),
-            Error::Api(_) |
-            Error::Internal(_) => None,
+            Error::Api(_) | Error::Internal(_) => None,
         }
     }
 }
