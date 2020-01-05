@@ -14,9 +14,10 @@
 // limitations under the License.
 //
 
-use crate::api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
-          stars, reactions};
-use std::boxed::Box;
+use crate::api::{
+    reactions, stars, Bot, Channel, File, FileComment, Message, MessagePinnedItem,
+    MessageUnpinnedItem, User,
+};
 
 /// Represents Slack [rtm event](https://api.slack.com/rtm) types.
 #[derive(Clone, Debug, Deserialize)]
@@ -171,7 +172,11 @@ pub enum Event {
     },
     /// Represents the slack
     /// [`presence_change`](https://api.slack.com/events/presence_change) event.
-    PresenceChange { user: Option<String>, users: Option<Vec<String>>, presence: String },
+    PresenceChange {
+        user: Option<String>,
+        users: Option<Vec<String>>,
+        presence: String,
+    },
     /// Represents the slack
     /// [`manual_presence_change`](https://api.slack.com/events/manual_presence_change) event.
     ManualPresenceChange { presence: String },
@@ -313,45 +318,49 @@ mod tests {
 
     #[test]
     fn decode_short_standard_message() {
-        let event: Event = Event::from_json(r#"{
+        let event: Event = Event::from_json(
+            r#"{
             "type": "message",
             "ts": "1234567890.218332",
             "user": "U12345678",
             "text": "Hello world",
             "channel": "C12345678"
-        }"#)
-                .unwrap();
+        }"#,
+        )
+        .unwrap();
         match event {
-            Event::Message(message) => {
-                match *message {
-                    Message::Standard(MessageStandard {
-                                          ref ts,
-                                          ref user,
-                                          ref text,
-                                          ..
-                                      }) => {
-                        assert_eq!(ts.as_ref().unwrap(), "1234567890.218332");
-                        assert_eq!(text.as_ref().unwrap(), "Hello world");
-                        assert_eq!(user.as_ref().unwrap(), "U12345678");
-                    }
-                    _ => panic!("Message decoded into incorrect variant."),
+            Event::Message(message) => match *message {
+                Message::Standard(MessageStandard {
+                    ref ts,
+                    ref user,
+                    ref text,
+                    ..
+                }) => {
+                    assert_eq!(ts.as_ref().unwrap(), "1234567890.218332");
+                    assert_eq!(text.as_ref().unwrap(), "Hello world");
+                    assert_eq!(user.as_ref().unwrap(), "U12345678");
                 }
-            }
+                _ => panic!("Message decoded into incorrect variant."),
+            },
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
 
     #[test]
     fn decode_sent_ok() {
-        let event: Event = Event::from_json(r#"{
+        let event: Event = Event::from_json(
+            r#"{
             "ok": true,
             "reply_to": 1,
             "ts": "1234567890.218332",
             "text": "Hello world"
-        }"#)
-                .unwrap();
+        }"#,
+        )
+        .unwrap();
         match event {
-            Event::MessageSent(MessageSent { reply_to, ts, text, .. }) => {
+            Event::MessageSent(MessageSent {
+                reply_to, ts, text, ..
+            }) => {
                 assert_eq!(reply_to, 1);
                 assert_eq!(ts, "1234567890.218332");
                 assert_eq!(text, "Hello world");
@@ -362,21 +371,23 @@ mod tests {
 
     #[test]
     fn decode_sent_not_ok() {
-        let event: Event = Event::from_json(r#"{
+        let event: Event = Event::from_json(
+            r#"{
             "ok": false,
             "reply_to": 1,
             "error": {
                 "code": 2,
                 "msg": "message text is missing"
             }
-        }"#)
-                .unwrap();
+        }"#,
+        )
+        .unwrap();
         match event {
             Event::MessageError(MessageError {
-                                    reply_to,
-                                    error: MessageErrorDetail { code, msg, .. },
-                                    ..
-                                }) => {
+                reply_to,
+                error: MessageErrorDetail { code, msg, .. },
+                ..
+            }) => {
                 assert_eq!(reply_to, 1);
                 assert_eq!(code, 2);
                 assert_eq!(msg, "message text is missing");
@@ -387,53 +398,60 @@ mod tests {
 
     #[test]
     fn decode_presence_change_event() {
-        let event: Event = Event::from_json(r##"{
+        let event: Event = Event::from_json(
+            r##"{
             "type": "presence_change",
             "users": ["U024BE7LH", "U012EA2U1"],
             "presence": "away"
-        }"##)
-                .unwrap();
+        }"##,
+        )
+        .unwrap();
         match event {
-            Event::PresenceChange{users, presence, ..} => {
+            Event::PresenceChange {
+                users, presence, ..
+            } => {
                 assert_eq!(presence, "away");
                 match users {
                     Some(u) => {
                         assert_eq!(u.len(), 2);
                         assert_eq!(u[0], "U024BE7LH");
                         assert_eq!(u[1], "U012EA2U1");
-                    },
+                    }
                     _ => panic!("Presence change does not contain users elem"),
                 }
-            },
+            }
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
 
     #[test]
     fn decode_legacy_presence_change_event() {
-        let event: Event = Event::from_json(r##"{
+        let event: Event = Event::from_json(
+            r##"{
             "type": "presence_change",
             "user": "U024BE7LH",
             "presence": "away"
-        }"##)
-                .unwrap();
+        }"##,
+        )
+        .unwrap();
         match event {
-            Event::PresenceChange{user, presence, ..} => {
+            Event::PresenceChange { user, presence, .. } => {
                 assert_eq!(presence, "away");
                 match user {
                     Some(u) => {
                         assert_eq!(u, "U024BE7LH");
-                    },
+                    }
                     _ => panic!("Presence change does not contain users elem"),
                 }
-            },
+            }
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
 
     #[test]
     fn decode_extended_standard_message() {
-        let event: Event = Event::from_json(r##"{
+        let event: Event = Event::from_json(
+            r##"{
             "type": "message",
             "ts": "1234567890.218332",
             "user": "U12345678",
@@ -473,17 +491,16 @@ mod tests {
                     "thumb_url": "http://example.com/path/to/thumb.png"
                 }
             ]
-        }"##)
-                .unwrap();
+        }"##,
+        )
+        .unwrap();
         match event {
-            Event::Message(message) => {
-                match *message {
-                    Message::Standard(MessageStandard { attachments, .. }) => {
-                        assert_eq!(attachments.unwrap()[0].color.as_ref().unwrap(), "#36a64f");
-                    }
-                    _ => panic!("Message decoded into incorrect variant."),
+            Event::Message(message) => match *message {
+                Message::Standard(MessageStandard { attachments, .. }) => {
+                    assert_eq!(attachments.unwrap()[0].color.as_ref().unwrap(), "#36a64f");
                 }
-            }
+                _ => panic!("Message decoded into incorrect variant."),
+            },
             _ => panic!("Event decoded into incorrect variant."),
         }
     }
