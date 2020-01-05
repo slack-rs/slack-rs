@@ -173,14 +173,14 @@ impl RtmClient {
         // setup channels for passing messages
         let (tx, rx) = mpsc::channel::<WsMessage>();
         let sender = Sender {
-            tx: tx,
+            tx,
             msg_num: Arc::new(AtomicUsize::new(0)),
         };
 
         Ok(RtmClient {
-            start_response: start_response,
-            sender: sender,
-            rx: rx,
+            start_response,
+            sender,
+            rx,
         })
     }
 
@@ -190,7 +190,7 @@ impl RtmClient {
             .start_response
             .url
             .as_ref()
-            .ok_or(Error::Api("Slack did not provide a URL".into()))?;
+            .ok_or_else(|| Error::Api("Slack did not provide a URL".into()))?;
         let wss_url = url::Url::parse_with_params(&start_url, &[("batch_presence_aware", "1")])?;
         let (mut websocket, _resp) = tungstenite::client::connect(wss_url)?;
 
