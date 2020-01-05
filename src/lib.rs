@@ -18,7 +18,6 @@
 //! See [CHANGELOG.md](https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md) for latest
 //! release notes.
 
-use reqwest;
 pub extern crate slack_api as api;
 #[macro_use]
 extern crate serde_derive;
@@ -167,7 +166,7 @@ impl RtmClient {
     /// Logs in to slack. Call this before calling `run`.
     /// Alternatively use `login_and_run`.
     pub fn login(token: &str) -> Result<RtmClient, Error> {
-        let client = reqwest::Client::new();
+        let client = api::default_client()?;
         let start_response = api::rtm::start(&client, token, &Default::default())?;
 
         // setup channels for passing messages
@@ -190,7 +189,7 @@ impl RtmClient {
             .url
             .as_ref()
             .ok_or(Error::Api("Slack did not provide a URL".into()))?;
-        let wss_url = reqwest::Url::parse_with_params(&start_url, &[("batch_presence_aware", "1")])?;
+        let wss_url = url::Url::parse_with_params(&start_url, &[("batch_presence_aware", "1")])?;
         let (mut websocket, _resp) = tungstenite::client::connect(wss_url)?;
 
         // Slack can leave us hanging
@@ -262,6 +261,7 @@ impl RtmClient {
                     tungstenite::Message::Binary(_) => print_recieved("Binary"),
                     tungstenite::Message::Ping(_) => print_recieved("Ping"),
                     tungstenite::Message::Pong(_) => print_recieved("Pong"),
+                    tungstenite::Message::Close(_) => print_recieved("Close"),
                 }
             }
             prev_ = received;
