@@ -18,20 +18,19 @@ use std::fmt;
 use std::io;
 use std::error;
 use std::string::FromUtf8Error;
-
 use crate::api;
 
 /// `slack::Error` represents errors that can happen while using the `RtmClient`
 #[derive(Debug)]
 pub enum Error {
     /// Http client error
-    Http(::reqwest::Error),
+    Http(api::requests::Error),
     /// WebSocket connection error
     WebSocket(::tungstenite::Error),
     /// Error decoding websocket text frame Utf8
     Utf8(FromUtf8Error),
     /// Error parsing url
-    Url(::reqwest::UrlError),
+    Url(::url::ParseError),
     /// Error decoding Json
     Json(::serde_json::Error),
     /// Slack Api Error
@@ -40,14 +39,16 @@ pub enum Error {
     Internal(String),
 }
 
-impl From<::reqwest::Error> for Error {
-    fn from(err: ::reqwest::Error) -> Error {
+impl From<api::requests::Error> for Error {
+
+    fn from(err: api::requests::Error) -> Error {
+
         Error::Http(err)
     }
 }
 
-impl From<::reqwest::UrlError> for Error {
-    fn from(err: ::reqwest::UrlError) -> Error {
+impl From<::url::ParseError> for Error {
+    fn from(err: ::url::ParseError) -> Error {
         Error::Url(err)
     }
 }
@@ -76,8 +77,10 @@ impl From<FromUtf8Error> for Error {
     }
 }
 
-impl From<api::rtm::StartError<::reqwest::Error>> for Error {
-    fn from(err: api::rtm::StartError<::reqwest::Error>) -> Error {
+impl From<api::rtm::StartError<api::requests::Error>> for Error {
+
+    fn from(err: api::rtm::StartError<api::requests::Error>) -> Error {
+
         Error::Api(format!("rtm::StartError: {}", err))
     }
 }
