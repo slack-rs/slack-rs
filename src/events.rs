@@ -16,7 +16,6 @@
 
 use crate::api::{Bot, Message, File, FileComment, Channel, User, MessageUnpinnedItem, MessagePinnedItem,
           stars, reactions};
-use std::boxed::Box;
 
 /// Represents Slack [rtm event](https://api.slack.com/rtm) types.
 #[derive(Clone, Debug, Deserialize)]

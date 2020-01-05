@@ -18,13 +18,12 @@
 //! See [CHANGELOG.md](https://github.com/slack-rs/slack-rs/blob/master/CHANGELOG.md) for latest
 //! release notes.
 
-pub extern crate slack_api as api;
 #[macro_use]
 extern crate serde_derive;
-use serde_json;
-use tungstenite;
 #[macro_use]
 extern crate log;
+
+pub use slack_api as api;
 
 pub mod error;
 pub use crate::error::Error;
@@ -36,7 +35,7 @@ pub use crate::events::Event;
 
 use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::mpsc::{self, channel};
+use std::sync::mpsc;
 use crate::events::{MessageSent, MessageError};
 
 /// Implement this trait in your code to handle message events
@@ -170,7 +169,7 @@ impl RtmClient {
         let start_response = api::rtm::start(&client, token, &Default::default())?;
 
         // setup channels for passing messages
-        let (tx, rx) = channel::<WsMessage>();
+        let (tx, rx) = mpsc::channel::<WsMessage>();
         let sender = Sender {
             tx: tx,
             msg_num: Arc::new(AtomicUsize::new(0)),
