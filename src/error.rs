@@ -84,30 +84,19 @@ impl From<api::rtm::StartError<api::requests::Error>> for Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
-            Error::Http(ref e) => write!(f, "Http (reqwest) Error: {:?}", e),
-            Error::WebSocket(ref e) => write!(f, "Websocket Error: {:?}", e),
-            Error::Utf8(ref e) => write!(f, "Utf8 decode Error: {:?}", e),
-            Error::Url(ref e) => write!(f, "Url Error: {:?}", e),
-            Error::Json(ref e) => write!(f, "Json Error: {:?}", e),
-            Error::Api(ref st) => write!(f, "Slack Api Error: {:?}", st),
-            Error::Internal(ref st) => write!(f, "Internal Error: {:?}", st),
+            Error::Http(ref e) => write!(f, "Http (reqwest) Error: {}", e),
+            Error::WebSocket(ref e) => write!(f, "Websocket Error: {}", e),
+            Error::Utf8(ref e) => write!(f, "Utf8 decode Error: {}", e),
+            Error::Url(ref e) => write!(f, "Url Error: {}", e),
+            Error::Json(ref e) => write!(f, "Json Error: {}", e),
+            Error::Api(ref st) => write!(f, "Slack Api Error: {}", st),
+            Error::Internal(ref st) => write!(f, "Internal Error: {}", st),
         }
     }
 }
 
 impl error::Error for Error {
-    fn description(&self) -> &str {
-        match *self {
-            Error::Http(ref e) => e.description(),
-            Error::WebSocket(ref e) => e.description(),
-            Error::Utf8(ref e) => e.description(),
-            Error::Url(ref e) => e.description(),
-            Error::Json(ref e) => e.description(),
-            Error::Api(ref st) | Error::Internal(ref st) => st,
-        }
-    }
-
-    fn cause(&self) -> Option<&dyn error::Error> {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match *self {
             Error::Http(ref e) => Some(e),
             Error::WebSocket(ref e) => Some(e),
