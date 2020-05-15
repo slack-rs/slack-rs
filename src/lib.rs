@@ -23,7 +23,7 @@ extern crate serde_derive;
 #[macro_use]
 extern crate log;
 
-pub use slack_api as api;
+pub use slack_api::sync as api;
 
 pub mod error;
 pub use crate::error::Error;
