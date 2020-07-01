@@ -1,4 +1,6 @@
 # Changelog
+## 0.24.0
+- Update to `slack_api v0.23.0`
 
 ## 0.23.0
 - Update to `slack_api v0.22.0`
