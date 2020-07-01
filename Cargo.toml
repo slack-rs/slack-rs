@@ -1,12 +1,13 @@
 [package]
 name = "slack"
-version = "0.23.0"
+version = "0.24.0"
 authors = ["Benjamin Elder <bentheelder@gmail.com>", "Matt Jones <mthjones@gmail.com>", "David Hewson <dev@daveid.co.uk>"]
 repository = "https://github.com/slack-rs/slack-rs.git"
 documentation = "https://docs.rs/slack"
 description = "slack realtime messaging client: https://api.slack.com/bot-users"
 license = "Apache-2.0"
 edition = "2018"
+readme = "README.md"
 
 [dependencies.slack_api]
 version = "0.23.1"
