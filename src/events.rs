@@ -336,7 +336,7 @@ mod tests {
                     ref text,
                     ..
                 }) => {
-                    assert_eq!(ts.as_ref().unwrap(), "1234567890.218332");
+                    assert_eq!(ts.unwrap().to_string(), "1234567890.218332");
                     assert_eq!(text.as_ref().unwrap(), "Hello world");
                     assert_eq!(user.as_ref().unwrap(), "U12345678");
                 }

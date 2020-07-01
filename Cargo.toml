@@ -8,8 +8,12 @@ description = "slack realtime messaging client: https://api.slack.com/bot-users"
 license = "Apache-2.0"
 edition = "2018"
 
+[dependencies.slack_api]
+version = "0.23.1"
+default-features = false
+features = ["reqwest_blocking"]
+
 [dependencies]
-slack_api = "0.22.0"
 serde = "1.0.0"
 serde_json = "1.0.0"
 serde_derive = "1.0.0"
