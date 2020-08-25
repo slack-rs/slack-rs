@@ -83,6 +83,8 @@ pub enum Event {
         ts: String,
         event_ts: String,
     },
+    /// Represents the slack [`goodbye`](https://api.slack.com/events/goodbye) event.
+    Goodbye,
     /// Represents the slack
     /// [`group_joined`](https://api.slack.com/events/group_joined) event.
     GroupJoined { channel: Box<Channel> },
