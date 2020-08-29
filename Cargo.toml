@@ -21,3 +21,8 @@ serde_derive = "1.0.0"
 tungstenite = "0.9.2"
 log = "0.3.7"
 url = "2.1.0"
+
+[features]
+default = ["with_native_tls"]
+with_rustls = ["slack_api/with_rustls"]
+with_native_tls = ["slack_api/with_native_tls"]
