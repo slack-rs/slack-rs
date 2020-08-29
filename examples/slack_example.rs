@@ -17,6 +17,8 @@
 // This is a simple example of using slack-rs.
 // You can run it with `cargo run --example slack_example -- <api_key>`
 //
+// NOTE: Only classic app bots can connect to rtm https://api.slack.com/rtm#classic
+//
 // NOTE: This will post in the #general channel of the account you connect
 // to.
 //
