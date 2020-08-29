@@ -17,6 +17,8 @@
 // This is a simple example of using slack-rs.
 // You can run it with `cargo run --example slack_example -- <api_key>`
 //
+// NOTE: Only classic app bots can connect to rtm https://api.slack.com/rtm#classic
+//
 // NOTE: This will post in the #general channel of the account you connect
 // to.
 //
@@ -30,6 +32,25 @@ struct MyHandler;
 impl slack::EventHandler for MyHandler {
     fn on_event(&mut self, cli: &RtmClient, event: Event) {
         println!("on_event(event: {:?})", event);
+        if let Event::Hello = event {
+            // find the general channel id from the `StartResponse`
+            let general_channel_id = cli
+                .start_response()
+                .channels
+                .as_ref()
+                .and_then(|channels| {
+                    channels.iter().find(|chan| match chan.name {
+                        None => false,
+                        Some(ref name) => name == "general",
+                    })
+                })
+                .and_then(|chan| chan.id.as_ref())
+                .expect("general channel not found");
+            let _ = cli
+                .sender()
+                .send_message(&general_channel_id, "Hello world! (rtm)");
+            // Send a message over the real time api websocket
+        }
     }
 
     fn on_close(&mut self, cli: &RtmClient) {
@@ -38,29 +59,15 @@ impl slack::EventHandler for MyHandler {
 
     fn on_connect(&mut self, cli: &RtmClient) {
         println!("on_connect");
-        // find the general channel id from the `StartResponse`
-        let general_channel_id = cli.start_response()
-            .channels
-            .as_ref()
-            .and_then(|channels| {
-                          channels
-                              .iter()
-                              .find(|chan| match chan.name {
-                                        None => false,
-                                        Some(ref name) => name == "general",
-                                    })
-                      })
-            .and_then(|chan| chan.id.as_ref())
-            .expect("general channel not found");
-        let _ = cli.sender().send_message(&general_channel_id, "Hello world! (rtm)");
-        // Send a message over the real time api websocket
     }
 }
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let api_key = match args.len() {
-        0 | 1 => panic!("No api-key in args! Usage: cargo run --example slack_example -- <api-key>"),
+        0 | 1 => {
+            panic!("No api-key in args! Usage: cargo run --example slack_example -- <api-key>")
+        }
         x => args[x - 1].clone(),
     };
     let mut handler = MyHandler;

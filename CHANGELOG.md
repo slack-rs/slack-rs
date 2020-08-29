@@ -1,4 +1,9 @@
 # Changelog
+## 0.25.0
+- Add `Goodbye` event which indicates that Slack is shutting down the socket and the client should reconnect
+- Add `with_native_tls` and `with_rustls` features. At least one must be selected, default is `with_native_tls`
+- Update example to post a message in response to the `Hello` event which indicates the socket is ready
+
 ## 0.24.0
 - Update to `slack_api v0.23.0`
 
