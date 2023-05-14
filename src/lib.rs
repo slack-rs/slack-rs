@@ -243,7 +243,7 @@ impl RtmClient {
 
             let received = ::std::time::Instant::now();
             {
-                let print_recieved = |var: &str| {
+                let print_received = |var: &str| {
                     debug!(
                         "RTM WS {} recieved {:?} since last msg",
                         var,
@@ -261,10 +261,10 @@ impl RtmClient {
                             );
                         }
                     },
-                    tungstenite::Message::Binary(_) => print_recieved("Binary"),
-                    tungstenite::Message::Ping(_) => print_recieved("Ping"),
-                    tungstenite::Message::Pong(_) => print_recieved("Pong"),
-                    tungstenite::Message::Close(_) => print_recieved("Close"),
+                    tungstenite::Message::Binary(_) => print_received("Binary"),
+                    tungstenite::Message::Ping(_) => print_received("Ping"),
+                    tungstenite::Message::Pong(_) => print_received("Pong"),
+                    tungstenite::Message::Close(_) => print_received("Close"),
                 }
             }
             prev_ = received;
